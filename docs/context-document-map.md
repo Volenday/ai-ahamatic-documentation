@@ -1,0 +1,85 @@
+# Context Document Map — AI ahaMatic
+
+A meta index ("digital shelf") of the specification, architecture, and governance documents required to safely prompt, guide, and constrain an AI agent responsible for the autonomous end-to-end software lifecycle of **AI ahaMatic** — a generic, multi-purpose software builder platform.
+
+This map answers **what** each document must cover. It is informed by the **how** only enough to ensure the inventory is complete and nothing safety-critical is omitted. Implementation of each document is a separate phase.
+
+## How to read this map
+
+- **Document Name** — the canonical filename of the artifact.
+- **Domain** — the concern the document governs.
+- **Lifecycle Phase** — where in the autonomous lifecycle the document binds the agent: `Strategy` / `Guardrails` / `Design` / `Execution (Code/Deploy/Test)` / `Evolution (Maintain/Self-Correct)`.
+- **Core Objective** — what the AI must learn, preserve, or obey from the document.
+- **Critical Elements Included** — the specific benchmarks, human-in-the-loop triggers, fallback protocols, and constraints the AI cannot violate.
+
+The map is ordered as a pyramid: foundational intent first (Business & UX), then the constraints that bound all work (Governance & Security), then the design that work conforms to (Software & Architecture), then how work ships (DevOps & Cloud Infra), and finally the meta-rules that govern the agent's own conduct (Meta-Operations).
+
+---
+
+## Business & UX
+
+| Document Name | Domain | Lifecycle Phase | Core Objective | Critical Elements Included |
+|---|---|---|---|---|
+| `vision-and-charter.md` | Business & UX | Strategy | Internalize the mandate: AI ahaMatic is a generic platform that builds and operates *any* type of software, never a single-domain application. Every downstream decision inherits this framing. | Authorized project scope; explicit non-goals; the "generic builder, not domain app" constraint the agent must never collapse into a single vertical; definition of done for the platform itself. |
+| `prd.md` | Business & UX | Strategy | Learn the full set of platform capabilities to be delivered and the priority order in which they are built. | Capability backlog with priority tiers; in-scope vs. out-of-scope boundaries; release-gating capabilities; acceptance criteria phrased as platform capabilities, not features of one domain. |
+| `platform-capability-model.md` | Business & UX | Strategy | Understand the primitives a generic builder must expose (build apps, model data/entities, configure access, publish, operate) independent of any end-use domain. | Capability taxonomy; the line between platform-provided primitives and end-user-built artifacts; capability dependencies the agent must respect when sequencing work. |
+| `personas-and-roles.md` | Business & UX | Strategy | Distinguish the actors who *build with* the platform from the actors who *use the built software*, and design for both layers. | Builder personas vs. end-user personas; role hierarchy; per-role permission expectations that feed the access-control model; tenancy implications of each persona. |
+| `user-journeys.md` | Business & UX | Design | Preserve the end-to-end experience of building, configuring, publishing, and operating software on the platform. | Build-time journeys vs. run-time journeys; critical-path journeys that must never regress; cross-tenant and multi-region journey variants; failure/empty/error-state journeys. |
+| `value-proposition-and-success-metrics.md` | Business & UX | Strategy | Know what outcomes define success so autonomous trade-offs optimize the right targets. | Quantified success metrics; guardrail metrics that must not degrade while optimizing others; explicit anti-metrics (outcomes to avoid) the agent must not chase. |
+
+---
+
+## Governance & Security
+
+| Document Name | Domain | Lifecycle Phase | Core Objective | Critical Elements Included |
+|---|---|---|---|---|
+| `system-invariants.md` | Governance & Security | Guardrails | Obey the hard, non-negotiable properties that must hold across every change in every lifecycle phase. | Enumerated invariants (tenant isolation, data integrity, auth-before-access, no secret exposure); each invariant tagged as a blocking check; "violation halts execution and escalates" rule. |
+| `security-policy.md` | Governance & Security | Guardrails | Preserve the platform's security posture for both the builder layer and every artifact it produces. | Threat model; secrets-handling rules (no credentials in code/config/logs); input validation and injection-prevention requirements; vulnerability-severity thresholds that block release; mandatory security-review trigger. |
+| `access-control-and-tenancy-model.md` | Governance & Security | Guardrails | Enforce who can do what, and guarantee strict isolation between tenants and between platform and built apps. | Multi-tenant isolation rules; role-and-permission matrix; client/application scoping rules; cross-tenant access as a forbidden operation; least-privilege default. |
+| `auth-and-identity-spec.md` | Governance & Security | Guardrails | Preserve identity, session, and authentication guarantees across all entry points. | Supported auth methods (multi-factor, single sign-on, federated/social); session lifecycle and expiry rules; step-up authentication triggers; account-recovery constraints; forbidden weakenings of auth flows. |
+| `compliance-and-data-residency.md` | Governance & Security | Guardrails | Honor regulatory, jurisdictional, and data-residency obligations across all operating regions. | Per-region data-residency rules; applicable compliance regimes; data-classification tiers; residency-violating actions that require human approval before proceeding. |
+| `data-governance-and-privacy.md` | Governance & Security | Guardrails | Protect personal and sensitive data through its full lifecycle on the platform and in built apps. | Data classification and handling matrix; retention and deletion rules; consent and minimization requirements; PII-exposure as a blocking violation; redaction requirements for logs and outputs. |
+| `audit-and-traceability.md` | Governance & Security | Guardrails | Guarantee every consequential action is attributable, logged, and reconstructable. | Mandatory audit events; immutability and tamper-evidence requirements; agent-action logging obligations; minimum traceability for any autonomous change to enter the system. |
+| `legal-and-licensing-constraints.md` | Governance & Security | Guardrails | Stay within legal, contractual, and dependency-licensing boundaries when generating or integrating anything. | Permitted vs. prohibited license categories; third-party dependency policy; attribution requirements; license-incompatibility as a blocking check requiring escalation. |
+
+---
+
+## Software & Architecture
+
+| Document Name | Domain | Lifecycle Phase | Core Objective | Critical Elements Included |
+|---|---|---|---|---|
+| `architecture-overview.md` | Software & Architecture | Design | Hold the canonical structural model of the platform and the boundaries the agent must build within. | Major components and their responsibilities; allowed and forbidden dependency directions; separation between platform core, builder tooling, and generated artifacts; architectural decisions the agent cannot override unilaterally. |
+| `domain-glossary.md` | Software & Architecture | Design | Use one consistent vocabulary for platform concepts (applications, entities, schemas, modules, sessions, tenants) across all outputs. | Canonical term definitions; disallowed/ambiguous synonyms; the conceptual distinction between platform-level objects and user-defined objects built on top of them. |
+| `data-model-and-entity-spec.md` | Software & Architecture | Design | Preserve how data and user-defined entities/schemas are modeled, validated, and related in a generic builder. | Core data-model rules; entity/schema definition and validation contracts; relationship and referential-integrity rules; migration-safety constraints; backward-compatibility requirements for stored data. |
+| `api-contract-spec.md` | Software & Architecture | Design | Honor the contracts exposed to builders, built apps, and integrations so changes never silently break consumers. | Versioning and deprecation policy; backward-compatibility rules; request/response and error-shape conventions; contract changes that require human sign-off; breaking-change detection as a release gate. |
+| `integration-and-extensibility-spec.md` | Software & Architecture | Design | Maintain how the platform extends via modules, an SDK, and a marketplace without compromising core guarantees. | Extension/module boundary rules; SDK compatibility contract; marketplace/third-party submission constraints; sandboxing and trust boundaries for external extensions. |
+| `non-functional-requirements.md` | Software & Architecture | Design | Meet the quality attributes the platform is held to, independent of any feature. | Performance, scalability, availability, and reliability targets; resource and latency budgets; quantified thresholds that constitute a regression and block release. |
+| `coding-standards-and-patterns.md` | Software & Architecture | Execution (Code/Deploy/Test) | Produce code that conforms to required structure, style, and approved patterns. | Mandatory patterns and prohibited anti-patterns; naming and structure conventions; reuse-vs-rebuild rules; review checklist the agent must self-apply before committing. |
+
+---
+
+## DevOps & Cloud Infra
+
+| Document Name | Domain | Lifecycle Phase | Core Objective | Critical Elements Included |
+|---|---|---|---|---|
+| `environment-and-config-spec.md` | DevOps & Cloud Infra | Execution (Code/Deploy/Test) | Know the environment topology and configuration rules so changes target the correct stage and region. | Environment tiers (development through production); per-region/per-environment configuration boundaries; secret-injection rules (no secrets committed); production as a protected target requiring explicit promotion. |
+| `ci-cd-pipeline-spec.md` | DevOps & Cloud Infra | Execution (Code/Deploy/Test) | Move changes through the pipeline only when every required gate passes. | Ordered pipeline stages and their gates; mandatory checks before merge and before deploy; conditions that automatically block promotion; no-bypass rule for failed gates. |
+| `testing-and-quality-gates.md` | DevOps & Cloud Infra | Execution (Code/Deploy/Test) | Validate that every change meets coverage and correctness thresholds before it advances. | Required test types and layers; minimum coverage and pass-rate thresholds; flaky-test handling rules; "no passing gates, no deploy" constraint. |
+| `observability-and-monitoring.md` | DevOps & Cloud Infra | Evolution (Maintain/Self-Correct) | Detect, measure, and react to the real-world health of the platform and built apps. | Required metrics, logs, and traces; alert thresholds; health signals that trigger self-correction or rollback; signals that mandate human escalation. |
+| `release-and-rollback-protocol.md` | DevOps & Cloud Infra | Execution (Code/Deploy/Test) | Release safely and reverse safely, with a defined fallback for every deployment. | Release strategy and staged-promotion rules; mandatory rollback path before any release; rollback triggers and time-to-recover targets; releases requiring human authorization. |
+| `incident-response-and-recovery.md` | DevOps & Cloud Infra | Evolution (Maintain/Self-Correct) | Contain, recover from, and learn from failures without worsening the situation. | Severity classification; containment-first ordering; backup and restore guarantees; mandatory human escalation thresholds; prohibited unilateral recovery actions. |
+
+---
+
+## Meta-Operations
+
+| Document Name | Domain | Lifecycle Phase | Core Objective | Critical Elements Included |
+|---|---|---|---|---|
+| `agent-operating-charter.md` | Meta-Operations | Guardrails | Understand its own authority, autonomy boundaries, and obligations across the entire lifecycle. | Permitted autonomous actions vs. actions requiring approval; precedence order of governing documents when they conflict; the duty to halt and escalate when uncertain or out of scope. |
+| `agent-loop-constraints.md` | Meta-Operations | Guardrails | Prevent runaway, oscillating, or non-terminating behavior. | Maximum iterations/retries per task; loop-detection and termination rules; progress requirement (no repeated no-op cycles); hard stop and escalate on limit breach. |
+| `token-and-compute-budget.md` | Meta-Operations | Guardrails | Operate within bounded token, compute, and cost envelopes per task and per session. | Per-task and per-session budget ceilings; cost-per-action accounting; degrade-gracefully behavior near limits; mandatory pause-and-escalate on budget exhaustion. |
+| `human-in-the-loop-protocol.md` | Meta-Operations | Guardrails | Recognize exactly when autonomy stops and human approval is required. | Enumerated approval-gate triggers (irreversible actions, production changes, security/compliance/invariant impact, scope changes); how approval is requested and recorded; default-to-halt when a trigger is ambiguous. |
+| `prompt-and-context-management.md` | Meta-Operations | Guardrails | Assemble correct, sufficient, and non-contradictory context before acting, and avoid context overflow. | Required context per task type; document-precedence and conflict-resolution rules; context-window and scoping limits; prohibition on acting with missing or stale context. |
+| `agent-state-and-memory-spec.md` | Meta-Operations | Execution (Code/Deploy/Test) | Manage its own working state, memory, and handoffs reliably and reproducibly. | What may and may not be persisted across steps/sessions; state-integrity and provenance rules; safe resume/handoff requirements; forbidden retention of sensitive data in memory. |
+| `self-correction-and-fallback-protocol.md` | Meta-Operations | Evolution (Maintain/Self-Correct) | Detect its own errors and recover predictably without compounding harm. | Error- and regression-detection signals; ordered fallback ladder (retry → safe alternative → rollback → human escalation); maximum self-correction attempts before mandatory escalation; conditions that forbid further autonomous action. |
+| `change-management-and-evolution-policy.md` | Meta-Operations | Evolution (Maintain/Self-Correct) | Evolve the platform over time without violating prior guarantees or accumulating unmanaged drift. | Backward-compatibility obligations; deprecation and migration rules; documentation-update requirements accompanying every change; changes that require human review before adoption. |
