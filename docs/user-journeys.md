@@ -2,7 +2,7 @@
 
 This document preserves the **end-to-end experience** of building, configuring, publishing, and operating software on AI ahaMatic. It states **what** each journey is and what must hold true as an actor moves through it — the sequence of intent an actor pursues and the guarantees that must never break along the way. It does not describe how any journey is designed, rendered, or implemented.
 
-This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, and the personas defined in `personas-and-roles.md`, rather than re-enumerating them. It introduces no new personas. Every journey is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
+This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-23) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, and the personas defined in `personas-and-roles.md`, rather than re-enumerating them. It introduces no new personas. Every journey is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
 
 ---
 

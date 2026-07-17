@@ -2,7 +2,7 @@
 
 This document maps recognized Gartner standards for the Enterprise Low-Code Application Platform (LCAP) market — the Magic Quadrant, the Critical Capabilities, the adoption maturity model, and enterprise adoption benchmarks — against AI ahaMatic's documentation and capability library. It establishes where the platform aligns with those standards and where documentation or platform coverage falls short and requires remediation. It is a Strategy-phase artifact and answers **what** the platform's standing against industry standards is, not how any capability is designed or implemented.
 
-This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `vision-and-charter.md`, the benchmark framing established in `value-proposition-and-success-metrics.md`, and the market baseline and gap set established in `competitive-landscape.md`. Those are cited, not restated or duplicated. Gartner's standards are synthesized from the authorized research; Gartner and vendor names are used as needed, and no person's name appears anywhere.
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-23) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `vision-and-charter.md`, the benchmark framing established in `value-proposition-and-success-metrics.md`, and the market baseline and gap set established in `competitive-landscape.md`. Those are cited, not restated or duplicated. Gartner's standards are synthesized from the authorized research; Gartner and vendor names are used as needed, and no person's name appears anywhere.
 
 Unlike the competitive landscape — a vendor comparison — this document assesses how the **whole documentation and capability library** covers recognized Gartner standards. Two boundaries hold throughout: benchmarks are **external market anchors, never internal numeric thresholds** (those remain owned by `non-functional-requirements.md`, `testing-and-quality-gates.md`, and `observability-and-monitoring.md`); and because AI ahaMatic is **not yet built**, criteria that measure market reality — adoption, revenue, operational track record — cannot yet be met and are assessed as such.
 
@@ -14,7 +14,7 @@ The document answers five questions:
 
 - **What standards apply** — the Gartner instruments the platform is measured against.
 - **What the entry bar is** — the Magic Quadrant inclusion thresholds and how the model relates to them.
-- **How each capability maps** — the Critical Capabilities coverage across C-01–C-22 and the documents that address them.
+- **How each capability maps** — the Critical Capabilities coverage across C-01–C-23 and the documents that address them.
 - **Where the library sits** — its alignment against the enterprise maturity model, and the adoption benchmarks that anchor its ambition.
 - **Where it falls short** — an inventory of documentation and platform coverage gaps requiring remediation.
 

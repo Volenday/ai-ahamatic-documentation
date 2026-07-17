@@ -2,7 +2,7 @@
 
 This document maps the capabilities of the top Low-Code/No-Code (LCNC) vendors against AI ahaMatic's capability model to establish where the platform **aligns** with market expectations, where it has **gaps**, and where it **differentiates**. It is a Strategy-phase artifact and answers **what** the platform's competitive position is, not how any capability is designed or implemented.
 
-This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `vision-and-charter.md`, and the differentiator framing established in `value-proposition-and-success-metrics.md` (cited, not restated). Vendor findings are synthesized from the authorized competitive research; vendor and company names are used as needed, and no person's name appears anywhere.
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-23) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `vision-and-charter.md`, and the differentiator framing established in `value-proposition-and-success-metrics.md` (cited, not restated). Vendor findings are synthesized from the authorized competitive research; vendor and company names are used as needed, and no person's name appears anywhere.
 
 This is a **capability-model comparison, not a runtime feature comparison.** AI ahaMatic is not yet built. The comparison is drawn at the level of the capability model and strategic positioning — what the platform commits to provide as a domain-neutral primitive — never at the level of shipped-feature parity against products already in market.
 
@@ -15,7 +15,7 @@ The document answers four questions:
 - **What the market covers** — the capability baseline the leading LCNC vendors establish across core LCAP modules.
 - **Where the platform falls short** — capabilities the market treats as standard, or as an established emerging frontier, that the current model does not yet provide.
 - **Where the platform differentiates** — the positions the capability model establishes beyond the market baseline.
-- **How each capability maps** — a structured inventory of C-01–C-22 against market expectation, marked as alignment, gap, or differentiation.
+- **How each capability maps** — a structured inventory of C-01–C-23 against market expectation, marked as alignment, gap, or differentiation.
 
 It is structured as a pyramid: first the market coverage that establishes the baseline, then the gaps measured against that baseline, then the differentiators that define a distinctive position, and finally the per-capability alignment and shortfall inventory.
 
@@ -135,7 +135,7 @@ Multi-language code export (C-22) would export a built application's code across
 
 ## 6. Capability Alignment and Shortfall Inventory
 
-This inventory maps every canonical capability (C-01–C-22) against the market expectation, marked as follows:
+This inventory maps every canonical capability (C-01–C-23) against the market expectation, marked as follows:
 
 - **Aligned** — meets a market-standard expectation the compared vendors also cover.
 - **Gap** — a market-standard or established emerging capability the model does not yet provide.
