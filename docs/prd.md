@@ -78,6 +78,9 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-07 | Application operation | The means to run built software and serve its end users reliably. | C-06 |
 | C-08 | Lifecycle continuity | The means to move a built application end to end — build, configure, publish, operate — as one continuous, governed flow. | C-04, C-05, C-06, C-07 |
 | C-09 | Observability | The means to observe the real-world health and behavior of both the platform and the software built on it. | C-07 |
+| C-18 | Workflow and process automation | The means to model, execute, and govern processes across built software — process modeling, human task routing, automated rule execution, and process lifecycle management — bound to no predetermined domain. | C-04, C-05, C-06 |
+| C-19 | AI-assisted builder tooling | The means to provide professional builders with AI-native development assistance across generic construction, modeling, and configuration — including logic generation, automated testing support, layout assistance, and validation — bound to no predetermined domain. Every AI output is a suggestion: AI-suggested artifacts are distinct from builder-approved artifacts, and no AI-generated output is committed without mandatory human-builder confirmation. The tooling operates strictly within the professional-builder model and inherits the platform's Meta-Operations safety guardrails (`agent-operating-charter.md`, `human-in-the-loop-protocol.md`). | C-04, C-05, C-06 |
+| C-21 | Builder-facing version control | The means for professional builders to version, compare, revert, and manage the releases of the applications they build, bound to no predetermined domain — defining the versioning model for built applications; the builder-facing history, comparison, and revert semantics over those versions; the immutability and provenance of every versioned artifact; the safe-revert constraints that guarantee reverting a version never corrupts live data; and the explicit boundary that separates this builder-facing version control from the platform's own internal change and version control (governed under `change-management-and-evolution-policy.md`), which remains a distinct, platform-internal concern. | C-04, C-05, C-06, C-08 |
 
 ### Tier 3 — Reach and Extension
 
@@ -88,6 +91,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-12 | Software development kit | The means for builders to work with the platform's primitives programmatically through a stable, supported contract. | C-04, C-05 |
 | C-13 | Marketplace | The means to offer and obtain published software and extensions, with the platform's guarantees preserved across what is offered. | C-10, C-11 |
 | C-14 | Multi-region operation | The means to operate across regions while honoring the obligations attached to where data and users reside. | C-01, C-07 |
+| C-20 | Mobile application capabilities | The means to package, publish, and deliver built software to mobile targets, bound to no predetermined domain — defining the supported mobile target scope; the parity and permitted-divergence rules between a built application's web and mobile forms; the device-capability and offline-behavior expectations mobile artifacts must meet; the publishing constraints specific to mobile targets; and the requirement that every platform guarantee holding for non-mobile output holds equally for mobile output. | C-04, C-06, C-10 |
 
 ### Tier 4 — Evolution
 
@@ -96,6 +100,14 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-15 | Safe evolution | The means to change the platform over time without breaking commitments it has already made. | C-08, C-09 |
 | C-16 | Maintenance and self-correction | The means to detect, contain, and recover from problems in the platform and built software without worsening them. | C-09 |
 | C-17 | Controlled change and deprecation | The means to introduce, deprecate, and retire capabilities and contracts on a managed path that gives builders and built software time to adapt. | C-12, C-15 |
+
+### Future Capabilities (Not Yet Authorized)
+
+The following capability is recorded for completeness. It is not part of any current build tier and holds no build-order position among C-01–C-17. It is a potential future capability and must not be implemented, expanded, or relied upon until it is explicitly authorized in a later revision of this document.
+
+| ID | Capability | What It Provides | Depends On |
+|---|---|---|---|
+| C-22 | Multi-language code export | The means to export or generate a built application's code across multiple programming languages, bound to no predetermined domain — defining the export fidelity and behavioral-equivalence guarantees every exported artifact must meet, and the validation that any exported code preserves the original application's behavior. It is a potential future capability whose target programming languages are undetermined; it is not authorized for immediate implementation and must not be built or expanded until explicitly authorized. It concerns programming-language code output only and must never be conflated with human-language UI localization. | C-04, C-05, C-06 |
 
 ---
 

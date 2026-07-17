@@ -1,6 +1,6 @@
 # Vision and Charter — AI ahaMatic
 
-The foundational document of the AI ahaMatic library. It establishes the platform's mandate, the boundaries of authorized work, what the platform is explicitly not, and the conditions under which the platform itself is considered complete. Every other document in the library inherits its framing from this one. Where a downstream document appears to conflict with this charter, this charter prevails.
+The foundational document of the AI ahaMatic library. It establishes the platform's mandate, its identity and market category, the boundaries of authorized work, what the platform is explicitly not, and the conditions under which the platform itself is considered complete. Every other document in the library inherits its framing from this one. Where a downstream document appears to conflict with this charter, this charter prevails.
 
 This document states **what** AI ahaMatic is and must remain. It does not describe how the platform is built, structured, or operated.
 
@@ -8,7 +8,7 @@ This document states **what** AI ahaMatic is and must remain. It does not descri
 
 ## 1. Vision
 
-AI ahaMatic is a **generic, multi-purpose software builder platform**. Its purpose is to let people build, configure, publish, and operate software of _any_ kind, without the platform itself being tied to the subject matter of what is built.
+AI ahaMatic is a **generic, multi-purpose Enterprise Low-Code Application Platform (LCAP)**. Its purpose is to let professional builders build, configure, publish, and operate software of _any_ kind, without the platform itself being tied to the subject matter of what is built.
 
 The platform provides the durable primitives common to all software — modeling data, defining behavior, controlling access, publishing, and operating — and leaves the choice of _what_ to build entirely to those who build on it. AI ahaMatic supplies the builder; the domain is always supplied by the builder, never by the platform.
 
@@ -16,7 +16,20 @@ The vision is a platform on which an unbounded variety of applications can be cr
 
 ---
 
-## 2. The Generic Builder Constraint
+## 2. Platform Identity and Market Category
+
+AI ahaMatic's identity, the market it belongs to, and the audience it is built for are foundational framing. They fix the category the platform is measured against before any other decision is made, and they reinforce — never relax — the Generic Builder Constraint that follows.
+
+-  **LCAP identity.** AI ahaMatic is formally an **Enterprise Low-Code Application Platform (LCAP)**. Its product is the capability to build and operate applications through high-productivity, low-code means — not a hand-built application dedicated to a single purpose. Being an LCAP is the generic-builder mandate stated in market terms: an LCAP's worth is the breadth of applications it enables, so the categorization pulls toward domain-neutrality rather than toward any single vertical. Every downstream decision must remain consistent with AI ahaMatic being an application platform, never an application, and the LCAP framing must never be read as license to narrow the platform toward one domain.
+-  **LCNC market positioning.** AI ahaMatic is positioned within the **Gartner-defined Low-Code/No-Code (LCNC) market** and commits explicitly to its **low-code** tier. At charter level the market spans two tiers, distinguished by who assembles software and how:
+    -  **Low-code** — applications assembled through high-productivity, model-driven means while retaining the ability to extend with code; its audience is builders with software expertise.
+    -  **No-code** — applications assembled entirely through configuration, without code; its audience is non-specialist users.
+-  **Scope of positioning at charter level.** This categorization is the reference point that fixes which market expectations, capability baselines, and standards apply to the platform. Detailed positioning against the market — vendor comparison and standards mapping — is not a charter concern; it is carried by `competitive-landscape.md` and `industry-standards-and-benchmarks.md`.
+-  **Professional-builder audience.** AI ahaMatic is built for **professional builders** — those who build software as a professional discipline. The platform's identity is framed around that audience: its primitives, capabilities, and productivity are designed to serve the professional builder's work of constructing, publishing, and operating software.
+
+---
+
+## 3. The Generic Builder Constraint
 
 This is the single constraint from which all others descend. It must never be relaxed, narrowed, or quietly abandoned.
 
@@ -28,7 +41,7 @@ This is the single constraint from which all others descend. It must never be re
 
 ---
 
-## 3. Authorized Project Scope
+## 4. Authorized Project Scope
 
 AI ahaMatic is authorized to provide the generic capabilities required for the full lifecycle of building and operating software. At the foundational level, authorized scope covers:
 
@@ -46,20 +59,21 @@ All authorized scope is **platform-level**. The platform is authorized to provid
 
 ---
 
-## 4. Explicit Non-Goals
+## 5. Explicit Non-Goals
 
 The following are outside the platform's mandate. Pursuing any of them is a departure from this charter.
 
 -  **Building a single-domain product.** AI ahaMatic is not, and must never become, an application dedicated to one industry, function, or use case.
 -  **Embedding domain logic in the core.** Subject-matter rules, terminology, or workflows belonging to a specific kind of software must remain something a builder defines — never something the platform presumes.
 -  **Privileging one vertical.** The platform must not be optimized, tuned, or marketed in a way that makes it suited to one domain at the cost of remaining a general builder.
+-  **Opening building to clients or non-specialist users.** AI ahaMatic deliberately does not let clients, or any non-specialist user, build software on the platform. The **citizen-developer** and **business-technologist** build models — in which those who consume software also assemble it themselves — are outside the platform's model by design. Clients consume the software professional builders produce; they do not build on the platform. This is a strategic choice and the deliberate complement to the platform's professional-builder audience — never a functional gap. It must never be treated as a missing capability or as something to add.
 -  **Owning builder-defined content.** The data, entities, and applications that builders create are theirs; the platform's mandate stops at the primitives that make them possible.
 -  **Defining "how" at the strategy level.** Implementation choices, technologies, and architectural decisions are not vision-level concerns and are deliberately excluded from this document and from the strategy phase.
 -  **Reusing the prior platform.** AI ahaMatic is a clean effort. Existing structure, logic, or content from the aging platform is context only and is never carried forward into the new platform.
 
 ---
 
-## 5. Definition of Done for the Platform
+## 6. Definition of Done for the Platform
 
 The platform itself — as distinct from any application built on it — is considered complete when all of the following hold. These are the conditions every downstream effort ultimately serves.
 

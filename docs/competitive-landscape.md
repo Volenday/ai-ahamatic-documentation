@@ -1,0 +1,179 @@
+# Competitive Landscape — AI ahaMatic
+
+This document maps the capabilities of the top Low-Code/No-Code (LCNC) vendors against AI ahaMatic's capability model to establish where the platform **aligns** with market expectations, where it has **gaps**, and where it **differentiates**. It is a Strategy-phase artifact and answers **what** the platform's competitive position is, not how any capability is designed or implemented.
+
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `vision-and-charter.md`, and the differentiator framing established in `value-proposition-and-success-metrics.md` (cited, not restated). Vendor findings are synthesized from the authorized competitive research; vendor and company names are used as needed, and no person's name appears anywhere.
+
+This is a **capability-model comparison, not a runtime feature comparison.** AI ahaMatic is not yet built. The comparison is drawn at the level of the capability model and strategic positioning — what the platform commits to provide as a domain-neutral primitive — never at the level of shipped-feature parity against products already in market.
+
+---
+
+## 1. Purpose and Reading Order
+
+The document answers four questions:
+
+- **What the market covers** — the capability baseline the leading LCNC vendors establish across core LCAP modules.
+- **Where the platform falls short** — capabilities the market treats as standard, or as an established emerging frontier, that the current model does not yet provide.
+- **Where the platform differentiates** — the positions the capability model establishes beyond the market baseline.
+- **How each capability maps** — a structured inventory of C-01–C-22 against market expectation, marked as alignment, gap, or differentiation.
+
+It is structured as a pyramid: first the market coverage that establishes the baseline, then the gaps measured against that baseline, then the differentiators that define a distinctive position, and finally the per-capability alignment and shortfall inventory.
+
+---
+
+## 2. The Comparison Basis
+
+### 2.1 Market and Category
+
+AI ahaMatic is positioned within the Gartner-defined LCNC market and commits to its **low-code** tier as an Enterprise Low-Code Application Platform (LCAP) serving professional builders (`vision-and-charter.md` §2). The category fixes which market expectations apply: the platform is measured against what an Enterprise LCAP is expected to enable, and its worth is the breadth of software it lets professional builders build and operate — never suitability to a single vertical.
+
+### 2.2 The Vendors Compared
+
+Five vendors define the enterprise LCAP baseline, each a long-standing Leader in the Gartner Magic Quadrant for Enterprise Low-Code Application Platforms:
+
+| Vendor | Recognized Emphasis |
+|---|---|
+| Mendix | Business-to-IT co-development on a unified model; multi-cloud deployment flexibility. |
+| OutSystems | Compiled, high-performance full-stack output for professional engineering teams. |
+| Salesforce Platform | Applications built around a customer system of record; the largest enterprise app marketplace. |
+| Microsoft Power Platform | Deep integration with a productivity and cloud ecosystem; broad connector reach. |
+| Appian | Enterprise process orchestration and a cross-system data fabric. |
+
+Each vendor carries a recognized center of gravity — a domain or ecosystem it is strongest in. That emphasis is relevant to the platform's own positioning, which is defined instead by domain neutrality (§5.1).
+
+### 2.3 What Is and Is Not a Gap
+
+Three positions that could be mistaken for gaps are deliberate and are treated as positioning, not shortfall:
+
+- **Professional-builder focus and the citizen-developer exclusion.** Where vendors target citizen developers or business technologists in addition to professional builders, AI ahaMatic serves professional builders only, by charter design (`vision-and-charter.md` §5). This is a positioning difference, not a missing capability, and is never recorded as a gap.
+- **Domain neutrality.** The platform's refusal to specialize toward any vertical is a constraint it upholds, not a feature it lacks.
+- **Capabilities the market once led on that the model now covers.** Workflow and process automation (C-18), AI-assisted builder tooling (C-19), mobile application capabilities (C-20), and builder-facing version control (C-21) are now part of the model; earlier competitive research recorded some of them as gaps against an older capability set, and that reading no longer holds.
+
+A gap is therefore scoped to a genuine capability shortfall against the market baseline or an established emerging frontier — never a deliberate exclusion.
+
+---
+
+## 3. Vendor Capability Coverage
+
+Across the core LCAP modules, the five vendors are broadly at parity: each covers the full set, differing in emphasis and maturity rather than presence. This uniformity is what establishes the modules below as the **market baseline** an Enterprise LCAP is expected to meet.
+
+| Core LCAP Module | Mendix | OutSystems | Salesforce | Power Platform | Appian |
+|---|---|---|---|---|---|
+| App / UI building | Atlas UI + dual Studio | ODC Studio | Lightning App Builder | Power Apps Studio | Interface Designer (SAIL) |
+| Data and entity modeling | Domain Model / ORM | Visual entity maps | Object Manager | Dataverse | Data Fabric |
+| Identity, authentication, access control | SAML / OIDC / MFA / RBAC | Identity Broker (OIDC) | Permission sets + access summary | Entra ID | SAML / OAuth / OIDC, row-level |
+| Workflow and process automation | Workflow Engine (BPMN) | Workflow Editor + state machines | Flow + Orchestrator | Power Automate | Process Modeler (BPMN) |
+| Integration and extensibility | Data Hub + Java/JS SDK | REST + C# modules | MuleSoft + Apex / LWC | 1,000+ connectors + API management | HTTP / OpenAPI + MCP support |
+| Multi-tenancy | Built-in isolation | DB segregation | Metadata-driven | Multi-environment isolation | Single- or multi-tenant hosting |
+| Multi-region operation | Multi-cloud + on-premises | Global cluster distribution | Hyperforce | Geography-specific routing | Multi-region replication + failover |
+| Publishing and distribution | Mendix Cloud | TrueChange pipeline | Experience Cloud | Teams embedding | Portal embedding |
+| Mobile application delivery | Native (React Native) | Capacitor / Cordova | Salesforce Mobile | Mobile packaging | Appian Mobile container |
+| AI-assisted development | MxAssist suite | Mentor AI | Einstein + Agentforce | Copilot Studio | Composer + Agent Studio |
+| DevOps, CI/CD, environment management | Git + Deploy Wizard | Ring promotion | DevOps Center | Solution Checker + GitHub | Visual deployment packages |
+| Governance, security, compliance | Control Center + SCA | Traces + static scanning | Access forensics + monitoring | Admin Center + connector policies | FedRAMP / HIPAA / GDPR |
+| Marketplace and ecosystem | Mendix Marketplace | OutSystems Forge | AppExchange | AppSource | Appian AppMarket |
+
+Beyond the settled baseline, three **emerging frontiers** show uneven coverage — capabilities not yet universal, where individual vendors lead and others have not followed:
+
+| Emerging Frontier | Coverage Across the Market |
+|---|---|
+| Cross-system virtual data layer (data fabric) | Appian leads with a zero-copy, read-write layer over external systems; Power Platform is partial via virtual connectors; the others do not offer it. |
+| Runtime autonomous-agent orchestration in built apps | Salesforce (Agentforce), Power Platform, and Appian embed builder-configurable autonomous agents into built software; Mendix and OutSystems keep AI at the build-time assistant layer. |
+| Robotic / desktop process automation (RPA) | Power Platform and Appian lead; the others do not treat it as a core module. |
+
+These frontiers, not the settled baseline, are where the platform's gaps concentrate (§4).
+
+---
+
+## 4. Gaps
+
+A gap is a capability the market treats as standard, or as an established emerging frontier, that AI ahaMatic's current model does not yet provide. The gaps below are ordered from the most concrete capability shortfall to the broadest maturity shortfall. None concerns a deliberate exclusion (§2.3).
+
+### 4.1 Cross-System Virtual Data Layer
+
+The model provides data and entity modeling within the platform (C-05) but not a **virtual data layer that unifies external systems** without copying or moving their data. Appian establishes this as a market frontier and Microsoft points toward it; the platform's model has no equivalent primitive. This is a genuine capability-model gap, distinct from entity modeling.
+
+### 4.2 Builder-Facing Runtime Agent Orchestration
+
+AI-assisted builder tooling (C-19) provides AI assistance **at build time** — every output a suggestion requiring human-builder confirmation. It does not provide a primitive for **autonomous agents embedded in built applications at runtime**, which Salesforce, Microsoft, and Appian now offer as a builder-configurable capability. This frontier is distinct both from C-19 and from the platform's own agent-operated lifecycle (§5.2): it concerns agents the builder ships inside their software, not the agent that operates the platform. The current model does not expose it.
+
+### 4.3 Robotic / Desktop Process Automation
+
+Workflow and process automation (C-18) covers process modeling, human task routing, automated rule execution, and process lifecycle management. It does not cover **robotic or desktop automation** of external and legacy user interfaces, which Microsoft and Appian lead on. This is a bounded, partial gap: process automation is present; desktop-level RPA is not.
+
+### 4.4 Ecosystem and Connector Maturity
+
+The model provides the **means** to extend and distribute — modules (C-11), a programmatic contract (C-12), and a marketplace (C-13). It does not, and at the strategy level cannot, provide the **populated breadth** the incumbents ship: large pre-built connector catalogs and marketplace inventories accumulated over years. This is a maturity shortfall inherent to a platform not yet built, not a defect in the capability model, and is recorded here so it is not mistaken for coverage the model already delivers.
+
+---
+
+## 5. Differentiators
+
+A differentiator is a position the capability model — or the platform's framing of it — establishes beyond the market baseline. Each is derived from the capability model, the charter, or the reconciled research, and each is consistent with the value the platform exists to deliver: the breadth of software it enables and the productivity of the professional builders it serves (`value-proposition-and-success-metrics.md`). They are ordered from the platform's foundational identity outward.
+
+### 5.1 Generic-Builder Purity
+
+Every compared vendor carries a recognized center of gravity — a customer system of record, a process-orchestration engine, a surrounding productivity ecosystem. AI ahaMatic's charter forbids any such gravity: the platform must never collapse into a single vertical (`vision-and-charter.md` §3). Against a market of platforms with domain or ecosystem bias, a builder that is domain-neutral by mandate is a distinctive position for buyers who need generality preserved as a guarantee, not a default that erodes over time.
+
+### 5.2 AI-Driven, Agent-Operated Lifecycle
+
+The market's AI-assisted development augments a human developer at the keyboard. AI ahaMatic inverts the relationship: the platform is designed to be **built and operated across its full lifecycle by an AI agent**, under an explicit set of governing constraints. C-19 extends this posture to builders as build-time assistance in which AI output is always a suggestion distinct from a builder-approved artifact, committed only on human confirmation. No compared vendor is architected as an agent-operated platform; this is a category-level differentiation, not a feature advantage.
+
+### 5.3 Professional-Builder Focus
+
+The market trends toward serving citizen developers and professional developers together. AI ahaMatic deliberately serves professional builders only and excludes the citizen-developer and business-technologist models by design (`vision-and-charter.md` §5). This is a narrower audience by choice, and the narrowing is the differentiation: the platform's primitives and productivity are aligned to professional building without dilution toward non-specialist assembly.
+
+### 5.4 Governance and Security as Strategic Posture
+
+The compared vendors treat governance, security, and compliance largely as administrative configuration layered onto the product. AI ahaMatic treats them as first-class, formally specified guarantees that bind every phase of work and gate release (`prd.md` §5, G-1–G-6). Positioning the platform's guarantees — isolation, access enforcement, residency, reversibility, backward compatibility — as strategy-level commitments rather than settings, together with a security certification roadmap toward independent third-party attestation, is a distinctive enterprise-trust posture.
+
+### 5.5 Multi-Language Code Export (Potential Future)
+
+Multi-language code export (C-22) would export a built application's code across multiple programming languages with behavioral-equivalence guarantees. No compared vendor offers this, and it would directly counter the runtime and stack lock-in the incumbents carry as a documented weakness. It is recorded here strictly as a **potential future capability**: its target languages are undetermined, it is not authorized for implementation, and it is not delivered. It concerns programming-language code output only and must never be conflated with human-language UI localization. It is presented as a prospective position, never as a shipped advantage.
+
+---
+
+## 6. Capability Alignment and Shortfall Inventory
+
+This inventory maps every canonical capability (C-01–C-22) against the market expectation, marked as follows:
+
+- **Aligned** — meets a market-standard expectation the compared vendors also cover.
+- **Gap** — a market-standard or established emerging capability the model does not yet provide.
+- **Differentiation** — establishes a position beyond the market baseline.
+- **Potential (future)** — recorded but unauthorized and undelivered (C-22 only).
+
+A capability may carry a differentiation note while remaining aligned on the baseline. The marking reflects the capability model's current state, not shipped-feature parity. Capabilities are listed by primitive family (`platform-capability-model.md` §4).
+
+| Capability | Family | Market Expectation | Position | Note |
+|---|---|---|---|---|
+| C-01 Tenant isolation | Isolation and Trust | Multi-tenant isolation is universal across the market. | Aligned | Foundational parity; release gate (G-1). |
+| C-02 Identity and authentication | Isolation and Trust | Federated identity, SSO, and MFA are standard. | Aligned | Baseline met at the primitive level; release gate (G-2). |
+| C-03 Access control | Isolation and Trust | Role- and attribute-level access control is standard. | Aligned | Governed before any action; release gate (G-2). |
+| C-04 Generic build capability | Construction | Visual, high-productivity app building is universal. | Aligned + Differentiation | Baseline met; domain-neutrality by mandate differentiates (§5.1); release gate (G-3). |
+| C-05 Data and entity modeling | Construction | Declarative entity/schema modeling is standard. | Aligned | Cross-system data-fabric frontier not covered — see §4.1; release gate (G-3). |
+| C-06 Application configuration | Construction | Declarative configuration of structure and behavior is standard. | Aligned | Baseline parity. |
+| C-18 Workflow and process automation | Construction | BPMN-style process automation is a core module for all five vendors. | Aligned | Closes an earlier gap; desktop RPA remains out of scope — see §4.3. |
+| C-19 AI-assisted builder tooling | Construction | Embedded AI development assistants are now universal. | Aligned + Differentiation | Baseline met; suggestion-and-confirmation model and agent-operated framing differentiate (§5.2); runtime agent orchestration remains a gap — see §4.2. |
+| C-22 Multi-language code export | Construction | Not offered by any compared vendor. | Potential (future) | Unauthorized and undelivered; prospective differentiator only — see §5.5; never conflated with UI localization. |
+| C-07 Application operation | Operation | Reliable runtime operation of built software is standard. | Aligned | Baseline parity. |
+| C-08 Lifecycle continuity | Operation | End-to-end build-to-operate flow is standard. | Aligned | Agent-operated continuity differentiates the flow (§5.2). |
+| C-09 Observability | Operation | Health and behavior observability is standard. | Aligned | Baseline parity. |
+| C-21 Builder-facing version control | Operation | Version control of built applications is standard. | Aligned | Baseline parity; scoped distinct from platform-internal change control. |
+| C-10 Publishing | Reach | Publishing built software to end users is standard. | Aligned | Baseline parity. |
+| C-13 Marketplace | Reach | A marketplace for software and extensions is standard. | Aligned | Means provided; populated inventory is a maturity gap — see §4.4. |
+| C-20 Mobile application capabilities | Reach | Mobile packaging and delivery is standard. | Aligned | Baseline parity; parity with non-mobile output required. |
+| C-11 Module extension | Extension | Extension via modules without weakening the core is standard. | Aligned | Means provided; catalog breadth is a maturity gap — see §4.4. |
+| C-12 Software development kit | Extension | A programmatic contract for builders is standard. | Aligned | Baseline parity at the primitive level. |
+| C-14 Multi-region operation | Distribution | Multi-region operation with residency obligations is standard. | Aligned | Baseline parity; release gate (G-4). |
+| C-15 Safe evolution | Evolution | Backward-compatible change is expected. | Aligned | Formal, gated treatment reinforces §5.4; release gate (G-6). |
+| C-16 Maintenance and self-correction | Evolution | Monitoring, recovery, and rollback are expected. | Aligned | Agent self-correction reinforces §5.2; release gate (G-5). |
+| C-17 Controlled change and deprecation | Evolution | Managed deprecation paths are expected. | Aligned | Baseline parity. |
+
+### 6.1 Shortfall Summary
+
+The inventory concentrates the platform's shortfalls in a small, well-defined set, none of which touches the settled market baseline:
+
+- **Capability-model gaps** — cross-system virtual data layer (§4.1), builder-facing runtime agent orchestration (§4.2), and robotic/desktop process automation (§4.3).
+- **Maturity gap** — ecosystem and connector breadth (§4.4), inherent to a platform not yet built.
+
+Every gap sits at an emerging frontier or at ecosystem maturity; the model aligns with the market on all core LCAP modules and establishes distinct positions on generic-builder purity, an agent-operated lifecycle, professional-builder focus, and governance posture.

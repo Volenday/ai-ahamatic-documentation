@@ -45,7 +45,7 @@ The platform must be **designed for both layers**: it provides the means for bui
 
 ## 3. Builder Personas
 
-Builder personas are the actors who build with the platform. They are functional archetypes, not an organizational chart: a single individual may hold several, and every tenant will not use every one. Each is domain-neutral and defined by the primitive family it primarily draws on.
+Builder personas are the actors who build with the platform, and they are **professional builders only** — those who build software as a professional discipline. They are functional archetypes, not an organizational chart: a single individual may hold several, and every tenant will not use every one. Each is domain-neutral and defined by the primitive family it primarily draws on.
 
 | Builder Persona | What It Does | Primary Capabilities |
 |---|---|---|
@@ -57,6 +57,8 @@ Builder personas are the actors who build with the platform. They are functional
 | Extender | Extends the platform through modules and its programmatic contract, without weakening core guarantees or introducing domain content into the core. | Extension family (C-11, C-12) |
 
 The extender is a builder persona whose product extends the platform rather than being an ordinary application; like every builder persona, it operates strictly within its granted scope and never above the primitive / artifact line.
+
+The **citizen-developer** and **business-technologist** build models — in which clients or non-specialist users assemble their own software on the platform — are deliberately excluded as builder personas. This is a strategic non-goal, not a missing role: clients consume the software professional builders produce, and are represented in the end-user layer (§4), rather than building on the platform themselves. The exclusion is the deliberate complement to the professional-builder-only framing and must never be treated as a builder persona to add.
 
 ---
 
@@ -138,6 +140,7 @@ Residency follows the actor: where a persona and its data reside determines the 
 These rules hold for every persona and role in this document and are subordinate to the charter.
 
 - **The builder / built separation is preserved.** A persona is either building with primitives or using an artifact; the two layers never merge, and no end-user action reaches a primitive.
+- **Builders are professional builders only.** Every builder persona is a professional-builder role; the citizen-developer and business-technologist build models are deliberately excluded as builder personas — a strategic non-goal, not a missing role. Those who consume built software are represented in the end-user layer, never as builders.
 - **End-user roles are always builder-defined.** The platform provides the means to recognize and govern end users; it never defines the content of an end-user role.
 - **Authority is granted, never assumed.** Every persona holds only explicitly granted authority, defaults to least privilege, and is denied any action it is not permitted to perform.
 - **No persona crosses a tenant boundary.** Isolation is absolute for every builder and end-user persona; cross-tenant access is forbidden.
