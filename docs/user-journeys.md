@@ -52,14 +52,22 @@ Build-time journeys are the experiences of the builder personas. They follow the
 | Tenant establishment | Tenant owner | Being admitted to the platform, receiving an isolated tenant boundary, and holding top authority within it before anything is built. | C-01 |
 | Access definition | Access administrator | Defining the builder-side roles, permissions, and access policy for the tenant and its software, and delegating authority downward without exceeding what the tenant holds. | C-02, C-03 |
 | Application construction | Application builder | Constructing an application bound to no predetermined domain, modeling its data, entities, and schemas, and configuring its structure, behavior, and access rules. | C-04, C-05, C-06 |
+| Workflow and process modeling | Application builder | Modeling the processes that run across built software — the shape of a process, the routing of its human tasks, the automated rules it executes, and its lifecycle — bound to no predetermined domain, so the modeled process presumes no domain of its own. | C-18 |
+| AI-assisted building | Application builder | Constructing, modeling, and configuring with AI-native assistance that suggests logic, tests, layout, and validation, where every AI-suggested artifact is reviewed and approved by the professional builder before it is committed, and no AI-generated output enters a built application autonomously. | C-19 |
 | Operation and observation | Operator | Running the built software, carrying it through its lifecycle as one continuous governed flow, and observing its real-world health and behavior. | C-07, C-08, C-09 |
+| Version control of built applications | Application builder, operator | Versioning the applications they build, comparing versions, reverting to an earlier version, and managing releases over an application's life — over the builder's own applications only, never the platform's internal version control, and along a revert path that never corrupts live data. | C-21 |
 | Publishing and distribution | Publisher | Publishing built software so its intended end users can reach it, and offering or obtaining software and extensions where a marketplace is used. | C-10, C-13 |
+| Mobile publishing and delivery | Publisher | Producing a mobile artifact of a built application and delivering it to a mobile target so its end users can reach it there, holding every guarantee that holds for non-mobile output, with web and mobile forms kept at parity except where divergence is expressly permitted. | C-20 |
 | Platform extension | Extender | Extending the platform through modules and its programmatic contract, strictly within a granted scope and without introducing domain content into the core. | C-11, C-12 |
 | Safe evolution | Operator, application builder | Changing, maintaining, and deprecating built software over time on a managed path that preserves every guarantee already made. | C-15, C-16, C-17 |
 
 ### 3.1 The Continuous Build-Time Flow
 
-Lifecycle continuity (C-08) means these journeys are not isolated steps but one governed flow. A builder moves from establishing a tenant, to defining access, to constructing and configuring an application, to operating and observing it, to publishing it, and — over time — to evolving it, without leaving the platform's governed path. Each transition assumes the prerequisites of the journey it enters; a journey may not be entered before the capabilities it depends on hold.
+Lifecycle continuity (C-08) means these journeys are not isolated steps but one governed flow. A builder moves from establishing a tenant, to defining access, to constructing and configuring an application — modeling the processes that run across it and drawing on AI-assisted tooling as it builds — to operating and observing it and managing the versions of what it has built, to publishing it to its intended end users on web and mobile targets alike, and — over time — to evolving it, without leaving the platform's governed path. Each transition assumes the prerequisites of the journey it enters; a journey may not be entered before the capabilities it depends on hold.
+
+### 3.2 A Note on Not-Yet-Authorized Capabilities
+
+Multi-language code export (C-22) has no active build-time journey. It is a potential future capability that is not authorized for implementation; no journey is authored for it until it is explicitly authorized in a later revision of the PRD. It concerns programming-language code output only and must never be conflated with human-language UI localization.
 
 ---
 
@@ -79,6 +87,14 @@ Run-time journeys are the experiences of the end-user personas. They occur entir
 - No run-time journey reaches a platform primitive. An end-user administrator's authority ends at the built application and never reaches the tenant or the platform.
 - The permissions, roles, and content an end user encounters are defined by the builder; the platform guarantees only that they are recognized and enforced, not what they are.
 
+### 4.2 The Mobile Reach Dimension
+
+A run-time journey is reached on whatever target its builder published the application to. Where a built application is delivered to a mobile target (C-20), the same run-time journeys are traveled there as on any other target.
+
+- The run-time journey an end user travels on a mobile target is the same journey, holding the same guarantees, as on the application's non-mobile form; a guarantee that holds for one form holds equally for the other.
+- Web and mobile forms are kept at parity; only expressly permitted divergence between them is allowed, and no permitted divergence weakens any guarantee.
+- The mobile target adds a form through which a run-time journey is reached; it adds no new run-time journey and no new run-time persona.
+
 ---
 
 ## 5. Critical-Path Journeys That Must Never Regress
@@ -89,10 +105,12 @@ A critical-path journey is one whose failure would break a guarantee the platfor
 |---|---|---|
 | Isolation preserved | G-1 (C-01) | Across every journey, no actor can observe, affect, or detect the existence of any tenant other than its own. |
 | Identity and access enforced first | G-2 (C-02, C-03) | Across every entry point and every journey, an actor is identified and every action is governed before it proceeds; an unauthorized action never completes and cannot be inferred. |
-| Build and model without domain binding | G-3 (C-04, C-05) | The application-construction journey lets a builder build software and model data for any subject matter, with no domain presumed by the platform. |
+| Build and model without domain binding | G-3 (C-04, C-05) | The application-construction journey lets a builder build software and model data for any subject matter, with no domain presumed by the platform — including the processes a builder models (C-18) and the artifacts AI-assisted tooling suggests (C-19), which presume no domain of their own. |
 | Regional obligations honored | G-4 (C-14) | Any journey performed in a region honors that region's residency and jurisdictional obligations; an action that would violate them does not proceed. |
-| Reversible operation and recovery | G-5 (C-16) | The operation and evolution journeys always retain a reversible, recoverable path; no journey advances the platform to a state it cannot safely leave. |
+| Reversible operation and recovery | G-5 (C-16) | The operation, version-control, and evolution journeys always retain a reversible, recoverable path; reverting a built-application version (C-21) never corrupts live data, and no journey advances the platform to a state it cannot safely leave. |
 | Backward-compatible evolution | G-6 (C-15) | The safe-evolution journey never breaks a guarantee already made to an existing builder or built application; a change that would do so does not proceed unmanaged. |
+
+Every critical path holds identically across a built application's forms: a guarantee that holds for its non-mobile form holds equally for its mobile form (C-20), and a change that would regress a critical path on either form does not proceed.
 
 Regression of any critical path halts the change and escalates rather than proceeding; the enumeration and enforcement of these blocking conditions is owned by the Guardrails-phase documents, which this section feeds.
 
@@ -129,6 +147,7 @@ Every journey must account for the states in which the happy path does not hold.
 - **A newly established tenant** holds authority but no built software; the tenant-establishment journey ends in a valid empty state from which construction can begin.
 - **A newly constructed application** exists before any data is modeled or any end user is admitted; the application-construction and run-time journeys must remain coherent when nothing has yet been created.
 - **An unpublished or unpopulated offering** — a marketplace with nothing offered, or an application not yet published — is a valid empty state, not a failure.
+- **A built application with nothing yet modeled, versioned, or delivered to mobile** — no process yet modeled across it (C-18), no version yet captured (C-21), or no mobile artifact yet delivered to a mobile target (C-20) — is a valid empty state, not a failure.
 
 ### 7.2 Error States
 
@@ -136,13 +155,16 @@ Every journey must account for the states in which the happy path does not hold.
 - **Isolation refusal.** An attempt to cross a tenant boundary is refused as a forbidden operation (G-1).
 - **Residency refusal.** An action that would violate a region's obligations does not proceed (G-4).
 - **Blocked change.** A change that would break a guarantee already made is not adopted (G-6).
+- **Unapproved AI suggestion.** An AI-suggested artifact the professional builder has not approved is never committed; it is held in a distinct, uncommitted state until the builder approves or rejects it, and no AI-generated output enters a built application autonomously (C-19).
+- **Unsafe revert.** A revert of a built-application version that would corrupt live data does not proceed (C-21).
 
 Every error state is a governed outcome: the journey stops in a defined, refused state rather than proceeding into a state that would violate a guarantee.
 
 ### 7.3 Failure and Recovery States
 
 - **Contained fault.** When a build-time or run-time journey encounters a fault in the platform or built software, the fault is contained and recovered from without worsening the situation (C-16).
-- **Reversed change.** When an evolution or operation journey advances a change that must be undone, it is reversed along a reversible, recoverable path, leaving prior guarantees intact (C-15, C-16, gate G-5).
+- **Reversed change.** When an evolution, operation, or version-control journey advances a change that must be undone, it is reversed along a reversible, recoverable path — including a builder reverting one of its own application versions — leaving prior guarantees and live data intact (C-15, C-16, C-21, gate G-5).
+- **Contained mobile fault.** A fault in producing, delivering, or reaching a built application on a mobile target is contained and recovered from exactly as for its non-mobile form, with no guarantee weakened (C-20).
 - **Escalation.** Where a journey cannot proceed safely and cannot recover autonomously, it halts and escalates rather than continuing; the triggers and handling of escalation are owned by the Guardrails and Meta-Operations documents this section feeds.
 
 ---
@@ -153,6 +175,8 @@ These rules hold for every journey in this document and are subordinate to the c
 
 - **The build / run line is preserved.** Every journey is either a builder acting on primitives or an end user acting on an artifact; the two layers never merge, and no run-time journey reaches a primitive.
 - **End-user journeys are builder-shaped.** The platform provides the means to recognize and govern end users; the content of every run-time journey is defined by the builder, never by the platform.
+- **AI assistance never commits autonomously.** Where AI-assisted tooling participates in a journey, every AI-suggested artifact is reviewed and approved by the professional builder before it is committed; no AI-generated output enters a built application without that approval.
+- **Guarantees hold equally on every target.** A run-time journey delivered to a mobile target holds every guarantee it holds on any other target; web and mobile forms are kept at parity, and no permitted divergence between them weakens any guarantee.
 - **Critical paths never regress.** A change that would regress any gate-bound journey (G-1–G-6) does not proceed; it halts and escalates.
 - **No journey crosses a tenant boundary.** Isolation is absolute for every builder and end-user journey; the cross-tenant variant is always refusal.
 - **Obligations precede completion.** A journey does not proceed where it would violate the residency or jurisdictional obligations of the region it is performed in.
