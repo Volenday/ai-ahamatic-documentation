@@ -2,7 +2,7 @@
 
 This document distinguishes the actors who **build with** the platform from the actors who **use the software built on it**, and establishes the role hierarchy, per-role permission expectations, and tenancy implications that every actor is subject to. It is a Strategy-phase artifact and answers **what** the personas and roles are, not how identity, permissions, or tenancy are implemented.
 
-This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-17) and release gates (G-1–G-6) defined in `prd.md`, and the primitive families defined in `platform-capability-model.md`, rather than re-enumerating them. Every persona named here is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) defined in `prd.md`, and the primitive families defined in `platform-capability-model.md`, rather than re-enumerating them. Every persona named here is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
 
 ---
 
@@ -26,7 +26,7 @@ The single organizing distinction in this document mirrors the primitive / artif
 - **Builder personas** use platform-provided primitives to create and operate software. They act on the platform.
 - **End-user personas** use the software a builder created. They act on a built artifact, never on the platform's primitives.
 
-A third plane sits above both: the **platform steward** — the actor that owns and operates the primitives themselves (C-01–C-17). The steward governs the boundary within which all builders and end users operate. Its internal role taxonomy is governed by `access-control-and-tenancy-model.md` and the Meta-Operations documents; this document acknowledges it only as the apex of the hierarchy and does not elaborate its roles.
+A third plane sits above both: the **platform steward** — the actor that owns and operates the primitives themselves (C-01–C-22). The steward governs the boundary within which all builders and end users operate. Its internal role taxonomy is governed by `access-control-and-tenancy-model.md` and the Meta-Operations documents; this document acknowledges it only as the apex of the hierarchy and does not elaborate its roles.
 
 ### 2.1 The Two Layers Contrasted
 

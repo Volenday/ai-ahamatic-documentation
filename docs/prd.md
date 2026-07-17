@@ -103,7 +103,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 
 ### Future Capabilities (Not Yet Authorized)
 
-The following capability is recorded for completeness. It is not part of any current build tier and holds no build-order position among C-01–C-17. It is a potential future capability and must not be implemented, expanded, or relied upon until it is explicitly authorized in a later revision of this document.
+The following capability is recorded for completeness. It is not part of any current build tier and holds no build-order position among C-01–C-21. It is a potential future capability and must not be implemented, expanded, or relied upon until it is explicitly authorized in a later revision of this document.
 
 | ID | Capability | What It Provides | Depends On |
 |---|---|---|---|
