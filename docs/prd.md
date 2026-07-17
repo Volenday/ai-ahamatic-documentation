@@ -37,6 +37,7 @@ All scope is bounded by the charter's authorized scope. The following boundaries
 - Any **single-domain product**, or any capability that makes the platform usable for only one kind of software.
 - Any **domain logic, terminology, or workflow** embedded in the platform core; such content is always builder-defined.
 - Any **optimization or tuning that privileges one vertical** at the expense of generality.
+- **Opening building to clients or non-specialist users** — AI ahaMatic deliberately does not enable clients, or any non-specialist user, to build software on the platform; the **citizen-developer** and **business-technologist** build models are out of scope. This is a deliberate strategic choice and the complement to the platform's professional-builder audience, never a functional gap or a capability to add. Clients remain in scope as consumers of the software professional builders produce.
 - **Ownership of builder-defined content** — the data, entities, and applications builders create are theirs; the platform's mandate stops at the primitives that make them possible.
 - Any **"how"-level decision** — implementation choices, technologies, and architectural decisions are excluded from this document.
 - **Reuse of the prior platform** — existing structure, logic, or content from the aging platform is context only and is never carried forward.
@@ -81,6 +82,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-18 | Workflow and process automation | The means to model, execute, and govern processes across built software — process modeling, human task routing, automated rule execution, and process lifecycle management — bound to no predetermined domain. | C-04, C-05, C-06 |
 | C-19 | AI-assisted builder tooling | The means to provide professional builders with AI-native development assistance across generic construction, modeling, and configuration — including logic generation, automated testing support, layout assistance, and validation — bound to no predetermined domain. Every AI output is a suggestion: AI-suggested artifacts are distinct from builder-approved artifacts, and no AI-generated output is committed without mandatory human-builder confirmation. The tooling operates strictly within the professional-builder model and inherits the platform's Meta-Operations safety guardrails (`agent-operating-charter.md`, `human-in-the-loop-protocol.md`). | C-04, C-05, C-06 |
 | C-21 | Builder-facing version control | The means for professional builders to version, compare, revert, and manage the releases of the applications they build, bound to no predetermined domain — defining the versioning model for built applications; the builder-facing history, comparison, and revert semantics over those versions; the immutability and provenance of every versioned artifact; the safe-revert constraints that guarantee reverting a version never corrupts live data; and the explicit boundary that separates this builder-facing version control from the platform's own internal change and version control (governed under `change-management-and-evolution-policy.md`), which remains a distinct, platform-internal concern. | C-04, C-05, C-06, C-08 |
+| C-23 | Builder-facing environment management | The means for professional builders to promote the applications they build across Development, Testing, and Production stages, bound to no predetermined domain — defining the builder-facing lifecycle stages a built application advances through; the promotion and gating rules that govern movement from one stage to the next; the isolation that keeps each builder's environments strictly separate per tenant and per application; the condition that promotion to Production may require explicit human approval; and the explicit boundary that separates this builder-facing environment management from the platform's own internal environment topology (owned under `environment-and-config-spec.md`), which remains a distinct, platform-internal concern. | C-04, C-06, C-08 |
 
 ### Tier 3 — Reach and Extension
 
@@ -103,7 +105,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 
 ### Future Capabilities (Not Yet Authorized)
 
-The following capability is recorded for completeness. It is not part of any current build tier and holds no build-order position among C-01–C-21. It is a potential future capability and must not be implemented, expanded, or relied upon until it is explicitly authorized in a later revision of this document.
+The following capability is recorded for completeness. It is not part of any current build tier and holds no build-order position among the active capabilities C-01–C-21 and C-23. It is a potential future capability and must not be implemented, expanded, or relied upon until it is explicitly authorized in a later revision of this document.
 
 | ID | Capability | What It Provides | Depends On |
 |---|---|---|---|

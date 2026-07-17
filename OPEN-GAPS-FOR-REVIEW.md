@@ -8,36 +8,36 @@ _Prepared for review · 2026-07-17_
 
 The T37–T47 roadmap is complete and the library is internally consistent. The current strategic direction is fully in place: **LCAP identity, professional-builder audience, citizen-developer exclusion, and capabilities C-18–C-22.**
 
-**Eight items remain open. None are blocking. All await your decision.**
+**Eight items were identified; none are blocking.** Two are already in execution — they carry out decisions you have already made and need no further input. **Six await your decision.**
 
-Only **two** contradict decisions already made — the context document map commits to them, but the content documents don't yet deliver them. These are the priority:
+**G-1 and G-2** simply execute decisions already made (the map commits to them; the content documents hadn't caught up). They are now **ticketed for execution**:
 
-| # | Gap | Why it's priority |
+| # | Gap | Status |
 |---|---|---|
-| **G-1** | Builder-facing environment management has **no capability** in `prd.md` / `platform-capability-model.md` | It was Strategic **Decision 2**; the map promises it |
-| **G-2** | `prd.md` does **not** record the citizen-developer model as out-of-scope | The map requires it; only the charter + personas got it |
+| **G-1** | Builder-facing environment management has **no capability** in `prd.md` / `platform-capability-model.md` — executes **Decision 2** | 🔄 Ticketed as **T50** |
+| **G-2** | `prd.md` does **not** record the citizen-developer model as out-of-scope — executes **Decision 1** | 🔄 Ticketed as **T51** |
 
 The remaining six are genuine **choices** about how far to extend the library — not broken promises: security coverage for AI tooling, possible new contract surfaces, four market "frontier gap" candidates, a remediation backlog from the standards doc, and two governance/process improvements.
 
 **Already resolved (no action needed):** C-22 framing corrected (code export, not localization); library-wide capability-count drift fixed; glossary and user-journeys propagated with the new capabilities and terms; the three-way "agent" terminology disambiguated in the glossary.
 
-**If you have 30 seconds:** decide **G-1** and **G-2**. Defer or decline the rest at your discretion.
+**If you have 30 seconds:** G-1 and G-2 are already handled (tickets T50/T51) — the only open point there is confirming the proposed **C-23** ID for G-1. Your real decisions are **G-3 through G-8**: defer or decline each at your discretion.
 
 ---
 
 ## Detailed gap list
 
-### Tier 1 — Confirmed decisions not yet executed
-*The map promises these; the content documents don't deliver them (both verified against the files).*
+### Tier 1 — Confirmed decisions, now ticketed for execution
+*The map promises these; the content documents don't yet deliver them (both verified against the files). Both execute decisions already made and are now ticketed — **T50** (G-1) and **T51** (G-2) — so they need no further lead input, beyond confirming the proposed C-23 ID in G-1.*
 
 **G-1. Builder-facing environment management has no capability.**
 - **Evidence:** The map's `prd.md` and `platform-capability-model.md` rows both commit to *"builder-facing environment management (Development, Testing, Production) as a confirmed capability."* No such capability exists in either document (backlog runs C-01–C-22; none is this).
 - **Origin:** Strategic **Decision 2**; the lean roadmap never ticketed it.
-- **Decision needed:** Assign a capability ID (e.g. C-23) and ticket it — or formally drop it and correct the map.
+- **Status:** 🔄 Ticketed as **T50** — adds it as capability **C-23**. Only open point: confirm the C-23 ID (the executing session will halt if unsure).
 
 **G-2. `prd.md` does not record the citizen-developer model as out-of-scope.**
 - **Evidence:** The map's `prd.md` row requires *"the citizen developer model recorded as out of scope."* `prd.md` §2.2 "Out of Scope" exists but has no citizen-developer entry. T38 only updated the charter and personas.
-- **Decision needed:** Approve a small ticket to add the entry to `prd.md` §2.2 — or accept the map/content divergence.
+- **Status:** 🔄 Ticketed as **T51** — adds the entry to `prd.md` §2.2, executing Decision 1.
 
 ### Tier 2 — Consistency / safety gaps opened by the new capabilities
 
