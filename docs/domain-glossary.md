@@ -2,9 +2,9 @@
 
 This document defines **the canonical vocabulary for platform-level concepts** — the single set of terms every other document, and every output the platform produces, must use consistently. It states **what** each term means and what must never be used in its place; it does not describe how any term is implemented, stored, or enforced.
 
-This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It is the vocabulary expression of the primitive/artifact line defined in `platform-capability-model.md` §2–§3, the seven structural components of `architecture-overview.md` §4, the personas of `personas-and-roles.md`, and the tenancy and scoping model of `access-control-and-tenancy-model.md` — it names these concepts precisely and consistently; it does not redefine what any of them already establish. It cites, rather than re-derives, the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) of `prd.md`, and the invariants (INV-01–INV-09) of `system-invariants.md`. Every term is **platform-level and domain-neutral** — valid for any software built on the platform, in any tenant and any region.
+This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It is the vocabulary expression of the primitive/artifact line defined in `platform-capability-model.md` §2–§3, the platform's market identity and professional-builder audience set out in `vision-and-charter.md` §2, the seven structural components of `architecture-overview.md` §4, the personas of `personas-and-roles.md`, and the tenancy and scoping model of `access-control-and-tenancy-model.md` — it names these concepts precisely and consistently; it does not redefine what any of them already establish. It cites, rather than re-derives, the canonical capabilities (C-01–C-22) and release gates (G-1–G-6) of `prd.md`, and the invariants (INV-01–INV-09) of `system-invariants.md`. Every term is **platform-level and domain-neutral** — valid for any software built on the platform, in any tenant and any region.
 
-This document owns the vocabulary particular every prior Software & Architecture document deferred to it: **canonical term definitions**, **disallowed and ambiguous synonyms**, and **the conceptual distinction between platform-level objects (primitives) and builder-defined objects (artifacts) at the level of individual terms**. It does not own the detailed content behind any term — data-model and referential rules, API-contract mechanics, extension sandboxing mechanics, authentication and session mechanics, and numeric thresholds each remain owned by the document already assigned to them, cited in §8, never redefined here.
+This document owns the vocabulary particular every prior Software & Architecture document deferred to it: **canonical term definitions**, **disallowed and ambiguous synonyms**, and **the conceptual distinction between platform-level objects (primitives) and builder-defined objects (artifacts) at the level of individual terms**. It does not own the detailed content behind any term — data-model and referential rules, API-contract mechanics, extension sandboxing mechanics, authentication and session mechanics, and numeric thresholds each remain owned by the document already assigned to them, cited in §10, never redefined here.
 
 ---
 
@@ -16,7 +16,7 @@ The document answers three questions:
 - **What each canonical term means**, grouped by the kind of concept it names.
 - **What must never be used in a canonical term's place**, and why the substitute is ambiguous or disallowed.
 
-It is structured as a pyramid: first the primitive/artifact line that every other term is positioned against, then structural and layer vocabulary, then actor and authority vocabulary, then tenancy and scoping vocabulary, then builder-defined object vocabulary, then the canonical reference identifiers already fixed elsewhere.
+It is structured as a pyramid: first the primitive/artifact line that every other term is positioned against, then the market and identity vocabulary that fixes what the platform is, then structural and layer vocabulary, then actor and authority vocabulary, then tenancy and scoping vocabulary, then builder-defined object vocabulary, then the capability concept vocabulary that names the specific capabilities behind the primitives, then the canonical reference identifiers already fixed elsewhere.
 
 Every table below carries a **Side of the Line** column, marking each term **Platform-level** (a primitive, or part of how the platform is structured), **Builder-level** (an artifact, owned by whichever builder produces it), or **Dual** (the term names a platform-provided means in one sense and a specific builder-produced instance of it in another — both senses are canonical and the table distinguishes them).
 
@@ -34,14 +34,27 @@ The single distinction every term in this glossary is positioned against is the 
 
 ---
 
-## 3. Structural and Layer Vocabulary
+## 3. Market and Identity Vocabulary
+
+Terms naming the platform's market category and the audience it is built for (`vision-and-charter.md` §2). These fix what the platform is before its internal structure is named; every term is charter-level framing to which the rest of this glossary is subordinate.
+
+| Canonical Term | Definition | Disallowed / Ambiguous Synonyms | Side of the Line | Grounded In |
+|---|---|---|---|---|
+| Enterprise Low-Code Application Platform (LCAP) | The platform's formal identity: a platform whose product is the capability to build and operate applications of any kind through high-productivity, low-code means, its worth measured by the breadth of applications it enables. | "Application," "app" alone — AI ahaMatic is an application *platform*, never an application dedicated to a single purpose. "No-code platform" — the platform commits to the low-code tier, never the no-code one. "Development tool," "app builder tool" — narrow the platform to a single instrument and drop the enterprise, platform-level framing. | Platform-level | `vision-and-charter.md` §2 |
+| Low-Code/No-Code (LCNC) Market | The Gartner-defined market category within which the platform is positioned; it spans two tiers — low-code and no-code — distinguished by who assembles software and how. The platform belongs to this market and commits explicitly to its low-code tier. | Using "LCNC" to describe the platform's own tier — the platform is positioned *within* the LCNC market but is a low-code platform, not an undifferentiated "LCNC" or "no-code" one. "No-code market" — narrows the category to one tier. | Platform-level | `vision-and-charter.md` §2 |
+| Low-Code | The LCNC tier the platform commits to: software assembled through high-productivity, model-driven means while retaining the ability to extend with code; its audience is builders with software expertise. | "No-code" — the opposite tier; never interchange. "Codeless," "zero-code" — imply the no-code tier. "Visual development" — implementation-flavored and narrower than the tier. | Platform-level | `vision-and-charter.md` §2 |
+| No-Code | The other LCNC tier: software assembled entirely through configuration, without code; its audience is non-specialist users. Named here only to fix the contrast — the platform is not a no-code platform and does not commit to this tier. | Applying "no-code" to AI ahaMatic or any of its capabilities — the platform commits to low-code; no-code is recorded solely to mark what the platform is not. Conflating "no-code" with the citizen-developer build model (§5) — one is an assembly tier, the other a deliberately excluded build model and audience. | — (a contrast tier the platform deliberately does not occupy) | `vision-and-charter.md` §2 |
+
+---
+
+## 4. Structural and Layer Vocabulary
 
 Terms naming how the platform core itself is organized (`architecture-overview.md` §3–§6).
 
 | Canonical Term | Definition | Disallowed / Ambiguous Synonyms | Side of the Line | Grounded In |
 |---|---|---|---|---|
 | Primitive Family | The Strategy-phase, functional grouping of related capabilities (C-01–C-22) into one of seven domain-neutral kinds — Isolation and Trust, Construction, Operation, Reach, Extension, Distribution, Evolution. | "Category," "group" — informal, non-canonical. "Component" — reserved for the Design-phase architectural counterpart of a family (next row); the two map one-to-one but are owned by different documents and lifecycle phases. | Platform-level | `platform-capability-model.md` §4 |
-| Structural Component | The architectural counterpart of a primitive family: a single, addressable part of the platform core responsible for the guarantees of one family and no other. | "Module" — reserved exclusively for the extension mechanism or a specific builder-produced extension (§6); never one of the seven core components. "Service" — an implementation-level term not used at this specification level. "Layer" — reserved for the three-layer separation, a different structural device (below). | Platform-level | `architecture-overview.md` §3–§4 |
+| Structural Component | The architectural counterpart of a primitive family: a single, addressable part of the platform core responsible for the guarantees of one family and no other. | "Module" — reserved exclusively for the extension mechanism or a specific builder-produced extension (§7); never one of the seven core components. "Service" — an implementation-level term not used at this specification level. "Layer" — reserved for the three-layer separation, a different structural device (below). | Platform-level | `architecture-overview.md` §3–§4 |
 | Guardrail Layer | The cross-cutting set of invariants, security posture, access and tenancy rules, authentication and identity rules, and residency obligations that constrains how every structural component discharges its capabilities; holds no capability of its own and is not an eighth component. | "Component" — explicitly not one. "Guardrail" alone — avoid; can be confused with the numeric "guardrail metric" of `value-proposition-and-success-metrics.md` §5, a different instrument. "Middleware" — implementation-level. | Platform-level | `architecture-overview.md` §3 |
 | Platform Core | The seven structural components and the guardrail layer together — every platform-provided primitive. | "Backend" — implementation-level. "Platform" alone — too broad once the distinction from builder tooling or generated artifacts matters; say "platform core" precisely. | Platform-level | `architecture-overview.md` §6 |
 | Builder Tooling | The surface of the Construction, Extension, and Reach components through which a builder reaches the primitives beneath them; itself a platform-provided primitive, distinguished only as the entry-point surface, never a separate ownership category from the platform core. | "Frontend," "UI" — implementation-level. "SDK" alone — the SDK (C-12) is one specific instance of builder tooling, not the whole of it. | Platform-level | `architecture-overview.md` §6 |
@@ -49,14 +62,17 @@ Terms naming how the platform core itself is organized (`architecture-overview.m
 
 ---
 
-## 4. Actor and Authority Vocabulary
+## 5. Actor and Authority Vocabulary
 
-Terms naming who acts on the platform and how authority is expressed (`personas-and-roles.md`; `access-control-and-tenancy-model.md` §4–§8).
+Terms naming who acts on the platform and how authority is expressed, the audience the platform is built for, and the build models it deliberately excludes (`personas-and-roles.md`; `access-control-and-tenancy-model.md` §4–§8; `vision-and-charter.md` §2, §5).
 
 | Canonical Term | Definition | Disallowed / Ambiguous Synonyms | Side of the Line | Grounded In |
 |---|---|---|---|---|
 | Persona | A functional archetype of actor recognized by the platform, defined by what it acts on — platform-provided primitives (builder persona) or a built artifact (end-user persona) — never an organizational title or a specific individual. | "User" — too broad; use the specific canonical persona name. "Actor" — an acceptable general category word across documents, never a substitute for naming a specific persona. "Account holder" — not canonical. | Platform-level (the archetype); a builder's own use of it produces builder-level content | `personas-and-roles.md` §2 |
 | Builder Persona | One of six archetypes that act on platform-provided primitives: tenant owner, access administrator, application builder, operator, publisher, extender. | "Developer" — narrows a domain-neutral archetype toward one implementation background. "Admin" — ambiguous among tenant owner, access administrator, and end-user administrator; always name the specific persona. | Platform-level | `personas-and-roles.md` §3 |
+| Professional Builder | The audience the platform is built for: an actor who builds software as a professional discipline. Every builder persona is a professional-builder role, and the platform's primitives, capabilities, and productivity are designed to serve this audience's work of constructing, publishing, and operating software. | "Citizen developer," "business technologist" — deliberately excluded build models, never the platform's audience (below). "Developer" alone — narrows a domain-neutral audience toward one implementation background. "Low-code developer" — acceptable descriptively, but "professional builder" is the canonical audience term. | Platform-level (the audience; a specific builder's work produces builder-level artifacts) | `vision-and-charter.md` §2; `personas-and-roles.md` §3 |
+| Citizen Developer | A deliberately excluded build model in which clients or non-specialist users assemble their own software on the platform — a strategic non-goal, never a builder persona and never a missing role. Those who consume built software are represented in the end-user layer, not as builders. | Using "citizen developer" as a builder persona or as the platform's audience — it is excluded by design; never a role to add. "Professional builder" — the opposite; never interchange. Treating it as a "missing feature," "gap," or "future role" — it is a strategic exclusion, not an absence. | — (a deliberately excluded build model; neither a platform primitive nor a recognized actor) | `vision-and-charter.md` §5; `personas-and-roles.md` §3, §8 |
+| Business Technologist | A second deliberately excluded build model, in which those who consume software also assemble it themselves outside a professional-building discipline; excluded on the same basis as the citizen developer and, like it, never a builder persona and never a missing role. | Using "business technologist" as a builder persona or audience — excluded by design. Treating it as separate grounds for inclusion — it shares the citizen developer's exclusion rationale. "Professional builder" — never interchange. | — (a deliberately excluded build model) | `vision-and-charter.md` §5; `personas-and-roles.md` §3, §8 |
 | End-User Persona | One of three archetypes that act on a built artifact, never on a platform primitive: authenticated end user, public consumer, end-user administrator. | "Customer" — imports a commercial-domain assumption the charter forbids. "Member" — reserved for a tenant's admitted builder-side actors, a different sense. "Visitor" — informal, not canonical. | Platform-level (the archetype); the specific permission content a builder assigns it is builder-level | `personas-and-roles.md` §4 |
 | Platform Steward | The apex actor that owns and operates the platform's primitives (C-01–C-22) and governs the boundary within which every tenant exists. | "Admin"/"administrator" alone — collides with access administrator and end-user administrator; always say "platform steward." "The platform" — the steward is an actor; the platform is the system itself; never interchange the two. "Operator" — reserved for the distinct operator builder persona, who runs a tenant's built software, not the platform's own primitives. | Platform-level | `personas-and-roles.md` §2 |
 | Steward Role | One of four facets that divide the platform steward's work — platform governance, tenant admission, platform operations, platform security — never an additional persona beyond the single platform steward already named in the hierarchy. | "Persona" — a steward role is explicitly not a persona; never call it one. | Platform-level | `access-control-and-tenancy-model.md` §4 |
@@ -67,7 +83,7 @@ Terms naming who acts on the platform and how authority is expressed (`personas-
 
 ---
 
-## 5. Tenancy and Scoping Vocabulary
+## 6. Tenancy and Scoping Vocabulary
 
 Terms naming the boundaries within which authority and data are contained (`access-control-and-tenancy-model.md` §3, §6).
 
@@ -81,7 +97,7 @@ Terms naming the boundaries within which authority and data are contained (`acce
 
 ---
 
-## 6. Builder-Defined Object Vocabulary
+## 7. Builder-Defined Object Vocabulary
 
 Terms naming what a builder models or extends the platform with, each holding a platform-provided sense and a builder-produced sense (`platform-capability-model.md` §3.2).
 
@@ -89,12 +105,27 @@ Terms naming what a builder models or extends the platform with, each holding a 
 |---|---|---|---|---|
 | Entity | A builder-defined structure that models one kind of data within a built application, created using the platform's data and entity modeling primitive (C-05). | "Table," "object," "record" — implementation-level or domain-specific terms that presume one storage technology or one domain's vocabulary. "Model" — ambiguous; also used generically elsewhere (e.g., "platform capability model"). | Dual: the modeling primitive is platform-level; a specific entity is builder-level | `platform-capability-model.md` §3.2; detailed definition and validation contracts owned by `data-model-and-entity-spec.md` |
 | Schema | The definition of an entity's structure and the validation rules that keep it valid, consistent, and correctly related to other entities. | "Structure" — too generic, used elsewhere for architecture. "Spec" — collides with this document set's own file-naming convention. "Format" — not canonical. | Dual: the schema primitive is platform-level; a specific schema is builder-level | `platform-capability-model.md` §3.2; detailed contracts owned by `data-model-and-entity-spec.md` |
-| Module | The unit through which the platform is extended (C-11); the platform provides the generic means to extend through modules, and a builder or extender produces the specific module content. | "Plugin," "add-on" — not canonical platform terms. "Component" — reserved exclusively for a structural component of the platform core (§3); never a builder-created extension. | Dual: the extension mechanism is platform-level; a specific module is builder-level | `platform-capability-model.md` §3.2, §4; mechanics owned by `integration-and-extensibility-spec.md` |
+| Module | The unit through which the platform is extended (C-11); the platform provides the generic means to extend through modules, and a builder or extender produces the specific module content. | "Plugin," "add-on" — not canonical platform terms. "Component" — reserved exclusively for a structural component of the platform core (§4); never a builder-created extension. | Dual: the extension mechanism is platform-level; a specific module is builder-level | `platform-capability-model.md` §3.2, §4; mechanics owned by `integration-and-extensibility-spec.md` |
 | Extension | Two senses: (a) the Extension primitive family and its structural component, i.e., the platform-level means to extend through modules and a programmatic contract (C-11, C-12); (b) informally, "an extension" or "extension instance" — a specific module or integration a builder or extender produces, operating under sense (a)'s grant. | Using "Extension" (the family/component) to mean one specific instance without an article — always say "an extension" or "extension instance" for sense (b), and reserve unqualified "Extension" for sense (a). | Dual (sense a: platform-level; sense b: builder-level) | `platform-capability-model.md` §4; `architecture-overview.md` §4, §5.2; sandboxing and trust-boundary mechanics owned by `integration-and-extensibility-spec.md` |
 
 ---
 
-## 7. Canonical Reference Identifiers
+## 8. Capability Concept Vocabulary
+
+Terms naming the specific platform capabilities introduced into the capability backlog (C-18–C-22), each carrying high disambiguation value. This glossary names each concept and cites the document that owns its content (`prd.md` §4; `platform-capability-model.md` §4); it does not restate that content.
+
+| Canonical Term | Definition | Disallowed / Ambiguous Synonyms | Side of the Line | Grounded In |
+|---|---|---|---|---|
+| Workflow and Process Automation (C-18) | The platform capability to model, execute, and govern processes that run across built software, bound to no predetermined domain; a Construction-family capability. | "Workflow" alone — ambiguous with a builder's own modeled process; the capability is the generic means, a specific process a builder models is a builder-level artifact. "Orchestration," "BPM," "business process management" — domain- or implementation-flavored. "Automation" alone — too broad. | Dual: the automation capability is platform-level; a specific process a builder models is builder-level | `prd.md` §4 (C-18); `platform-capability-model.md` §4 |
+| AI-Assisted Builder Tooling (C-19) | The platform capability that gives professional builders AI-native development assistance across generic construction, modeling, and configuration; every AI output is a suggestion, distinct from a builder-approved artifact, and none is committed without mandatory human-builder confirmation. | The **autonomous platform-operating agent** — the AI agent that operates the platform's own end-to-end lifecycle (`agent-operating-charter.md`) is a different actor; this tooling assists a professional builder and never operates the platform. The **agent-operated lifecycle** — the platform's own autonomous operating model; never a synonym for builder-facing tooling. "AI builder," "copilot," "code generator" — informal or product-flavored. Treating an AI suggestion as committed output — it is never a builder-approved artifact until the builder confirms it. | Dual: the tooling is platform-level; a builder-approved artifact produced with its help is builder-level | `prd.md` §4 (C-19) |
+| Mobile Application Capability (C-20) | The platform capability to package, publish, and deliver built software to mobile targets, bound to no predetermined domain; a Reach-family capability. | "Mobile app" — informal, and does not distinguish the capability from the mobile artifact it produces (below). "Native app," "responsive design" — implementation-flavored. | Platform-level | `prd.md` §4 (C-20); `platform-capability-model.md` §4 |
+| Mobile Artifact | A built application's mobile form: the mobile-target output a builder produces using the mobile application capability (C-20); every platform guarantee holding for non-mobile output holds equally for it. | "Mobile app" — informal; say "mobile artifact" when the platform-level/builder-level distinction is the point. "Mobile application capability" — never interchange the artifact with the capability that produces it. | Builder-level (the capability that produces it is platform-level) | `prd.md` §4 (C-20) |
+| Builder-Facing Version Control (C-21) | The platform capability for professional builders to version, compare, revert, and manage the releases of the applications they build, bound to no predetermined domain; an Operation-family capability. | The platform's own **internal source/version control** — the platform's internal change and version control (`change-management-and-evolution-policy.md`) is a distinct, platform-internal concern; builder-facing version control operates over builder-built applications and is never conflated with it. "Source control," "VCS," "git" — implementation-flavored and ambiguous with the platform's internal control. "Version control" alone — always qualify as "builder-facing" for this capability. | Dual: the version-control capability is platform-level; the versions of a specific built application are builder-level | `prd.md` §4 (C-21) |
+| Multi-Language Code Export (C-22) | The potential future platform capability to export or generate a built application's code across multiple programming languages, bound to no predetermined domain. Its target programming languages are undetermined; it is not authorized for immediate implementation and must not be built, expanded, or relied upon until explicitly authorized in a later revision of `prd.md`. | **Human-language UI localization / internationalization (i18n / l10n)** — a different concern entirely; C-22 concerns programming-language code output only and must never be conflated with translating a built application's interface into human languages. "Multi-language" alone — ambiguous between programming and human languages; always say "multi-language code export" and mean programming languages. "Transpilation," "code generation" — implementation-flavored. | Dual: the export capability (future, not authorized) is platform-level; exported code is a builder-level artifact | `prd.md` §4 (Future Capabilities, C-22) |
+
+---
+
+## 9. Canonical Reference Identifiers
 
 These identifiers are already canonically defined elsewhere. This glossary names them as reference terms and cites their owning document; it does not redefine their content.
 
@@ -106,7 +137,7 @@ These identifiers are already canonically defined elsewhere. This glossary names
 
 ---
 
-## 8. Precedence and Ownership Boundaries
+## 10. Precedence and Ownership Boundaries
 
 When a term in this glossary meets any other consideration, it is resolved by the fixed precedence of `system-invariants.md` §6.
 
@@ -127,7 +158,7 @@ This document owns canonical term definitions, disallowed and ambiguous synonyms
 
 ---
 
-## 9. Binding Rules
+## 11. Binding Rules
 
 These rules hold for every term in this document and are subordinate to the charter.
 
