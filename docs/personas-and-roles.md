@@ -51,10 +51,12 @@ Builder personas are the actors who build with the platform, and they are **prof
 |---|---|---|
 | Tenant owner | Holds top authority within a tenant: owns the tenant's account boundary, admits and removes its members, and delegates every builder role below. The root of authority inside one tenant. | Isolation and Trust family (C-01, C-02, C-03) |
 | Access administrator | Defines the builder-side roles, permissions, and access policy for the tenant and for the software it builds — the specific access artifacts the platform's access primitive makes possible. | C-02, C-03 |
-| Application builder | Constructs applications, models their data, entities, and schemas, and configures their structure and behavior — bound to no predetermined domain. | Construction family (C-04, C-05, C-06) |
-| Operator | Runs the built software, carries it through its lifecycle as one governed flow, and observes its real-world health and behavior. | Operation family (C-07, C-08, C-09) |
-| Publisher | Publishes built software so its intended end users can reach it, and offers or obtains software and extensions where a marketplace is used. | Reach family (C-10, C-13) |
+| Application builder | Constructs applications, models their data, entities, and schemas, configures their structure and behavior, models the processes that run across built software, and builds with AI-native assistance — bound to no predetermined domain. | Construction family (C-04, C-05, C-06, C-18, C-19) |
+| Operator | Runs the built software, carries it through its lifecycle as one governed flow, observes its real-world health and behavior, versions and manages the releases of what it has built, and promotes built applications across their Development, Testing, and Production stages. | Operation family (C-07, C-08, C-09, C-21, C-23) |
+| Publisher | Publishes built software so its intended end users can reach it — including delivering it to mobile targets — and offers or obtains software and extensions where a marketplace is used. | Reach family (C-10, C-13, C-20) |
 | Extender | Extends the platform through modules and its programmatic contract, without weakening core guarantees or introducing domain content into the core. | Extension family (C-11, C-12) |
+
+The application builder's Construction family also carries one **potential future capability** — multi-language code export (C-22) — recorded for completeness but not authorized for implementation. It is not an active capability of the application builder and confers nothing until it is explicitly authorized in a later revision of the PRD; it concerns programming-language code output only and must never be conflated with human-language UI localization.
 
 The extender is a builder persona whose product extends the platform rather than being an ordinary application; like every builder persona, it operates strictly within its granted scope and never above the primitive / artifact line.
 
