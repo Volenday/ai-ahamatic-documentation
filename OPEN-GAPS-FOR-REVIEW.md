@@ -15,20 +15,20 @@ The T37–T47 roadmap is complete and the library is internally consistent. The 
 | # | Gap | Status |
 |---|---|---|
 | **G-1** | Builder-facing environment management added as capability **C-23** in `prd.md` / `platform-capability-model.md` — executed **Decision 2** | ✅ Done (T50) |
-| **G-2** | `prd.md` §2.2 now records the citizen-developer model as out-of-scope — executed **Decision 1** | ✅ Done (T51) |
+| **G-2** | `prd.md` §2.2 now records the citizen-developer model as out-of-scope — executed **Decision 1** | ✅ Done (landed with T50) |
 
 The remaining six are genuine **choices** about how far to extend the library — not broken promises: security coverage for AI tooling, possible new contract surfaces, four market "frontier gap" candidates, a remediation backlog from the standards doc, and two governance/process improvements.
 
 **Already resolved (no action needed):** C-22 framing corrected (code export, not localization); library-wide capability-count drift fixed; glossary and user-journeys propagated with the new capabilities and terms; the three-way "agent" terminology disambiguated in the glossary.
 
-**If you have 30 seconds:** G-1 and G-2 are done (T50/T51) — environment management was assigned ID **C-23**, which you can revisit if you'd prefer different numbering. Your remaining decisions are **G-3 through G-8**: defer or decline each at your discretion.
+**If you have 30 seconds:** G-1 and G-2 are done (both landed with T50) — environment management was assigned ID **C-23**, which you can revisit if you'd prefer different numbering. Your remaining decisions are **G-3 through G-8**: defer or decline each at your discretion.
 
 ---
 
 ## Detailed gap list
 
 ### Tier 1 — Confirmed decisions, now executed ✅
-*The map promised these; the content documents now deliver them. Both executed decisions already made and are complete — **T50** (G-1) and **T51** (G-2). No further lead input required, though the C-23 ID assigned in G-1 can be revisited if preferred.*
+*The map promised these; the content documents now deliver them. Both executed decisions already made and are complete — both landed with the **T50** session (a separate T51 run confirmed G-2 was already present and correctly made no change). No further lead input required, though the C-23 ID assigned in G-1 can be revisited if preferred.*
 
 **G-1. Builder-facing environment management has no capability.**
 - **Evidence:** The map's `prd.md` and `platform-capability-model.md` rows both commit to *"builder-facing environment management (Development, Testing, Production) as a confirmed capability."* No such capability exists in either document (backlog runs C-01–C-22; none is this).
@@ -37,7 +37,7 @@ The remaining six are genuine **choices** about how far to extend the library �
 
 **G-2. `prd.md` does not record the citizen-developer model as out-of-scope.**
 - **Evidence:** The map's `prd.md` row requires *"the citizen developer model recorded as out of scope."* Previously `prd.md` §2.2 had no citizen-developer entry (T38 only updated the charter and personas).
-- **Status:** ✅ Done (T51) — `prd.md` §2.2 now records the citizen-developer and business-technologist build models as out of scope, executing Decision 1.
+- **Status:** ✅ Done — the entry landed with the **T50** session; `prd.md` §2.2 now records the citizen-developer and business-technologist build models as out of scope, executing Decision 1. (The separate T51 run confirmed it was already present and correctly made no change.)
 
 ### Tier 2 — Consistency / safety gaps opened by the new capabilities
 
