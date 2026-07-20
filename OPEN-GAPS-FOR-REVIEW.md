@@ -1,52 +1,59 @@
-# AI ahaMatic — Open Documentation Gaps for Review
+# AI ahaMatic — Open Decisions for Review
 
 _Prepared for review · 2026-07-20_
 
 ---
 
-## Summary — read this first
+## What this is
 
+The AI ahaMatic platform documentation is complete and internally consistent. (A number of inconsistencies found during review have already been corrected and need no attention.)
 
-## Detailed gap list
+Before the team moves from planning to building, **six open items need your decision.** None are blocking — each is a choice about how far to take the platform, and any can be deferred or declined. This memo is self-contained: each item states the gap, why it matters, and the decision being asked of you. You don't need to read anything else first.
 
-### Tier 1 — Confirmed decisions, now executed ✅
-*The map promised these; the content documents now deliver them. Both executed decisions already made and are complete — both landed with the **T50** session (a separate T51 run confirmed G-2 was already present and correctly made no change). No further lead input required, though the C-23 ID assigned in G-1 can be revisited if preferred.*
+**Most time-sensitive:** items **1 and 2** shape *what* gets built, so they're best decided before the affected parts are built. Items 3–6 can safely wait.
 
-**G-1. Builder-facing environment management has no capability.**
-- **Evidence:** The map's `prd.md` and `platform-capability-model.md` rows both commit to *"builder-facing environment management (Development, Testing, Production) as a confirmed capability."* No such capability exists in either document (backlog runs C-01–C-22; none is this).
-- **Origin:** Strategic **Decision 2**; the lean roadmap never ticketed it.
-- **Status:** ✅ Done (T50) — added as capability **C-23** (Operation family), and the C-01–C-23 count re-synced across the library. The C-23 ID can be revisited if different numbering is preferred.
+---
 
-**G-2. `prd.md` does not record the citizen-developer model as out-of-scope.**
-- **Evidence:** The map's `prd.md` row requires *"the citizen developer model recorded as out of scope."* Previously `prd.md` §2.2 had no citizen-developer entry (T38 only updated the charter and personas).
-- **Status:** ✅ Done — the entry landed with the **T50** session; `prd.md` §2.2 now records the citizen-developer and business-technologist build models as out of scope, executing Decision 1. (The separate T51 run confirmed it was already present and correctly made no change.)
+## At a glance
 
-### Tier 2 — Consistency / safety gaps opened by the new capabilities
+| # | Decision | Type |
+|---|---|---|
+| 1 | Security coverage for AI-assisted development tooling | Shapes the build |
+| 2 | Interface coverage for newly added capabilities | Shapes the build |
+| 3 | Advanced capabilities competitors offer | Strategic scope |
+| 4 | Industry-benchmark shortfalls to address | Strategic scope |
+| 5 | Keeping the documentation consistent over time | Process |
+| 6 | Tracking not-yet-approved future capabilities | Process |
 
-**G-3. Security threat model predates AI-assisted tooling (C-19).**
-- **Gap:** `security-policy.md` §3 has no coverage of AI-generated-artifact risk or prompt-injection into builder tooling — a new attack surface C-19 introduces.
-- **Decision needed:** Extend the threat model now, or defer to an implementation-phase security pass.
+---
 
-**G-4. New capabilities may expose uncovered contract / extension surfaces.**
-- **Gap:** C-19 (AI tooling), C-20 (mobile), C-21 (version control) likely imply contract or extension points not reflected in `api-contract-spec.md` or `integration-and-extensibility-spec.md`.
-- **Decision needed:** Cover in the Design phase now, or later.
+## The decisions
 
-### Tier 3 — Forward-looking / strategic choices
+### 1. Security coverage for AI-assisted development tooling
+**The gap.** The platform is planned to offer AI-assisted tooling that helps builders generate parts of their software. The security documentation was written before that capability and does not yet address the risks it introduces — for example, the AI producing insecure code, or someone manipulating the AI through crafted inputs.
+**Your decision.** Extend the security analysis to cover this now, or defer it until that capability is actually being built.
 
-**G-5. Four market "frontier gaps" have no home.**
-- **Source:** The competitive landscape (T46) flagged cross-system virtual data layer, builder-facing runtime agent orchestration, desktop/RPA, and ecosystem/connector maturity — all with no capability.
-- **Decision needed:** Whether any become future capabilities (the C-22 "not-yet-authorized" pattern), get parked, or are declined.
+### 2. Interface coverage for newly added capabilities
+**The gap.** Three recently added capabilities — AI-assisted tooling, mobile app delivery, and version control of the applications builders create — likely introduce new ways for other systems and builders to connect to the platform. The platform's interface and integration specifications do not yet describe those connection points.
+**Your decision.** Document these interfaces now, or when the capabilities are designed in detail.
 
-**G-6. T47's remediation inventory is an un-triaged backlog.**
-- **Gap:** `industry-standards-and-benchmarks.md` produced a "gaps requiring remediation" list that is not yet triaged into work.
-- **Decision needed:** Triage which remediation items to ticket.
+### 3. Advanced capabilities competitors offer
+**The gap.** A competitive analysis found four capabilities that leading platforms in the market provide but the current plan does not:
+- a unified data layer spanning external systems,
+- builder-configurable AI automation that runs inside the built applications,
+- desktop / robotic process automation,
+- a mature marketplace of ready-made connectors.
 
-### Tier 4 — Process / governance
+**Your decision.** For each — add it as a future capability, shelve it for later consideration, or decline it as out of scope.
 
-**G-7. No standing check keeps the library internally consistent.**
-- **Evidence:** The capability-count drift (19 documents left stale when capabilities were added in only two files) is fixed, but nothing prevents recurrence.
-- **Decision needed:** Add a cross-reference / propagation consistency rule to `change-management-and-evolution-policy.md`.
+### 4. Industry-benchmark shortfalls to address
+**The gap.** An industry-standards analysis produced a list of areas where the platform or its documentation falls short of recognized enterprise benchmarks. That list has not yet been reviewed and turned into concrete work.
+**Your decision.** Review the list and decide which shortfalls to act on.
 
-**G-8. The "Future / Not-Yet-Authorized Capabilities" category is ad hoc.**
-- **Evidence:** A Future-Capabilities subsection was created on the fly for C-22. If G-5's frontier gaps get parked there, the category should be represented formally in the map.
-- **Decision needed:** Whether to formalize it.
+### 5. Keeping the documentation consistent over time
+**The gap.** There is no standing process to keep the documentation set internally consistent as it grows. Twice already, adding a new capability left many documents referring to an outdated capability count until it was corrected by hand. Both were fixed, but nothing prevents it from happening again.
+**Your decision.** Whether to add a lightweight consistency check to the platform's change-management process.
+
+### 6. Tracking not-yet-approved future capabilities
+**The gap.** The plan includes one capability marked as a possible future addition that is not approved for building. That "not-yet-approved" idea was introduced informally. If more future ideas get set aside the same way (see item 3), it would help to define — once — how such not-yet-approved capabilities are recorded and later approved.
+**Your decision.** Whether to formalize how future, unapproved capabilities are tracked.
