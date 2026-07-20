@@ -1,3 +1,8 @@
+---
+name: ai-aha-context
+description: "Load AI ahaMatic project context, rules, and folder behavior at the start of every Code Mode session."
+---
+
 ```markdown
 # AI ahaMatic — Project Context
 
@@ -12,18 +17,17 @@ ahaMatic is a **generic, multi-purpose software builder platform**. It is not a 
 ---
 
 ## Project Folder Structure
-```
 
+```
 ai-ahamatic/
 ├── CLAUDE.md
-├── docs/ ← growing library (new AI ahaMatic outputs)
-│   ├── spec/ ← the "what": specification library
-│   └── design/ ← the "how": design / implementation library
-└── references/ ← aging ahaMatic + research (read-only context)
-    ├── repos/ ← aging platform (never reuse)
-    ├── docs/ ← aging platform (never reuse)
-    └── research/ ← authorized research inputs (synthesize only where a ticket cites)
-
+├── docs/                        ← growing library (new AI ahaMatic outputs)
+│   ├── spec/                    ← the "what": specification library
+│   └── design/                  ← the "how": design / implementation library
+└── references/                  ← aging ahaMatic + research (read-only context)
+    ├── repos/                   ← aging platform (never reuse)
+    ├── docs/                    ← aging platform (never reuse)
+    └── research/                ← authorized research inputs (synthesize only where a ticket cites)
 ```
 
 ### Folder Behavior
