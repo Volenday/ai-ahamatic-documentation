@@ -45,11 +45,11 @@ The `.claude/skills/` copies are the **source of truth**. The Claude desktop app
 
 1. Open a new Code Mode chat.
 2. Attach the `ai-ahamatic/` folder.
-3. Name the session `<ID> — <Title>` (e.g. `T53 — Extend Security Threat Model…`).
-4. Invoke `/ai-aha-context`.
-5. Invoke `/ai-aha-spec-doc` (spec ticket) **or** `/ai-aha-design-doc` (design ticket).
-6. Paste the **previous ticket's handoff summary** (or the bridging handoff for the first ticket in a phase).
-7. Paste the **ticket system prompt**.
+3. Invoke `/ai-aha-context`.
+4. Invoke `/ai-aha-spec-doc` (spec ticket) **or** `/ai-aha-design-doc` (design ticket).
+5. Name the session `<ID> — <Title>` (e.g. `T53 — Extend Security Threat Model…`).
+6. Paste the **previous ticket's handoff summary** (or the bridging handoff for the first ticket in a phase). **This is context only — do not begin any work, generation, or edits on it; wait for step 7.**
+7. Paste the **ticket system prompt** — this defines the task; work begins only now.
 8. Invoke `/ai-aha-spec-review` (spec) **or** `/ai-aha-design-review` (design).
 9. Save the output to the exact `docs/spec/…` or `docs/design/…` path the ticket names.
 10. Invoke `/ai-aha-handoff`.
@@ -57,6 +57,8 @@ The `.claude/skills/` copies are the **source of truth**. The Claude desktop app
 12. Commit: `git commit -m "<ID>: <summary>"`.
 
 **Atomic execution:** one ticket per session; never scope beyond the current ticket.
+
+**The handoff is context, not a task.** The Executor treats the step-6 handoff as read-only routing/context and produces **nothing** — no document, no edits — until the **ticket system prompt (step 7)** defines the task. Receiving a handoff must never trigger generation; if only a handoff has been provided, wait for the ticket prompt.
 
 ---
 

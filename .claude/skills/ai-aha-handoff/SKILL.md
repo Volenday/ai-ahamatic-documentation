@@ -6,7 +6,7 @@ description: "Generate a session handoff summary at the end of every AI ahaMatic
 ```
 Before we close this session, produce a **Session Handoff Summary** for use as context in the next related chat session.
 
-Format it exactly as follows:
+**Output the entire summary inside a single fenced code block (a triple-backtick block)** so the user can copy it in one click. Do not use any code fences inside it. Format the contents exactly as follows:
 
 ---
 
