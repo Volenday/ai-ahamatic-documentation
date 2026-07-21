@@ -33,6 +33,16 @@ The `.claude/skills/` copies are the **source of truth**. The Claude desktop app
 
 ## 3. Per-ticket workflow (run once per ticket, in its own session)
 
+**Two session roles — read this first.** This project uses two kinds of session, and a session must know which role it is in:
+- **Orchestrator (planning / continuation).** Maintains the trackers and generates ticket prompts. Its normal input is the **just-completed ticket's handoff summary**: the user pastes that handoff, and the Orchestrator uses it (together with `TICKET.md` and the current files) to **generate the next ticket's title and system prompt** (§4 format), then hands them to the user to run in a separate session. For the **first ticket of a phase** (no prior handoff exists), it supplies a **bridging handoff** instead. It does **not** execute tickets and does **not** write to `docs/`.
+- **Executor.** A fresh session that runs **exactly one** ticket via the 12 steps below, producing that one document **and a handoff summary** (step 10), then ends. That handoff is what the user feeds back to the Orchestrator to drive the next ticket.
+
+**The loop:** Orchestrator generates ticket N's prompt → user runs N in a fresh Executor session → Executor produces the document + handoff → user pastes N's handoff to the Orchestrator → Orchestrator generates ticket N+1's prompt. Repeat. (When no handoff exists yet — the first ticket of a phase — the Orchestrator supplies a bridging handoff.)
+
+**Default rule:** when a session is told to *"continue," "resume," "do the next ticket,"* or similar, it acts as the **Orchestrator** — it produces the next ticket prompt for a *separate* Executor session and stops; it never executes the ticket inline. Execute a ticket directly only when the user explicitly says to run it in the current session. This one-ticket-per-clean-session separation is what preserves **atomicity**: no context bleed between tickets, each output independently reviewable and committable, and no scope drift.
+
+### The 12 steps (Executor session)
+
 1. Open a new Code Mode chat.
 2. Attach the `ai-ahamatic/` folder.
 3. Name the session `<ID> — <Title>` (e.g. `T53 — Extend Security Threat Model…`).

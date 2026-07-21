@@ -18,6 +18,8 @@ The project's knowledge is fully captured in durable files. To pick up the work 
 7. **`OPEN-GAPS-FOR-REVIEW.md`** — gap-review decisions already made.
 8. **`BACKLOG.md`** — known-but-unresolved gaps and unconfirmed assumptions.
 
+**When continuing the project, your default role is orchestrator:** generate the next pending ticket's title and system prompt (see `PROCESS.md` §3–§4) for the user to run in a *separate* session — do not execute the ticket yourself unless explicitly told to.
+
 ---
 
 ## What is ahaMatic
