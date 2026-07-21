@@ -104,8 +104,8 @@ See `OPEN-GAPS-FOR-REVIEW.md`. All specification-phase; they run before the desi
 | #   | Ticket Title                                              | Status     | Output File                                                       | Gap |
 | --- | -------------------------------------------------------- | ---------- | ---------------------------------------------------------------- | --- |
 | T53 | Extend security threat model for AI-assisted tooling      | ✅ Done    | `docs/spec/security-policy.md`                                    | G-1 |
-| T54 | Add interface coverage for C-19, C-20, C-21               | ⏳ Next    | `docs/spec/api-contract-spec.md`, `docs/spec/integration-and-extensibility-spec.md` | G-2 |
-| T55 | Formalize Future / Not-Yet-Approved Capabilities category | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/context-document-map.md`           | G-6 |
+| T54 | Add interface coverage for C-19, C-20, C-21               | ✅ Done    | `docs/spec/api-contract-spec.md`, `docs/spec/integration-and-extensibility-spec.md` | G-2 |
+| T55 | Formalize Future / Not-Yet-Approved Capabilities category | ⏳ Next    | `docs/spec/prd.md`, `docs/spec/context-document-map.md`           | G-6 |
 | T56 | Add Cross-System Data Layer (C-24)                        | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
 | T57 | Add Connector Marketplace (C-25)                         | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
 | T58 | Add Runtime AI Automation as future capability (C-26)    | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |

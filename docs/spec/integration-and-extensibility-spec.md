@@ -18,7 +18,7 @@ The document answers five questions:
 - **What a marketplace or third-party submission must satisfy** before it is offered.
 - **What trust boundary rules bind an external extension** once it is granted a scope to act within.
 
-It is structured as a pyramid: first the concept of an extension and the line it never crosses, then the boundary rules every module obeys, then the SDK compatibility contract built on those rules, then the marketplace and submission constraints that mediate offering an extension to others, then the trust-boundary rules that bind what a granted extension may actually do.
+It is structured as a pyramid: first the concept of an extension and the line it never crosses, then the boundary rules every module obeys, then the SDK compatibility contract built on those rules, then the marketplace and submission constraints that mediate offering an extension to others, then the trust-boundary rules that bind what a granted extension may actually do, and finally how those rules apply to the extensibility surfaces of the most recently added builder-facing capabilities.
 
 ---
 
@@ -119,7 +119,35 @@ An extension is trusted only to the extent of its own grant. The platform never 
 
 ---
 
-## 8. Precedence and Ownership Boundaries
+## 8. Capability-Specific Integration and Extension Coverage
+
+The rules of §4–§7 apply to every module, SDK consumer, and marketplace offering. This section makes their application explicit where the three most recently added builder-facing capabilities meet the platform's extensibility surface — **AI-assisted builder tooling (C-19)**, **mobile application capabilities (C-20)**, and **builder-facing version control (C-21)** — each a platform primitive bound to no predetermined domain (`prd.md` §4, `platform-capability-model.md` §4). It creates no new capability and no new extension class: each surface is bound by §4–§7 in full, and by the SDK compatibility contract of §5 wherever it is reached programmatically. The capability definitions are cited, not redefined.
+
+### 8.1 AI-Assisted Builder Tooling (C-19)
+
+- **Reached through the SDK, the tooling is bound by the SDK compatibility contract.** Where the AI-assisted tooling is invoked programmatically through the software development kit (C-12), that invocation is an SDK interaction governed by §5 in full — the versioning, backward-compatibility, and request/response/error conventions of `api-contract-spec.md`, and the rule that the SDK never grants reach beyond the caller's own grant.
+- **Its input is untrusted and its output untrusted until validated at the extension surface too.** Consistent with `security-policy.md` §3.2–§3.3 and §5, input crossing into the tooling through an SDK caller or extension is untrusted and may never be interpreted as instruction that drives the tooling outside the caller's grant — the prompt-injection threat; an artifact the tooling generates carries no trust from its platform origin and is validated before it crosses any boundary.
+- **An AI-generated module, integration, or offering is a submission like any other.** A module, SDK-built integration, or marketplace offering produced with AI-assisted tooling satisfies the boundary rules of §4, the marketplace submission constraints of §6 — license category, cumulative attribution, no unresolved license-incompatibility, and the mandatory security review — and the trust-boundary confinement of §7, exactly as a human-authored one. Its AI origin never exempts it from, or relaxes, any obligation, and the security review of `security-policy.md` §7 applies, including that document's AI-assisted-tooling review trigger.
+- **Confinement holds regardless of AI involvement.** An extension that invokes the tooling, or is produced by it, acts only within its own grant (§7); AI involvement never widens capability, tenant, core, data, or secret confinement.
+
+### 8.2 Mobile Application Capabilities (C-20)
+
+- **A mobile-delivered application is extended under the same rules.** A module or SDK-built integration operating within a built application delivered to a mobile target (`prd.md` §4) is bound by the boundary rules of §4 and the trust-boundary confinement of §7 identically to its non-mobile form — the parity requirement of C-20 applied to the extension surface; no confinement is relaxed because an extension runs on a mobile target.
+- **A mobile offering is a marketplace submission like any other.** Packaging and delivery to a mobile target are Reach-family surfaces (C-10, C-13, C-20); where a built application is offered through the marketplace (C-13) in a mobile form, it satisfies every submission constraint of §6 — license, attribution, incompatibility resolution, and mandatory security review — identically to a non-mobile offering, and the mobile target never narrows a submission obligation.
+- **The SDK surface is delivery-target-neutral.** Where an integration reaches the platform through the SDK on behalf of a mobile-delivered application, §5 binds it identically; a mobile SDK consumer receives no weaker compatibility or confinement guarantee than any other.
+
+### 8.3 Builder-Facing Version Control (C-21)
+
+- **Version-control operations reached through the SDK follow the SDK compatibility contract.** Where a builder or extender exercises the versioning, comparison, revert, or release-management operations of C-21 programmatically through the SDK (C-12), those interactions follow §5 in full.
+- **A versioned application's extension content is captured by reference, never absorbed.** A built-application version that references a module or extension instance captures that reference as builder- or extender-defined content (INV-06, §4); versioning a built application never absorbs an extension's content into the platform core, and the immutability and provenance C-21 requires extend to the recorded reference, not to ownership of the extension's own content.
+- **A marketplace offering is obtained at an identified, immutable version.** The immutability and provenance of C-21 support the marketplace guarantee of §6 (and the mediated-exchange rule of `access-control-and-tenancy-model.md` §7) that what is offered and obtained is a fixed, identified artifact; obtaining an offering never yields a version whose content or provenance has silently changed.
+- **A revert never crosses a boundary version control does not own.** Reverting a built application's version affects only that application within its own grant and tenant scope (§4, §7); it is never a path to alter another tenant, the platform core, or an extension instance beyond the reverting builder's grant, and the boundary to the platform's own internal change and version control (`change-management-and-evolution-policy.md`) holds at the SDK surface as at every other.
+
+Nothing in this section creates an exception to §4–§7; where any surface here meets another consideration it is resolved by the precedence of §9 and the binding rules of §10.
+
+---
+
+## 9. Precedence and Ownership Boundaries
 
 When a rule in this model meets any other consideration, it is resolved by the fixed precedence of `system-invariants.md` §6.
 
@@ -143,7 +171,7 @@ This document owns extension and module boundary rules, the SDK compatibility co
 
 ---
 
-## 9. Binding Rules
+## 10. Binding Rules
 
 These rules hold for every module, SDK consumer, and marketplace offering subject to this model and are subordinate to the charter.
 
@@ -153,4 +181,5 @@ These rules hold for every module, SDK consumer, and marketplace offering subjec
 - **The SDK is a contract like any other.** Its versioning, deprecation, backward compatibility, and request/response/error conventions follow `api-contract-spec.md` in full; a breaking SDK change requires the same sign-off and reversal path as any other contract change.
 - **A marketplace submission is offered only once its license, attribution, and security-review obligations are satisfied.** An unresolved license-incompatibility or security-review trigger blocks a submission from being offered.
 - **A granted extension acts only within its grant.** Capability, tenant, core, data, and secret confinement all hold at once; uncertainty about conformance resolves to refusal, and a confinement failure is a blocking invariant violation.
+- **AI-assisted, mobile, and version-control surfaces are bound by this model in full.** AI-assisted tooling reached or produced through the SDK, a module, or the marketplace (C-19), a mobile-delivered application's extensions and offerings (C-20), and version-control operations exercised programmatically (C-21) each obey the boundary, SDK-compatibility, submission, and trust-boundary rules without exception; an AI origin, a mobile target, or a version operation never relaxes a confinement or submission obligation.
 - **Everything remains domain-neutral and platform-level.** No boundary rule, compatibility requirement, submission constraint, or trust rule in this document encodes the characteristics of any single domain; all remain valid for any module, any SDK consumer, and any marketplace offering, in any tenant and any region.

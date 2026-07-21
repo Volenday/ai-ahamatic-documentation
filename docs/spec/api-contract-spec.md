@@ -18,7 +18,7 @@ The document answers five questions:
 - **What conventions every request, response, and error must follow.**
 - **What a breaking change requires** before it may be released — human sign-off and a release-gating check.
 
-It is structured as a pyramid: first the concept of a contract and who depends on it, then the versioning and deprecation policy that governs its lifecycle, then the backward-compatibility rules that define what may never silently break, then the request/response and error-shape conventions every contract follows, then the sign-off and release-gating requirements that enforce the whole.
+It is structured as a pyramid: first the concept of a contract and who depends on it, then the versioning and deprecation policy that governs its lifecycle, then the backward-compatibility rules that define what may never silently break, then the request/response and error-shape conventions every contract follows, then the sign-off and release-gating requirements that enforce the whole, and finally how these rules apply to the specific contract surfaces of the most recently added builder-facing capabilities.
 
 ---
 
@@ -114,7 +114,38 @@ Breaking-change detection is a mandatory check every release passes through, rei
 
 ---
 
-## 9. Precedence and Ownership Boundaries
+## 9. Capability-Specific Contract Coverage
+
+The rules of §4–§8 apply to every contract the platform exposes. This section makes their application explicit for the contract surfaces of the three most recently added builder-facing capabilities — **AI-assisted builder tooling (C-19)**, **mobile application capabilities (C-20)**, and **builder-facing version control (C-21)** — each a platform primitive bound to no predetermined domain (`prd.md` §4, `platform-capability-model.md` §4). It creates no new contract class and no exception: each surface is an API contract within the meaning of §3 and is bound by §4–§8 in full. The capability definitions are cited, not redefined.
+
+### 9.1 AI-Assisted Builder Tooling (C-19)
+
+- **The AI-assisted tooling surface is an API contract.** The interaction through which a builder requests AI-native assistance — logic generation, testing support, layout assistance, validation (`prd.md` §4) — is a request/response contract within §3: versioned per §4, backward-compatible per §5, and shape-conforming per §6, exactly as any other.
+- **A response is a suggestion, never a committed artifact.** Consistent with C-19, every output the tooling returns is carried as a suggestion whose status the response makes unambiguous; the contract never presents an AI-produced output as already committed, and the distinction between a suggestion and a builder-approved artifact is part of the contract's shape.
+- **The suggestion-to-committed transition requires the builder's confirmation.** No AI-produced output crosses from suggestion to committed artifact without the mandatory human-builder confirmation C-19 requires. That confirmation is the builder's own and is governed by `human-in-the-loop-protocol.md`; it is distinct from the §7 sign-off that governs a change to a platform contract's own shape, and the two are never conflated.
+- **Input to the tooling is untrusted, and a generated artifact is untrusted until validated.** Every request crossing this contract is validated under §6 and `security-policy.md` §5; input may never be interpreted as instruction that drives the tooling outside the actor's authorization — the prompt-injection threat of `security-policy.md` §3.2–§3.3 — and an artifact the tooling generates carries no trust from its platform origin, being validated before it crosses any boundary (`security-policy.md` §5, §3.3) exactly as any other artifact.
+- **The generated artifact is content the contract carries, not the contract's own shape.** A suggested or generated artifact is builder-facing content flowing through the contract (the builder/built line of `platform-capability-model.md` §3); the contract's platform-level shape and guarantees are never redefined by the artifact a given invocation produces.
+
+### 9.2 Mobile Application Capabilities (C-20)
+
+- **A built application's mobile form is a consumer class, bound identically.** A built application delivered to a mobile target (`prd.md` §4) is a built-application consumer within §2; the contract binds it identically to the same application's non-mobile form. Under the parity-and-permitted-divergence rule of C-20, the mobile and web forms may diverge only in the builder-defined content each carries, never in the contract guarantee each receives: no contract guarantee is weakened, narrowed, or varied because a consumer is mobile, and every guarantee holding for non-mobile output holds equally for mobile output.
+- **The contract is delivery-target-neutral.** Versioning (§4), backward compatibility (§5), and the request/response and error conventions (§6) hold identically regardless of the target a consumer runs on; a change is breaking under §5 if it would break a mobile consumer exactly as if it would break any other.
+- **Deprecation accounts for a consumer that cannot update on demand.** A mobile consumer adopts a new contract version only on its own update cadence; the announced, time-bounded deprecation of §4 is honored on terms that do not assume a consumer can migrate instantly, and a version is not withdrawn while a correctly-operating mobile consumer still depends on it within its deprecation window.
+- **Degraded or deferred connectivity never relaxes the contract.** A request a mobile consumer issues under intermittent or offline conditions is validated before it is acted upon (§6, `security-policy.md` §5) exactly as any other, and never discloses beyond the consumer's scope (§6); connectivity state is never a path to act on an unvalidated request. How a mobile artifact is packaged and delivered is owned by the publishing capability (C-10) and is outside this model; the parity requirement is never met by narrowing the contract itself.
+
+### 9.3 Builder-Facing Version Control (C-21)
+
+- **The version-control operations are builder-facing contracts.** Versioning, comparing, reverting, and managing the releases of a built application (`prd.md` §4) are each request/response contracts within §3, bound by §4–§8; a builder relies on their shape and stability as on any other contract.
+- **A built-application version is content the contract carries, never the contract's own version.** The version identifier of §4 identifies the platform contract a consumer interacts with; the version of a built application that C-21 manages is builder-facing content carried through the contract. The two are never conflated — versioning a built application neither versions nor implies a new version of the contract (§4).
+- **A returned version is immutable and provenance-bearing.** Consistent with C-21, a response returning a versioned artifact returns it as the immutable, provenance-bearing artifact it was recorded as; the contract never returns a version whose content or provenance has silently changed, and altering what a published version's response returns is a breaking change under §5.
+- **A revert is a reversible, integrity-preserving contract outcome.** The revert operation carries the defined reversal path §5 requires (INV-08) and never returns an outcome that corrupts or silently drops committed data — the safe-revert constraint of C-21, subject to the referential-integrity rules of `data-model-and-entity-spec.md`; a revert that cannot be established as integrity-preserving does not proceed (deny-by-default, §5).
+- **The boundary to platform-internal version control holds at the contract surface.** These contracts expose only the builder-facing version control of built applications; the platform's own internal change and version control (`change-management-and-evolution-policy.md`) is a distinct, platform-internal concern, never exposed or conflated through them — the boundary C-21 draws, preserved where the contract is consumed.
+
+Nothing in this section creates an exception to §4–§8; where any surface here meets another consideration it is resolved by the precedence of §10 and the binding rules of §11.
+
+---
+
+## 10. Precedence and Ownership Boundaries
 
 When a rule in this model meets any other consideration, it is resolved by the fixed precedence of `system-invariants.md` §6, which extends the trade-off rule of `value-proposition-and-success-metrics.md` §7.
 
@@ -137,7 +168,7 @@ This document owns versioning and deprecation policy for API contracts, backward
 
 ---
 
-## 10. Binding Rules
+## 11. Binding Rules
 
 These rules hold for every contract, consumer, and change subject to this model and are subordinate to the charter.
 
@@ -147,5 +178,6 @@ These rules hold for every contract, consumer, and change subject to this model 
 - **Every request, response, and error follows the same shape conventions.** Validation precedes action, responses and errors alike identify their governing version, and neither discloses beyond the requester's scope.
 - **A breaking change never proceeds without human sign-off and a defined reversal path.** Sign-off and reversibility are both required before release, not after.
 - **Breaking-change detection blocks a release until resolved.** No release proceeds with an unresolved breaking change lacking sign-off, and the gate is never bypassed to meet a schedule.
+- **The most recently added builder-facing capabilities expose contracts bound by this model in full.** The AI-assisted tooling (C-19), a built application's mobile form (C-20), and the builder-facing version-control operations (C-21) are each governed by §4–§8 without exception: an AI output is a suggestion until the builder confirms it, a mobile consumer is never granted a weaker guarantee, and a built-application version is never the contract's own version.
 - **The builder/built separation holds throughout.** The platform owns the contract's shape and guarantees; the specific data a contract carries remains the builder's own.
 - **Everything remains domain-neutral and platform-level.** No rule in this document encodes the characteristics of any single domain; all remain valid for any consumer, any tenant, and any built artifact.
