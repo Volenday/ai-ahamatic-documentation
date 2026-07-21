@@ -14,8 +14,8 @@
 
 ## Foundation Sprint (T1–T36)
 
-| #   | Ticket Title                           | Status  | Output File                                      | Depends On     |
-| --- | -------------------------------------- | ------- | ------------------------------------------------ | -------------- |
+| #   | Ticket Title                           | Status  | Output File                                          | Depends On     |
+| --- | -------------------------------------- | ------- | ---------------------------------------------------- | -------------- |
 | T1  | Context Document Map                   | ✅ Done | `docs/spec/context-document-map.md`                   | —              |
 | T2  | Vision and Charter                     | ✅ Done | `docs/spec/vision-and-charter.md`                     | T1             |
 | T3  | Product Requirements Document          | ✅ Done | `docs/spec/prd.md`                                    | T1, T2         |
@@ -57,31 +57,70 @@
 
 ## Map Update
 
-| #         | Ticket Title                         | Status  | Output File                    | Depends On |
-| --------- | ------------------------------------ | ------- | ------------------------------ | ---------- |
+| #         | Ticket Title                         | Status  | Output File                         | Depends On |
+| --------- | ------------------------------------ | ------- | ----------------------------------- | ---------- |
 | T1-Update | Context Document Map — LCAP Revision | ✅ Done | `docs/spec/context-document-map.md` | T1         |
 
-> **Note:** T1-Update revises the map to reflect the LCAP identity, the citizen-developer exclusion, capabilities C-18 through C-22, and the two new reference documents. It was completed via lean reconciliation aligned to the T37–T47 roadmap — C-18 through C-22 are recorded as capability entries in `prd.md` and `platform-capability-model.md` rather than as standalone spec documents, and only two new documents (`competitive-landscape.md`, `industry-standards-and-benchmarks.md`) are added to the map.
+> **Note:** T1-Update revised the map for LCAP identity, the citizen-developer exclusion, and capabilities C-18 through C-22 (lean reconciliation; C-18–C-22 recorded as capability entries, only two new documents added).
 
 ---
 
-## Improvement Roadmap (T37–T47)
+## Improvement Roadmap (T37–T47) — ✅ Complete
 
-All roadmap tickets are pending. Type indicates whether the ticket creates a new document or updates an existing one.
+| #   | Ticket Title                                          | Status  | Output File                                                | Type   |
+| --- | ----------------------------------------------------- | ------- | ---------------------------------------------------------- | ------ |
+| T37 | LCAP Identity and LCNC Categorization                 | ✅ Done | `docs/spec/vision-and-charter.md`                          | Update |
+| T38 | Document Citizen Developer as Strategic Exclusion     | ✅ Done | `docs/spec/vision-and-charter.md`, `docs/spec/personas-and-roles.md` | Update |
+| T39 | Add Workflow and Process Automation Capability (C-18) | ✅ Done | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md` | Update |
+| T40 | Add AI-Assisted Builder Tooling Capability (C-19)     | ✅ Done | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md` | Update |
+| T41 | Add Mobile Application Capability (C-20)               | ✅ Done | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md` | Update |
+| T42 | Add Builder-Facing Version Control (C-21)             | ✅ Done | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md` | Update |
+| T43 | Add Multi-Language Code Export (C-22)                 | ✅ Done | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md` | Update |
+| T44 | Update Value Proposition with Market-Driven Benchmarks | ✅ Done | `docs/spec/value-proposition-and-success-metrics.md`      | Update |
+| T45 | Add Security Certification Roadmap                    | ✅ Done | `docs/spec/security-policy.md`                             | Update |
+| T46 | Competitive Landscape Reference Document              | ✅ Done | `docs/spec/competitive-landscape.md`                      | Create |
+| T47 | Gartner Industry Standards Reference Document         | ✅ Done | `docs/spec/industry-standards-and-benchmarks.md`          | Create |
 
-| #   | Ticket Title                                          | Status     | Output File                                                   | Depends On                              | Type    |
-| --- | ----------------------------------------------------- | ---------- | ------------------------------------------------------------- | --------------------------------------- | ------- |
-| T37 | LCAP Identity and LCNC Categorization                 | ⏳ Next    | `docs/spec/vision-and-charter.md`                                  | T2, T1-Update                           | Update  |
-| T38 | Document Citizen Developer as Strategic Exclusion     | ⬜ Pending | `docs/spec/vision-and-charter.md`, `docs/spec/personas-and-roles.md`    | T37, T5                                 | Update  |
-| T39 | Add Workflow and Process Automation Capability (C-18) | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`            | T37, T3, T4                             | Update  |
-| T40 | Add AI-Assisted Builder Tooling Capability (C-19)     | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`            | T37, T39                                | Update  |
-| T41 | Add Mobile Application Capability (C-20)              | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`            | T37, T39, T40                           | Update  |
-| T42 | Add Builder-Facing Version Control (C-21)             | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`            | T37, T39, T40                           | Update  |
-| T43 | Add Multi-Language Code Export (C-22)                 | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`            | T37, T39, T40                           | Update  |
-| T44 | Update Value Proposition with Market-Driven Benchmarks | ⬜ Pending | `docs/spec/value-proposition-and-success-metrics.md`              | T37, T38, T39, T40, T41, T42, T43, T7   | Update  |
-| T45 | Add Security Certification Roadmap                    | ⬜ Pending | `docs/spec/security-policy.md`                                     | T9                                      | Update  |
-| T46 | Competitive Landscape Reference Document              | ⬜ Pending | `docs/spec/competitive-landscape.md`                               | T1-Update, T3, T4                       | Create  |
-| T47 | Gartner Industry Standards Reference Document         | ⬜ Pending | `docs/spec/industry-standards-and-benchmarks.md`                   | T1-Update, T3, T4                       | Create  |
+> **C-22 framing (T43):** Multi-Language Code Export is the export/generation of a built application's code in multiple **programming languages** (target languages TBD, not authorized). It has nothing to do with human-language UI localization. The agent must not conflate the two.
 
-> **C-22 framing (T43):** Multi-Language Code Export is the export/generation of a built application's code in multiple **programming languages** (target languages TBD, not authorized for immediate implementation). It has nothing to do with human-language UI localization, which is a separate, unticketed feature. The agent must not conflate the two.
+---
+
+## Post-Roadmap Consistency Work (T48–T52) — ✅ Complete
+
+| #   | Ticket Title                                          | Status  | Output File                                                        | Type   |
+| --- | ---------------------------------------------------- | ------- | ----------------------------------------------------------------- | ------ |
+| T48 | Propagate new capabilities/terms into the glossary   | ✅ Done | `docs/spec/domain-glossary.md`                                     | Update |
+| T49 | Add user journeys for the new capabilities            | ✅ Done | `docs/spec/user-journeys.md`                                       | Update |
+| T50 | Add Builder-Facing Environment Management (C-23)      | ✅ Done | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`        | Update |
+| T51 | Record citizen-developer model out-of-scope in PRD   | ✅ Done | `docs/spec/prd.md` (landed with T50)                              | Update |
+| T52 | Propagate C-23 and reconcile persona capability maps | ✅ Done | `docs/spec/domain-glossary.md`, `user-journeys.md`, `personas-and-roles.md` | Update |
+
+---
+
+## Post-Review Spec Updates (T53–T62) — from the gap-review decisions
+
+See `OPEN-GAPS-FOR-REVIEW.md`. All specification-phase; they run before the design phase.
+
+| #   | Ticket Title                                              | Status     | Output File                                                       | Gap |
+| --- | -------------------------------------------------------- | ---------- | ---------------------------------------------------------------- | --- |
+| T53 | Extend security threat model for AI-assisted tooling      | ⏳ Next    | `docs/spec/security-policy.md`                                    | G-1 |
+| T54 | Add interface coverage for C-19, C-20, C-21               | ⬜ Pending | `docs/spec/api-contract-spec.md`, `docs/spec/integration-and-extensibility-spec.md` | G-2 |
+| T55 | Formalize Future / Not-Yet-Approved Capabilities category | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/context-document-map.md`           | G-6 |
+| T56 | Add Cross-System Data Layer (C-24)                        | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
+| T57 | Add Connector Marketplace (C-25)                         | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
+| T58 | Add Runtime AI Automation as future capability (C-26)    | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
+| T59 | Propagate C-24–C-26 + re-sync capability count           | ⬜ Pending | `docs/spec/domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md`, library-wide | G-3 |
+| T60 | Update competitive landscape with frontier-gap resolutions | ⬜ Pending | `docs/spec/competitive-landscape.md`                            | G-3 |
+| T61 | Triage industry-benchmark remediation list               | ⬜ Pending | analysis → follow-up tickets                                     | G-4 |
+| T62 | Documentation-consistency mechanism                      | ⬜ Pending | `.claude/skills/…`, `docs/spec/change-management-and-evolution-policy.md` | G-5 |
+
+---
+
+## Design Phase (H-series)
+
+Begins after T53–T62. Produces the "how" library in `docs/design/`.
+
+| #  | Ticket Title                  | Status     | Output File                              |
+| -- | ----------------------------- | ---------- | ---------------------------------------- |
+| H1 | Implementation Document Map   | ⬜ Pending | `docs/design/implementation-document-map.md` |
 ```
