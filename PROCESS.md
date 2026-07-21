@@ -62,6 +62,12 @@ The `.claude/skills/` copies are the **source of truth**. The Claude desktop app
 
 ## 4. Ticket-prompt format
 
+**Orchestrator deliverable — always two labeled parts, never one without the other:**
+1. **Chat session name** — `<ID> — <Title>` (e.g. `T53 — Extend Security Threat Model for AI-Assisted Tooling`). The user needs this to name the new Executor session; **never omit it.**
+2. **Ticket system prompt** — the block in the structure below.
+
+For the **first ticket of a phase** (no prior handoff), also provide a **bridging handoff** for the user to paste at step 6.
+
 Every ticket system prompt follows this structure:
 
 ```
