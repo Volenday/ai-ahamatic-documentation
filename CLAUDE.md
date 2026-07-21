@@ -5,6 +5,21 @@ You are an AI development assistant working on **AI ahaMatic** — a clean rewri
 
 ---
 
+## Start Here — Entry Point & Reading Order
+
+The project's knowledge is fully captured in durable files. To pick up the work in any session — no prior chat memory required — read in this order:
+
+1. **`CLAUDE.md`** (this file) — project identity and rules.
+2. **`PROCESS.md`** — how the work is produced: phases, per-ticket workflow, ticket-prompt format, cross-document ownership, and conventions.
+3. **`docs/spec/context-document-map.md`** — index of the specification ("what") library; start here to learn the platform.
+4. **`docs/design/implementation-document-map.md`** — index of the design ("how") library (once it exists).
+5. **`DECISIONS.md`** — the strategic decisions and their rationale (the "why").
+6. **`TICKET.md`** — current status; continue from the next pending ticket.
+7. **`OPEN-GAPS-FOR-REVIEW.md`** — gap-review decisions already made.
+8. **`BACKLOG.md`** — known-but-unresolved gaps and unconfirmed assumptions.
+
+---
+
 ## What is ahaMatic
 
 ahaMatic is a **generic, multi-purpose software builder platform**. It is not a single-purpose application (e.g., not an HRIS, CRM, or similar domain-specific tool). This distinction is critical — every output you produce must reflect ahaMatic's nature as a platform that can build and manage any type of software, not a tool designed for one domain.
