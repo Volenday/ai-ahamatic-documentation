@@ -2,7 +2,7 @@
 
 The durable reference for **how** the AI ahaMatic documentation is produced — the phases, workflow, ticket format, and conventions — so any session or person can continue the work without relying on prior chat memory.
 
-Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPEN-GAPS-FOR-REVIEW.md` (gap-review decision log), `docs/spec/context-document-map.md` (spec library index), `docs/design/implementation-document-map.md` (design library index, once produced).
+Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPEN-GAPS-FOR-REVIEW.md` (gap-review decision log), `DECISIONS.md` (strategic decision rationale), `BACKLOG.md` (known-gaps backlog), `docs/spec/context-document-map.md` (spec library index), `docs/design/implementation-document-map.md` (design library index, once produced).
 
 ---
 
@@ -92,6 +92,7 @@ Generation rules:
 - **Current set:** C-01–C-21 active · **C-22** future (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-23** active (builder-facing environment management).
 - **Approved, not yet added:** **C-24** cross-system data layer (active) · **C-25** connector marketplace (active, distinct from C-13) · **C-26** runtime AI automation inside built apps (future). Desktop/RPA was **declined**.
 - **Adding or changing a capability requires full propagation** (see §6): `prd.md` + `platform-capability-model.md` (definition) → `domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md` (propagation) → re-sync the capability enumeration/count across **all** documents that cite it, **including `context-document-map.md`**.
+- **UI Localization is a separate, not-yet-ticketed feature** — human-interface-language localization (English + Spanish now; broader European later). It is distinct from C-22 (programming-language *code* export), has **no capability number**, and must never be conflated with C-22. It is a candidate for the Future Capabilities treatment (see T55) if/when it is ticketed.
 
 ---
 
@@ -101,6 +102,7 @@ Whenever a capability or shared concept is added or changed, **propagate it acro
 
 - After any capability change, grep the library for the capability range/count and the concept, and update every hit.
 - Treat `context-document-map.md` as part of the propagation surface — it is the spec library's index and must always reflect the current capability set and document list.
+- **Map authority:** `context-document-map.md` is navigational, not authoritative. If it ever conflicts with a spec document, the **spec prevails** — update the map to match the spec, never the reverse.
 
 ---
 
@@ -114,9 +116,62 @@ Whenever a capability or shared concept is added or changed, **propagate it acro
 | `docs/design/implementation-document-map.md` | Index of the design ("how") library (produced by H1) |
 | `CLAUDE.md` | Project rules and folder behavior |
 | `PROCESS.md` (this file) | How the work is produced — workflow, format, conventions |
+| `DECISIONS.md` | **Why** the platform is shaped as it is — strategic decisions, rationale, rejected alternatives |
+| `BACKLOG.md` | Known-but-unresolved gaps, candidate areas, and unconfirmed assumptions not yet ticketed |
+
+**Research inputs (`references/research/`):** the competitive analysis is a *secondary* synthesis (produced via an LLM with live web search, not primary vendor documentation) and the Gartner material is *publicly-available* data, not a licensed report. Treat both as **directional, not authoritative**, and surface that caveat wherever their findings are cited (`competitive-landscape.md`, `industry-standards-and-benchmarks.md`) — to be applied durably in T60/T61.
+
+- **Specific figures carried from those inputs — all UNVERIFIED / SECONDARY, directional only:** a ~85 million global developer shortage by 2030; 70–75% of new enterprise applications built via LCNC by 2026; 80%+ of LCNC users sitting outside IT; a 3.5/5.0 threshold for enterprise-grade suitability. Cite any of these only with the directional caveat; never present one as a settled or licensed Gartner finding. `value-proposition-and-success-metrics.md` currently presents the first two as "Gartner projects/forecasts" / "Gartner-validated" and is **not** yet in the caveat list above — see the re-caveat follow-up in `BACKLOG.md` §4.
+- **The "Visionary" Magic-Quadrant positioning is our own analytical judgment, not a Gartner finding.** Any placement of AI ahaMatic in a Magic-Quadrant quadrant (e.g. "Visionary") is an internal analytical read for internal reasoning only. It must never be stated as a Gartner result or made as an external claim.
 
 ---
 
 ## 8. Resuming after a session change
 
-To pick up the work in a fresh session, read: `CLAUDE.md`, `PROCESS.md`, `TICKET.md`, `OPEN-GAPS-FOR-REVIEW.md`, and the relevant map — then continue from the next pending ticket in `TICKET.md`. Everything needed to continue lives in these files; no prior chat memory is required.
+To pick up the work in a fresh session, read: `CLAUDE.md`, `PROCESS.md`, `TICKET.md`, `OPEN-GAPS-FOR-REVIEW.md`, `DECISIONS.md`, `BACKLOG.md`, and the relevant map — then continue from the next pending ticket in `TICKET.md`. Everything needed to continue lives in these files; no prior chat memory is required.
+
+---
+
+## 9. Workflow rationale — why the session is assembled the way it is
+
+The per-ticket workflow (§3) is not arbitrary; it exists to keep each session correctly framed, atomically scoped, and cheap to resume.
+
+- **The three-layer context stack, applied in order.** Every ticket session is assembled from three layers, and the order is load-bearing:
+  1. **Layer 1 — Context** (`/ai-aha-context`, `CLAUDE.md`, `PROCESS.md`): the durable project frame — what ahaMatic is, the rules, the folder behavior, the conventions. Loaded first because every layer below inherits it.
+  2. **Layer 2 — Handoff** (the previous ticket's handoff summary): routes the session to the current on-disk state and the specific decisions and constraints the next ticket must honor.
+  3. **Layer 3 — Ticket** (the ticket system prompt): the single atomic task.
+
+  Frame before state before task. A ticket read without its frame drifts toward a single domain or a rejected alternative; state read without its frame is uninterpretable.
+- **The handoff is a context *router*, not a content *duplicator*.** A handoff points the next session at what to read and what to honor — files, decisions, constraints — and defers to those sources for their content. It never re-contains the library. Duplicated content goes stale the moment its source changes; a router stays correct because the source remains authoritative.
+- **Planning is split from Code Mode execution.** Ticket prompts are generated **just-in-time** in a planning pass (see §4), from the current on-disk state; each ticket is then executed **atomically in its own Code Mode session**. Keeping planning out of the execution session preserves atomic execution and keeps the execution context uncontaminated by scope beyond the ticket.
+- **Transition before context degrades.** Hand off and start a fresh session *before* the working context grows long enough to erode quality — not after. The durable files (this file, the trackers, the maps, `DECISIONS.md`, `BACKLOG.md`) exist precisely so a transition costs nothing: everything needed to continue is already on disk.
+
+---
+
+## 10. Cross-document ownership map
+
+Where each shared rule's **particulars** live. This complements §6: §6 says *propagate a change to every document that cites it*; this map says *which document owns the canonical statement* so a session never restates or re-owns a rule another document governs. Precedence (§11) is invoked only for a genuine conflict — ownership is the normal case (`agent-operating-charter.md` §4: "precedence resolves conflicts, not ownership"). Verified against the on-disk specs (2026-07-21).
+
+| Rule / particular | Owned by | Note |
+|---|---|---|
+| **INV-04 (data integrity)** — its detailed rules | `data-model-and-entity-spec.md` | `system-invariants.md` states the invariant; the data-model owns the referential-integrity, validation, and migration-safety particulars |
+| **INV-03 (no secret exposure)** — its detailed handling | `security-policy.md` §4 (secrets handling) **and** `agent-state-and-memory-spec.md` §8 (no sensitive data retained in memory) | split across the output side and the memory side |
+| **Vulnerability severity thresholds** that block release | `security-policy.md` §6 | |
+| **Rollback** path, triggers, time-to-recover | `release-and-rollback-protocol.md` | |
+| **Approval routing** — approval-gate triggers and how approval is requested/recorded | `human-in-the-loop-protocol.md` §5–§6 | |
+| **Document-precedence order** (conflict resolution) | `agent-operating-charter.md` §4 | |
+| **Vocabulary vs. data rules** | `domain-glossary.md` owns canonical term definitions and disallowed synonyms; `data-model-and-entity-spec.md` owns the detailed rules behind data terms | the glossary *names*; the data-model *governs* |
+| **The audit record is authoritative** over recollection | `audit-and-traceability.md` §3 | an unlogged action "did not occur traceably"; a sequence is reconstructed without recourse to memory, assumption, or an actor's own account |
+
+---
+
+## 11. Meta-distinctions that must never collapse
+
+- **Precedence-hierarchy intent — capability intent ranks *below* the quality floors.** The fixed precedence order (`agent-operating-charter.md` §4) places the charter at the apex (rank 1), then the invariants (rank 2), then the governance/security, architecture, and delivery floors (ranks 3–5), and only then **capability intent and success targets** (rank 6: `prd.md`, `platform-capability-model.md`, `personas-and-roles.md`, `user-journeys.md`, `value-proposition-and-success-metrics.md`), with meta-operations conduct last (rank 7). A capability's intent, a success target, or a request is pursued **only in the space the floors above leave intact** — a higher guarantee is never spent to satisfy a lower objective.
+- **Derivation order ≠ precedence-on-conflict order.** The order documents are *read/derived* — the pyramid Business & UX → Governance → Architecture → DevOps → Meta (see `context-document-map.md`) — is **not** the order in which they *win a conflict*. The starkest illustration: the Business & UX documents are derived *first* (top of the reading pyramid) yet rank *sixth* in conflict precedence. Never infer conflict precedence from reading order or from the map's layout; conflict precedence is owned solely by `agent-operating-charter.md` §4.
+- **The three-instrument distinction — never collapse an invariant, a release gate, and a guardrail metric.** These are three distinct enforcement instruments:
+  - an **invariant** (`system-invariants.md`) is a binary property that must hold continuously across every phase; a breach halts execution and escalates.
+  - a **release gate** (`prd.md` G-series and the pipeline gates) is a checkpoint a change must pass to advance through the pipeline.
+  - a **guardrail metric** (`value-proposition-and-success-metrics.md`, quantified in `non-functional-requirements.md`) is a measured value that must not degrade while other targets are optimized.
+
+  They interact but are never interchangeable: an invariant is not "a gate you pass once," a gate is not "a metric," and a metric is not "an invariant." Collapsing any two loses the distinct enforcement each one carries.
