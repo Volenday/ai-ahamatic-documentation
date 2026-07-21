@@ -39,6 +39,8 @@ The posture is domain-neutral: it defends the generic platform and any software 
 
 The threat model names **what must be protected, from whom, and at which boundaries** — at the platform level and for any built artifact. It does not enumerate techniques or implementations; it defines the categories of harm the posture exists to prevent.
 
+The model covers the **AI-assisted builder tooling (C-19)** and the artifacts it generates as part of the builder layer. AI-assisted production never places an artifact outside the posture: the tooling is both an asset to protect and an attack surface to defend, and a generated artifact is subject to every rule and boundary here exactly as a human-authored one is.
+
 ### 3.1 Assets Under Protection
 
 | Asset | What Must Be Protected |
@@ -49,6 +51,7 @@ The threat model names **what must be protected, from whom, and at which boundar
 | Platform core and primitives | The platform-provided primitives (C-01–C-23), protected from corruption, unauthorized change, and absorption of untrusted content. |
 | Committed data | The validity, consistency, and referential correctness of committed data, protected from corruption or silent loss (INV-04). |
 | Extension and marketplace surface | The trust boundary around builder- and third-party-supplied extensions, protected from becoming a path to escalated reach (C-11, C-13). |
+| AI-assisted builder tooling and its output | The AI-assisted builder tooling (C-19) and the integrity of the artifacts it generates, protected from manipulation of the tooling into unintended or unauthorized output and from any generated artifact being trusted, or crossing a boundary, before it is validated. |
 
 ### 3.2 Trust Boundaries
 
@@ -62,6 +65,7 @@ Security is enforced at the boundaries where trust changes. A crossing of any bo
 | Extension boundary | The platform core from builder- and third-party-supplied extensions, which act only within their granted scope. |
 | Region boundary | One operating region and its obligations from another (C-14, gate G-4). |
 | Built-application surface | A built artifact's public or authenticated surface — where its own end users and public consumers act — from the platform beneath it. |
+| AI-assisted-tooling boundary | The AI-assisted builder tooling (C-19), a builder-layer primitive alongside the builder / built and extension boundaries, from the untrusted input crossing into it and the not-yet-validated artifacts crossing out of it; its inputs are untrusted, and its outputs are untrusted artifacts subject to the same validation (§5) and secrets rules (§4) as any other artifact. |
 
 ### 3.3 Threat Categories
 
@@ -75,6 +79,8 @@ The posture defends against the following categories of threat. Each is stated a
 | Injection and malformed input | Any untrusted input that alters the intended behavior of the platform or a built artifact, or reaches a boundary it was not validated for — governed by §5. |
 | Data tampering and corruption | Any change that corrupts, silently drops, or invalidates committed data — the breach of INV-04. |
 | Extension and supply-boundary abuse | Any extension or offered artifact that acquires reach beyond its grant, injects untrusted content into the core, or crosses a tenant boundary — the breach of the extension boundary. |
+| Prompt injection | Any untrusted input — data, builder-supplied content, or content surfaced from a built artifact or extension — that manipulates the AI-assisted builder tooling (C-19) into producing unintended, unauthorized, or unsafe output; the AI-assisted-tooling form of injection, governed by §5, and where it defeats authorization or isolation a breach of INV-02 or INV-01. |
+| AI-generated-artifact risk | Any artifact produced with AI-assisted tooling (C-19) that carries a vulnerability, an embedded secret (INV-03, §4), an insecure pattern, or license-encumbered, untrusted, or injected content, and is granted trust or allowed to cross a boundary before validation; a generated artifact is untrusted until validated (§5) — its platform origin never confers trust — and realizing this risk breaches whichever invariant the defect implicates. |
 
 Where a threat in this model corresponds to an invariant, realizing that threat **is** an invariant violation and is governed by the blocking-check and halt-and-escalate rule of `system-invariants.md` §3. This document adds the standing rules and thresholds that keep such threats from arising.
 
@@ -102,6 +108,7 @@ Untrusted input is any input the platform or a built artifact receives from outs
 
 - **Validate at every trust boundary.** Every input crossing a boundary of §3.2 is validated for conformance to what that boundary expects before it is acted upon. Input that cannot be established as conforming is refused, not accepted on assumption — the deny-by-default rule of `system-invariants.md` §3 applies to input as it does to any change.
 - **Injection is prevented, not merely detected.** No untrusted input may be interpreted in a way that alters the intended behavior of the platform or a built artifact, or that causes it to act outside the actor's authorization. The requirement is that such interpretation cannot occur, not that its effects are noticed afterward.
+- **AI-assisted generation is bound by the same rule.** Input crossing the AI-assisted-tooling boundary of §3.2 is untrusted and validated as any other input is; it may never be interpreted as instruction that drives the AI-assisted builder tooling (C-19) to act outside the actor's authorization, and such interpretation must be unable to occur, not merely noticed afterward. An artifact the tooling generates is itself untrusted until validated: its platform origin confers no trust, and it is held to these validation rules and to the secrets rules of §4 before it crosses any boundary, exactly as any other artifact is.
 - **The requirement holds for both layers.** The platform validates input to its own primitives, and it provides builders the generic means to validate input to the software they build. Input validation is a platform primitive expressed in domain-neutral terms; the specific rules a builder applies to their own data are builder-defined artifacts and are governed by `data-model-and-entity-spec.md`, never absorbed into the core.
 - **Validation never crosses a boundary it does not own.** Validating input never becomes a path to observe another tenant, escalate authority, or reach across a region — a control may not itself breach an invariant it exists to protect.
 
@@ -139,6 +146,7 @@ A **security review** is a required examination of a change against this policy 
 | Change touching secrets handling | Any change to how secrets are supplied, stored, rendered, or logged bears directly on INV-03. |
 | Change to identity, authorization, or isolation | Any change affecting C-01, C-02, or C-03, or the personas and grants of `personas-and-roles.md`, bears on INV-01 and INV-02. |
 | Introduction or change of an extension or offered artifact | Any change crossing the extension boundary (C-11, C-13) can widen reach or introduce untrusted content into the core. |
+| Introduction or change of AI-assisted builder tooling, or reliance on an AI-generated artifact at a boundary | Any change to the AI-assisted builder tooling (C-19), or a decision to rely on an artifact it generated where that artifact crosses a trust boundary of §3.2, can move the posture through the prompt-injection and AI-generated-artifact threats of §3.3 and must be reviewed. |
 | Any Critical or High vulnerability | A vulnerability at the release-blocking threshold of §6 mandates review as part of its remediation. |
 | Uncertainty about security impact | Where it cannot be established that a change is free of security impact, a review is required — the deny-by-default posture applied to review itself. |
 
@@ -218,6 +226,7 @@ These rules hold for every change subject to this policy and are subordinate to 
 - **The posture protects both layers.** Every security rule applies to the platform core and to every built artifact alike; neither layer's security is traded for the other's, and the builder / built line is preserved.
 - **Secrets are never exposed.** No secret appears in any output, log, artifact, stored state, code, or configuration, or is disclosed to any actor not authorized to hold it; this is the absolute form of INV-03 and is never relaxed.
 - **Untrusted input is validated at every boundary.** Input that cannot be established as conforming is refused, and no untrusted input may alter intended behavior or cross a boundary it was not validated for.
+- **AI-generated artifacts are untrusted until validated.** An artifact produced with AI-assisted builder tooling (C-19) is granted no trust by virtue of its platform origin; it is validated and held to the secrets rules before it crosses any boundary, and input to that tooling may never be interpreted as instruction that drives it outside an actor's authorization.
 - **Critical and High vulnerabilities block release.** No release proceeds with an unresolved Critical or High vulnerability, and a vulnerability that breaches an invariant halts and escalates when found, in any phase.
 - **Security review is mandatory on its triggers.** A change meeting any trigger of §7 does not advance until its review is complete; uncertainty about security impact is itself a trigger.
 - **Security invariants are floors, not targets.** The security guarantees are never treated as success metrics and never spent to gain one; a breach is never a net gain.
