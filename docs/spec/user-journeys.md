@@ -2,7 +2,7 @@
 
 This document preserves the **end-to-end experience** of building, configuring, publishing, and operating software on AI ahaMatic. It states **what** each journey is and what must hold true as an actor moves through it — the sequence of intent an actor pursues and the guarantees that must never break along the way. It does not describe how any journey is designed, rendered, or implemented.
 
-This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-23) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, and the personas defined in `personas-and-roles.md`, rather than re-enumerating them. It introduces no new personas. Every journey is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
+This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-26) and release gates (G-1–G-6) defined in `prd.md`, the primitive families defined in `platform-capability-model.md`, and the personas defined in `personas-and-roles.md`, rather than re-enumerating them. It introduces no new personas. Every journey is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
 
 ---
 
@@ -58,8 +58,10 @@ Build-time journeys are the experiences of the builder personas. They follow the
 | Version control of built applications | Application builder, operator | Versioning the applications they build, comparing versions, reverting to an earlier version, and managing releases over an application's life — over the builder's own applications only, never the platform's internal version control, and along a revert path that never corrupts live data. | C-21 |
 | Environment promotion across stages | Operator | Promoting a built application across its own Development, Testing, and Production stages as one governed flow — advancing it from one stage to the next only through gated promotion, keeping each application's environments isolated per tenant and per application, and obtaining explicit human approval before promotion to Production — over the builder's own applications only, never the platform's internal environment topology. | C-23 |
 | Publishing and distribution | Publisher | Publishing built software so its intended end users can reach it, and offering or obtaining software and extensions where a marketplace is used. | C-10, C-13 |
+| Connector offering and discovery | Publisher | Offering, discovering, and obtaining reusable, pre-built connectors — integrations to external systems — through the connector marketplace, with the platform's guarantees preserved across what is offered, distinct from the general marketplace of published software and extensions, and with every offered connector held to the mandatory security review before it is offered. | C-25 |
 | Mobile publishing and delivery | Publisher | Producing a mobile artifact of a built application and delivering it to a mobile target so its end users can reach it there, holding every guarantee that holds for non-mobile output, with web and mobile forms kept at parity except where divergence is expressly permitted. | C-20 |
 | Platform extension | Extender | Extending the platform through modules and its programmatic contract, strictly within a granted scope and without introducing domain content into the core. | C-11, C-12 |
+| Cross-system data access | Extender | Unifying access to data residing across multiple or external systems through a single, domain-neutral data-access layer — keeping all accessed data strictly tenant-scoped, treating external data as untrusted input validated at the boundary, and honoring the residency obligations of where the data resides — distinct from modeling the builder's own entities and schemas and from the module and programmatic-contract extension mechanisms. | C-24 |
 | Safe evolution | Operator, application builder | Changing, maintaining, and deprecating built software over time on a managed path that preserves every guarantee already made. | C-15, C-16, C-17 |
 
 ### 3.1 The Continuous Build-Time Flow
@@ -68,7 +70,7 @@ Lifecycle continuity (C-08) means these journeys are not isolated steps but one 
 
 ### 3.2 A Note on Not-Yet-Authorized Capabilities
 
-Multi-language code export (C-22) has no active build-time journey. It is a potential future capability that is not authorized for implementation; no journey is authored for it until it is explicitly authorized in a later revision of the PRD. It concerns programming-language code output only and must never be conflated with human-language UI localization.
+The platform's two **Future / Not-Yet-Authorized Capabilities** — multi-language code export (C-22) and runtime AI automation (C-26) — have no active build-time journey. Each is a future capability that is not authorized for implementation; no journey is authored for either until it is explicitly authorized in a later revision of the PRD. Multi-language code export concerns programming-language code output only and must never be conflated with human-language UI localization; runtime AI automation is AI automation that executes inside a built application at runtime and must never be conflated with the active, build-time AI-assisted builder tooling (C-19).
 
 ---
 
@@ -148,7 +150,7 @@ Every journey must account for the states in which the happy path does not hold.
 - **A newly established tenant** holds authority but no built software; the tenant-establishment journey ends in a valid empty state from which construction can begin.
 - **A newly constructed application** exists before any data is modeled or any end user is admitted; the application-construction and run-time journeys must remain coherent when nothing has yet been created.
 - **An unpublished or unpopulated offering** — a marketplace with nothing offered, or an application not yet published — is a valid empty state, not a failure.
-- **A built application with nothing yet modeled, versioned, promoted, or delivered to mobile** — no process yet modeled across it (C-18), no version yet captured (C-21), no stage yet promoted beyond Development (C-23), or no mobile artifact yet delivered to a mobile target (C-20) — is a valid empty state, not a failure.
+- **A built application with nothing yet modeled, versioned, promoted, delivered to mobile, or connected to external systems** — no process yet modeled across it (C-18), no version yet captured (C-21), no stage yet promoted beyond Development (C-23), no mobile artifact yet delivered to a mobile target (C-20), no external system yet connected through the cross-system data layer (C-24), and no connector yet obtained from the connector marketplace (C-25) — is a valid empty state, not a failure.
 
 ### 7.2 Error States
 

@@ -2,7 +2,7 @@
 
 This document distinguishes the actors who **build with** the platform from the actors who **use the software built on it**, and establishes the role hierarchy, per-role permission expectations, and tenancy implications that every actor is subject to. It is a Strategy-phase artifact and answers **what** the personas and roles are, not how identity, permissions, or tenancy are implemented.
 
-This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-23) and release gates (G-1–G-6) defined in `prd.md`, and the primitive families defined in `platform-capability-model.md`, rather than re-enumerating them. Every persona named here is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-26) and release gates (G-1–G-6) defined in `prd.md`, and the primitive families defined in `platform-capability-model.md`, rather than re-enumerating them. Every persona named here is **platform-level and domain-neutral** — valid for any software built on the platform, never specific to one vertical.
 
 ---
 
@@ -26,7 +26,7 @@ The single organizing distinction in this document mirrors the primitive / artif
 - **Builder personas** use platform-provided primitives to create and operate software. They act on the platform.
 - **End-user personas** use the software a builder created. They act on a built artifact, never on the platform's primitives.
 
-A third plane sits above both: the **platform steward** — the actor that owns and operates the primitives themselves (C-01–C-23). The steward governs the boundary within which all builders and end users operate. Its internal role taxonomy is governed by `access-control-and-tenancy-model.md` and the Meta-Operations documents; this document acknowledges it only as the apex of the hierarchy and does not elaborate its roles.
+A third plane sits above both: the **platform steward** — the actor that owns and operates the primitives themselves (C-01–C-26). The steward governs the boundary within which all builders and end users operate. Its internal role taxonomy is governed by `access-control-and-tenancy-model.md` and the Meta-Operations documents; this document acknowledges it only as the apex of the hierarchy and does not elaborate its roles.
 
 ### 2.1 The Two Layers Contrasted
 
@@ -53,10 +53,10 @@ Builder personas are the actors who build with the platform, and they are **prof
 | Access administrator | Defines the builder-side roles, permissions, and access policy for the tenant and for the software it builds — the specific access artifacts the platform's access primitive makes possible. | C-02, C-03 |
 | Application builder | Constructs applications, models their data, entities, and schemas, configures their structure and behavior, models the processes that run across built software, and builds with AI-native assistance — bound to no predetermined domain. | Construction family (C-04, C-05, C-06, C-18, C-19) |
 | Operator | Runs the built software, carries it through its lifecycle as one governed flow, observes its real-world health and behavior, versions and manages the releases of what it has built, and promotes built applications across their Development, Testing, and Production stages. | Operation family (C-07, C-08, C-09, C-21, C-23) |
-| Publisher | Publishes built software so its intended end users can reach it — including delivering it to mobile targets — and offers or obtains software and extensions where a marketplace is used. | Reach family (C-10, C-13, C-20) |
-| Extender | Extends the platform through modules and its programmatic contract, without weakening core guarantees or introducing domain content into the core. | Extension family (C-11, C-12) |
+| Publisher | Publishes built software so its intended end users can reach it — including delivering it to mobile targets — and offers or obtains software, extensions, and reusable connectors where a marketplace is used. | Reach family (C-10, C-13, C-20, C-25) |
+| Extender | Extends the platform through modules and its programmatic contract, and unifies access to data residing across multiple or external systems, without weakening core guarantees or introducing domain content into the core. | Extension family (C-11, C-12, C-24) |
 
-The application builder's Construction family also carries one **potential future capability** — multi-language code export (C-22) — recorded for completeness but not authorized for implementation. It is not an active capability of the application builder and confers nothing until it is explicitly authorized in a later revision of the PRD; it concerns programming-language code output only and must never be conflated with human-language UI localization.
+The application builder's Construction family also carries the platform's two **Future / Not-Yet-Authorized Capabilities** — multi-language code export (C-22) and runtime AI automation (C-26) — recorded for completeness but not authorized for implementation. Neither is an active capability of the application builder, and each confers nothing until it is explicitly authorized in a later revision of the PRD. Multi-language code export concerns programming-language code output only and must never be conflated with human-language UI localization; runtime AI automation is AI automation that executes inside a built application at runtime and must never be conflated with the active, build-time AI-assisted builder tooling (C-19).
 
 The extender is a builder persona whose product extends the platform rather than being an ordinary application; like every builder persona, it operates strictly within its granted scope and never above the primitive / artifact line.
 
