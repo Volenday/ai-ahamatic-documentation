@@ -94,6 +94,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-13 | Marketplace | The means to offer and obtain published software and extensions, with the platform's guarantees preserved across what is offered. | C-10, C-11 |
 | C-14 | Multi-region operation | The means to operate across regions while honoring the obligations attached to where data and users reside. | C-01, C-07 |
 | C-20 | Mobile application capabilities | The means to package, publish, and deliver built software to mobile targets, bound to no predetermined domain — defining the supported mobile target scope; the parity and permitted-divergence rules between a built application's web and mobile forms; the device-capability and offline-behavior expectations mobile artifacts must meet; the publishing constraints specific to mobile targets; and the requirement that every platform guarantee holding for non-mobile output holds equally for mobile output. | C-04, C-06, C-10 |
+| C-24 | Cross-system data layer | The means for built software to access, integrate, and operate over data residing across multiple or external systems through a unified, domain-neutral data-access layer, bound to no predetermined domain — defining the unified access surface that presents disparate external and platform-resident data as one coherent layer; the guarantee that data drawn across systems remains strictly tenant-scoped (INV-01); the rule that credentials used to reach external systems are never exposed in code, configuration, logs, or stored state (INV-03; detailed handling under `security-policy.md` §4); the treatment of all data drawn from external systems as untrusted input validated at the boundary (`security-policy.md` §5); the obligation that cross-system data movement honors the residency and jurisdictional obligations of where data resides (C-14; `compliance-and-data-residency.md`); and the explicit boundary that separates this cross-system data-access capability from both a builder's modeling of their own entities and schemas (C-05) and the platform's module and programmatic-contract extension mechanisms (C-11, C-12), neither of which it absorbs or replaces. | C-04, C-05, C-06 |
 
 ### Tier 4 — Evolution
 
@@ -109,7 +110,7 @@ Beyond the active tiers, the capability model maintains a distinct category for 
 
 A capability marked *Future / Not-Yet-Authorized* is recorded for completeness only. While it holds this status, it:
 
-- occupies no priority tier and holds no build-order position among the active capabilities (C-01–C-21, C-23);
+- occupies no priority tier and holds no build-order position among the active capabilities (C-01–C-21, C-23, C-24);
 - carries a permanent, sequentially-assigned capability ID — assigned once and never renumbered or reused — even while it holds this status;
 - is neither designed nor built, and must not be implemented, expanded, or relied upon by any other capability or by any built software;
 - never gates a release: it is not among the release-gating capabilities of §5, and its absence never blocks a release;

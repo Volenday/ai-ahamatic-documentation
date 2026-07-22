@@ -2,7 +2,7 @@
 
 This document models the **primitives a generic builder platform must expose** — the domain-neutral capabilities with which any software can be built, its data modeled, its access configured, and its results published and operated — independent of what is built with them. It is a Strategy-phase artifact and answers **what** the platform's capabilities are and how they relate, not how any of them is designed or implemented.
 
-This model inherits its framing from the Vision and Charter and is subordinate to it; where this document appears to conflict with the charter, the charter prevails. The capabilities named here are the canonical set defined in the PRD (C-01–C-23); this document organizes and relates them, and cites those identifiers rather than re-enumerating them.
+This model inherits its framing from the Vision and Charter and is subordinate to it; where this document appears to conflict with the charter, the charter prevails. The capabilities named here are the canonical set defined in the PRD (C-01–C-24); this document organizes and relates them, and cites those identifiers rather than re-enumerating them.
 
 ---
 
@@ -69,7 +69,7 @@ For each kind of primitive, the platform supplies the generic means and the buil
 
 ## 4. Capability Taxonomy
 
-The canonical capabilities (C-01–C-23) are organized here into seven **primitive families** by the kind of capability each provides. This grouping is a functional lens and is distinct from the PRD's build-order tiers; a family may draw capabilities from more than one tier. Each family is domain-neutral and valid for any software built on the platform.
+The canonical capabilities (C-01–C-24) are organized here into seven **primitive families** by the kind of capability each provides. This grouping is a functional lens and is distinct from the PRD's build-order tiers; a family may draw capabilities from more than one tier. Each family is domain-neutral and valid for any software built on the platform.
 
 | Family | Purpose | Capabilities |
 |---|---|---|
@@ -77,7 +77,7 @@ The canonical capabilities (C-01–C-23) are organized here into seven **primiti
 | Construction | Create software, model its data and entities, configure its structure, behavior, and access, model the processes that run across it, and assist professional builders with AI-native tooling across construction — bound to no predetermined domain. | C-04, C-05, C-06, C-18, C-19, C-22 |
 | Operation | Run built software, carry it through its full lifecycle as one governed flow, version and manage the releases of built applications on the builder's behalf, promote those applications across their builder-facing Development, Testing, and Production stages, and observe the real-world health of platform and built software. | C-07, C-08, C-09, C-21, C-23 |
 | Reach | Carry built software to its intended end users — including packaging and delivering built software to mobile targets — and make published software and extensions discoverable and obtainable. | C-10, C-13, C-20 |
-| Extension | Extend the platform through modules and a stable programmatic contract, without weakening core guarantees or absorbing domain content into the core. | C-11, C-12 |
+| Extension | Extend the platform outward — through modules and a stable programmatic contract, and by unifying access to data that resides across multiple or external systems — without weakening core guarantees or absorbing domain content into the core. | C-11, C-12, C-24 |
 | Distribution | Operate across regions while honoring the obligations that attach to where data and users reside. | C-14 |
 | Evolution | Change the platform and built software over time — safely, recoverably, and on a managed path — without breaking prior guarantees. | C-15, C-16, C-17 |
 
@@ -86,7 +86,7 @@ The canonical capabilities (C-01–C-23) are organized here into seven **primiti
 - **Isolation and Trust** is the root of the model. No other family is meaningful without it, because every capability above assumes that actors are known, actions are governed, and tenants are separated.
 - **Construction** is where the generic-builder mandate is most directly expressed: the platform supplies only the means to build and model, never the subject matter. It also carries one potential future capability — multi-language code export (C-22) — recorded for completeness but not authorized for implementation until explicitly authorized; its target programming languages are undetermined, and it concerns programming-language code output only, never to be conflated with human-language UI localization.
 - **Operation** treats build, configure, publish, and operate as one continuous flow rather than isolated steps, and adds the ability to observe what is actually happening. It also carries builder-facing environment management (C-23) — the promotion of built applications across their Development, Testing, and Production stages — which governs the environments of the applications builders build and is distinct from the platform's own internal environment topology (owned under `environment-and-config-spec.md`); the two are never conflated.
-- **Reach** and **Extension** are the two ways the model expands outward — Reach carries built software to end users; Extension lets the platform itself grow — and both are constrained to preserve, never dilute, core guarantees.
+- **Reach** and **Extension** are the two ways the model expands outward — Reach carries built software to end users; Extension lets the platform itself grow — and both are constrained to preserve, never dilute, core guarantees. Extension also carries the cross-system data layer (C-24) — the unified, domain-neutral means for built software to access and operate over data residing across multiple or external systems — which is a distinct kind of extension from the module and programmatic-contract mechanism (C-11, C-12) and from a builder's modeling of their own entities and schemas (C-05, Construction); it is never conflated with either, and it extends the platform's data reach only within the platform's tenant-isolation, secrets-handling, input-validation, and residency guarantees.
 - **Distribution** governs where the platform operates and the obligations that follow from geography.
 - **Evolution** closes the loop: the platform and the software on it must be able to change over time without breaking commitments already made.
 

@@ -106,8 +106,8 @@ See `OPEN-GAPS-FOR-REVIEW.md`. All specification-phase; they run before the desi
 | T53 | Extend security threat model for AI-assisted tooling      | ✅ Done    | `docs/spec/security-policy.md`                                    | G-1 |
 | T54 | Add interface coverage for C-19, C-20, C-21               | ✅ Done    | `docs/spec/api-contract-spec.md`, `docs/spec/integration-and-extensibility-spec.md` | G-2 |
 | T55 | Formalize Future / Not-Yet-Authorized Capabilities category | ✅ Done | `docs/spec/prd.md`, `docs/spec/context-document-map.md`           | G-6 |
-| T56 | Add Cross-System Data Layer (C-24)                        | ⏳ Next    | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
-| T57 | Add Connector Marketplace (C-25)                         | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
+| T56 | Add Cross-System Data Layer (C-24)                        | ✅ Done    | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
+| T57 | Add Connector Marketplace (C-25)                         | ⏳ Next    | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
 | T58 | Add Runtime AI Automation as future capability (C-26)    | ⬜ Pending | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
 | T59 | Propagate C-24–C-26 + re-sync capability count           | ⬜ Pending | `docs/spec/domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md`, library-wide | G-3 |
 | T60 | Update competitive landscape with frontier-gap resolutions | ⬜ Pending | `docs/spec/competitive-landscape.md`                            | G-3 |
