@@ -103,13 +103,26 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-16 | Maintenance and self-correction | The means to detect, contain, and recover from problems in the platform and built software without worsening them. | C-09 |
 | C-17 | Controlled change and deprecation | The means to introduce, deprecate, and retire capabilities and contracts on a managed path that gives builders and built software time to adapt. | C-12, C-15 |
 
-### Future Capabilities (Not Yet Authorized)
+### Future / Not-Yet-Authorized Capabilities
 
-The following capability is recorded for completeness. It is not part of any current build tier and holds no build-order position among the active capabilities C-01–C-21 and C-23. It is a potential future capability and must not be implemented, expanded, or relied upon until it is explicitly authorized in a later revision of this document.
+Beyond the active tiers, the capability model maintains a distinct category for capabilities that are **recorded but not authorized**. It exists so a foreseeable capability can be tracked without being mistaken for committed, build-ordered work, and it is a permanent part of this model rather than a temporary note. The category may hold any number of members and is written to receive future additions; it currently holds one.
+
+A capability marked *Future / Not-Yet-Authorized* is recorded for completeness only. While it holds this status, it:
+
+- occupies no priority tier and holds no build-order position among the active capabilities (C-01–C-21, C-23);
+- carries a permanent, sequentially-assigned capability ID — assigned once and never renumbered or reused — even while it holds this status;
+- is neither designed nor built, and must not be implemented, expanded, or relied upon by any other capability or by any built software;
+- never gates a release: it is not among the release-gating capabilities of §5, and its absence never blocks a release;
+- is never counted among the active build-tier capabilities in any enumeration of what the platform currently provides;
+- records its "Depends On" for reference only — those dependencies are dormant and impose no present sequencing obligation.
+
+The sole path out of this category is explicit authorization in a later revision of this document. On authorization, the capability is placed into an active priority tier, its recorded dependencies and build-order position take effect, and the rules above cease to apply. Until that revision occurs, no document, decision, or plan may treat the capability as active.
+
+The category currently contains exactly one member.
 
 | ID | Capability | What It Provides | Depends On |
 |---|---|---|---|
-| C-22 | Multi-language code export | The means to export or generate a built application's code across multiple programming languages, bound to no predetermined domain — defining the export fidelity and behavioral-equivalence guarantees every exported artifact must meet, and the validation that any exported code preserves the original application's behavior. It is a potential future capability whose target programming languages are undetermined; it is not authorized for immediate implementation and must not be built or expanded until explicitly authorized. It concerns programming-language code output only and must never be conflated with human-language UI localization. | C-04, C-05, C-06 |
+| C-22 | Multi-language code export | The means to export or generate a built application's code across multiple programming languages, bound to no predetermined domain — defining the export fidelity and behavioral-equivalence guarantees every exported artifact must meet, and the validation that any exported code preserves the original application's behavior. Its target programming languages are undetermined, and it is not authorized for implementation. It concerns programming-language code output only and must never be conflated with human-language UI localization. | C-04, C-05, C-06 |
 
 ---
 
