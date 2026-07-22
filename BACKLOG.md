@@ -53,11 +53,6 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
 
 ## 4. Open — research-reliability follow-up
 
-- **Re-caveat the Gartner-sourced figures in `value-proposition-and-success-metrics.md`.** That document presents the ~85 million-by-2030 developer-shortage projection and the 70–75% LCNC-adoption forecast as "Gartner projects / forecasts" and repeatedly as "Gartner-validated benchmarks." Per `PROCESS.md` §7, the Gartner material is *publicly-available* data (not a licensed report) and is **directional, not authoritative** — as are the secondary figures (80%+ of LCNC users outside IT; a 3.5/5.0 enterprise-grade threshold). `value-proposition-and-success-metrics.md` is **not** currently in §7's caveat list (which names only `competitive-landscape.md` and `industry-standards-and-benchmarks.md`).
-  - **Follow-up:** extend the directional-source caveat to `value-proposition-and-success-metrics.md`.
-  - The sibling caveat work for `competitive-landscape.md` and `industry-standards-and-benchmarks.md` is **already tracked** for T60/T61 (see `PROCESS.md` §7) — cross-referenced here, not duplicated.
-  - Spec docs are edited only within their own tickets; this item does not authorize an inline edit.
-
 - **Obtain Gartner subscription access to validate the full Critical Capabilities set.** — **Open, awaiting lead review** (a candidate, not yet a ticket). The complete ten-item Critical Capabilities set, its weightings, and the exact commercial and data-residency thresholds are **non-public**; the `industry-standards-and-benchmarks.md` §7 mapping covers only the publicly known components and flags the remainder as an open verification item. Validating it against the full proprietary set requires a **Gartner subscription** — an external cost/procurement decision.
   - Surfaced by **T61** (gap-review decision **G-4**, `OPEN-GAPS-FOR-REVIEW.md` §4) as the one "heavy" remediation item, flagged rather than actioned.
   - **Needs a lead go/no-go** before it becomes a ticket, because it carries an external subscription cost; the orchestrator tickets it only if the lead accepts.
@@ -71,6 +66,7 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
 | LCNC / new-capability glossary terms | **Done** | T48 |
 | Mobile user journeys | **Done** | T49 / T52 |
 | Inter-document consistency checker | **Ticketed** | T62 |
+| Re-caveat the Gartner-sourced figures in `value-proposition-and-success-metrics.md` | **Done** — directional caveat applied; now in `PROCESS.md` §7 caveat list | T63 |
 | Security coverage for AI-assisted development tooling | **Ticketed** | T53 |
 | Auth **session-duration** ceilings | **Resolved — not a gap** | `non-functional-requirements.md` |
 | Benchmark gap — runtime builder-facing agentic orchestration | **Resolved** — recorded as future **C-26** | T58 / T61; `industry-standards-and-benchmarks.md` §7 |

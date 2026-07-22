@@ -122,7 +122,7 @@ Closing the specification phase before H1. T63 emerged from `BACKLOG.md` §4 / `
 
 | #   | Ticket Title                                          | Status  | Output File                                          | Source                  |
 | --- | ----------------------------------------------------- | ------- | ---------------------------------------------------- | ----------------------- |
-| T63 | Extend directional-source caveat to value proposition | ⏳ Next | `docs/spec/value-proposition-and-success-metrics.md` | BACKLOG §4 / PROCESS §7 |
+| T63 | Extend directional-source caveat to value proposition | ✅ Done | `docs/spec/value-proposition-and-success-metrics.md` | BACKLOG §4 / PROCESS §7 |
 | T64 | Fix stale "recently added" framing + extend interface coverage to C-24/C-25 (assess C-23) | ⏳ Next | `docs/spec/api-contract-spec.md`, `docs/spec/integration-and-extensibility-spec.md` | consistency-check findings 1–2 |
 
 > **Consistency-check finding 3 (resolved — lead decision):** The Precedence→Binding-Rules closing convention is formally scoped to the rule-bearing governance/design-class docs; the 8 Strategy-phase / reference docs are left as-is (no retrofit). Follow-up: scope the `ai-aha-consistency-check` closing-section check to that same class so it stops flagging them.
