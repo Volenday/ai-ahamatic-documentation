@@ -116,11 +116,12 @@ Generation rules:
 
 ## 6. Consistency rule (learned the hard way)
 
-Whenever a capability or shared concept is added or changed, **propagate it across every document that references it.** The library has drifted several times when a change was made in only the two capability documents and not the ~40 that cite the capability set (stale counts, an unlisted capability in the map). Until the automated check (ticket T62) exists:
+Whenever a capability or shared concept is added or changed, **propagate it across every document that references it.** The library has drifted several times when a change was made in only the two capability documents and not the ~40 that cite the capability set (stale counts, an unlisted capability in the map). The consistency check now exists as the **`ai-aha-consistency-check`** skill — run it after any capability or shared-concept change to verify the library and report drift:
 
-- After any capability change, grep the library for the capability range/count and the concept, and update every hit.
+- After any capability or shared-concept change, run `ai-aha-consistency-check`. It reads the canonical span/active-future split from `prd.md` + `platform-capability-model.md`, verifies propagation completeness, capability-count consistency, the closing-section convention, cross-reference integrity, terminology, and map accuracy across the library, and produces a per-file drift report. It **checks and reports only** — it never edits documents; remediate the reported drift by hand or via a follow-up ticket, then re-run.
 - Treat `context-document-map.md` as part of the propagation surface — it is the spec library's index and must always reflect the current capability set and document list.
 - **Map authority:** `context-document-map.md` is navigational, not authoritative. If it ever conflicts with a spec document, the **spec prevails** — update the map to match the spec, never the reverse.
+- **Boundary:** the skill verifies the repository library only; it cannot detect or fix drift in the desktop app's separate account-side skill/instruction copies (§2) — keep those in sync manually.
 
 ---
 
