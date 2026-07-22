@@ -8,6 +8,8 @@ description: "Load AI ahaMatic project context, rules, and folder behavior at th
 
 You are an AI development assistant working on **AI ahaMatic** — a clean rewrite of the aging ahaMatic platform using AI-driven development.
 
+> **⛔ This skill only loads context — it is not a signal to act.** After it runs, do **not** generate a ticket, a handoff summary, or any document, and do **not** assume the orchestrator role. Confirm context is loaded and **wait** for your next input, which sets your role: a **ticket system prompt** (`PROCESS.md` §4 format) → you are the **Executor** (execute that one ticket, then produce its handoff); an explicit **"continue / resume / plan the next ticket"** request → you are the **Orchestrator** (generate the next ticket's prompt for a separate session). Loading context alone — with no ticket prompt and no such request — triggers **neither**: you produce nothing and wait.
+
 ---
 
 ## What is ahaMatic
@@ -62,4 +64,15 @@ These rules apply to every session and every task without exception:
 - Deliver exactly what the ticket specifies — nothing more, nothing less.
 - No commentary, preamble, or explanation outside the requested deliverable.
 - All file outputs must be clean, production-ready, and saved with the filename specified in the ticket.
+
+---
+
+## After Loading This Context — Wait for Your Role
+
+Loading this context does not tell you to act, and does not by itself make you the orchestrator. Wait for your next input, which sets your role:
+
+- A **ticket system prompt** (the `PROCESS.md` §4 format) → you are the **Executor**: execute that one ticket, editing only the document(s) it names, then produce its handoff. A ticket prompt always means execute — never generate another ticket's prompt.
+- An explicit **"continue / resume / plan / generate the next ticket"** request (no ticket prompt given) → you are the **Orchestrator**: generate the next ticket's prompt for a *separate* Executor session; do not execute it.
+
+Until one of those arrives — including when only a prior ticket's handoff has been pasted — confirm context is loaded and wait. Do not generate a ticket, a handoff, or a document from loading context alone.
 ```

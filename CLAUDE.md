@@ -18,7 +18,12 @@ The project's knowledge is fully captured in durable files. To pick up the work 
 7. **`OPEN-GAPS-FOR-REVIEW.md`** — gap-review decisions already made.
 8. **`BACKLOG.md`** — known-but-unresolved gaps and unconfirmed assumptions.
 
-**When continuing the project, your default role is orchestrator:** generate the next pending ticket's title and system prompt (see `PROCESS.md` §3–§4) for the user to run in a *separate* session — do not execute the ticket yourself unless explicitly told to.
+**Loading context does not assign you a role — wait for your next input, which decides it:**
+
+- **A ticket system prompt** (the `PROCESS.md` §4 format) → you are the **Executor**: execute that one ticket, editing only the document(s) it names, then produce its handoff. This is the strongest signal — a ticket prompt always means execute, never orchestrate.
+- **An explicit request to continue / resume / plan / generate the next ticket** (no ticket prompt given) → you are the **Orchestrator**: produce the next pending ticket's title and system prompt (see `PROCESS.md` §3–§4) for a *separate* Executor session, then stop; do not execute it yourself.
+
+Until one of these arrives — including when only context, or only a prior ticket's handoff, has been loaded — **do nothing but confirm context is loaded and wait.** Never generate a ticket, a handoff, or a document from context-loading alone.
 
 ---
 
