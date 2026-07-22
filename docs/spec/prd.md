@@ -107,7 +107,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 
 ### Future / Not-Yet-Authorized Capabilities
 
-Beyond the active tiers, the capability model maintains a distinct category for capabilities that are **recorded but not authorized**. It exists so a foreseeable capability can be tracked without being mistaken for committed, build-ordered work, and it is a permanent part of this model rather than a temporary note. The category may hold any number of members and is written to receive future additions; it currently holds one.
+Beyond the active tiers, the capability model maintains a distinct category for capabilities that are **recorded but not authorized**. It exists so a foreseeable capability can be tracked without being mistaken for committed, build-ordered work, and it is a permanent part of this model rather than a temporary note. The category may hold any number of members and is written to receive future additions; it currently holds two.
 
 A capability marked *Future / Not-Yet-Authorized* is recorded for completeness only. While it holds this status, it:
 
@@ -120,11 +120,12 @@ A capability marked *Future / Not-Yet-Authorized* is recorded for completeness o
 
 The sole path out of this category is explicit authorization in a later revision of this document. On authorization, the capability is placed into an active priority tier, its recorded dependencies and build-order position take effect, and the rules above cease to apply. Until that revision occurs, no document, decision, or plan may treat the capability as active.
 
-The category currently contains exactly one member.
+The category currently contains exactly two members.
 
 | ID | Capability | What It Provides | Depends On |
 |---|---|---|---|
 | C-22 | Multi-language code export | The means to export or generate a built application's code across multiple programming languages, bound to no predetermined domain — defining the export fidelity and behavioral-equivalence guarantees every exported artifact must meet, and the validation that any exported code preserves the original application's behavior. Its target programming languages are undetermined, and it is not authorized for implementation. It concerns programming-language code output only and must never be conflated with human-language UI localization. | C-04, C-05, C-06 |
+| C-26 | Runtime AI automation | The means for AI-driven automation to run inside built applications at runtime — automation embedded in the software builders produce and executing when that software runs, rather than assisting its construction — bound to no predetermined domain. Its scope is deliberately undetermined pending further definition, and it is not authorized for implementation. It is distinct from AI-assisted builder tooling (C-19): C-19 is active, build-time AI assistance offered to the professional builder as suggestions during construction, whereas C-26 is AI automation that executes inside the built application at runtime; the two must never be conflated. | C-04, C-05, C-06, C-07 |
 
 ---
 
