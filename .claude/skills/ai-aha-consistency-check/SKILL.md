@@ -36,10 +36,11 @@ Read the source of truth first; every check below compares the library against t
 - For the capability or shared concept that changed, confirm it is reflected in *every* document that cites it — at minimum the two capability documents (`prd.md`, `platform-capability-model.md`), `domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md`, and `context-document-map.md`, plus any other file that references it.
 - Grep for the capability ID and its name/concept across `docs/spec/`; flag any document that should reflect the change but does not.
 
-**3. Closing-section convention.**
-- Every `docs/spec/` document must end with **"Precedence and Ownership Boundaries"** then **"Binding Rules"** as its final two sections, in that order.
-- Any new section must be inserted *before* those two.
-- Flag any document whose last two sections are not these, in this order.
+**3. Closing-section convention (governance/design-class docs only).**
+- This convention applies **only** to the rule-bearing governance/design-class documents — those in the **Governance & Security**, **Software & Architecture**, **DevOps & Cloud Infra**, and **Meta-Operations** domains (per `context-document-map.md`). Each such document must end with **"Precedence and Ownership Boundaries"** then **"Binding Rules"** as its final two sections, in that order, and any new section must be inserted *before* those two.
+- It does **NOT** apply to the **Business & UX** Strategy documents (`prd.md`, `vision-and-charter.md`, `platform-capability-model.md`, `personas-and-roles.md`, `user-journeys.md`, `value-proposition-and-success-metrics.md`) or the reference documents (`competitive-landscape.md`, `industry-standards-and-benchmarks.md`). These form a pre-existing structural class the lead has deliberately left as-is (post-T62 decision) — do **not** flag them.
+- `context-document-map.md` is a navigational index, not a spec document, and is exempt.
+- Flag only an in-scope (governance/design-class) document whose last two sections are not these, in this order.
 
 **4. Cross-reference integrity.**
 - Resolve every inter-document `§N` reference: the target section number must exist in the cited document and be the section it is meant to point at.

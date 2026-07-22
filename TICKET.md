@@ -97,7 +97,7 @@
 
 ---
 
-## Post-Review Spec Updates (T53–T62) — from the gap-review decisions
+## Post-Review Spec Updates (T53–T62) — from the gap-review decisions — ✅ Complete
 
 See `OPEN-GAPS-FOR-REVIEW.md`. All specification-phase; they run before the design phase.
 
@@ -116,9 +116,22 @@ See `OPEN-GAPS-FOR-REVIEW.md`. All specification-phase; they run before the desi
 
 ---
 
+## Final Spec Consistency (T63–T64)
+
+Closing the specification phase before H1. T63 emerged from `BACKLOG.md` §4 / `PROCESS.md` §7; T64 from the `ai-aha-consistency-check` run after T62 (findings 1–2).
+
+| #   | Ticket Title                                          | Status  | Output File                                          | Source                  |
+| --- | ----------------------------------------------------- | ------- | ---------------------------------------------------- | ----------------------- |
+| T63 | Extend directional-source caveat to value proposition | ⏳ Next | `docs/spec/value-proposition-and-success-metrics.md` | BACKLOG §4 / PROCESS §7 |
+| T64 | Fix stale "recently added" framing + extend interface coverage to C-24/C-25 (assess C-23) | ⏳ Next | `docs/spec/api-contract-spec.md`, `docs/spec/integration-and-extensibility-spec.md` | consistency-check findings 1–2 |
+
+> **Consistency-check finding 3 (resolved — lead decision):** The Precedence→Binding-Rules closing convention is formally scoped to the rule-bearing governance/design-class docs; the 8 Strategy-phase / reference docs are left as-is (no retrofit). Follow-up: scope the `ai-aha-consistency-check` closing-section check to that same class so it stops flagging them.
+
+---
+
 ## Design Phase (H-series)
 
-Begins after T53–T62. Produces the "how" library in `docs/design/`.
+Begins after T63 (the specification phase's final ticket). Produces the "how" library in `docs/design/`.
 
 | #  | Ticket Title                  | Status     | Output File                              |
 | -- | ----------------------------- | ---------- | ---------------------------------------- |
