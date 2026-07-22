@@ -111,7 +111,7 @@ See `OPEN-GAPS-FOR-REVIEW.md`. All specification-phase; they run before the desi
 | T58 | Add Runtime AI Automation as future capability (C-26)    | ✅ Done    | `docs/spec/prd.md`, `docs/spec/platform-capability-model.md`      | G-3 |
 | T59 | Propagate C-24–C-26 + re-sync capability count           | ✅ Done    | `docs/spec/domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md`, `context-document-map.md`, `platform-capability-model.md`, library-wide | G-3 |
 | T60 | Update competitive landscape with frontier-gap resolutions | ✅ Done    | `docs/spec/competitive-landscape.md`                            | G-3 |
-| T61 | Triage industry-benchmark remediation list               | ⬜ Pending | analysis → follow-up tickets                                     | G-4 |
+| T61 | Triage industry-benchmark remediation list               | ✅ Done    | `docs/spec/industry-standards-and-benchmarks.md`, `BACKLOG.md`   | G-4 |
 | T62 | Documentation-consistency mechanism                      | ⬜ Pending | `.claude/skills/…`, `docs/spec/change-management-and-evolution-policy.md` | G-5 |
 
 ---

@@ -58,6 +58,10 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
   - The sibling caveat work for `competitive-landscape.md` and `industry-standards-and-benchmarks.md` is **already tracked** for T60/T61 (see `PROCESS.md` §7) — cross-referenced here, not duplicated.
   - Spec docs are edited only within their own tickets; this item does not authorize an inline edit.
 
+- **Obtain Gartner subscription access to validate the full Critical Capabilities set.** — **Open, awaiting lead review** (a candidate, not yet a ticket). The complete ten-item Critical Capabilities set, its weightings, and the exact commercial and data-residency thresholds are **non-public**; the `industry-standards-and-benchmarks.md` §7 mapping covers only the publicly known components and flags the remainder as an open verification item. Validating it against the full proprietary set requires a **Gartner subscription** — an external cost/procurement decision.
+  - Surfaced by **T61** (gap-review decision **G-4**, `OPEN-GAPS-FOR-REVIEW.md` §4) as the one "heavy" remediation item, flagged rather than actioned.
+  - **Needs a lead go/no-go** before it becomes a ticket, because it carries an external subscription cost; the orchestrator tickets it only if the lead accepts.
+
 ---
 
 ## 5. Closed / deduped (recorded to prevent re-opening)
@@ -69,5 +73,9 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
 | Inter-document consistency checker | **Ticketed** | T62 |
 | Security coverage for AI-assisted development tooling | **Ticketed** | T53 |
 | Auth **session-duration** ceilings | **Resolved — not a gap** | `non-functional-requirements.md` |
+| Benchmark gap — runtime builder-facing agentic orchestration | **Resolved** — recorded as future **C-26** | T58 / T61; `industry-standards-and-benchmarks.md` §7 |
+| Benchmark gap — cross-system data unification (data fabric) | **Resolved** — active as **C-24** | T56 / T61; `industry-standards-and-benchmarks.md` §7 |
+| Benchmark gap — robotic/desktop process automation & BOAT convergence | **Resolved** — **declined** (out of scope, G-3) | `OPEN-GAPS-FOR-REVIEW.md` §3 / T61; `industry-standards-and-benchmarks.md` §7 |
+| Benchmark gap — builder-facing environment management | **Resolved** — active as **C-23** (stale "unassigned ID" corrected); dedicated design doc is an H-series concern | T50 / T61; `industry-standards-and-benchmarks.md` §7 |
 
 > **Conflict corrected against the files:** the source dump listed the auth session-duration as an open gap. It is **not** — `non-functional-requirements.md` already fixes an idle-timeout ceiling of **≤ 30 minutes** and an absolute-duration ceiling of **≤ 12 hours**, elaborating the session lifecycle/expiry rules of `auth-and-identity-spec.md` §5. The files are authoritative; recorded here so it is not re-opened.
