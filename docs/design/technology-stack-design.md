@@ -217,7 +217,7 @@ This is the first substantive design-phase ticket; it establishes the convention
 
 ## 10. ADR-001 — Server, Web, and Mobile-Delivery Technology Stack
 
-- **Status:** Provisional — Pending Lead Approval.
+- **Status:** Provisional — Pending Lead Approval. **Its mobile-delivery component is superseded by ADR-007 (§17) on approval**; its server and web components stand. Read this ADR together with ADR-003 (§13), which finds it due re-evaluation under the full ten criteria before approval.
 - **Context:** The design phase gates entirely on a technology-stack decision (`implementation-document-map.md`, Layer 1); five downstream documents cannot proceed without it (§11).
 - **Decision:** Recommend Node.js/TypeScript (server), Next.js/React/TypeScript (web — builder UI and built-application runtime), and React Native/TypeScript (mobile-delivery runtime, C-20), deployed in OCI containers with Google Cloud Platform as the reference target only, per §7–§8 above.
 - **Alternatives considered:** Go, Python, Rust, Java/Kotlin, and .NET for the server layer; Flutter, Astro, Svelte/SvelteKit, and Vue/Nuxt for the web layer; Flutter for the mobile-delivery layer. Each is evaluated with its stated tradeoff in §3–§5, and jointly in the decision matrix of §6.
@@ -520,7 +520,73 @@ So gRPC is **deferred, not rejected**: it becomes the recommended internal contr
 
 ---
 
-## 17. Precedence and Ownership Boundaries
+## 17. Client Surface Shape and the Mobile-Delivery Runtime
+
+This section decides the client surface shape the lead's brief raises, and re-examines the mobile-delivery-runtime choice of §5 — the row ADR-003 identified as most exposed to criteria 7–10. It supersedes §5's conclusion; it does not revisit the server or web layers, which criteria 7–10 do not disturb.
+
+### 17.1 Surface Shape: What C-20 Requires, and the Translation the Brief Needs
+
+The brief frames surface shape as a per-product choice: *PWA where sufficient, one cross-platform app where push, biometrics, or store presence is needed.* For a single application that is a sound decision. For a generic builder platform it is the wrong question — **the platform does not choose a surface for one product; it must offer the surfaces builders will need for arbitrary products.**
+
+The specification settles what must be offered, and **PWA-only is not sufficient**:
+
+- **C-20 is an active capability** (Tier 3, Reach family), not a future one — the platform must "package, publish, and deliver built software to mobile targets."
+- C-20 names **"the publishing constraints specific to mobile targets,"** which a web-delivered PWA does not encounter; app-store publishing is such a constraint.
+- C-20 names **"the device-capability and offline-behavior expectations mobile artifacts must meet"** — for arbitrary builder domains, so the expected device surface is broad, not a fixed shortlist.
+- `01-business-and-ux/05-user-journeys.md` §4.2 requires that a run-time journey on a mobile target hold **the same guarantees** as on the non-mobile form, with web and mobile at parity except where divergence is expressly permitted.
+
+The brief's own shortlist agrees on the substance: its PWA-only row is footnoted *"cannot cover warehouse scanning — read as 'use wherever sufficient', not a contender."*
+
+**Decision on shape: the platform provides both a web form and a genuine mobile artifact, and the builder selects per application.** PWA-style web delivery remains available through C-10 publishing wherever a builder finds it sufficient; it does not discharge C-20. This is the brief's recommendation translated through the primitive/artifact line: what the brief makes a product decision, a generic platform makes a builder-selectable capability.
+
+### 17.2 What §5 Weighed, and What It Missed
+
+§5 retained React Native on three grounds: the same language as the rest of the stack, the largest AI/LLM training corpus, and fewer ecosystems for an agent to hold in context. Each remains true. But §5 evaluated only the original six criteria, and the mobile layer is precisely where criteria 7–10 bite hardest:
+
+| Criterion | React Native | Flutter |
+|---|---|---|
+| **10 — Operational maintenance tax** | **Weakest position of any choice in this document.** Device capability is largely community-maintained, and dependency resolution spans **three** package managers at once (npm, Gradle, CocoaPods) — a combination the brief identifies as close to an agent's worst case. The multi-year New Architecture (Fabric/TurboModules) migration has driven sustained ecosystem churn, with packages moving at different rates. | Strong — a **single resolver** (pub), a broad first-party package set, and a rendering pipeline the framework owns end to end. |
+| **7 — Third-party dependency minimization** | Weak — most device capability arrives as a community package. | Strong — much of the same capability is first-party. |
+| **9 — Enterprise capability off the shelf** | Moderate — navigation, UI, and platform integration are community-supplied. | Strong — widgets, navigation, and animation ship first-party. |
+| **8 — Machine-checkable correctness** | Moderate — TypeScript is strong in JavaScript, but the **native-module boundary is where types stop**; and because RN renders through per-OS native components, iOS/Android divergence is a runtime property to be tested rather than a structural one. | Stronger — sound null safety with a single compiler, and **one rendering engine on both platforms**, so cross-platform visual and behavioural parity is structural rather than something each release must re-establish. |
+| **6 — AI/LLM tooling fit** | **Stronger** — the TypeScript/React corpus exceeds Dart/Flutter's. This was §5's deciding margin and it has not changed. | Moderate. |
+| **4 — Structural stability** | Stronger on language count — one language across server, web, and mobile. | Weaker on language count — introduces Dart as a second language. |
+
+**The parity argument deserves emphasis, because it is a specification requirement rather than a preference.** C-20 and user-journeys §4.2 require web/mobile parity and demand that every guarantee holding for one form hold equally for the other. A framework that renders through one owned engine on both platforms makes that parity *structurally* easier to establish than one that bridges to per-OS native components — which is criterion 8 applied directly to a spec obligation.
+
+### 17.3 Why the Language-Unification Argument Weakens Here
+
+§5's strongest point — one language across the stack — is materially weaker for this platform than it first appears, for a reason specific to how mobile delivery works here:
+
+The platform does **not** generate a fresh native codebase per built application; generating an application's code in another language is C-22, which is future and unauthorized. The realistic mechanism is **one platform-authored mobile runtime that renders builder-defined applications from server-driven definitions.** That has three consequences:
+
+- The second language is confined to **one bounded, comparatively stable codebase**, not spread across every built application — so the cost is largely one-time rather than recurring.
+- The **churn lives on the server**, in TypeScript, where the agent's strongest corpus applies. The mobile runtime changes when device capability or rendering changes, not when a builder changes an application.
+- Conversely, the **plugin tax does not shrink**, because a generic platform must support a *broad* device surface over time — camera, biometrics, location, scanning — for arbitrary builder domains. This is where the honest counterfactual matters: **if the device-capability surface were narrow and fixed, RN's plugin tax would be bounded and §5's unification argument would likely still win.** It is C-20's genericity requirement that tips the balance.
+
+### 17.4 On the "React Native Is Not Stable" Claim
+
+The standup raised RN's sub-1.0 version numbering as the stability concern, and the lead correctly pushed back that a version number is a naming convention, not a measurement. That objection stands: React Native runs at very large scale in production, and its version string is not evidence of unfitness.
+
+The **underlying** concern is nonetheless well-founded, and it is worth stating precisely rather than by proxy: the instability is not in the core framework's capability but in **the ecosystem around it** — the multi-year New Architecture migration, packages adopting it unevenly, and dependency resolution spanning three package managers. That is criterion 10, not a version number, and it is the form in which the concern survives scrutiny.
+
+### 17.5 Recommendation
+
+**Flutter for the mobile-delivery runtime, superseding §5's retention of React Native.** Node.js/TypeScript (server) and Next.js/React/TypeScript (web, both builder UI and built-application web form) are unchanged — criteria 7–10 do not disturb them, and no candidate outscores them there.
+
+This is a **reversal of ADR-001's mobile component only**, and it is worth being explicit that it reverses a recommendation this document itself made: §5's reasoning was sound against the criteria it had, and wrong against the criteria it lacked. The single-language elegance of an all-TypeScript stack is a real cost being given up, and it is given up because parity verifiability and dependency-maintenance tax matter more for a platform that must deliver arbitrary builder applications to mobile targets and hold every guarantee equally across forms.
+
+### 17.6 ADR-007 — Client Surface Shape and Mobile-Delivery Runtime
+
+- **Status:** Provisional — Pending Lead Approval.
+- **Context:** The lead's brief raises surface shape and argues that nothing rescues React Native under operational weighting; ADR-003 flagged the mobile row as most exposed to criteria 7–10; the standup left mobile framework choice open pending deeper justification.
+- **Decision:** (a) **Surface shape** — the platform provides both a web form and a genuine mobile artifact, builder-selectable per application; PWA-style delivery remains available via C-10 but does not discharge C-20. (b) **Mobile-delivery runtime** — **Flutter**, superseding §5's React Native retention. Server and web layers unchanged.
+- **Alternatives considered:** PWA-only — insufficient against C-20's store-publishing and device-capability requirements (§17.1), and treated as a non-contender by the brief itself. Native per platform — two codebases and the widest verification surface, with no offsetting benefit for server-driven rendering. React Native — retained by §5 on language unification and corpus size, both still true, but outweighed by criteria 7, 9, 10 and by the structural parity advantage of a single owned rendering engine under criterion 8 (§17.2–§17.3). Cross-platform everywhere (Flutter for web too) — already rejected in §4 on arbitrary-published-web-output grounds, and unaffected by the reweighting.
+- **Consequences:** **ADR-001's mobile component is replaced on approval of this ADR**; ADR-001's server and web components stand. The platform's own client surfaces then span two languages — TypeScript (server, web) and Dart (mobile runtime) — which `architecture-realization-design.md` and `coding-standards-and-patterns-design.md` must both accommodate. Binds `mobile-delivery-design.md` (server-driven rendering model, device-capability surface, store-publishing path) and the C-20 parity obligations of `api-contract-design.md`. The dependency-graph check the brief recommends — maintainer activity, issue response times, and first-party status for the two or three device plugins actually depended on — remains outstanding and should be run against the chosen framework before this ADR is treated as validated.
+
+---
+
+## 18. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -531,7 +597,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 18. Binding Rules
+## 19. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -540,6 +606,8 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **C-20 and C-22 are never conflated.** §5 decides only the platform's own mobile-delivery runtime; it makes no decision, and implies none, about multi-language code-export target languages.
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
+- **PWA delivery does not discharge C-20.** The platform offers both a web form and a genuine mobile artifact, builder-selectable per application; store-publishing and device-capability obligations are C-20's and are not satisfied by web delivery alone (§17.1).
+- **Web and mobile forms hold every guarantee equally.** C-20 and `01-business-and-ux/05-user-journeys.md` §4.2 permit only expressly stated divergence, and no permitted divergence weakens a guarantee; the mobile runtime is chosen partly so that parity is structurally verifiable rather than re-established per release (§17.2).
 - **Every contract exists as a machine-diffable artifact.** `04-api-contract-spec.md` §8 closes breaking-change detection deny-by-default, so a format that cannot be automatically diffed would block every release; OpenAPI is adopted for both the platform-primitive tier and the runtime-generated built-application tier (§16). No contract is published in a format whose only representation is the platform's own compile-time types.
 - **The platform emits contracts for builder-defined applications at runtime.** Because builders define entities after the platform ships (C-05), the second contract tier is generated, not authored — a first-order capability requirement, not an incidental one (§16.2).
 - **The specification fixes the component structure; this document fixes only the topology.** The seven components, their dependency ordering, the forbidden directions, and the three-layer separation are non-overridable (`01-architecture-overview.md` §7). §15 decides how many deployable units they run in — one — and nothing more.
