@@ -98,7 +98,7 @@ A single, clean <file> saved to docs/<spec|design>/. No commentary outside the f
 
 Generation rules:
 - **Just-in-time:** generate each prompt right before it runs, from the current on-disk state — not in a batch.
-- **Same-file sequencing:** tickets that edit the same document run sequentially, each building on the prior edit (e.g. the capability-addition chain on `prd.md` + `platform-capability-model.md`).
+- **Same-file sequencing:** tickets that edit the same document run sequentially, each building on the prior edit (e.g. the capability-addition chain on `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md`).
 - Give the executing session a **bridging handoff** when it's the first ticket of a phase (no prior handoff exists).
 
 ---
@@ -109,7 +109,7 @@ Generation rules:
 - **Status:** *Active* (sits in a build tier) or *Future / Not-Yet-Authorized* (recorded in the PRD's Future Capabilities section; not designed or built until explicitly authorized).
 - **Current set:** C-01–C-21 active · **C-22** future (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-23** active (builder-facing environment management).
 - **Approved, not yet added:** **C-24** cross-system data layer (active) · **C-25** connector marketplace (active, distinct from C-13) · **C-26** runtime AI automation inside built apps (future). Desktop/RPA was **declined**.
-- **Adding or changing a capability requires full propagation** (see §6): `prd.md` + `platform-capability-model.md` (definition) → `domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md` (propagation) → re-sync the capability enumeration/count across **all** documents that cite it, **including `context-document-map.md`**.
+- **Adding or changing a capability requires full propagation** (see §6): `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md` (definition) → `03-software-and-architecture/02-domain-glossary.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md` (propagation) → re-sync the capability enumeration/count across **all** documents that cite it, **including `context-document-map.md`**.
 - **UI Localization is a separate, not-yet-ticketed feature** — human-interface-language localization (English + Spanish now; broader European later). It is distinct from C-22 (programming-language *code* export), has **no capability number**, and must never be conflated with C-22. It is a candidate for the Future Capabilities treatment (see T55) if/when it is ticketed.
 
 ---
@@ -118,7 +118,7 @@ Generation rules:
 
 Whenever a capability or shared concept is added or changed, **propagate it across every document that references it.** The library has drifted several times when a change was made in only the two capability documents and not the ~40 that cite the capability set (stale counts, an unlisted capability in the map). The consistency check now exists as the **`ai-aha-consistency-check`** skill — run it after any capability or shared-concept change to verify the library and report drift:
 
-- After any capability or shared-concept change, run `ai-aha-consistency-check`. It reads the canonical span/active-future split from `prd.md` + `platform-capability-model.md`, verifies propagation completeness, capability-count consistency, the closing-section convention, cross-reference integrity, terminology, and map accuracy across the library, and produces a per-file drift report. It **checks and reports only** — it never edits documents; remediate the reported drift by hand or via a follow-up ticket, then re-run.
+- After any capability or shared-concept change, run `ai-aha-consistency-check`. It reads the canonical span/active-future split from `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md`, verifies propagation completeness, capability-count consistency, the closing-section convention, cross-reference integrity, terminology, and map accuracy across the library, and produces a per-file drift report. It **checks and reports only** — it never edits documents; remediate the reported drift by hand or via a follow-up ticket, then re-run.
 - Treat `context-document-map.md` as part of the propagation surface — it is the spec library's index and must always reflect the current capability set and document list.
 - **Map authority:** `context-document-map.md` is navigational, not authoritative. If it ever conflicts with a spec document, the **spec prevails** — update the map to match the spec, never the reverse.
 - **Boundary:** the skill verifies the repository library only; it cannot detect or fix drift in the desktop app's separate account-side skill/instruction copies (§2) — keep those in sync manually.
@@ -138,9 +138,9 @@ Whenever a capability or shared concept is added or changed, **propagate it acro
 | `DECISIONS.md` | **Why** the platform is shaped as it is — strategic decisions, rationale, rejected alternatives |
 | `BACKLOG.md` | Known-but-unresolved gaps, candidate areas, and unconfirmed assumptions not yet ticketed |
 
-**Research inputs (`references/research/`):** the competitive analysis is a *secondary* synthesis (produced via an LLM with live web search, not primary vendor documentation) and the Gartner material is *publicly-available* data, not a licensed report. Treat both as **directional, not authoritative**, and surface that caveat wherever their findings are cited (`competitive-landscape.md`, `industry-standards-and-benchmarks.md`, `value-proposition-and-success-metrics.md`) — applied durably in T60/T61/T63.
+**Research inputs (`references/research/`):** the competitive analysis is a *secondary* synthesis (produced via an LLM with live web search, not primary vendor documentation) and the Gartner material is *publicly-available* data, not a licensed report. Treat both as **directional, not authoritative**, and surface that caveat wherever their findings are cited (`01-business-and-ux/07-competitive-landscape.md`, `01-business-and-ux/08-industry-standards-and-benchmarks.md`, `01-business-and-ux/06-value-proposition-and-success-metrics.md`) — applied durably in T60/T61/T63.
 
-- **Specific figures carried from those inputs — all UNVERIFIED / SECONDARY, directional only:** a ~85 million global developer shortage by 2030; 70–75% of new enterprise applications built via LCNC by 2026; 80%+ of LCNC users sitting outside IT; a 3.5/5.0 threshold for enterprise-grade suitability. Cite any of these only with the directional caveat; never present one as a settled or licensed Gartner finding. `value-proposition-and-success-metrics.md` now carries the directional caveat on the developer-shortage and LCNC-adoption figures (T63) and is in the caveat list above.
+- **Specific figures carried from those inputs — all UNVERIFIED / SECONDARY, directional only:** a ~85 million global developer shortage by 2030; 70–75% of new enterprise applications built via LCNC by 2026; 80%+ of LCNC users sitting outside IT; a 3.5/5.0 threshold for enterprise-grade suitability. Cite any of these only with the directional caveat; never present one as a settled or licensed Gartner finding. `01-business-and-ux/06-value-proposition-and-success-metrics.md` now carries the directional caveat on the developer-shortage and LCNC-adoption figures (T63) and is in the caveat list above.
 - **The "Visionary" Magic-Quadrant positioning is our own analytical judgment, not a Gartner finding.** Any placement of AI ahaMatic in a Magic-Quadrant quadrant (e.g. "Visionary") is an internal analytical read for internal reasoning only. It must never be stated as a Gartner result or made as an external claim.
 
 ---
@@ -169,28 +169,28 @@ The per-ticket workflow (§3) is not arbitrary; it exists to keep each session c
 
 ## 10. Cross-document ownership map
 
-Where each shared rule's **particulars** live. This complements §6: §6 says *propagate a change to every document that cites it*; this map says *which document owns the canonical statement* so a session never restates or re-owns a rule another document governs. Precedence (§11) is invoked only for a genuine conflict — ownership is the normal case (`agent-operating-charter.md` §4: "precedence resolves conflicts, not ownership"). Verified against the on-disk specs (2026-07-21).
+Where each shared rule's **particulars** live. This complements §6: §6 says *propagate a change to every document that cites it*; this map says *which document owns the canonical statement* so a session never restates or re-owns a rule another document governs. Precedence (§11) is invoked only for a genuine conflict — ownership is the normal case (`05-meta-operations/01-agent-operating-charter.md` §4: "precedence resolves conflicts, not ownership"). Verified against the on-disk specs (2026-07-21).
 
 | Rule / particular | Owned by | Note |
 |---|---|---|
-| **INV-04 (data integrity)** — its detailed rules | `data-model-and-entity-spec.md` | `system-invariants.md` states the invariant; the data-model owns the referential-integrity, validation, and migration-safety particulars |
-| **INV-03 (no secret exposure)** — its detailed handling | `security-policy.md` §4 (secrets handling) **and** `agent-state-and-memory-spec.md` §8 (no sensitive data retained in memory) | split across the output side and the memory side |
-| **Vulnerability severity thresholds** that block release | `security-policy.md` §6 | |
-| **Rollback** path, triggers, time-to-recover | `release-and-rollback-protocol.md` | |
-| **Approval routing** — approval-gate triggers and how approval is requested/recorded | `human-in-the-loop-protocol.md` §5–§6 | |
-| **Document-precedence order** (conflict resolution) | `agent-operating-charter.md` §4 | |
-| **Vocabulary vs. data rules** | `domain-glossary.md` owns canonical term definitions and disallowed synonyms; `data-model-and-entity-spec.md` owns the detailed rules behind data terms | the glossary *names*; the data-model *governs* |
-| **The audit record is authoritative** over recollection | `audit-and-traceability.md` §3 | an unlogged action "did not occur traceably"; a sequence is reconstructed without recourse to memory, assumption, or an actor's own account |
+| **INV-04 (data integrity)** — its detailed rules | `03-software-and-architecture/03-data-model-and-entity-spec.md` | `02-governance-and-security/01-system-invariants.md` states the invariant; the data-model owns the referential-integrity, validation, and migration-safety particulars |
+| **INV-03 (no secret exposure)** — its detailed handling | `02-governance-and-security/02-security-policy.md` §4 (secrets handling) **and** `05-meta-operations/06-agent-state-and-memory-spec.md` §8 (no sensitive data retained in memory) | split across the output side and the memory side |
+| **Vulnerability severity thresholds** that block release | `02-governance-and-security/02-security-policy.md` §6 | |
+| **Rollback** path, triggers, time-to-recover | `04-devops-and-cloud-infra/05-release-and-rollback-protocol.md` | |
+| **Approval routing** — approval-gate triggers and how approval is requested/recorded | `05-meta-operations/04-human-in-the-loop-protocol.md` §5–§6 | |
+| **Document-precedence order** (conflict resolution) | `05-meta-operations/01-agent-operating-charter.md` §4 | |
+| **Vocabulary vs. data rules** | `03-software-and-architecture/02-domain-glossary.md` owns canonical term definitions and disallowed synonyms; `03-software-and-architecture/03-data-model-and-entity-spec.md` owns the detailed rules behind data terms | the glossary *names*; the data-model *governs* |
+| **The audit record is authoritative** over recollection | `02-governance-and-security/07-audit-and-traceability.md` §3 | an unlogged action "did not occur traceably"; a sequence is reconstructed without recourse to memory, assumption, or an actor's own account |
 
 ---
 
 ## 11. Meta-distinctions that must never collapse
 
-- **Precedence-hierarchy intent — capability intent ranks *below* the quality floors.** The fixed precedence order (`agent-operating-charter.md` §4) places the charter at the apex (rank 1), then the invariants (rank 2), then the governance/security, architecture, and delivery floors (ranks 3–5), and only then **capability intent and success targets** (rank 6: `prd.md`, `platform-capability-model.md`, `personas-and-roles.md`, `user-journeys.md`, `value-proposition-and-success-metrics.md`), with meta-operations conduct last (rank 7). A capability's intent, a success target, or a request is pursued **only in the space the floors above leave intact** — a higher guarantee is never spent to satisfy a lower objective.
-- **Derivation order ≠ precedence-on-conflict order.** The order documents are *read/derived* — the pyramid Business & UX → Governance → Architecture → DevOps → Meta (see `context-document-map.md`) — is **not** the order in which they *win a conflict*. The starkest illustration: the Business & UX documents are derived *first* (top of the reading pyramid) yet rank *sixth* in conflict precedence. Never infer conflict precedence from reading order or from the map's layout; conflict precedence is owned solely by `agent-operating-charter.md` §4.
+- **Precedence-hierarchy intent — capability intent ranks *below* the quality floors.** The fixed precedence order (`05-meta-operations/01-agent-operating-charter.md` §4) places the charter at the apex (rank 1), then the invariants (rank 2), then the governance/security, architecture, and delivery floors (ranks 3–5), and only then **capability intent and success targets** (rank 6: `01-business-and-ux/02-prd.md`, `01-business-and-ux/03-platform-capability-model.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md`, `01-business-and-ux/06-value-proposition-and-success-metrics.md`), with meta-operations conduct last (rank 7). A capability's intent, a success target, or a request is pursued **only in the space the floors above leave intact** — a higher guarantee is never spent to satisfy a lower objective.
+- **Derivation order ≠ precedence-on-conflict order.** The order documents are *read/derived* — the pyramid Business & UX → Governance → Architecture → DevOps → Meta (see `context-document-map.md`) — is **not** the order in which they *win a conflict*. The starkest illustration: the Business & UX documents are derived *first* (top of the reading pyramid) yet rank *sixth* in conflict precedence. Never infer conflict precedence from reading order or from the map's layout; conflict precedence is owned solely by `05-meta-operations/01-agent-operating-charter.md` §4.
 - **The three-instrument distinction — never collapse an invariant, a release gate, and a guardrail metric.** These are three distinct enforcement instruments:
-  - an **invariant** (`system-invariants.md`) is a binary property that must hold continuously across every phase; a breach halts execution and escalates.
-  - a **release gate** (`prd.md` G-series and the pipeline gates) is a checkpoint a change must pass to advance through the pipeline.
-  - a **guardrail metric** (`value-proposition-and-success-metrics.md`, quantified in `non-functional-requirements.md`) is a measured value that must not degrade while other targets are optimized.
+  - an **invariant** (`02-governance-and-security/01-system-invariants.md`) is a binary property that must hold continuously across every phase; a breach halts execution and escalates.
+  - a **release gate** (`01-business-and-ux/02-prd.md` G-series and the pipeline gates) is a checkpoint a change must pass to advance through the pipeline.
+  - a **guardrail metric** (`01-business-and-ux/06-value-proposition-and-success-metrics.md`, quantified in `03-software-and-architecture/06-non-functional-requirements.md`) is a measured value that must not degrade while other targets are optimized.
 
   They interact but are never interchangeable: an invariant is not "a gate you pass once," a gate is not "a metric," and a metric is not "an invariant." Collapsing any two loses the distinct enforcement each one carries.

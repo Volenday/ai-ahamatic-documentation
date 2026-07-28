@@ -43,7 +43,7 @@ Propagation + capability-count re-sync across the library follows in **T59**; th
 **Action:** **T61** — triage the remediation list, surface heavy items for approval, and ticket the accepted ones.
 
 ### 5 — Keeping the documentation consistent over time
-**Decision:** Yes — build a mechanism ("another agent double-checking the impacts of a change"). Note: the existing `change-management-and-evolution-policy.md` governs *platform* change, not documentation self-consistency, so this is a **new** mechanism.
+**Decision:** Yes — build a mechanism ("another agent double-checking the impacts of a change"). Note: the existing `05-meta-operations/08-change-management-and-evolution-policy.md` governs *platform* change, not documentation self-consistency, so this is a **new** mechanism.
 **Action:** **T62** — a consistency-check skill/agent plus a rule added to the change-management policy.
 
 ### 6 — Tracking not-yet-approved future capabilities

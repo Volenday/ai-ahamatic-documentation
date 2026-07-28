@@ -14,14 +14,14 @@ Run this after any change that adds or alters a capability or a shared concept (
 
 Read the source of truth first; every check below compares the library against these, not against a memorized number.
 
-1. **Canonical capability span, active set, and future set** — read from `docs/spec/prd.md` §4 and `docs/spec/platform-capability-model.md` §4:
+1. **Canonical capability span, active set, and future set** — read from `docs/spec/01-business-and-ux/02-prd.md` §4 and `docs/spec/01-business-and-ux/03-platform-capability-model.md` §4:
    - the full span (lowest to highest assigned `C-##`),
    - the total count,
    - the *active* set (capabilities sitting in a build tier),
    - the *Future / Not-Yet-Authorized* set (recorded, not built).
    Treat these two documents as the definition of "correct." If they disagree with each other, that is itself finding #1 — report it and stop treating either as authoritative until reconciled.
-2. **Document inventory** — the current list of `docs/spec/*.md` files on disk.
-3. **Canonical vocabulary** — the terms and disallowed synonyms in `docs/spec/domain-glossary.md`.
+2. **Document inventory** — the current list of `docs/spec/**/*.md` files on disk (the library is organized into five numbered group folders — `01-business-and-ux/`, `02-governance-and-security/`, `03-software-and-architecture/`, `04-devops-and-cloud-infra/`, `05-meta-operations/` — plus `context-document-map.md` at the `docs/spec/` root; recurse into all group folders, do not glob the root only).
+3. **Canonical vocabulary** — the terms and disallowed synonyms in `docs/spec/03-software-and-architecture/02-domain-glossary.md`.
 
 ---
 
@@ -33,12 +33,12 @@ Read the source of truth first; every check below compares the library against t
 - Flag any stale span (e.g. an old upper bound), any count that does not match the canonical total, and any capability listed as active that is canonically future (or vice versa).
 
 **2. Propagation completeness.**
-- For the capability or shared concept that changed, confirm it is reflected in *every* document that cites it — at minimum the two capability documents (`prd.md`, `platform-capability-model.md`), `domain-glossary.md`, `personas-and-roles.md`, `user-journeys.md`, and `context-document-map.md`, plus any other file that references it.
+- For the capability or shared concept that changed, confirm it is reflected in *every* document that cites it — at minimum the two capability documents (`01-business-and-ux/02-prd.md`, `01-business-and-ux/03-platform-capability-model.md`), `03-software-and-architecture/02-domain-glossary.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md`, and `context-document-map.md`, plus any other file that references it.
 - Grep for the capability ID and its name/concept across `docs/spec/`; flag any document that should reflect the change but does not.
 
 **3. Closing-section convention (governance/design-class docs only).**
 - This convention applies **only** to the rule-bearing governance/design-class documents — those in the **Governance & Security**, **Software & Architecture**, **DevOps & Cloud Infra**, and **Meta-Operations** domains (per `context-document-map.md`). Each such document must end with **"Precedence and Ownership Boundaries"** then **"Binding Rules"** as its final two sections, in that order, and any new section must be inserted *before* those two.
-- It does **NOT** apply to the **Business & UX** Strategy documents (`prd.md`, `vision-and-charter.md`, `platform-capability-model.md`, `personas-and-roles.md`, `user-journeys.md`, `value-proposition-and-success-metrics.md`) or the reference documents (`competitive-landscape.md`, `industry-standards-and-benchmarks.md`). These form a pre-existing structural class the lead has deliberately left as-is (post-T62 decision) — do **not** flag them.
+- It does **NOT** apply to the **Business & UX** Strategy documents (`01-business-and-ux/02-prd.md`, `01-business-and-ux/01-vision-and-charter.md`, `01-business-and-ux/03-platform-capability-model.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md`, `01-business-and-ux/06-value-proposition-and-success-metrics.md`) or the reference documents (`01-business-and-ux/07-competitive-landscape.md`, `01-business-and-ux/08-industry-standards-and-benchmarks.md`). These form a pre-existing structural class the lead has deliberately left as-is (post-T62 decision) — do **not** flag them.
 - `context-document-map.md` is a navigational index, not a spec document, and is exempt.
 - Flag only an in-scope (governance/design-class) document whose last two sections are not these, in this order.
 
@@ -71,7 +71,7 @@ Canonical facts (as read this run):
 ### Findings
 | # | File | Location | Check | Drift | Should agree with |
 |---|------|----------|-------|-------|-------------------|
-| 1 | … | §… / line … | Capability count | … | prd.md §4 / platform-capability-model.md §4 |
+| 1 | … | §… / line … | Capability count | … | 01-business-and-ux/02-prd.md §4 / 01-business-and-ux/03-platform-capability-model.md §4 |
 
 (If no drift: "No drift detected across checks 1–6.")
 ```

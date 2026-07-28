@@ -40,7 +40,17 @@ ai-ahamatic/
 ├── CLAUDE.md
 ├── docs/ ← growing library (new AI ahaMatic outputs)
 │   ├── spec/ ← the "what": specification library
+│   │   ├── context-document-map.md ← index; stays at this root, unprefixed
+│   │   ├── 01-business-and-ux/
+│   │   ├── 02-governance-and-security/
+│   │   ├── 03-software-and-architecture/
+│   │   ├── 04-devops-and-cloud-infra/
+│   │   └── 05-meta-operations/
+│   │       (each spec document is numbered within its group folder,
+│   │        e.g. 01-business-and-ux/02-prd.md, matching the pyramid
+│   │        reading order of docs/spec/context-document-map.md)
 │   └── design/ ← the "how": design / implementation library
+│       └── implementation-document-map.md ← index (the design-phase counterpart)
 └── references/ ← aging ahaMatic + research (read-only context)
     ├── repos/ ← aging platform (never reuse)
     ├── docs/ ← aging platform (never reuse)
