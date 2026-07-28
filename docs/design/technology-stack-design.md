@@ -4,7 +4,7 @@ This document surveys and evaluates candidate technology stacks for the server, 
 
 **Status: Provisional — Pending Lead Approval.** This document presents an evaluated recommendation, not a final decision. No recommendation in this document takes effect, and no downstream design document proceeds against it, until the project lead approves a stack and it is recorded in `DECISIONS.md`. This document has no authority to finalize a stack on its own.
 
-This is a Design-phase artifact realizing `03-software-and-architecture/01-architecture-overview.md` §7 (deployment shape of the fixed component structure), `03-software-and-architecture/06-non-functional-requirements.md` §4–§9 (the performance, scalability, availability, and reliability targets a stack must meet), `03-software-and-architecture/07-coding-standards-and-patterns.md` §4–§6 (the mandatory patterns, naming discipline, and reuse-vs-rebuild rules a stack must support), and `02-governance-and-security/08-legal-and-licensing-constraints.md` §4–§7 (the license categories a candidate must fall within). It cites, rather than re-derives, C-19 (AI-assisted builder tooling) and C-20 (mobile application capability) from `01-business-and-ux/03-platform-capability-model.md` only to ground why AI-tooling fit and a platform-controlled mobile runtime are decision dimensions here. Per `implementation-document-map.md`, this document normally depends on `architecture-realization-design.md`; the project lead has directed this ticket to run first because the whole design phase gates on the stack choice, and `architecture-realization-design.md`'s own component-structure and deployment-shape reasoning does not itself require a stack to already be selected. `architecture-realization-design.md` must reconcile against whatever stack the lead ultimately approves here.
+This is a Design-phase artifact realizing `03-software-and-architecture/01-architecture-overview.md` §7 (the architectural decisions fixed as non-overridable — the seven-component structure and its dependency ordering, the three-layer separation, the tenant boundary, and the forbidden dependency directions; the deployment *topology* those decisions leave open is decided in §15), `03-software-and-architecture/06-non-functional-requirements.md` §4–§9 (the performance, scalability, availability, and reliability targets a stack must meet), `03-software-and-architecture/07-coding-standards-and-patterns.md` §4–§6 (the mandatory patterns, naming discipline, and reuse-vs-rebuild rules a stack must support), and `02-governance-and-security/08-legal-and-licensing-constraints.md` §4–§7 (the license categories a candidate must fall within). It cites, rather than re-derives, C-19 (AI-assisted builder tooling) and C-20 (mobile application capability) from `01-business-and-ux/03-platform-capability-model.md` only to ground why AI-tooling fit and a platform-controlled mobile runtime are decision dimensions here. Per `implementation-document-map.md`, this document normally depends on `architecture-realization-design.md`; the project lead has directed this ticket to run first because the whole design phase gates on the stack choice, and `architecture-realization-design.md`'s own component-structure and deployment-shape reasoning does not itself require a stack to already be selected. `architecture-realization-design.md` must reconcile against whatever stack the lead ultimately approves here.
 
 ---
 
@@ -403,7 +403,70 @@ The brief's default is **shared schema + `tenant_id` + row-level security**. Two
 
 ---
 
-## 15. Precedence and Ownership Boundaries
+## 15. Architecture Pattern — Deployment Topology
+
+This section decides the architecture pattern the 2026-07-28 standup raised and the lead's brief addressed: how the platform's fixed component structure maps onto deployable units. It is evaluated under all ten criteria (§2.1, §2.6).
+
+### 15.1 What the Specification Already Fixes — and What It Leaves Open
+
+`03-software-and-architecture/01-architecture-overview.md` §7 fixes six architectural decisions as non-overridable. Read precisely, they fix a **logical** structure and leave the **physical** topology open:
+
+| Already fixed by the specification | Left open |
+|---|---|
+| Seven structural components, one per primitive family — Isolation and Trust, Construction, Operation, Reach, Extension, Distribution, Evolution (§4) | How many deployable units those seven components are packaged into |
+| The dependency ordering among them, with Isolation and Trust as the unconditioned root (§5.1) | Whether a dependency is satisfied in-process or across a network |
+| The forbidden dependency directions (§5.2) — no reverse dependency into the root; no cross-tenant instance dependency; no core dependency on a generated artifact; no core dependency on a specific extension; core components region-agnostic | The mechanism by which those directions are enforced and proven |
+| The three-layer separation of platform core, builder tooling, and generated artifacts (§6) | How each layer is built and shipped |
+| The tenant boundary as the root, unconditioned isolation boundary | — |
+
+The decisive observation: **the seven fixed components with a fixed dependency ordering already constitute a module decomposition.** The architecture question is therefore not "what are the modules" — the specification answers that and forbids changing it — but "how many processes do those modules run in."
+
+### 15.2 Candidates
+
+| Criterion | Modular monolith (one deployable per product) | Monolith + extracted services under pressure | Microservices | Serverless |
+|---|---|---|---|---|
+| Machine-checkable correctness (8) | **Strongest** — §5.1/§5.2 dependency directions are statically provable by import-boundary analysis across the whole codebase (see §15.3) | Strong for the core; each extraction converts one statically-provable boundary into a runtime one | **Weakest** — dependency direction becomes a network property no static tool can prove end-to-end | Weakest, plus per-function fragmentation |
+| Enterprise capability off the shelf (9) | Strong — one framework's batteries serve all seven components | Strong | Weaker — cross-cutting concerns (auth, audit, migrations) must be solved per service or via shared libraries that reintroduce coupling | Weaker |
+| Operational maintenance tax (10) | **Lowest** — one build, one deploy, one observability surface | Low, rising with each extraction | **Highest** — N pipelines, service discovery, network-failure handling, distributed tracing | High — cold-start and vendor-runtime management |
+| Third-party dependency minimization (7) | Strongest — no service mesh, discovery, or broker required | Strong | Weaker — infrastructure dependencies are structural, not optional | Weaker |
+| Structural stability / complexity (4) | Strongest — the topology matches the fixed component structure 1:1 | Strong | Weaker — introduces distributed-systems failure modes the specification never asks for | Weakest |
+| Cloud-provider agnosticism (5) | Strongest — one OCI container, per §8 | Strong | Moderate — orchestration and mesh choices accrete provider gravity | **Weakest** — the most provider-specific runtime model of any candidate |
+| Scalability against NFR §5 (3) | Sufficient — 50,000 concurrent sessions per region is met by horizontally scaling stateless instances behind a load balancer; scaling is per-instance, not per-component | Sufficient, with targeted headroom where extracted | Sufficient, with the finest-grained control — the one genuine advantage | Sufficient for bursty load; poor fit for connection-pool-bound work (§15.4) |
+
+### 15.3 The Argument That Decides It
+
+Microservices are commonly adopted to *enforce* boundaries. Against this specification, they enforce the wrong thing.
+
+The boundaries the specification actually fixes are **dependency directions** (§5.1, §5.2) — that nothing depends back into Isolation and Trust, that no component depends on a generated artifact, that no component instance reaches another tenant's. Direction is a **static, structural property of source code**. In a single codebase it can be *proven* by import-boundary analysis — dependency-cruiser or ESLint boundary rules for TypeScript, the analogues of the NetArchTest/ArchUnit/import-linter tools the brief names — and proven on every commit, with no human in the loop.
+
+Across a network boundary that proof is unavailable. A service can call another service in a forbidden direction exactly as easily as a function can, and no static analysis spanning the deployment can rule it out; the violation surfaces at runtime, if at all. **Microservices convert a machine-checkable constraint into an unverifiable one** — which is precisely backwards for a platform whose binding constraint is verification (criterion 8, ADR-003).
+
+This is also the answer to the standup's framing. The aging ahaMatic platform is monolithic, and `CLAUDE.md` makes it reference-only context — never a template. The recommendation below is **not** continuity with it: a modular monolith with statically enforced module boundaries is a different thing from an undifferentiated monolith, and the enforcement mechanism is what makes it different.
+
+### 15.4 Interaction With ADR-004
+
+Two cross-decision consequences, which are easy to miss and are the reason this recommendation carries a stated risk:
+
+- **Schema-per-tenant multiplies connection-pool pressure by instance count.** Horizontally scaling a monolith to meet the 50,000-session target means N instances, each potentially holding pooled connections across many tenant schemas. Pool exhaustion is the most likely mechanism by which the pairing of ADR-004 and this ADR could breach NFR §5's zero-degradation-on-tenant-onboarding target. It requires a deliberate pooling design — `scalability-availability-and-performance-design.md`'s to own — and is not resolved here.
+- **Serverless is disqualified partly *by* ADR-004.** A per-invocation runtime holding no durable connection pool is a poor fit for schema-per-tenant access, independent of its cold-start and provider-gravity costs.
+
+### 15.5 Recommendation
+
+**One deployable per product, modular monolith inside, module boundaries enforced by automated architecture tests that assert the §5.1 and §5.2 dependency directions on every commit.** Extraction of an individual component into its own service is permitted **only under demonstrated operational pressure** — profiled, not anticipated — and each extraction is a governed change that must state which statically-provable boundary it is converting into a runtime one, and how that boundary will then be verified.
+
+The architecture tests are not an implementation detail; they are the mechanism by which the fixed constraints of `01-architecture-overview.md` §5.1–§5.2 and §6 become continuously enforced rather than merely documented. Their concrete configuration is `architecture-realization-design.md`'s to define.
+
+### 15.6 ADR-005 — Architecture Pattern
+
+- **Status:** Provisional — Pending Lead Approval.
+- **Context:** Raised at the 2026-07-28 standup as an open question (monolithic vs. microservices) and addressed by the lead's brief. The specification fixes a seven-component logical structure and its dependency ordering but no deployment topology (§15.1).
+- **Decision:** One deployable per product; modular monolith internally, its modules mapping 1:1 onto the seven fixed components; module boundaries enforced by automated architecture tests asserting the §5.1/§5.2 dependency directions; component extraction only under demonstrated, profiled operational pressure.
+- **Alternatives considered:** Microservices — rejected because they convert the statically provable dependency-direction constraints the specification actually fixes into runtime properties no static analysis can prove, weakening criterion 8 while raising criteria 7 and 10 (§15.2, §15.3). Serverless — rejected on provider-specific runtime gravity, cold-start cost against the latency targets, and poor fit for schema-per-tenant connection pooling (§15.4). Monolith with pre-emptive extraction — rejected as speculative; extraction remains available under demonstrated pressure.
+- **Consequences:** Binds `architecture-realization-design.md` (which owns the module structure and the concrete architecture-test configuration), `scalability-availability-and-performance-design.md` (which must show the scaling model meets NFR §5, including the connection-pool interaction of §15.4), and `ci-cd`-facing design (architecture tests become a pipeline gate). Aligns with the brief's own default, reached here from the specification's fixed dependency directions rather than adopted from it. This ADR does **not** revisit the aging platform's monolithic architecture, which remains reference-only context under `CLAUDE.md` and is not a precedent for this decision.
+
+---
+
+## 16. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -414,7 +477,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 16. Binding Rules
+## 17. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -423,6 +486,8 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **C-20 and C-22 are never conflated.** §5 decides only the platform's own mobile-delivery runtime; it makes no decision, and implies none, about multi-language code-export target languages.
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
+- **The specification fixes the component structure; this document fixes only the topology.** The seven components, their dependency ordering, the forbidden directions, and the three-layer separation are non-overridable (`01-architecture-overview.md` §7). §15 decides how many deployable units they run in — one — and nothing more.
+- **Module boundaries are statically enforced, not merely documented.** The §5.1/§5.2 dependency directions are asserted by automated architecture tests on every commit; extraction of a component into its own service requires demonstrated, profiled pressure and must state how the boundary it converts to runtime will then be verified.
 - **No engine-native construct is adopted without an equivalent for every supported engine.** PostgreSQL is the target (§14.3); MySQL/MariaDB and SQL Server remain supported. Row-level security is specifically excluded as an isolation mechanism on portability grounds (§14.5), and tenant isolation is structural rather than predicate-based.
 - **Builder-defined schemas are a first-order datastore constraint.** Builders define entities at runtime (C-05), so no tooling whose type-safety is generated ahead of time from a static schema may be adopted for builder-defined data (§14.2, §14.4) — the constraint that rules out an otherwise-strong abstraction candidate.
 - **ADR-001 is due re-evaluation under the full ten criteria before approval.** Criteria 7–10 (§2.6) were absent when ADR-001 was formed; per ADR-003 (§13) the recommendation is not approved on the original six-criterion basis alone. Any re-evaluation states the weighting it applies and shows unweighted totals alongside.
