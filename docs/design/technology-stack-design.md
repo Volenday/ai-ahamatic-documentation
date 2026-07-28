@@ -466,7 +466,61 @@ The architecture tests are not an implementation detail; they are the mechanism 
 
 ---
 
-## 16. Precedence and Ownership Boundaries
+## 16. API Contract Shape
+
+This section decides the contract technology realizing `03-software-and-architecture/04-api-contract-spec.md` and **C-12 (software development kit)**. It decides the *shape and format* of the contract; the versioning, deprecation, and backward-compatibility *rules* are owned by that specification and are not restated or varied here.
+
+### 16.1 The Constraint That Decides It
+
+`03-software-and-architecture/04-api-contract-spec.md` §8 makes breaking-change detection a mandatory release gate, and closes it deny-by-default:
+
+> **Detection failure resolves to blocking, not to passing.** Where it cannot be established that a release is free of undetected breaking changes, the release does not proceed.
+
+This is not a preference for machine-readable contracts — it is a **hard requirement**. A contract format that cannot be automatically diffed offers no way to *establish* that a release introduces no breaking change, so under §8 every release would block. Any candidate must therefore exist as a **standalone, machine-diffable artifact**.
+
+Three further constraints bear on the choice:
+
+| Constraint | Source |
+|---|---|
+| A response **never reveals the existence of** content beyond the requester's grant — the INV-01/INV-02 formulation applied to responses. | api-contract-spec §6 |
+| **Errors are first-class contract elements** with identifiable, consistent shapes; an error-shape change is a contract change subject to the breaking-change rules. The format must describe error shapes, not only success shapes. | api-contract-spec §6, §7 |
+| C-12 serves **builders and external integrations generally** — "the means for builders to work with the platform's primitives programmatically" — with no presumption about the consumer's language. | `01-business-and-ux/02-prd.md` C-12 |
+
+### 16.2 Two Tiers of Contract, Not One
+
+A consequence of C-05 that the brief's fixed-schema premise does not reach (as in §14.2): **AI ahaMatic exposes contracts at two tiers, and only one of them is knowable at build time.**
+
+- **Platform-primitive contracts** — create an entity definition, configure an application, promote across environments, publish. These are the platform's own surface, static, and knowable when the platform is built.
+- **Built-application contracts** — the API surface of a *builder's* application, whose entities and schemas that builder defined at runtime. These cannot be authored in advance; the platform must **generate** them from builder schema definitions, per tenant and per application.
+
+This makes the second tier decisive in a way no prior evaluation considered: the contract format must be **serializable and generatable at runtime**, so the platform can emit a complete, valid contract document for an application that did not exist when the platform shipped. A format whose contract exists only as compile-time types in the platform's own source cannot describe a builder's application at all.
+
+### 16.3 Candidates
+
+| Candidate | Assessment |
+|---|---|
+| **OpenAPI + generated clients** | Satisfies every constraint above: a standalone artifact that automated tooling can diff for breaking changes (§16.1); describes per-status-code response and error shapes as first-class elements (§16.2 tier 1 and api-contract-spec §6); language-agnostic, so C-12 serves integrators in any language; and **serializable, so it can be generated at runtime** for builder-defined applications (§16.2 tier 2). Generated clients push verification to the consumer seam, serving criterion 8. **Recommended for both tiers.** |
+| **tRPC** | Strong ergonomics where TypeScript sits both ends, and the platform's own stack is TypeScript throughout (ADR-001) — so it is genuinely tempting. **Disqualified as the published contract on two counts:** the contract exists only as TypeScript types with no standalone artifact to diff, so §8's detection cannot be *established* and the gate would block by default; and it presumes a TypeScript consumer, which C-12 does not. Permissible only for **internal, first-party surfaces that are not published contracts** — and under ADR-005 those are in-process calls anyway (§16.4). |
+| **GraphQL** | Schema diffing is mature, so §8 is satisfiable. It fails on **authorization verifiability**: api-contract-spec §6 requires that no response reveal the existence of content beyond the requester's grant, and an arbitrary query graph makes the set of reachable paths non-enumerable in advance, so that property cannot be *statically established* per query — it must be enforced per field, per path, at runtime, and verified by reasoning no tool completes. That is a direct cost against criterion 8. Unpredictable query cost also sits badly with NFR §8's per-client throughput floor. **Rejected** — for a verifiability reason, not the flexibility reason the brief gives. |
+| **gRPC / Protocol Buffers** | Strong backward-compatibility discipline and a machine-diffable schema; the natural choice for internal service-to-service traffic. **Not currently applicable** — see §16.4. |
+
+### 16.4 What ADR-005 Removes From This Decision
+
+The brief recommends gRPC for internal service-to-service communication. Under **ADR-005 there are no internal services**: one deployable per product means module-to-module communication is in-process, and those seams are governed by TypeScript types plus the architecture tests that assert the §5.1/§5.2 dependency directions — not by a network protocol.
+
+So gRPC is **deferred, not rejected**: it becomes the recommended internal contract at the moment a component is extracted under demonstrated operational pressure (ADR-005), and that extraction must state how the boundary it converts to runtime will be verified. Adopting a network protocol now would add a dependency (criterion 7) and an unverifiable seam (criterion 8) to solve a problem the architecture does not yet have.
+
+### 16.5 ADR-006 — API Contract Shape
+
+- **Status:** Provisional — Pending Lead Approval.
+- **Context:** `04-api-contract-spec.md` §8 makes breaking-change detection a deny-by-default release gate, requiring a machine-diffable contract artifact; C-05 means builder-defined application contracts must be generated at runtime (§16.2); C-12 presumes no consumer language.
+- **Decision:** **OpenAPI plus generated clients** as the contract format for both the platform-primitive tier and the generated built-application tier. **tRPC** permitted only for internal, first-party, unpublished surfaces. **GraphQL rejected.** **gRPC/Protobuf deferred** until a component is extracted under ADR-005, at which point it is the recommended internal contract.
+- **Alternatives considered:** tRPC — no diffable artifact for §8, and presumes a TypeScript consumer. GraphQL — arbitrary query graphs make the "never reveals existence beyond grant" property of §6 unestablishable statically, and query cost is unpredictable against NFR §8. gRPC — no internal service seam exists under ADR-005. Each is recorded with its stated tradeoff in §16.3–§16.4.
+- **Consequences:** Binds `api-contract-design.md` (which owns the concrete contract structure, error-shape catalogue, and codegen pipeline), `integration-and-extensibility-design.md` (the C-12 SDK is generated from the same artifact), and the CI/CD pipeline design (automated contract diffing becomes the §8 release gate). The platform must be able to **emit a valid contract document for a built application at runtime** — a capability requirement that follows from §16.2 and should be treated as first-order, not incidental. Adopting a runtime contract format for the second tier that differs from the first is not permitted without superseding this ADR.
+
+---
+
+## 17. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -477,7 +531,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 17. Binding Rules
+## 18. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -486,6 +540,8 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **C-20 and C-22 are never conflated.** §5 decides only the platform's own mobile-delivery runtime; it makes no decision, and implies none, about multi-language code-export target languages.
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
+- **Every contract exists as a machine-diffable artifact.** `04-api-contract-spec.md` §8 closes breaking-change detection deny-by-default, so a format that cannot be automatically diffed would block every release; OpenAPI is adopted for both the platform-primitive tier and the runtime-generated built-application tier (§16). No contract is published in a format whose only representation is the platform's own compile-time types.
+- **The platform emits contracts for builder-defined applications at runtime.** Because builders define entities after the platform ships (C-05), the second contract tier is generated, not authored — a first-order capability requirement, not an incidental one (§16.2).
 - **The specification fixes the component structure; this document fixes only the topology.** The seven components, their dependency ordering, the forbidden directions, and the three-layer separation are non-overridable (`01-architecture-overview.md` §7). §15 decides how many deployable units they run in — one — and nothing more.
 - **Module boundaries are statically enforced, not merely documented.** The §5.1/§5.2 dependency directions are asserted by automated architecture tests on every commit; extraction of a component into its own service requires demonstrated, profiled pressure and must state how the boundary it converts to runtime will then be verified.
 - **No engine-native construct is adopted without an equivalent for every supported engine.** PostgreSQL is the target (§14.3); MySQL/MariaDB and SQL Server remain supported. Row-level security is specifically excluded as an isolation mechanism on portability grounds (§14.5), and tenant isolation is structural rather than predicate-based.
