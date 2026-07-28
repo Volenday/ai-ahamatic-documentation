@@ -586,7 +586,68 @@ This is a **reversal of ADR-001's mobile component only**, and it is worth being
 
 ---
 
-## 18. Precedence and Ownership Boundaries
+## 18. Re-Evaluation of ADR-001 Under the Full Ten Criteria
+
+ADR-003 found ADR-001 due re-evaluation, because criteria 7–10 were absent when it was formed. ADR-007 has already settled the mobile layer. This section discharges the remainder: **do the server and web layers survive the reweighting**, and do the two candidates never properly scored — `.NET` and Blazor — displace them.
+
+### 18.1 One of ADR-001's Own Arguments Has Already Gone
+
+ADR-001's §7 rested partly on "TypeScript as the single language across server, web, and mobile." **ADR-007 removed that**: the platform's own surfaces now span TypeScript and Dart regardless of what this section concludes. The honest consequence is that the single-language argument can no longer be used to defend the server choice, and the comparison below is closer than §3's was.
+
+### 18.2 `.NET` Scored Properly
+
+§3 ruled `.NET` out primarily on cloud-ecosystem gravity and a smaller share of general-purpose AI-coding tooling. **That rationale was thin, and this section does not defend it.** `.NET` is genuinely cross-platform, containerizes cleanly, and runs on any provider's container service; the vendor gravity is a documentation-and-tooling default to resist, not a technical lock-in — §3 conceded as much when it called it "technically portable."
+
+Scored against the criteria §3 lacked, `.NET` is the stronger candidate on three of four:
+
+| Criterion | `.NET` (C#) | Node.js / TypeScript |
+|---|---|---|
+| 8 — Machine-checkable correctness | **Stronger.** Nullable reference types, a genuinely nominal type system, compile-time verification, and Roslyn analyzers. TypeScript's types are structural and erased at runtime; `any` and unchecked boundary data escape them without explicit runtime validation. | Weaker. |
+| 9 — Enterprise capability off the shelf | **Substantially stronger.** ASP.NET Core ships authentication, policy-based authorization, migrations, background services, localization, configuration, logging, and dependency injection first-party. | Weaker — each is a community package selection. |
+| 7 — Third-party dependency minimization | **Stronger**, following directly from criterion 9. | Weaker. |
+| 10 — Operational maintenance tax | Modestly stronger — one resolver, first-party SDK, LTS cadence, low churn. | Weaker — npm transitive-dependency churn is real. |
+| 6 — AI/LLM tooling fit | Moderate. | **Stronger** — the largest corpus of any server language. |
+
+**On the merits of these four criteria alone, `.NET` would win the server layer.** Three considerations nonetheless decide against switching, and they are specific to this platform rather than general preferences.
+
+### 18.3 Blazor, and Why `.NET`'s Advantage Cannot Be Realized Here
+
+Blazor has never been scored in this document. It is ruled out for the web layer on **exactly the reasoning §4 applied to Flutter web**, which makes this consistent rather than ad hoc: the web layer serves both the builder UI *and* the runtime that serves **arbitrary published built-application output**, and that output must be reachable, indexable, and accessible for any kind of software a builder publishes.
+
+- **Blazor Server** holds a stateful circuit per user over a persistent connection — the same objection §12.2 raised against LiveView: it does not fit the stateless-container model of §8, needs session affinity, and makes every interaction a round trip.
+- **Blazor WebAssembly** ships a substantial runtime before first paint, with the initial-load and indexability costs that ruled out Flutter web in §4.
+
+This matters because **`.NET`'s advantage is largest as a unified `.NET` + Blazor stack** — which is what the brief's top-ranked row actually is. If the web layer must remain Next.js, then adopting `.NET` on the server yields **three languages** (C#, TypeScript, Dart) where the current recommendation yields **two** (TypeScript, Dart). The unified-stack benefit that makes `.NET` rank first is unavailable here, while its cost in ecosystem count is fully incurred.
+
+### 18.4 Why `.NET`'s Verification Advantage Is Partly Neutralized
+
+`.NET`'s criterion-8 edge derives from compile-time verification of **statically known structure**. The platform's central data path is, by design, **not** statically known: builders define entities and schemas at runtime (C-05), which §14.2 established disqualifies ahead-of-time-generated data tooling and §16.2 established forces contracts to be generated at runtime.
+
+So `.NET`'s strongest verification story applies to the platform's own primitives — which are static — and **not** to builder-defined data, which is where much of the platform's complexity actually lives. This does not erase the advantage; it reduces it precisely where the brief's weighting would otherwise make it decisive. It is the same finding that disqualified Prisma, applied one layer up.
+
+### 18.5 Verdict
+
+**ADR-001's server and web components are reaffirmed** — Node.js/TypeScript and Next.js/React/TypeScript — on a materially revised rationale:
+
+1. Blazor cannot serve arbitrary published web output (§18.3), so `.NET`'s unified-stack advantage is unrealisable, and adopting it would raise the platform from two languages to three.
+2. `.NET`'s verification advantage is partly neutralised on the platform's central, runtime-defined data path (§18.4).
+3. Criterion 6 remains materially important for a platform authored and maintained by an agent, and it is the one criterion where TypeScript leads decisively.
+
+**This is a closer call than §3 presented, and `.NET` would be a defensible choice** — particularly for a lead weighting criterion 9 very heavily, or if Blazor's constraints were acceptable because the builder UI were the only web surface. That is not this platform.
+
+**The `.NET` comparison also identifies a real weakness that reaffirmation does not cure.** Criteria 7 and 9 are genuine Node.js deficits: capability that arrives first-party in ASP.NET Core arrives as a community package selection here. The correct response is to answer it rather than dismiss it — **every enterprise-baseline capability (authentication, authorization, migrations, background jobs, localization, configuration) is a deliberate criterion-7/9/10 decision recorded with its maintainer-health basis, never a default pick.** That obligation binds `coding-standards-and-patterns-design.md` and `licensing-and-dependency-compliance-design.md`.
+
+### 18.6 ADR-008 — ADR-001 Re-Evaluation Outcome
+
+- **Status:** Provisional — Pending Lead Approval.
+- **Context:** ADR-003 found ADR-001 formed against an incomplete criteria set; the lead's brief ranks `.NET` + Blazor + Flutter first and TypeScript end-to-end with React Native eighth of nine. ADR-007 had already settled the mobile layer.
+- **Decision:** **Reaffirm** ADR-001's server (Node.js/TypeScript) and web (Next.js/React/TypeScript) components under all ten criteria, on the revised rationale of §18.5 — expressly replacing §3's cloud-ecosystem-gravity rationale for excluding `.NET`, which this ADR records as insufficient. ADR-001's mobile component remains superseded by ADR-007.
+- **Alternatives considered:** `.NET` (C#) on the server — stronger on criteria 7, 8, 9 and modestly on 10 (§18.2), rejected because Blazor cannot serve arbitrary published web output (§18.3) so the unified-stack benefit is unavailable and language count rises to three, and because its verification advantage is partly neutralised on the runtime-defined data path (§18.4). Blazor Server and Blazor WebAssembly for the web layer — rejected on stateful-circuit and initial-load/indexability grounds respectively, the same reasoning §4 applied to Flutter web. Go — unchanged from §3 and §7; remains the fallback for a narrow, profiled, CPU-bound component.
+- **Consequences:** With ADR-007, the approved stack becomes Node.js/TypeScript (server), Next.js/React/TypeScript (web), Flutter/Dart (mobile-delivery runtime), PostgreSQL with a typed query builder (ADR-004), one deployable with enforced module boundaries (ADR-005), and OpenAPI contracts at both tiers (ADR-006). The criterion-7/9 deficit identified in §18.5 imposes a standing obligation on dependency selection, binding `coding-standards-and-patterns-design.md` and `licensing-and-dependency-compliance-design.md`. This ADR closes the re-evaluation ADR-003 required; ADR-001 needs no further re-evaluation before approval on the criteria grounds ADR-003 raised.
+
+---
+
+## 19. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -597,7 +658,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 19. Binding Rules
+## 20. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -614,6 +675,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **Module boundaries are statically enforced, not merely documented.** The §5.1/§5.2 dependency directions are asserted by automated architecture tests on every commit; extraction of a component into its own service requires demonstrated, profiled pressure and must state how the boundary it converts to runtime will then be verified.
 - **No engine-native construct is adopted without an equivalent for every supported engine.** PostgreSQL is the target (§14.3); MySQL/MariaDB and SQL Server remain supported. Row-level security is specifically excluded as an isolation mechanism on portability grounds (§14.5), and tenant isolation is structural rather than predicate-based.
 - **Builder-defined schemas are a first-order datastore constraint.** Builders define entities at runtime (C-05), so no tooling whose type-safety is generated ahead of time from a static schema may be adopted for builder-defined data (§14.2, §14.4) — the constraint that rules out an otherwise-strong abstraction candidate.
-- **ADR-001 is due re-evaluation under the full ten criteria before approval.** Criteria 7–10 (§2.6) were absent when ADR-001 was formed; per ADR-003 (§13) the recommendation is not approved on the original six-criterion basis alone. Any re-evaluation states the weighting it applies and shows unweighted totals alongside.
+- **ADR-001's re-evaluation is complete.** ADR-003 (§13) required it; ADR-008 (§18) discharges it — server and web reaffirmed on a revised rationale, mobile superseded by ADR-007. No further criteria-grounds re-evaluation is owed before approval.
+- **Every enterprise-baseline dependency is a recorded decision, never a default.** Criteria 7 and 9 are genuine deficits of the chosen ecosystem relative to `.NET` (§18.5); authentication, authorization, migrations, background jobs, localization, and configuration are each selected deliberately, with a maintainer-health basis, not picked by convention.
 - **Every future comparison applies all ten criteria.** No stack or architecture comparison on this project is run against §2.1's six alone; §3–§5 are not retroactively rescored, and that non-retroactivity is recorded, not silently assumed.
 - **ADR-002 confirms, not reopens, ADR-001.** The post-evaluation review of §12 evaluated two additional full-stack candidates and changed no recommendation; it added a seventh evaluation criterion (§2.6) for future use and carried forward one architectural question — fewer codebases across web and backend — to `architecture-realization-design.md`, without reopening this ADR.
