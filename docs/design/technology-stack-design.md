@@ -55,15 +55,24 @@ Every candidate carried into the tables below is first checked against `02-gover
 
 `implementation-document-map.md` charges this document with the full technology stack, including datastores. This ticket's Critical Elements scope the evaluation to the server, web, and mobile layers only. Datastore selection is not evaluated in this pass and is not part of the recommendation in §7; it is deferred to a follow-up revision of this document, to be ticketed separately once scoped by the project lead.
 
-### 2.6 A Seventh Criterion, Added Post-Evaluation
+### 2.6 Criteria Added Post-Evaluation
 
-The 2026-07-28 project-lead and team review of this document's initial recommendation identified a seventh evaluation dimension, to be weighed alongside the six criteria of §2.1 in every future stack or architecture comparison on this project:
+Two reviews following this document's initial evaluation added four criteria to the six of §2.1. The first, the 2026-07-28 project-lead and team standup, added criterion 7. The second, the project lead's decision brief (`references/research/stack-decision-brief.pdf`), added criteria 8 through 10. That brief is an **advisory, secondary input — directional, not authoritative** — and its stated premise is a domain application rather than a generic platform; the caveats governing its use are recorded in `TICKET.md`'s design-phase decision queue. The criteria it contributes, however, are method rather than premise, and are adopted here on their own merits.
 
-| Criterion | What It Measures |
-|---|---|
-| Third-party dependency minimization | How few third-party libraries, plugins, or framework-external packages a candidate requires to reach production-ready functionality — preferring the most "vanilla," native capability of the language or runtime itself. Plugin and library churn, not the core language or framework, is typically the larger long-term maintenance-token cost. |
+| # | Criterion | What It Measures |
+|---|---|---|
+| 7 | Third-party dependency minimization | How few third-party libraries, plugins, or framework-external packages a candidate requires to reach production-ready functionality — preferring the most "vanilla," native capability of the language or runtime itself. Plugin and library churn, not the core language or framework, is typically the larger long-term maintenance-token cost. |
+| 8 | Machine-checkable correctness | How much wrongness a candidate catches **with no human in the loop** — through compilation, static typing, exhaustiveness checking, schema-checked queries, and generated-client verification. Measures what the toolchain proves before a reviewer is involved, not what a disciplined reviewer could catch. |
+| 9 | Enterprise capability available off the shelf | How much of the enterprise baseline a candidate's ecosystem supplies as maintained, first-party or near-first-party capability rather than bespoke code — single sign-on, role-based access control, audit logging, schema migrations, background jobs, internationalization, reporting. Every absent capability becomes bespoke code, and bespoke code is code that must be verified. |
+| 10 | Operational maintenance tax | A candidate's resilience to *recurring* dependency-resolution and build-toolchain maintenance — version-resolution conflicts across package managers, transitive-dependency churn, and build breakage arising without any change to the platform's own code. This **broadens criterion 7 rather than duplicating it**: criterion 7 measures how many dependencies are needed, criterion 10 measures the recurring cost of carrying them and of the build tooling around them. |
 
-This criterion is applied for the first time in the post-evaluation review of §12 (ADR-002) below. **It was not retroactively applied to the six-criterion tables of §3–§5** — those tables remain an accurate record of the evaluation as originally run; this document does not rewrite that history. Any future revision of §3–§5, or any new design document following this evaluation method, applies all seven criteria.
+**The premise behind criteria 8–10.** When an AI agent authors the code, the binding constraint shifts from *authoring* to **verifying** — and to containing the damage when verification fails. Criteria 8 through 10 measure that shift directly, and §2.1's six criteria do not: criteria 1 and 2 measure authoring and maintenance token cost, which is the cost this project has already largely absorbed by building with an agent. A candidate that is cheap to generate but expensive to verify is not a bargain.
+
+**Weighting.** The brief weights criteria 8, 9, and 10 at double the others, on the reasoning that verification burden and recurring maintenance are the two costs that actually bind an agent-built platform. This document records that weighting as the brief's, and does not adopt it as settled: a weighting is itself a judgment, and any re-evaluation applying it states so explicitly and shows the unweighted totals alongside.
+
+**Non-retroactivity.** Criteria 7–10 were **not** retroactively applied to the six-criterion tables of §3–§5. Those tables remain an accurate record of the evaluation as originally run, and this document does not rewrite that history. Any future revision of §3–§5, and any new design document following this evaluation method, applies all ten criteria.
+
+**Consequence.** Because criteria 8–10 were absent from the original evaluation, ADR-001's recommendation rests on a criteria set that under-weighted verification and recurring maintenance. ADR-001 is therefore **due re-evaluation under the full ten criteria** before it is approved — recorded as ADR-003 (§13) and carried in `TICKET.md`'s decision queue. Re-evaluation may reaffirm ADR-001 or supersede it; this section determines only that the question is open, not its answer.
 
 ---
 
@@ -279,7 +288,20 @@ A server-rendered-hypermedia proposal: the server pushes HTML/DOM updates direct
 
 ---
 
-## 13. Precedence and Ownership Boundaries
+## 13. ADR-003 — Verification-Weighted Criteria Set
+
+- **Status:** Approved. The criteria adopted here originate from the project lead's own direction — criterion 7 from the 2026-07-28 standup, criteria 8–10 from the lead's decision brief — so the method change itself requires no separate approval. What remains open is the *re-evaluation it mandates*, not the criteria.
+- **Context:** §2.1's six criteria weight authoring and maintenance token cost. They contain no measure of how much incorrectness a candidate's toolchain catches without a human, how much enterprise capability arrives as maintained off-the-shelf code rather than bespoke code, or how much recurring dependency-and-build maintenance a candidate imposes independent of the platform's own changes. For a platform authored by an AI agent, the binding constraint is verification rather than authoring, and the original criteria set does not measure it.
+- **Decision:** Adopt criteria 7–10 into this document's evaluation method (§2.6), applying to every future stack and architecture comparison on this project. Do **not** adopt the brief's double-weighting of criteria 8–10 as settled method — record it as the brief's judgment, to be stated explicitly and shown alongside unweighted totals wherever it is applied. Do **not** retroactively rescore §3–§5.
+- **Alternatives considered:**
+  - *Retain the six criteria and treat the brief as commentary* — rejected: the omission is substantive, not stylistic. Three dimensions that bear directly on an agent-built platform were absent, and a recommendation resting on their absence cannot be defended by declining to look.
+  - *Adopt the brief's double-weighting as settled method* — rejected: a weighting is a judgment about which costs bind, not a measurement. Adopting it silently would make the most consequential part of the reweighting invisible in every subsequent comparison.
+  - *Retroactively rescore §3–§5 under all ten criteria* — rejected: it would rewrite the record of what was actually evaluated when ADR-001 was formed, and this document does not revise its own history (§2.6).
+- **Consequences:** ADR-001 (§10) rests on a criteria set now known to be incomplete and is **due re-evaluation under all ten criteria before it is approved**; that re-evaluation is carried as an open item in `TICKET.md`'s design-phase decision queue and may reaffirm or supersede ADR-001. The mobile-delivery-runtime row of §5 is the single row most exposed to the change — criteria 7 and 10 bear directly on the plugin-and-build-maintenance argument that §5 never weighed — and is expected to be settled in its own ADR rather than folded into this one. The deferred datastore selection (§2.5) is evaluated under all ten criteria from the outset, having never been scored under the original six.
+
+---
+
+## 14. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -289,7 +311,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 14. Binding Rules
+## 15. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -298,4 +320,6 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **C-20 and C-22 are never conflated.** §5 decides only the platform's own mobile-delivery runtime; it makes no decision, and implies none, about multi-language code-export target languages.
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
+- **ADR-001 is due re-evaluation under the full ten criteria before approval.** Criteria 7–10 (§2.6) were absent when ADR-001 was formed; per ADR-003 (§13) the recommendation is not approved on the original six-criterion basis alone. Any re-evaluation states the weighting it applies and shows unweighted totals alongside.
+- **Every future comparison applies all ten criteria.** No stack or architecture comparison on this project is run against §2.1's six alone; §3–§5 are not retroactively rescored, and that non-retroactivity is recorded, not silently assumed.
 - **ADR-002 confirms, not reopens, ADR-001.** The post-evaluation review of §12 evaluated two additional full-stack candidates and changed no recommendation; it added a seventh evaluation criterion (§2.6) for future use and carried forward one architectural question — fewer codebases across web and backend — to `architecture-realization-design.md`, without reopening this ADR.
