@@ -53,7 +53,7 @@ Every candidate carried into the tables below is first checked against `02-gover
 
 ### 2.5 Scope Boundary on This Document's Charge
 
-`implementation-document-map.md` charges this document with the full technology stack, including datastores. This ticket's Critical Elements scope the evaluation to the server, web, and mobile layers only. Datastore selection is not evaluated in this pass and is not part of the recommendation in §7; it is deferred to a follow-up revision of this document, to be ticketed separately once scoped by the project lead.
+`implementation-document-map.md` charges this document with the full technology stack, including datastores. The initial evaluation's Critical Elements scoped it to the server, web, and mobile layers only, deferring datastore selection to a follow-up revision once the project lead had scoped it. **That deferral is now discharged:** the lead scoped the datastore question at the 2026-07-28 standup (SQL; portable across MySQL, PostgreSQL, and SQL Server; an abstraction layer; a named default target), and the selection is made in **§14** under all ten criteria. The datastore is therefore *not* part of the §7 recommendation — which remains the server, web, and mobile layers as originally evaluated — but it is no longer open.
 
 ### 2.6 Criteria Added Post-Evaluation
 
@@ -198,7 +198,7 @@ This recommendation makes no claim on the specifics those downstream documents o
 ## 8. Deployment Substrate
 
 - **Containerization is the mandatory deployment mechanism for every layer of the recommended stack.** The server, the web runtime, and any platform-side build/release tooling for the mobile-delivery runtime are packaged as OCI-compliant container images. This is the mechanism that keeps the architecture portable across cloud providers, per `03-software-and-architecture/01-architecture-overview.md` §7 and the project lead's stated deployment scope for this ticket.
-- **Google Cloud Platform is named only as the reference and default deployment target**, used for concrete examples and initial deployment (e.g., a container-orchestration service such as Cloud Run or GKE, and a managed datastore, once §2.5's deferred datastore decision is made). No design in this document or any downstream document may depend on a GCP-specific API, managed service unique to GCP, or GCP-specific deployment behavior for correctness. Every containerized component must be deployable, without architectural rework, to any major cloud provider's equivalent container-orchestration and managed-service offerings.
+- **Google Cloud Platform is named only as the reference and default deployment target**, used for concrete examples and initial deployment (e.g., a container-orchestration service such as Cloud Run or GKE, and a managed instance of the engine selected in §14). No design in this document or any downstream document may depend on a GCP-specific API, managed service unique to GCP, or GCP-specific deployment behavior for correctness. Every containerized component must be deployable, without architectural rework, to any major cloud provider's equivalent container-orchestration and managed-service offerings.
 - **Framework-specific deployment defaults that carry vendor gravity are avoided deliberately.** Next.js's most idiomatic deployment path defaults toward its originating vendor's platform (§4); the recommended deployment is Next.js's standalone, self-hosted server output running in a container, not that platform, precisely to preserve the agnosticism this section requires.
 - **No cloud-provider-specific technology was introduced by this evaluation.** Node.js, Go (evaluated, not selected), Next.js, and React Native are each general-purpose, open-source technologies with no cloud-vendor ownership; the containerization requirement is what makes the deployment substrate itself provider-agnostic, not a property of any one candidate.
 
@@ -240,6 +240,8 @@ Per `implementation-document-map.md`, the following design documents depend on `
 No other design document in `implementation-document-map.md` depends on this one; every other gated dependency in the map runs through one of the five documents above.
 
 > **See also ADR-002 (§12)** — a post-evaluation review of two additional full-stack candidates, confirming no change to this document's recommendation or the gating list above.
+>
+> **See also ADR-004 (§14.7)** — the datastore decision binds three further documents on its own terms: `tenant-isolation-and-access-control-design.md`, `data-model-and-entity-design.md`, and `scalability-availability-and-performance-design.md`. Those bindings are additional to the ADR-001 gating listed above, not a substitute for it.
 
 ---
 
@@ -301,17 +303,118 @@ A server-rendered-hypermedia proposal: the server pushes HTML/DOM updates direct
 
 ---
 
-## 14. Precedence and Ownership Boundaries
+## 14. Datastore Layer — Candidates and Recommendation (§2.5 Follow-Up)
+
+This section discharges the datastore selection §2.5 deferred. It is evaluated under all ten criteria of §2.1 and §2.6 from the outset, never having been scored under the original six. As with every comparison in this document (§2.3), the judgments here are **reasoned and qualitative, not measured**.
+
+**What this section decides:** the target SQL engine, the database-access abstraction that keeps the platform engine-portable, the primary-key strategy, and — only so far as it bears on engine choice — the tenant-data partitioning shape. **What it does not decide:** the isolation *mechanics*, which `tenant-isolation-and-access-control-design.md` owns and which remains gated. This section supplies the datastore shape that document will enforce within; it does not pre-empt its enforcement design.
+
+### 14.1 Constraints This Decision Is Bound By
+
+Unlike the server, web, and mobile layers, the datastore decision is bound by hard, already-quantified specification targets. These were read from the frozen specification, not inferred:
+
+| Constraint | Source |
+|---|---|
+| **INV-01 (blocking).** No actor or change ever lets one tenant observe, affect, **or detect the existence of** another; cross-tenant reach never occurs. A breach halts and escalates. | `02-governance-and-security/01-system-invariants.md` §6 |
+| **Isolation is *verified at the tenant boundary itself, not assumed*** from the absence of an observed breach. | `02-governance-and-security/03-access-control-and-tenancy-model.md` §5 |
+| ≥ **50,000 concurrent authenticated sessions per region.** | `03-software-and-architecture/06-non-functional-requirements.md` §5 |
+| ≥ **10,000,000 committed entity instances for a single tenant**, without degrading targets for that tenant or any other. | NFR §5 |
+| **Onboarding one additional tenant introduces no measurable degradation for any existing tenant** — tenant-count growth is never a permitted cause of regression. | NFR §5 |
+| A migration **affecting one tenant's committed data** completes, or safely reverts to the prior valid state, **within 4 hours**. | NFR §7, quantifying `03-software-and-architecture/03-data-model-and-entity-spec.md` §7 |
+| Builders **define their own entities, schemas, and relationships** (C-05) — structure is not known at platform design time. | `03-software-and-architecture/03-data-model-and-entity-spec.md`; C-05 |
+
+Two findings from that reading shape everything below. First, **the specification mandates no storage technology and places no constraint on identifier form** — the engine and key choices are genuinely free, bounded only by the project lead's directives (SQL; portable across MySQL, PostgreSQL, and SQL Server; no dependence on engine-native features; a named default target). Second, **the migration ceiling and the isolation requirement are both framed per-tenant**, which materially favours partitioning shapes that let a tenant's data be migrated and reverted independently.
+
+### 14.2 The Constraint the Brief Does Not Address
+
+`references/research/stack-decision-brief.pdf` reasons from a fixed application schema — a defensible premise for one business application, and the wrong one here. **AI ahaMatic's builders define entities and schemas at runtime (C-05).** The platform's storage model must therefore accommodate structure that does not exist when the platform is built, which changes three of the four decisions in this section:
+
+- **It constrains the abstraction layer most of all.** Tooling whose type-safety is generated ahead of time from a static schema file cannot describe builder-defined entities, because those entities do not exist at generation time. This rules out a class of otherwise-strong candidates (§14.4) — a consideration absent from the brief and from any prior evaluation in this document.
+- **It interacts with partitioning.** If each tenant's builders define their own structure, tenant data is already structurally divergent; a shared table shape across all tenants is a weaker fit than it would be for a fixed-schema product.
+- **It makes migration a builder-triggered event, not only a platform release event.** Builder-driven schema change is ordinary operation, and the 4-hour per-tenant ceiling applies to it.
+
+This is the single largest divergence between the brief's premise and this platform's requirements, and it is the reason the recommendation below departs from the brief's default.
+
+### 14.3 SQL Engine Candidates
+
+Oracle is excluded before scoring: its cost profile is a commercial decision rather than a technical one, and it satisfies no requirement the others miss.
+
+| Criterion | PostgreSQL | SQL Server | MySQL / MariaDB |
+|---|---|---|---|
+| Machine-checkable correctness (8) | **Strongest** — rich type system, check and exclusion constraints, domains, generated columns, and strict typed JSONB validation; the most wrongness caught by the engine itself. | Strong — mature constraint and type system, good query verification. | Weakest — looser type coercion historically, fewer constraint kinds, weaker validation of semi-structured data. |
+| Enterprise capability off the shelf (9) | Strong — native RLS, logical replication, partitioning, full-text search, and mature extension ecosystem. | Strongest in isolation — native RLS, temporal tables, and enterprise tooling, but much of it is the licensed tier. | Adequate — replication and partitioning present; **no native row-level security**. |
+| Operational maintenance tax (10) | Low — stable release cadence, no licence management. | Moderate — licence tracking and version-tier management are recurring operational work. | Low — stable, ubiquitous. |
+| Third-party dependency minimization (7) | Strong — capabilities that would otherwise be application code (constraints, RLS, JSONB validation) are engine-native. | Strong, on the licensed tier. | Weaker — more must be built in application code. |
+| Runtime-defined-schema fit (§14.2) | **Strongest** — JSONB with constraint and index support, plus cheap dynamic DDL, supports either modelling strategy for builder-defined entities. | Adequate — dynamic DDL supported; semi-structured support weaker than JSONB. | Weaker — JSON support is later and thinner; dynamic DDL is heavier. |
+| Cloud-provider agnosticism (5) | **Strongest** — first-class managed offering on every major provider. | Available managed everywhere, but its ecosystem gravity pulls toward one vendor (§3's `.NET` finding). | Strong — managed everywhere. |
+| AI/LLM tooling fit (6) | Strongest — largest corpus of any relational engine. | Strong. | Strong. |
+
+**Recommended target: PostgreSQL.** It leads on the criteria that bind an agent-built platform — machine-checkable correctness, engine-native capability that would otherwise be unverified application code, and fit for runtime-defined schemas — while carrying no licence-management tax and the strongest cloud-portability story. **SQL Server is the legitimate alternative** and is not ruled out on capability; it is ruled out here on licence-management overhead and the same ecosystem-gravity concern §3 applied to `.NET`. **MySQL/MariaDB is ruled out as the *target*** on its weaker constraint and semi-structured-data story and its lack of native row-level security — though it must remain a *supported* engine per the portability directive (§14.5).
+
+### 14.4 Database-Access Abstraction
+
+The project lead's directive is that the platform stay portable across SQL engines and depend on no engine-native feature that does not translate. Candidates are assessed for Node.js/TypeScript, per ADR-001.
+
+| Candidate | Assessment |
+|---|---|
+| **Prisma** | The strongest ergonomics and type-safety of any candidate for *statically known* schemas — and **disqualified by §14.2**: its typed client is generated ahead of time from a static schema file, so it cannot describe entities a builder defines at runtime. Its migration engine assumes the same static source of truth. A genuine strength against the wrong requirement. |
+| **Kysely** | A typed query builder rather than an ORM. Composes SQL programmatically, so runtime-defined structure is expressible; provides dialect abstraction across Postgres, MySQL, and SQL Server; leaves the emitted SQL legible, which matters for review (criterion 8) and for an agent's ability to verify its own output. **Recommended.** |
+| **Drizzle** | Excellent type-safety and a thin SQL-shaped surface; schema definition is TypeScript-first and oriented toward compile-time-known tables, making it a weaker fit for builder-defined entities than Kysely, though a stronger fit than Prisma. |
+| **TypeORM / Sequelize / MikroORM** | Full ORMs with entity-class or decorator models premised on design-time-known entities; each carries a heavier abstraction surface and more historical churn (criterion 10) than the query-builder options, and none resolves §14.2. |
+| **Raw SQL with a thin dialect layer** | Maximum portability control and minimum dependency (criterion 7), but forfeits the compile-time verification of criterion 8 and pushes correctness entirely into review — the wrong trade for an agent-authored platform. |
+
+**Recommendation: a typed query builder (Kysely) over an ORM**, with dialect-portable SQL and no engine-native construct used unless an equivalent is implemented for every supported engine. The distinction matters: the lead's directive names "ODM/ORM," but an ORM's object-mapping layer is premised on design-time-known entities, which is precisely what a generic builder platform does not have. **The requirement is an abstraction that guarantees portability, not object-relational mapping specifically** — and a query builder discharges it better here.
+
+### 14.5 Tenant Partitioning, and the Row-Level-Security Tension
+
+This is the decision with the highest cost to reverse in the entire queue, and the brief's default collides with the lead's own portability directive.
+
+The brief's default is **shared schema + `tenant_id` + row-level security**. Two problems arise:
+
+1. **RLS is not portable.** PostgreSQL and SQL Server implement it natively but differently; **MySQL/MariaDB has no native equivalent.** Depending on RLS therefore depends on exactly the class of engine-native feature the portability directive excludes.
+2. **Predicate-based isolation in application code sits badly with the specification's wording.** `02-governance-and-security/03-access-control-and-tenancy-model.md` §5 requires isolation to be *verified at the tenant boundary itself, not assumed*. A `tenant_id` predicate the abstraction layer is trusted to append on every query is closer to assumed than verified: a single omitted predicate is an INV-01 breach, and INV-01 is blocking.
+
+| Option | Isolation strength | Portability | Fit against NFR §5 targets |
+|---|---|---|---|
+| Shared schema + `tenant_id`, enforced in application/abstraction layer | Weakest — one omitted predicate breaches INV-01; correctness rests on discipline | **Full** — no engine-native feature | Best on tenant-count growth; large shared tables strain the 10M-instance target and make migration all-tenants-at-once |
+| Shared schema + `tenant_id` + native RLS | Strong — engine-enforced | **Poor** — absent in MySQL; differs across the other two | As above, plus an engine-specific enforcement path |
+| **Schema-per-tenant** | **Strong and structural** — a tenant-scoped connection cannot address another tenant's schema at all | **Full** — every candidate engine has schemas | Smaller per-tenant tables; migration is per-tenant and independently revertible, matching NFR §7's per-tenant framing; costs migration fan-out and connection-pool pressure as tenant count grows |
+| Database-per-tenant | Strongest | Full | Heaviest operational cost; hardest against the zero-degradation-on-onboarding target |
+
+**Recommendation: schema-per-tenant.** It is the only option that satisfies the isolation requirement *and* the portability directive simultaneously, and it fits this platform's specification in three specific ways the brief's default does not:
+
+- **Isolation becomes structural rather than predicate-based**, satisfying "verified at the boundary, not assumed" without any engine-native construct — so the strongest isolation and full engine portability stop being in tension.
+- **It matches the specification's per-tenant framing.** NFR §7's migration ceiling and revert requirement are written per tenant; schema-per-tenant makes migration and revert genuinely per-tenant operations.
+- **Builders already define their own structure (C-05, §14.2)**, so per-tenant schemas reflect what is true of the data rather than imposing uniformity on tenants whose entity definitions diverge by design.
+
+**Its costs are real and must be designed against, not assumed away:** migration fan-out across many schemas, connection-pool pressure at high tenant counts, and harder platform-level cross-tenant aggregation. The first two bear directly on NFR §5's zero-degradation-on-onboarding target and are the reason this recommendation is provisional — they are `tenant-isolation-and-access-control-design.md`'s and `scalability-availability-and-performance-design.md`'s to resolve, and either may return a finding that overturns this shape.
+
+### 14.6 Primary-Key Strategy
+
+**Recommended: UUIDv7.** It is client-generatable, so identifiers need no database round-trip and can be produced offline; it is time-ordered, preserving the index locality that UUIDv4 destroys; and it is portable across all three candidate engines (native `uuid` in PostgreSQL and SQL Server, `BINARY(16)` in MySQL). Auto-incrementing integers are rejected on three grounds: their syntax and semantics are engine-specific, they cannot be generated offline or client-side, and monotonic per-table identifiers leak volume and, across tenants, existence — bearing on INV-01's "detect the existence of" clause.
+
+### 14.7 ADR-004 — Datastore Layer
+
+- **Status:** Provisional — Pending Lead Approval.
+- **Context:** §2.5 deferred datastore selection; the 2026-07-28 standup scoped it (SQL; engine-agnostic across MySQL, PostgreSQL, SQL Server; abstraction layer; a named target required), and the lead's brief supplied a default shape premised on a fixed application schema.
+- **Decision:** PostgreSQL as the target engine, with MySQL/MariaDB and SQL Server as supported engines; a typed query builder (Kysely) rather than an ORM as the portability abstraction; **schema-per-tenant** partitioning; UUIDv7 primary keys.
+- **Alternatives considered:** SQL Server and MySQL/MariaDB as target (§14.3); Prisma, Drizzle, full ORMs, and raw SQL as the abstraction (§14.4); shared-schema with application-enforced `tenant_id`, shared-schema with native RLS, and database-per-tenant as partitioning (§14.5); auto-incrementing integer keys (§14.6). Each carries its stated ruling-out tradeoff.
+- **Consequences:** Departs from the brief's shared-schema-plus-RLS default, for the reasons in §14.5 — the lead should be aware this is a considered divergence, not an oversight. Binds `tenant-isolation-and-access-control-design.md` (which owns the isolation mechanics within this shape and may overturn it on a scalability finding), `data-model-and-entity-design.md` (which owns how builder-defined entities map onto per-tenant schemas), and `scalability-availability-and-performance-design.md` (which must show the shape meets NFR §5's zero-degradation-on-onboarding target at target tenant counts). No engine-native construct may be adopted anywhere downstream unless an equivalent exists for every supported engine.
+
+---
+
+## 15. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
-- **Datastore selection remains open.** Per §2.5, this document does not evaluate or recommend a datastore; no downstream document may treat a datastore choice as settled by this document.
+- **Datastore selection is made but not final.** §14 (ADR-004) recommends the engine, abstraction, partitioning shape, and key strategy; like ADR-001 it is provisional pending lead approval, and no downstream document may treat it as settled until that approval is recorded in `DECISIONS.md`.
+- **Isolation mechanics are not owned here.** §14.5 selects a partitioning *shape* only. How tenant isolation is enforced, verified, and proven at the boundary is owned by `tenant-isolation-and-access-control-design.md`, which may overturn the shape on a scalability or enforcement finding; this document does not pre-empt that.
 
 This document owns the evaluated candidate set, the tradeoff analysis, the provisional recommendation, the deployment-substrate rule, and the ADR convention for the design phase. It does not own the specifications it realizes, the datastore decision it defers, or the enforcement mechanics of the documents it gates — each remains owned where `implementation-document-map.md` and the cited specifications already place it.
 
 ---
 
-## 15. Binding Rules
+## 16. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -320,6 +423,8 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **C-20 and C-22 are never conflated.** §5 decides only the platform's own mobile-delivery runtime; it makes no decision, and implies none, about multi-language code-export target languages.
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
+- **No engine-native construct is adopted without an equivalent for every supported engine.** PostgreSQL is the target (§14.3); MySQL/MariaDB and SQL Server remain supported. Row-level security is specifically excluded as an isolation mechanism on portability grounds (§14.5), and tenant isolation is structural rather than predicate-based.
+- **Builder-defined schemas are a first-order datastore constraint.** Builders define entities at runtime (C-05), so no tooling whose type-safety is generated ahead of time from a static schema may be adopted for builder-defined data (§14.2, §14.4) — the constraint that rules out an otherwise-strong abstraction candidate.
 - **ADR-001 is due re-evaluation under the full ten criteria before approval.** Criteria 7–10 (§2.6) were absent when ADR-001 was formed; per ADR-003 (§13) the recommendation is not approved on the original six-criterion basis alone. Any re-evaluation states the weighting it applies and shows unweighted totals alongside.
 - **Every future comparison applies all ten criteria.** No stack or architecture comparison on this project is run against §2.1's six alone; §3–§5 are not retroactively rescored, and that non-retroactivity is recorded, not silently assumed.
 - **ADR-002 confirms, not reopens, ADR-001.** The post-evaluation review of §12 evaluated two additional full-stack candidates and changed no recommendation; it added a seventh evaluation criterion (§2.6) for future use and carried forward one architectural question — fewer codebases across web and backend — to `architecture-realization-design.md`, without reopening this ADR.
