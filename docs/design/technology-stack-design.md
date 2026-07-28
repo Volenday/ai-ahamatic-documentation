@@ -55,6 +55,16 @@ Every candidate carried into the tables below is first checked against `02-gover
 
 `implementation-document-map.md` charges this document with the full technology stack, including datastores. This ticket's Critical Elements scope the evaluation to the server, web, and mobile layers only. Datastore selection is not evaluated in this pass and is not part of the recommendation in §7; it is deferred to a follow-up revision of this document, to be ticketed separately once scoped by the project lead.
 
+### 2.6 A Seventh Criterion, Added Post-Evaluation
+
+The 2026-07-28 project-lead and team review of this document's initial recommendation identified a seventh evaluation dimension, to be weighed alongside the six criteria of §2.1 in every future stack or architecture comparison on this project:
+
+| Criterion | What It Measures |
+|---|---|
+| Third-party dependency minimization | How few third-party libraries, plugins, or framework-external packages a candidate requires to reach production-ready functionality — preferring the most "vanilla," native capability of the language or runtime itself. Plugin and library churn, not the core language or framework, is typically the larger long-term maintenance-token cost. |
+
+This criterion is applied for the first time in the post-evaluation review of §12 (ADR-002) below. **It was not retroactively applied to the six-criterion tables of §3–§5** — those tables remain an accurate record of the evaluation as originally run; this document does not rewrite that history. Any future revision of §3–§5, or any new design document following this evaluation method, applies all seven criteria.
+
 ---
 
 ## 3. Server-Layer Candidates
@@ -160,6 +170,8 @@ This section synthesizes the per-criterion judgments already recorded in §3–�
 | Web (builder UI and built-application runtime) | Next.js (React, TypeScript) | Same language as the server recommendation — one type system and idiom set across the platform's build and web layers, a direct structural-stability gain; highest AI/LLM tooling-ecosystem fit and largest reusable-component ecosystem of any web candidate, supporting the reuse-before-rebuild rule of `03-software-and-architecture/07-coding-standards-and-patterns.md` §6; deployed self-hosted in a container to preserve cloud-provider agnosticism. |
 | Mobile-delivery runtime (C-20) | React Native (JavaScript/TypeScript) | Shares the same language as the server and web recommendation, minimizing the number of languages and ecosystems the agent must hold in context across the platform's own client surfaces; highest AI/LLM tooling-ecosystem fit of the mobile candidates evaluated. |
 
+**Full-Stack Comparison: Option A vs. Option B (2026-07-28 Team Review).** Because §4 and §5 already settle the web and mobile layers independently — Next.js and React Native, with no competing tradeoff in either — the project lead and team re-ran the comparison as two complete stacks rather than judging the server language in isolation: **Option A** (Go + Next.js + React Native) versus **Option B** (Node.js/TypeScript + Next.js + React Native). Comparing full stacks, not the server layer alone, does not change the outcome: the web and mobile layers are identical across both options, so the deciding margin remains exactly the one below, and Option B was retained.
+
 **Node.js/TypeScript over Go.** §3 retained both cleanly, with no disqualifying tradeoff against either. The deciding margin is AI/LLM tooling-ecosystem fit, compounded by the structural-stability gain of one language spanning server, web, and mobile (below) — a margin Go's genuine strengths (leaner runtime footprint, a higher raw concurrency ceiling) do not close. Go remains the recommended fallback for a narrow, CPU-bound or extreme-throughput component if a specific operation is later shown, through profiling, to exceed Node's event-loop concurrency model; adopting Go for such a component is a narrower, future decision this document does not make.
 
 **Why a single-language combination, not a Flutter-unified one.** §4 and §5 each considered unifying web and mobile under Flutter/Dart. In both cases the unification benefit — fewer frameworks for the agent to hold in context — was outweighed by Flutter/Dart's smaller AI/LLM tooling-ecosystem footprint and, for the web layer specifically, its weaker fit for arbitrary published web output. The recommended combination achieves a comparable unification benefit a different way: TypeScript as the single language across server, web, and mobile, with React as the shared component model across web (Next.js) and mobile (React Native) — reducing the number of ecosystems the agent must master without adopting the candidate that scored weaker on AI/LLM tooling fit and on web-output fit.
@@ -218,9 +230,56 @@ Per `implementation-document-map.md`, the following design documents depend on `
 
 No other design document in `implementation-document-map.md` depends on this one; every other gated dependency in the map runs through one of the five documents above.
 
+> **See also ADR-002 (§12)** — a post-evaluation review of two additional full-stack candidates, confirming no change to this document's recommendation or the gating list above.
+
 ---
 
-## 12. Precedence and Ownership Boundaries
+## 12. ADR-002 — Post-Evaluation Review of Additional Full-Stack Candidates
+
+During the 2026-07-28 team review of this document's provisional recommendation (§7, ADR-001), the project lead separately consulted an AI assistant focused specifically on token efficiency and surfaced two full-stack candidates that appeared nowhere in §3–§5 — not even among the ruled-out candidates. The reason is structural, not an oversight of individual technologies: §3–§5 each assumed a three-tier, API-mediated architecture — a server language exposing an API, a separate web frontend consuming it, a separate mobile app consuming the same API — and compared candidates only within that assumed pattern. Both candidates below challenge the pattern itself, not merely a pick inside it. Each is evaluated against the six criteria of §2.1 and the seventh criterion of §2.6.
+
+### 12.1 SvelteKit + Capacitor
+
+A unified full-stack proposal: SvelteKit (which runs on Node.js via its Node adapter) serves both the web frontend and the backend API from one codebase; Capacitor wraps the same web output in a native shell for mobile delivery (C-20), rather than using a separate mobile framework.
+
+| Criterion | Assessment |
+|---|---|
+| Token efficiency to build / maintain | Comparable server-side cost to Node.js/Express, since SvelteKit's Node adapter is Node.js underneath; the web-layer cost is unchanged from §4's finding — Svelte's smaller LLM training-data footprint costs more disambiguation than React/Next.js. |
+| Scalability | No material difference from the recommended Node.js/TypeScript server — the same underlying runtime and concurrency model. |
+| Structural stability / complexity | SvelteKit has its own history of breaking routing and convention changes across major versions, comparable to Next.js's Pages-to-App-Router churn (§4). |
+| Cloud-provider agnosticism | Comparable to Next.js — a portable Node adapter exists alongside some vendor-specific adapters to actively avoid, per §8's discipline. |
+| AI/LLM tooling ecosystem fit | The same weakness §4 already found for Svelte relative to React/Next.js; unifying server and web into one codebase does not change the underlying framework's training-data representation. |
+| Third-party dependency minimization (§2.6) | A genuine strength for the web/server unification — fewer codebases and frameworks than the current three-tier split. **Does not extend to the mobile layer**: Capacitor wraps a WebView rather than rendering native components, and depends on its own plugin ecosystem for device APIs (camera, biometrics, push) that is smaller and less mature than React Native's — it does not resolve the dependency-reliance question §5 already carries as an open, separately-tracked re-examination. |
+
+**Ruled out, with stated tradeoff:** SvelteKit + Capacitor is ruled out as a change to the recommended stack. It does not compete at the language layer — it runs on the same Node.js already recommended — and both sub-comparisons it implies, Svelte versus React and Capacitor versus React Native, were already decided the other way in §4 and §5, for reasons the unification framing does not undo. Its genuine strength, fewer codebases, is retained as a separable architectural question, not a stack change (§12.3).
+
+### 12.2 Elixir (Phoenix LiveView) or Ruby on Rails (Hotwire)
+
+A server-rendered-hypermedia proposal: the server pushes HTML/DOM updates directly to the client — via a persistent WebSocket connection for LiveView, or via Turbo Streams for Hotwire — minimizing or eliminating a separate single-page-application framework and, for many interactions, a separate API layer entirely.
+
+| Criterion | Assessment |
+|---|---|
+| Token efficiency to build / maintain | Elixir/LiveView draws on a functional, actor-model paradigm with a meaningfully smaller LLM training corpus than the languages evaluated in §3, costing more agent iterations to reach idiomatic, correct code. Rails/Hotwire draws on a larger historical Ruby/Rails corpus, but idiomatic Hotwire specifically — as distinct from older Rails-plus-jQuery patterns — is a much smaller, more recent slice of that corpus. |
+| Scalability | Elixir's BEAM concurrency model is a genuine strength, arguably the strongest of any candidate evaluated in this document, including Go (§3). Rails' raw throughput is more middling and unchanged by Hotwire. |
+| Structural stability / complexity | LiveView's persistent-connection-per-user model is a real complexity cost: it does not fit the stateless-container model the rest of the recommended stack assumes, and requires session-affinity or connection-aware routing that is not uniformly trivial across cloud providers — a cost against the deployment-substrate discipline of §8. |
+| Cloud-provider agnosticism | Both containerize without vendor lock-in at the surface level; LiveView's stateful-connection requirement is an agnosticism-adjacent complexity cost as stated above, not a hard lock-in. |
+| AI/LLM tooling ecosystem fit | The weakest of any candidate evaluated across this document, for Elixir/LiveView specifically — a materially smaller training-data footprint than every candidate in §3–§5. |
+| Third-party dependency minimization (§2.6) | The strongest fit of any candidate evaluated for this criterion — both patterns genuinely eliminate, not merely reduce, a separate frontend framework and, for many interactions, a separate API layer. |
+| Architectural fit with the platform's own requirements | A structural mismatch, not merely a scoring tradeoff: `03-software-and-architecture/04-api-contract-spec.md` requires the platform to expose a first-class, stable, versioned API contract to external integrations, and C-20 requires a genuinely separate mobile-delivery path. The appeal of this pattern is collapsing the API layer into server-rendering — which cuts against a platform contractually required to expose that API as a first-class guarantee, not an internal implementation detail. |
+
+**Ruled out, with stated tradeoff:** more decisively than SvelteKit + Capacitor. Its AI/LLM tooling-fit gap is the widest found across any candidate in this document, and its core appeal — collapsing the API layer — structurally conflicts with the platform's own requirement (`03-software-and-architecture/04-api-contract-spec.md`) to expose a stable API contract as a first-class guarantee. Its strength against the third-party-dependency-minimization criterion (§2.6) is genuine and noted, but does not offset either the tooling-fit gap or the architectural mismatch.
+
+### 12.3 ADR-002 Record
+
+- **Status:** Resolved — No Change to ADR-001.
+- **Context:** The design phase's stack decision (ADR-001, §10) was reviewed in a 2026-07-28 project-lead and team standup, which surfaced two additional full-stack candidates absent from the original §3–§5 evaluation because that evaluation assumed a three-tier, API-mediated architecture and never questioned the pattern itself.
+- **Decision:** Neither candidate changes ADR-001's recommended stack: Node.js/TypeScript (server), Next.js/React/TypeScript (web), React Native/TypeScript (mobile-delivery runtime, C-20) remains the recommendation.
+- **Alternatives considered:** SvelteKit + Capacitor (§12.1) and Elixir/Phoenix LiveView or Ruby on Rails/Hotwire (§12.2), each evaluated with its stated tradeoff above.
+- **Consequences:** The seventh criterion identified in this review (§2.6, third-party dependency minimization) is added to this document's evaluation method for all future stack and architecture comparisons on this project; it is not retroactively applied to §3–§5. SvelteKit + Capacitor's genuine strength — fewer codebases across server and web — is carried forward as an open architectural question for `architecture-realization-design.md`: whether the recommended stack should collapse web and backend into fewer codebases (for example, via Next.js API routes), independent of the language and framework choice ADR-001 settles; this is a separate question and does not reopen ADR-001. The React-Native-versus-Flutter re-examination already tracked as a separate, open action item from the same standup is unaffected by this review — Capacitor's plugin-ecosystem limitation noted in §12.1 does not resolve that question, and the two remain distinct.
+
+---
+
+## 13. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -230,12 +289,13 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 13. Binding Rules
+## 14. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
-- **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 carries the specific criterion or criteria that ruled it out.
-- **Prior team familiarity carried no weight.** The evaluation in §3–§5 reasons only from the six criteria of §2.1.
+- **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
+- **Prior team familiarity carried no weight.** The evaluation in §3–§5 and §12 reasons only from the criteria of §2.1 and §2.6.
 - **Every token-efficiency comparison is qualitative, not measured.** No comparison in this document, including the decision matrix of §6, is to be cited as empirical fact.
 - **C-20 and C-22 are never conflated.** §5 decides only the platform's own mobile-delivery runtime; it makes no decision, and implies none, about multi-language code-export target languages.
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
+- **ADR-002 confirms, not reopens, ADR-001.** The post-evaluation review of §12 evaluated two additional full-stack candidates and changed no recommendation; it added a seventh evaluation criterion (§2.6) for future use and carried forward one architectural question — fewer codebases across web and backend — to `architecture-realization-design.md`, without reopening this ADR.
