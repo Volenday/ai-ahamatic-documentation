@@ -26,6 +26,7 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 | `ai-aha-spec-doc` / `ai-aha-design-doc` | Start of a spec / design ticket — loads that phase's writing rules |
 | `ai-aha-spec-review` / `ai-aha-design-review` | End of a spec / design ticket — self-review checklist |
 | `ai-aha-handoff` | End of every ticket — produces the handoff summary |
+| `ai-aha-consistency-check` | After any capability, shared-concept, or design-decision change — verifies the spec and design libraries against each other and reports drift. Checks and reports only; it never edits. Built in T62 (§6) and extended to the design library on 2026-07-29. |
 
 The `.claude/skills/` copies are the **source of truth**. The Claude desktop app keeps its own copies; keep them in sync with these (the App copies have drifted before).
 

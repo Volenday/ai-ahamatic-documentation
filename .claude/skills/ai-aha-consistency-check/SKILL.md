@@ -1,12 +1,12 @@
 ---
 name: ai-aha-consistency-check
-description: "Cross-document consistency check for the AI ahaMatic spec library. Run after any capability or shared-concept change to verify the library is internally consistent and report drift. Checks and reports only — never edits documents."
+description: "Cross-document consistency check for the AI ahaMatic specification and design libraries. Run after any capability, shared-concept, or design-decision change to verify the libraries are internally consistent and report drift. Checks and reports only — never edits documents."
 ---
 
 ```
-Verify that the AI ahaMatic specification library (`docs/spec/`) is internally consistent after a capability or shared-concept change, and produce a drift report. **Check and report only — never edit any document from this skill.** Remediation is a human or a follow-up ticket's job.
+Verify that the AI ahaMatic specification library (`docs/spec/`) and design library (`docs/design/`) are internally consistent — after a capability or shared-concept change, or after a design decision is recorded, amended, or superseded — and produce a drift report. **Check and report only — never edit any document from this skill.** Remediation is a human or a follow-up ticket's job.
 
-Run this after any change that adds or alters a capability or a shared concept (a glossary term, a persona, a journey, an invariant reference, a cross-document boundary).
+Run this after any change that adds or alters a capability or a shared concept (a glossary term, a persona, a journey, an invariant reference, a cross-document boundary), and after any design decision is recorded, amended, or superseded.
 
 ---
 
@@ -49,9 +49,18 @@ Read the source of truth first; every check below compares the library against t
 **5. Terminology / disallowed synonyms.**
 - For each canonical glossary term, flag uses of its disallowed synonyms across the library, and flag any drift from the canonical term.
 
-**6. Map accuracy.**
-- `context-document-map.md` must reflect the current document inventory and the current capability set.
-- Flag any document on disk missing from the map, any map entry with no document, and any capability reference in the map that disagrees with the canonical facts.
+**6. Design-library consistency** (`docs/design/`) — run these whenever the design library has content; they are the design-phase counterparts of checks 1–5.
+- **ADR identifiers.** Every design-decision record's ID is sequential, unique, and never reused. Flag any duplicate, any gap that is not explained by a withdrawn record, and any renumbering.
+- **Superseded-status coherence.** Where one ADR supersedes another, the superseded record says `Superseded by <ADR-ID>` and the superseding record says what it replaces. Flag one-sided supersession, and flag any ADR still asserting a decision a later ADR reversed — including in a document's Binding Rules, which are the most common place a reversal is missed.
+- **Required ADR fields.** Each ADR carries identifier, title, status, context, decision, alternatives with tradeoffs, consequences, plus **cost to reverse**, **upstream decisions assumed**, and a **verified-versus-reasoned** distinction (`technology-stack-design.md` §9; `PROCESS.md` §12).
+- **Exposed decisions.** Flag any ADR whose named upstream constraint is still undecided but which is not marked exposed — the condition `PROCESS.md` §12.2 exists to prevent.
+- **Section cross-references.** Resolve every `§N` reference within and into each design document; inserting a section and renumbering the trailing ones is the known failure mode. Check the closing sections specifically — a document's Precedence and Binding Rules sections shift most often.
+- **Stale claims after a reversal.** When a decision reverses, its supporting rationale is often left behind elsewhere in the document. Flag any prose that still argues for a superseded choice.
+- **Spec-fidelity direction.** Flag any design document that narrows, expands, or contradicts `docs/spec/`, and any design document that edited a spec file — design realizes the spec and never modifies it.
+
+**7. Map accuracy — both maps.**
+- `docs/spec/context-document-map.md` must reflect the current spec document inventory and the current capability set. `docs/design/implementation-document-map.md` must reflect the current design document inventory, each document's dependencies and readiness, and any design decision that has changed what is gated on what.
+- Flag any document on disk missing from its map, any map entry with no document, and any capability reference in either map that disagrees with the canonical facts.
 - **Map authority:** the map is navigational, not authoritative. On any conflict between the map and a spec document, the **spec prevails** — report it as a map defect to fix, never the reverse.
 
 ---
@@ -73,12 +82,12 @@ Canonical facts (as read this run):
 |---|------|----------|-------|-------|-------------------|
 | 1 | … | §… / line … | Capability count | … | 01-business-and-ux/02-prd.md §4 / 01-business-and-ux/03-platform-capability-model.md §4 |
 
-(If no drift: "No drift detected across checks 1–6.")
+(If no drift: "No drift detected across checks 1–7.")
 ```
 
 ---
 
 ## Boundary — what this skill cannot check
 
-This skill verifies the **repository** library (`docs/spec/` and the trackers) only. It cannot detect or fix drift in the desktop app's separate, account-side copies of skills or instructions (see `PROCESS.md` §2) — those are an app-configuration concern outside this skill's reach. If the repo-side skills or rules changed, note that the account-side copies may need manual re-syncing, but do not treat their state as something this skill can verify.
+This skill verifies the **repository** libraries (`docs/spec/`, `docs/design/`, and the trackers) only. It cannot detect or fix drift in the desktop app's separate, account-side copies of skills or instructions (see `PROCESS.md` §2) — those are an app-configuration concern outside this skill's reach. If the repo-side skills or rules changed, note that the account-side copies may need manual re-syncing, but do not treat their state as something this skill can verify.
 ```
