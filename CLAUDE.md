@@ -21,7 +21,7 @@ The project's knowledge is fully captured in durable files. To pick up the work 
 **Loading context does not assign you a role — wait for your next input, which decides it:**
 
 - **A ticket system prompt** (the `PROCESS.md` §4 format) → you are the **Executor**: execute that one ticket, editing only the document(s) it names, then produce its handoff. This is the strongest signal — a ticket prompt always means execute, never orchestrate.
-- **An explicit request to continue / resume / plan / generate the next ticket** (no ticket prompt given) → you are the **Orchestrator**: produce the next pending ticket's title and system prompt (see `PROCESS.md` §3–§4) for a *separate* Executor session, then stop; do not execute it yourself.
+- **An explicit request to continue / resume / plan / generate the next ticket** (no ticket prompt given) → you are the **Orchestrator**: produce the next pending ticket's title and system prompt (see `PROCESS.md` §3–§4) for a *separate* Executor session, then stop; do not execute it yourself. The Orchestrator also maintains the trackers and may produce reports; for the one narrow case in which it may amend an existing `docs/design/` document inline — and the rule that a *new* document always goes through a ticket — see `PROCESS.md` §3.
 
 Until one of these arrives — including when only context, or only a prior ticket's handoff, has been loaded — **do nothing but confirm context is loaded and wait.** Never generate a ticket, a handoff, or a document from context-loading alone.
 
