@@ -194,3 +194,34 @@ Where each shared rule's **particulars** live. This complements §6: §6 says *p
   - a **guardrail metric** (`01-business-and-ux/06-value-proposition-and-success-metrics.md`, quantified in `03-software-and-architecture/06-non-functional-requirements.md`) is a measured value that must not degrade while other targets are optimized.
 
   They interact but are never interchangeable: an invariant is not "a gate you pass once," a gate is not "a metric," and a metric is not "an invariant." Collapsing any two loses the distinct enforcement each one carries.
+
+---
+
+## 12. Design-phase decision sequencing (learned 2026-07-29)
+
+The design phase produces **decisions**, not only documents, and decisions differ enormously in what it costs to undo them. These rules exist because the project violated them once and the violation was only visible after re-sorting the whole decision set.
+
+### 12.1 A third ordering — cost to reverse
+
+The project now maintains **three distinct orderings**, and collapsing any two loses information (this extends §11's derivation-vs-precedence distinction):
+
+| Ordering | What it governs | Owned by |
+|---|---|---|
+| **Derivation order** — the spec pyramid, Business & UX first | the order documents are read and written | `docs/spec/context-document-map.md`; design counterpart in `docs/design/implementation-document-map.md` |
+| **Conflict precedence** — charter first, capability intent sixth | which document wins a conflict | `05-meta-operations/01-agent-operating-charter.md` §4 |
+| **Cost to reverse** — data model first, stack last | the order *decisions* are made, and what gates what | this section |
+
+Cost-to-reverse order, highest first: **data model and database** (brutal) → **sync posture** (very high; constrains the data model) → **architecture and API contract** (high) → **cloud provider** (moderate–high; the application is portable, the infrastructure is not) → **client surface** (moderate) → **languages and frameworks** (cheapest). Stack selection attracts most of the debate and is roughly a fifth of the outcome.
+
+### 12.2 The rules
+
+- **Sequence decisions by cost to reverse, not by document order.** The design library's layer ordering is a dependency and derivation order; it is not a decision order, and it must not be read as one.
+- **No decision is approved while an upstream constraint it depends on is undecided.** This is the rule the project broke: the datastore decision (ADR-004 — schema-per-tenant, key strategy) was made and recorded while the sync-posture question that constrains the schema remained open. A bidirectional sync answer would require version columns, tombstones and per-table conflict rules — a change to the shape of the most expensive decision already taken. Approve such a decision only jointly with its constraint, or explicitly record it as exposed.
+- **Every design decision record states its cost to reverse and the upstream decisions it assumes.** Without this, exposure is invisible until someone re-sorts the entire set.
+- **Gate on the expensive decisions, not the cheap ones.** Pausing a phase on the cheapest-to-reverse decision while the expensive ones stay open is the inversion this section exists to prevent.
+
+### 12.3 Time-sensitive claims must be verified, not asserted
+
+**Claims about how well an ecosystem is maintained date faster than any other criterion this project compares, and must be checked against current sources before they decide anything.** A mobile-framework recommendation was reversed and then reversed back because three ecosystem-maintenance claims — package ownership, migration churn, and build-tooling conflicts — were asserted from prior knowledge and did not survive verification. Two were simply out of date; one was closer to the reverse of what was claimed.
+
+Applies to: framework and package maintenance, release cadence, ecosystem adoption, provider pricing, and anything expressed as "X is actively maintained" or "Y is still unstable". Does **not** apply to structural properties — a rendering architecture or a type system does not change between sessions — which may be reasoned about directly. **Record which findings were verified and which were reasoned**, so a later reader knows which to re-check.

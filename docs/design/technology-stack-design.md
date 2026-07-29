@@ -209,6 +209,8 @@ This recommendation makes no claim on the specifics those downstream documents o
 This is the first substantive design-phase ticket; it establishes the convention every subsequent design decision in this phase follows.
 
 - **What an ADR captures.** Every design-decision record states: an identifier (sequential, permanent, never renumbered or reused — the same discipline `PROCESS.md` §5 already applies to capability IDs); a title; a status (`Provisional — Pending Lead Approval`, `Approved`, or `Superseded by <ADR-ID>`); the context that made a decision necessary; the decision itself; the alternatives considered and the tradeoff that ruled each out; and the consequences — what the decision binds downstream documents to.
+- **Two further fields, added 2026-07-29 (`PROCESS.md` §12).** Every ADR also states its **cost to reverse** (brutal / very high / high / moderate / low, per §12.1's ordering) and the **upstream decisions it assumes** — naming any that are still undecided. Without these, a decision resting on an open constraint looks settled: the datastore decision (ADR-004) was recorded while the sync-posture question that constrains its schema remained open, and that exposure was invisible until the whole set was re-sorted by reversal cost. An ADR whose upstream constraint is undecided is approved only jointly with that constraint, or is explicitly marked exposed.
+- **Verified versus reasoned.** An ADR states which of its findings were **checked against current sources** and which were **reasoned from existing knowledge**. Time-sensitive claims — ecosystem maintenance, release cadence, pricing, adoption — must be verified before they decide anything (`PROCESS.md` §12.3); structural properties may be reasoned about directly. ADR-009 exists because this was not done first time.
 - **Where an ADR is stored.** An ADR is recorded **inline**, within the design document that owns the decision, under a dedicated "Design Decision Records" section — never in a separate ADR-only file or folder. This keeps a decision co-located with the document whose content depends on it, consistent with how the specification library co-locates an owned rule with the document that governs it (`PROCESS.md` §10) rather than centralizing all rules in one index.
 - **How future documents reference an ADR.** A downstream design document that depends on a decision cites it by ADR ID and the owning document's filename (e.g., "per ADR-001, `technology-stack-design.md`") rather than restating the decision's content. This mirrors the map's own traceability rule (`implementation-document-map.md`, "How to read this map"): a citing document realizes or depends on the cited decision, it never re-derives it.
 - **Approval changes status, not content.** Once the project lead approves a stack and it is recorded in `DECISIONS.md`, the corresponding ADR's status field is updated to `Approved` in place; the decision's content is not restated or duplicated into `DECISIONS.md` — `DECISIONS.md` records the rationale and the fact of approval, per `PROCESS.md` §7, and cites the owning ADR rather than reproducing it.
@@ -578,7 +580,7 @@ This is a **reversal of ADR-001's mobile component only**, and it is worth being
 
 ### 17.6 ADR-007 — Client Surface Shape and Mobile-Delivery Runtime
 
-- **Status:** Provisional — Pending Lead Approval.
+- **Status:** **Superseded by ADR-009 (§19)** as to the mobile-delivery runtime. Its surface-shape decision — that the platform provides both a web form and a genuine mobile artifact, builder-selectable — **stands** and remains Provisional pending lead approval. Its Flutter recommendation did not survive verification (§19).
 - **Context:** The lead's brief raises surface shape and argues that nothing rescues React Native under operational weighting; ADR-003 flagged the mobile row as most exposed to criteria 7–10; the standup left mobile framework choice open pending deeper justification.
 - **Decision:** (a) **Surface shape** — the platform provides both a web form and a genuine mobile artifact, builder-selectable per application; PWA-style delivery remains available via C-10 but does not discharge C-20. (b) **Mobile-delivery runtime** — **Flutter**, superseding §5's React Native retention. Server and web layers unchanged.
 - **Alternatives considered:** PWA-only — insufficient against C-20's store-publishing and device-capability requirements (§17.1), and treated as a non-contender by the brief itself. Native per platform — two codebases and the widest verification surface, with no offsetting benefit for server-driven rendering. React Native — retained by §5 on language unification and corpus size, both still true, but outweighed by criteria 7, 9, 10 and by the structural parity advantage of a single owned rendering engine under criterion 8 (§17.2–§17.3). Cross-platform everywhere (Flutter for web too) — already rejected in §4 on arbitrary-published-web-output grounds, and unaffected by the reweighting.
@@ -647,7 +649,71 @@ So `.NET`'s strongest verification story applies to the platform's own primitive
 
 ---
 
-## 19. Precedence and Ownership Boundaries
+## 19. ADR-009 — Mobile-Delivery Runtime, Corrected on Verified Evidence
+
+ADR-007 recommended Flutter on the strength of three ecosystem-maintenance claims. Those claims were subsequently checked against current sources, and **three of them do not hold.** This ADR records the correction rather than editing ADR-007, because the reason the recommendation moved twice is itself worth preserving.
+
+### 19.1 What Verification Contradicted
+
+| ADR-007 claimed | What the sources show |
+|---|---|
+| Most device capability is first-party in Flutter, community-maintained in React Native. | **Not supported — and closer to the reverse for our needs.** Flutter's official set (`flutter/packages`) covers camera and biometrics, but **not** secure storage (`flutter_secure_storage`), location (`geolocator`, maintained by Baseflow), or barcode scanning (`mobile_scanner`). Expo ships all three as first-party. Two of those three Flutter packages — secure storage and barcode scanning — are maintained by **the same individual**, a concentration risk ADR-007 did not identify. `mobile_scanner` itself exists because the previously dominant scanner was abandoned when its upstream libraries died — evidence of churn in Flutter's ecosystem, not only React Native's. |
+| React Native's architecture migration causes ongoing ecosystem churn. | **Substantially obsolete.** The New Architecture has been default since RN 0.76 and the old architecture was removed entirely in 0.82; roughly 90% of the core ecosystem is compatible, and it runs in production at Facebook, Instagram and Messenger. The claim described 2024, not the current state. |
+| Three package managers must agree, which is near an agent's worst case. | **Was real, now substantially mitigated.** The npm-versus-Gradle/CocoaPods version mismatch was a genuine, documented failure mode, and was comprehensively addressed in Expo SDK 54 through recursive transitive resolution, duplicate detection via `expo-doctor`, and precompiled modules on EAS Build. |
+
+### 19.2 What Survives, and One Over-Claim Withdrawn
+
+Flutter's genuine and permanent advantage is that **it draws its own pixels**: iOS and Android match by construction, and a platform OS update cannot shift a built application's layout. React Native maps to each platform's native components, so cross-platform differences are tested for rather than structurally excluded.
+
+**ADR-007 over-claimed the weight of this.** It asserted that a single rendering engine was needed to discharge C-20's parity obligation. That is wrong: the parity `01-business-and-ux/02-prd.md` C-20 and `01-business-and-ux/05-user-journeys.md` §4.2 require is parity **of guarantees** — isolation, authorization, data integrity — not pixel-identical rendering. Visual consistency is a quality benefit, not a specification obligation, and ADR-007 stretched the requirement to fit its conclusion. That over-reading is withdrawn here.
+
+### 19.3 Decision
+
+- **Status:** Provisional — Pending Lead Approval. Supersedes ADR-007's runtime choice; ADR-007's surface-shape decision is unaffected.
+- **Decision:** **React Native with Expo** as the mobile-delivery runtime. This restores ADR-001's original layer choice, but specifically as React Native **with the Expo module set and build tooling**, which is the part ADR-001 never specified and which carries most of the maintenance argument.
+- **Why, weighed against all ten criteria:** one language (TypeScript) across server, web, and mobile — which matters more for an agent-authored platform than ADR-007 allowed; the largest AI corpus of any mobile option (criterion 6); Expo's first-party coverage of the capabilities we actually need is **better** than Flutter's (criteria 7 and 9); and Expo is a funded company with a commercial model behind its maintenance rather than volunteer effort (criterion 10).
+- **Alternatives considered:** Flutter — retains a real advantage in cross-platform rendering consistency, and would be the stronger choice for a design-heavy consumer product where pixel fidelity across platforms is a primary requirement. It is not selected here because that advantage is worth less to this platform than a single language and the largest corpus, and because the maintenance case that justified it in ADR-007 did not survive verification.
+- **Consequences:** ADR-001's mobile component is **restored, not superseded** — ADR-007's replacement of it lapses. The platform's own surfaces return to a single language, which removes the two-language consequence ADR-007 imposed on `architecture-realization-design.md` and `coding-standards-and-patterns-design.md`. `mobile-delivery-design.md` must specify the Expo module set relied upon, and the dependency-health check remains a standing obligation for whichever packages fall outside Expo's first-party set.
+- **Process note:** this recommendation moved from React Native (§5) to Flutter (ADR-007) and back (this ADR). The first move was made on unverified ecosystem claims; this one is made on checked sources. The lesson recorded for future evaluations: **ecosystem-maintenance claims date faster than any other criterion in this document and must be verified against current sources before they are allowed to decide a layer.**
+
+---
+
+## 20. ADR-010 — Cloud Provider
+
+Prior work named Google Cloud Platform as the reference deployment target (§8) without comparing it against alternatives. This ADR supplies the comparison the project lead asked for.
+
+### 20.1 What Is and Is Not Portable
+
+The decisive structural fact: **container images are portable across all three providers; the infrastructure configuration around them is not.** A move between providers is not a rewrite of the application — it is a rewrite of infrastructure-as-code, networking, identity and access policy, and deployment pipelines. This bounds how much the choice can lock us in, and it identifies where the real switching cost sits.
+
+Two disciplines follow, and they matter more than which provider is chosen:
+
+- **Infrastructure is defined in a provider-neutral tool** (Terraform or OpenTofu), never in a provider's own console or proprietary template language, so the configuration is at least translatable rather than re-discovered.
+- **The platform uses only the portable subset** — containers, managed PostgreSQL, object storage — and adopts no provider-unique managed service for anything on which correctness depends. This restates §8's rule and gives it a concrete boundary.
+
+### 20.2 Comparison Against the Six Criteria
+
+| Criterion | Google Cloud | AWS | Azure |
+|---|---|---|---|
+| 1 — Build effort | **Lowest.** Cloud Run is the simplest of the three to deploy an HTTP container to — fewer resources to configure than a load-balancer-plus-task-definition-plus-role arrangement. | Highest. ECS/Fargate requires more surrounding configuration, though the corpus is the largest. | Moderate. Container Apps is close to Cloud Run in model. |
+| 2 — Maintenance effort | **Lowest** — fewest moving parts to keep coherent. | Highest — most components, most identity policy surface. | Moderate. |
+| 3 — Scalability | Sufficient. Meets the 50,000-session-per-region target; scales to zero. | **Deepest** at extreme scale, and cheapest always-on compute. | Sufficient. |
+| 4 — Stability / complexity | **Lowest complexity** for our shape. | Highest, in exchange for the most control. | Moderate; Dapr integration is a microservices feature we do not need under ADR-005. |
+| 5 — Provider independence | Application portable; configuration is GCP-specific. | Same. | Same. Kubernetes on any of the three is the most portable orchestration abstraction, at a real complexity cost this platform does not currently need. |
+| 6 — AI corpus | Good. | **Largest by a clear margin** — most documentation and worked examples of any provider. | Good. |
+| Managed PostgreSQL cost | **Lowest** of the three at a representative production size, on committed-use pricing. | Mid. Aurora costs more than RDS but performs better per unit of spend at high throughput. | Highest of the three at a comparable reserved-capacity size. |
+
+### 20.3 Decision
+
+- **Status:** Provisional — Pending Lead Approval.
+- **Decision:** **Google Cloud Platform as the default target**, with AWS and Azure both viable and neither excluded. Infrastructure defined in Terraform or OpenTofu; the portable subset only, per §20.1.
+- **Rationale:** GCP wins on the criteria that bind us — lowest build and maintenance effort for a containerised HTTP workload, lowest complexity, and the lowest managed-PostgreSQL cost at a representative production size — while being sufficient on scalability. AWS's genuine advantages are corpus size and depth at extreme scale; neither is decisive at our stage, and the corpus advantage applies to infrastructure configuration rather than to application code, which is where most of our generation happens.
+- **Alternatives considered:** AWS — strongest corpus and cheapest always-on compute, rejected on higher configuration and maintenance surface for no benefit we currently need. Azure — no decisive advantage for this platform; it would become the right answer if an enterprise agreement or a customer's procurement constraint made it so, which is a commercial input this document does not hold.
+- **Consequences:** Binds `environment-and-configuration-design.md` and the deployment work to the portable-subset rule and to provider-neutral infrastructure definition. **A stated non-goal:** this decision does not make the platform trivially portable between providers — the application is portable, the infrastructure is not, and any move is an infrastructure exercise that must be budgeted as such rather than assumed away. Also note the team already operates on GCP, having migrated from a smaller provider; that makes GCP the zero-migration-cost option, which is a legitimate practical factor but is recorded here as such and not as a technical finding.
+
+---
+
+## 21. Precedence and Ownership Boundaries
 
 - **The specification prevails.** Nothing in this document narrows, expands, or alters `03-software-and-architecture/01-architecture-overview.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `03-software-and-architecture/07-coding-standards-and-patterns.md`, or `02-governance-and-security/08-legal-and-licensing-constraints.md`; where a recommendation here appears to conflict with any of them, that specification governs and the recommendation is corrected, not the specification.
 - **This document recommends; it does not finalize.** No stack in §7 is authoritative until the project lead approves it and it is recorded in `DECISIONS.md`. Every citation of this document by a downstream design document is a citation of the approved ADR-001, not of this document's provisional status.
@@ -658,7 +724,7 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 
 ---
 
-## 20. Binding Rules
+## 22. Binding Rules
 
 - **No recommendation in this document is final.** Every stack choice in §7 is provisional pending lead approval and recorded formally only in `DECISIONS.md`.
 - **No candidate was eliminated without a stated tradeoff.** Every ruled-out candidate in §3–§5 and §12 carries the specific criterion or criteria that ruled it out.
@@ -668,14 +734,16 @@ This document owns the evaluated candidate set, the tradeoff analysis, the provi
 - **Containerization is mandatory; no provider-specific dependency is introduced.** Every recommended technology is deployable to any major cloud provider without architectural rework; Google Cloud Platform is a reference target only.
 - **Five named documents remain gated** until this decision is approved and recorded in `DECISIONS.md` (§11).
 - **PWA delivery does not discharge C-20.** The platform offers both a web form and a genuine mobile artifact, builder-selectable per application; store-publishing and device-capability obligations are C-20's and are not satisfied by web delivery alone (§17.1).
-- **Web and mobile forms hold every guarantee equally.** C-20 and `01-business-and-ux/05-user-journeys.md` §4.2 permit only expressly stated divergence, and no permitted divergence weakens a guarantee; the mobile runtime is chosen partly so that parity is structurally verifiable rather than re-established per release (§17.2).
+- **Web and mobile forms hold every guarantee equally.** C-20 and `01-business-and-ux/05-user-journeys.md` §4.2 permit only expressly stated divergence, and no permitted divergence weakens a guarantee. The parity required is parity **of guarantees**, not pixel-identical rendering — ADR-009 (§19.2) withdraws the contrary reading ADR-007 asserted.
+- **Mobile runtime is React Native with Expo.** ADR-009 (§19) supersedes ADR-007's Flutter recommendation on verified evidence and restores ADR-001's layer choice, now specified to include the Expo module set. Ecosystem-maintenance claims must be checked against current sources before they decide any layer.
+- **Cloud choice binds the portable subset, not the platform's portability.** GCP is the default target (ADR-010, §20); infrastructure is defined in a provider-neutral tool, and only containers, managed PostgreSQL and object storage are relied upon. The application is portable between providers; the infrastructure is not, and a move must be budgeted as an infrastructure exercise.
 - **Every contract exists as a machine-diffable artifact.** `04-api-contract-spec.md` §8 closes breaking-change detection deny-by-default, so a format that cannot be automatically diffed would block every release; OpenAPI is adopted for both the platform-primitive tier and the runtime-generated built-application tier (§16). No contract is published in a format whose only representation is the platform's own compile-time types.
 - **The platform emits contracts for builder-defined applications at runtime.** Because builders define entities after the platform ships (C-05), the second contract tier is generated, not authored — a first-order capability requirement, not an incidental one (§16.2).
 - **The specification fixes the component structure; this document fixes only the topology.** The seven components, their dependency ordering, the forbidden directions, and the three-layer separation are non-overridable (`01-architecture-overview.md` §7). §15 decides how many deployable units they run in — one — and nothing more.
 - **Module boundaries are statically enforced, not merely documented.** The §5.1/§5.2 dependency directions are asserted by automated architecture tests on every commit; extraction of a component into its own service requires demonstrated, profiled pressure and must state how the boundary it converts to runtime will then be verified.
 - **No engine-native construct is adopted without an equivalent for every supported engine.** PostgreSQL is the target (§14.3); MySQL/MariaDB and SQL Server remain supported. Row-level security is specifically excluded as an isolation mechanism on portability grounds (§14.5), and tenant isolation is structural rather than predicate-based.
 - **Builder-defined schemas are a first-order datastore constraint.** Builders define entities at runtime (C-05), so no tooling whose type-safety is generated ahead of time from a static schema may be adopted for builder-defined data (§14.2, §14.4) — the constraint that rules out an otherwise-strong abstraction candidate.
-- **ADR-001's re-evaluation is complete.** ADR-003 (§13) required it; ADR-008 (§18) discharges it — server and web reaffirmed on a revised rationale, mobile superseded by ADR-007. No further criteria-grounds re-evaluation is owed before approval.
+- **ADR-001's re-evaluation is complete.** ADR-003 (§13) required it; ADR-008 (§18) discharges it — server and web reaffirmed on a revised rationale. The mobile layer was then reversed to Flutter (ADR-007) and reversed back to React Native with Expo on verified evidence (ADR-009, §19); no further criteria-grounds re-evaluation is owed before approval.
 - **Every enterprise-baseline dependency is a recorded decision, never a default.** Criteria 7 and 9 are genuine deficits of the chosen ecosystem relative to `.NET` (§18.5); authentication, authorization, migrations, background jobs, localization, and configuration are each selected deliberately, with a maintainer-health basis, not picked by convention.
 - **Every future comparison applies all ten criteria.** No stack or architecture comparison on this project is run against §2.1's six alone; §3–§5 are not retroactively rescored, and that non-retroactivity is recorded, not silently assumed.
 - **ADR-002 confirms, not reopens, ADR-001.** The post-evaluation review of §12 evaluated two additional full-stack candidates and changed no recommendation; it added a seventh evaluation criterion (§2.6) for future use and carried forward one architectural question — fewer codebases across web and backend — to `architecture-realization-design.md`, without reopening this ADR.
