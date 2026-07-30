@@ -145,7 +145,7 @@ Specification phase **complete (T1–T64)** and frozen. The design phase produce
 
 ## Design-Phase Decision Queue — Ordered by Cost to Reverse
 
-**Source:** `references/research/stack-decision-brief.pdf` — a decision brief supplied by the project lead (2026-07-28), read together with the 2026-07-28 team standup outcomes.
+**Source:** `references/research/stack-decision-brief.md` — a decision brief supplied by the project lead (2026-07-28), read together with the 2026-07-28 team standup outcomes. (The brief was originally supplied as a PDF; it was replaced by this Markdown version on 2026-07-29, and the full text was read for the first time on 2026-07-30.)
 
 **How to treat the source.** The brief is an **advisory, secondary input — directional, not authoritative**, and it is not a specification. Its stated premise is *"enterprise web software (HRIS, finance, inventory) plus mobile"* — the very domain framing `CLAUDE.md` forbids for AI ahaMatic, which is a generic, multi-purpose LCAP that *builds* software. **Every item below must therefore be translated through the primitive/artifact line of `docs/spec/01-business-and-ux/03-platform-capability-model.md` §3 before adoption:** a decision the brief states for a *domain application* is, in ahaMatic, either (a) a platform-core decision, or (b) builder-defined content the platform must support *generically*. Adopting a domain-shaped default into the platform core would breach **INV-05 (generality preservation)** and the builder/built line (**INV-06**). Whether the brief was aimed at the platform or at the applications built on it is itself an open question — see `BACKLOG.md` §3.
 
