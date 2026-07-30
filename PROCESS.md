@@ -115,8 +115,10 @@ Generation rules:
 
 - Capabilities are `C-01`, `C-02`, … assigned **sequentially and permanently** — IDs are never renumbered or reused.
 - **Status:** *Active* (sits in a build tier) or *Future / Not-Yet-Authorized* (recorded in the PRD's Future Capabilities section; not designed or built until explicitly authorized).
-- **Current set:** C-01–C-21 active · **C-22** future (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-23** active (builder-facing environment management).
-- **Approved, not yet added:** **C-24** cross-system data layer (active) · **C-25** connector marketplace (active, distinct from C-13) · **C-26** runtime AI automation inside built apps (future). Desktop/RPA was **declined**.
+- **Current set — canonical span `C-01–C-26`: 24 active, 2 future.**
+  - **Active:** C-01–C-21 · **C-23** (builder-facing environment management) · **C-24** (cross-system data layer) · **C-25** (connector marketplace, distinct from C-13).
+  - **Future / Not-Yet-Authorized:** **C-22** (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-26** (runtime AI automation inside built apps, distinct from build-time C-19).
+  - C-24–C-26 were added by T56–T59 and are no longer pending; Desktop/RPA was **declined**. Canonical source: `01-business-and-ux/02-prd.md` §4 and `01-business-and-ux/03-platform-capability-model.md` §4 — never this file.
 - **Adding or changing a capability requires full propagation** (see §6): `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md` (definition) → `03-software-and-architecture/02-domain-glossary.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md` (propagation) → re-sync the capability enumeration/count across **all** documents that cite it, **including `context-document-map.md`**.
 - **UI Localization is a separate, not-yet-ticketed feature** — human-interface-language localization (English + Spanish now; broader European later). It is distinct from C-22 (programming-language *code* export), has **no capability number**, and must never be conflated with C-22. It is a candidate for the Future Capabilities treatment (see T55) if/when it is ticketed.
 
