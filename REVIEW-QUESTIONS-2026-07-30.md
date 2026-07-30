@@ -10,16 +10,35 @@
 
 ## Tier 1 — must leave the meeting with these
 
-### Q1. Does V1.0 have multiple tenants?
+### Q1. Confirm V1.0 is multi-tenant
 
-> *"Does V1.0 host multiple separate customers on the same system, or is it a single-tenant proof of concept? The criteria say secure login into ahaMatic **and** into the apps created, which reads as multi-tenant."*
+**The team's answer is yes.** Ask anyway — he has not said it in the room, and if he disagrees, every question below changes.
 
-**Why it goes first.** It decides how urgent Q2 is, so ask it before Q2 rather than after.
+> *"We're taking V1.0 as multi-tenant — multiple separate customers on the same system — since the criteria say secure login into ahaMatic **and** into the apps created. Confirming, because everything else depends on it."*
 
-- **Multi-tenant** → V1.0 lands on the most expensive layer in the whole project. The storage and isolation shape must be settled before any code, and Q2 becomes a V1.0 blocker rather than a design-phase concern.
-- **Single-tenant** → V1.0 unblocks immediately. Q3 still has to be answered before the schema is laid down.
+**What the yes commits V1.0 to.** The whole Isolation and Trust component — C-01 tenant isolation, C-02 authentication, C-03 access control — which is the architectural root everything else depends on. And invariant INV-01, including its strict clause that one tenant must not *detect the existence* of another.
+
+**Consequences already in force:**
+
+- **Q2 is now a V1.0 blocker**, not a design-phase concern. Tenancy and sync reshape the same schema, and the schema must be settled before code is written.
+- **The datastore decision is on V1.0's critical path** and can no longer sit as a provisional recommendation.
+- **V1.0 depends on blocked work.** The datastore decision deferred its own known risks — migration fan-out across many schemas, connection-pool pressure as tenant count grows — to a design document that is itself gated on his approval.
+
+**If he says single-tenant instead** → V1.0 unblocks almost immediately and most of this falls away, but Q3 still has to be answered before the schema goes in.
 
 *Ref: flags §C1*
+
+### Q1a. Does V1.0 have to hit the platform's performance numbers?
+
+> *"MVP and 'keep it basic' make sense. But multi-tenant V1.0 puts tenant isolation in scope, and the specification attaches hard numbers to it: 50,000 concurrent sessions per region, 10 million records for a single tenant, no measurable slowdown for existing tenants when a new one is onboarded, and any tenant's data migration completing or safely reverting inside 4 hours. Do those apply to V1.0, or are they targets we build toward?"*
+
+**Why this is Tier 1.** It only became visible once V1.0 was confirmed multi-tenant, and it is a scope question rather than a detail. "Basic as possible" and 50,000 concurrent sessions are not obviously compatible.
+
+**The distinction that likely resolves it** — worth offering, because it protects both positions. An **invariant** and a **performance target** are different instruments. **INV-01 cannot be relaxed for V1.0**: isolation is binary, and a minimal product still must not leak between tenants. The throughput numbers are a different category and are plausibly scope-negotiable. That ruling is his to make.
+
+**Do not let this pass as "it's an MVP, don't worry about it."** Isolation and throughput need separate answers — one is negotiable, one is not.
+
+*Ref: flags §C8 · numbers verified in `03-software-and-architecture/06-non-functional-requirements.md` §5, §7*
 
 ### Q2. Server-authoritative, or two-way sync?
 
@@ -60,11 +79,28 @@
 
 > *"Nothing we've decided is binding yet — none of it is recorded as approved. Eight decisions are waiting, and five design documents can't be written until they are. Can we get a yes, no, or defer on each?"*
 
-The eight: stack, datastore, architecture pattern, API contract shape, client surface shape, stack re-evaluation, mobile runtime, cloud provider.
+**The eight, ordered hardest-to-undo first — which is the order to walk them.** Plain language; no internal identifiers.
 
-**One condition:** the datastore decision should be approved **jointly with Q2**, or explicitly marked as exposed. Approving it alone is the thing we're trying to avoid.
+| What it decides | Undo cost | Y / N / Defer |
+|---|---|---|
+| **004 · Database and data storage** — PostgreSQL as the main engine, with MySQL and SQL Server also supported. **Each customer gets their own separate set of tables**, rather than everyone sharing tables with a customer-ID column. A lightweight query tool rather than a heavyweight data-mapping framework. Record IDs are a sortable-random format instead of counting numbers. | **Brutal** | |
+| **005 · System architecture** — build as **one deployable system with clearly separated modules inside**, not many independent services. Automated checks block code that improperly crosses a module boundary. Splitting a module out later is allowed only when measured pressure justifies it. | High | |
+| **006 · How other systems talk to us** — a standard, machine-readable description of our interface (OpenAPI) plus auto-generated client code, used both for our own platform and for the applications builders create. GraphQL rejected. A TypeScript-only shortcut permitted for internal use only. | High | |
+| **010 · Cloud provider** — **Google Cloud as the default**, with AWS and Azure both viable and neither ruled out. Infrastructure described in a provider-neutral tool, and only the portable pieces relied on. | Moderate–high | |
+| **007 · What we deliver to end users** *(this half only)* — every application built on the platform can be offered as a **real web version and a genuine mobile app**, builder's choice per application. A mobile-friendly website alone isn't sufficient. | Moderate | |
+| **009 · Mobile app technology** — **React Native with Expo.** | Moderate | |
+| **001 · Programming language and frameworks** — TypeScript for the server, Next.js/React for the web, React Native for mobile: **one language across all three.** | Low | |
+| **008 · Re-check of the language choice** — server and web choices **confirmed** after properly scoring Microsoft's .NET, which an earlier pass had dismissed on reasoning we now record as too thin. | Low | |
 
-*Ref: flags §A2 · full status in `ADR-REGISTER.md`*
+**Three of these carry a condition — don't let them be waved through:**
+
+- **004** must be approved **jointly with Q2 (sync)**, or explicitly marked as exposed. Approving it alone is precisely the mistake we're trying to close. It is also the one that **diverges from his brief's default** (his brief proposed shared tables with row-level security).
+- **007** is a **split decision.** Only the web-and-mobile-delivery half is live; its mobile-framework half was replaced by 009. He is approving one half, not the whole thing.
+- **009** is the **contested one** — see Q6. Do not seek approval on it before that conversation has happened.
+
+**Two are already settled and are not on this list:** the evaluation-criteria decision is approved, and the review of two extra full-stack candidates is closed with no change.
+
+*Ref: flags §A2 · full status, including cost-to-reverse and dependencies, in `ADR-REGISTER.md`*
 
 ---
 

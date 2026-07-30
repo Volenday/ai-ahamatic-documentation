@@ -8,9 +8,11 @@
 
 ## If time is short — the three that matter most
 
-1. **§A1 Sync posture.** Undecided, and it constrains the most expensive decision already taken *and* the V1.0 scope. Everything else can wait; this cannot.
+1. **§A1 Sync posture.** Undecided, and it constrains the most expensive decision already taken. Now confirmed to block **V1.0 itself**, not just the design phase, because V1.0 is multi-tenant (§C1). Everything else can wait; this cannot.
 2. **§B1 No-code vs low-code.** One sub-question decides whether this is a 15-statement rewording or a reversal of frozen strategy.
-3. **§C1 V1.0 lands on the brutal layer.** V1.0 is not a small slice — its authentication requirement drags in multi-tenant isolation, which is the single most expensive thing on the list.
+3. **§C8 MVP versus the quantified targets.** V1.0 being multi-tenant puts tenant isolation in scope — and the frozen spec attaches hard numbers to it (50,000 concurrent sessions, 10 million records per tenant). "Basic as possible" and those numbers need reconciling, and isolation and throughput need separate answers.
+
+> **Context that changed since compilation:** §C1 is answered — V1.0 **is** multi-tenant. That answer is what promoted §A1 to a release blocker and made §C8 visible at all.
 
 ---
 
@@ -109,7 +111,13 @@ Capability C-02 (authentication) depends on C-01 (tenant isolation); C-03 depend
 
 **So V1.0 is not a small slice.** It lands squarely on the most expensive layer in the decision ordering — and on exactly the decision blocked by §A1. **The sync-posture answer therefore gates V1.0 itself, not merely the design phase.**
 
-**Ask:** is multi-tenant isolation intended to be in V1.0? If yes, §A1 becomes urgent rather than merely important.
+**✅ Answered by the team, 2026-07-30: yes — V1.0 is multi-tenant.** Still to be confirmed by the lead directly, since he has not stated it himself.
+
+**What that settles:** V1.0 carries C-01, C-02 and C-03 — the entire Isolation and Trust component — and INV-01 applies to it in full.
+
+**What it escalates:** §A1 is now **urgent, not merely important** — it blocks V1.0 rather than only the design phase. ADR-004 moves onto V1.0's critical path and can no longer stand as a provisional recommendation. And V1.0 inherits a dependency on blocked work: ADR-004 deferred its own known risks — migration fan-out across schemas, connection-pool pressure as tenant count grows — to `scalability-availability-and-performance-design.md`, which is gated.
+
+**One argument that strengthens rather than weakens.** MVP pressure might look like a reason to prefer simpler shared-table isolation. It is not: that approach rests on every query carrying a tenant predicate, and ADR-004's own finding is that "one omitted predicate breaches INV-01." For AI-authored code under time pressure, isolation that is structural and *cannot be forgotten* is worth more, not less. ADR-004's shape survives the MVP context — arguably the MVP context reinforces it.
 
 ### C2. Which "data model" is the assigned deliverable?
 
@@ -147,6 +155,25 @@ V1.0 touches **3 of 7** architectural components (Isolation and Trust, Construct
 ### C7. Will the V1.0 schema ever need to support offline sync?
 
 Mobile is genuinely out of V1.0 — C-20 is the only capability referencing offline behaviour. **But V1.0 creates real tenant data under a schema that is brutal to reverse.** So the question is not "is mobile in V1.0" but "will this schema ever need offline sync." That must be answered now regardless of V1.0's scope.
+
+### C8. MVP versus the specification's quantified targets
+
+**Only visible once V1.0 was confirmed multi-tenant (§C1) — and it is a scope question, not a detail.**
+
+The stated design principle is *"MVP … keep all features to as basic as possible"* and *"version one, just make it work."* But C-01 is now in V1.0 scope, and C-01 is precisely what the frozen specification attaches hard numbers to. All four verified in `03-software-and-architecture/06-non-functional-requirements.md` §5 and §7:
+
+| Target | Value |
+|---|---|
+| Concurrent authenticated sessions per region | **≥ 50,000** |
+| Committed entity instances for a single tenant | **≥ 10,000,000** |
+| Onboarding one additional tenant | **no measurable degradation** for any existing tenant |
+| Migration of one tenant's committed data | completes or safely reverts **within 4 hours** |
+
+"Basic as possible" and 50,000 concurrent sessions are not obviously compatible. This is a genuine conflict between the new MVP principle and the frozen spec.
+
+**The distinction that likely resolves it, and which the project already protects.** An **invariant**, a **release gate**, and a **guardrail metric** are three distinct enforcement instruments that must never collapse into one another (`PROCESS.md` §11). **INV-01 is binary and cannot be relaxed for V1.0** — a minimal product still must not leak between tenants, and a breach halts execution rather than degrading. The throughput *numbers* are a different category and are plausibly scope-negotiable.
+
+**Ask:** do the quantified targets apply to V1.0, or are they platform-maturity targets to build toward? Isolation and throughput need **separate** answers — one is negotiable, the other is not.
 
 ---
 
