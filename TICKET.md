@@ -131,7 +131,9 @@ Closing the specification phase before H1. T63 emerged from `BACKLOG.md` §4 / `
 
 ## Design Phase (H-series)
 
-Specification phase **complete (T1–T64)** and frozen. The design phase produces the "how" library in `docs/design/`, realizing the frozen spec (never editing it) under `ai-aha-design-doc` / `ai-aha-design-review`.
+Specification phase delivered **T1–T64**. The design phase produces the "how" library in `docs/design/` under `ai-aha-design-doc` / `ai-aha-design-review`.
+
+> **⚠ The specification is NO LONGER FROZEN — lead decision, 2026-07-30.** The freeze that governed T1–T64 has been lifted, and the lead has stated the spec is **expected to keep changing**. Two consequences: (a) a design ticket may now surface a spec change rather than only flagging it, but a spec change still goes through a **spec-phase ticket** under `ai-aha-spec-doc` — a design ticket never edits `docs/spec/` inline; (b) `PROCESS.md` §1 and `CLAUDE.md` both still assert the spec is frozen during the design phase and **need updating to match** (tracked below). Until they are, this note is the authority on the freeze status.
 
 | #  | Ticket Title                              | Status  | Output File                                  |
 | -- | ------------------------------------------ | ------- | --------------------------------------------- |
@@ -139,7 +141,9 @@ Specification phase **complete (T1–T64)** and frozen. The design phase produce
 | H2 | Technology Stack & Architecture Decisions  | ✅ Done | `docs/design/technology-stack-design.md`      |
 | H2a | Cost-to-Reverse Annotation & Dependency Correction | ✅ Done | `docs/design/implementation-document-map.md` |
 
-> **⏸ STILL PAUSED after H2 — pending lead approval of ADR-001.** H2 produced a provisional recommendation (ADR-001, recorded inline in `technology-stack-design.md`'s Design Decision Records section): Node.js/TypeScript across server, web (Next.js/React), and mobile-delivery runtime (React Native) — single-language, chosen over a Flutter-unified alternative on AI/LLM tooling-ecosystem-fit grounds. **This recommendation has no effect until the project lead approves it and it is recorded in `DECISIONS.md`.** No downstream document may treat ADR-001 as final until then. Five documents remain gated on this approval: `architecture-realization-design.md`, `scalability-availability-and-performance-design.md`, `licensing-and-dependency-compliance-design.md`, `coding-standards-and-patterns-design.md`, `environment-and-configuration-design.md`. Per the lead's sequencing override, `architecture-realization-design.md` is H3 once approval lands (it now follows the stack decision rather than preceding it). Datastore selection was explicitly scoped out of H2 and remains a follow-up ticket. Do not generate H3 or any gated ticket before lead approval is confirmed and logged in `DECISIONS.md`.
+> **⚠ SUPERSEDED 2026-07-30 — read the "Lead Decisions" section below instead.** Five ADRs were approved at the 2026-07-30 standup (004, 005, 006-in-part, 007, 010) and three were deferred pending the data model (001, 008, 009). The pause described below no longer reflects reality; the note is retained only as the record of what the gate was. **Approval is not yet recorded in `DECISIONS.md`, so nothing is binding even now.**
+>
+> **⏸ HISTORICAL — the original pause after H2, pending lead approval of ADR-001.** H2 produced a provisional recommendation (ADR-001, recorded inline in `technology-stack-design.md`'s Design Decision Records section): Node.js/TypeScript across server, web (Next.js/React), and mobile-delivery runtime (React Native) — single-language, chosen over a Flutter-unified alternative on AI/LLM tooling-ecosystem-fit grounds. **This recommendation has no effect until the project lead approves it and it is recorded in `DECISIONS.md`.** No downstream document may treat ADR-001 as final until then. Five documents remain gated on this approval: `architecture-realization-design.md`, `scalability-availability-and-performance-design.md`, `licensing-and-dependency-compliance-design.md`, `coding-standards-and-patterns-design.md`, `environment-and-configuration-design.md`. Per the lead's sequencing override, `architecture-realization-design.md` is H3 once approval lands (it now follows the stack decision rather than preceding it). Datastore selection was explicitly scoped out of H2 and remains a follow-up ticket. Do not generate H3 or any gated ticket before lead approval is confirmed and logged in `DECISIONS.md`.
 
 ---
 
@@ -158,7 +162,7 @@ Specification phase **complete (T1–T64)** and frozen. The design phase produce
 | 1 | Brutal | **ODM/ORM abstraction layer** securing portability across SQL engines; no dependence on engine-native, non-portable features. | ✅ **Decided** — ADR-004: a **typed query builder (Kysely)**, not an ORM. Builders define entities at runtime (C-05), which disqualifies ahead-of-time-generated clients such as Prisma. |
 | 1 | Brutal | **Key strategy** — UUIDv7 vs. autoincrement (client-generatable identifiers). | ✅ **Decided** — ADR-004: **UUIDv7**. |
 | 1 | Brutal | **Temporal and append-only support as *generic* primitives** — whether the platform's data-modeling primitive (C-05) must support effective-dating, retroactive adjustment, and append-only/reversal-entry patterns for *any* builder domain. | ⚠️ **Spec question — see `BACKLOG.md` §3** |
-| 2 — Sync posture | **Very high** (constrains layer 1) | **Server-authoritative outbox queue vs. full bidirectional sync engine.** An entire decision layer neither prior evaluation considered. If bidirectional anywhere, the schema needs `updated_at` and version columns on everything syncable, tombstones instead of hard deletes, and a written per-table conflict rule — which is why it constrains layer 1. | 🔴 **BLOCKING — undecided.** The only item on this queue with **no decision record at all**, while the layer it constrains (ADR-004) has one. The brief itself instructs deciding it *jointly* with the data model; if bidirectional anywhere, its guidance is **buy, do not build** (PowerSync / ElectricSQL / Couchbase Lite). ⚠️ may touch spec (C-20 offline behavior). See `BACKLOG.md` §3. |
+| 2 — Sync posture | **Very high** (constrains layer 1) | **Server-authoritative outbox queue vs. full bidirectional sync engine.** An entire decision layer neither prior evaluation considered. If bidirectional anywhere, the schema needs `updated_at` and version columns on everything syncable, tombstones instead of hard deletes, and a written per-table conflict rule — which is why it constrains layer 1. | ✅ **DECIDED 2026-07-30** — **server-authoritative, with optimistic UI supplied by one standardised client library** (`DECISIONS.md` **D-11**). **None of the bidirectional machinery is required** — no version columns, no sync tombstones, no per-table conflict rules — so ADR-004 was approved *jointly* with this rather than exposed. ⚠️ **An ADR is still owed:** the second-most-expensive decision in this queue has no design-phase record. Two limitations to carry into it — Firebase/Supabase excluded by ADR-010's portable-subset rule, and the pattern fits transactional work better than long-offline editing. |
 | 3 — Architecture | High | **Modular monolith vs. monolith-plus-extracted-services vs. microservices vs. serverless.** The aging ahaMatic platform is monolithic — `references/`-only context, a contrast point, never a template. Feeds `architecture-realization-design.md`. | ✅ **Decided** — ADR-005: **one deployable per product, modular monolith inside**, modules mapping 1:1 onto the seven fixed components; extraction only under demonstrated, profiled pressure. Microservices rejected because they convert the spec's statically-provable dependency-direction constraints into unverifiable runtime ones. |
 | 3 | High | **Architecture tests as boundary enforcement** (e.g. NetArchTest / ArchUnit / import-linter; dependency-cruiser for TypeScript). A concrete *mechanism* for boundaries the spec already mandates — INV-05, INV-06, and the allowed/forbidden dependency directions of `docs/spec/03-software-and-architecture/01-architecture-overview.md` §5.1–§5.2. | ✅ **Decided** — ADR-005: boundaries asserted on every commit; concrete configuration owned by `architecture-realization-design.md`. |
 | 3 | High | **API contract shape** — realizes **C-12** and `docs/spec/03-software-and-architecture/04-api-contract-spec.md`. | ✅ **Decided** — ADR-006: **OpenAPI + generated clients** for both the platform tier and the runtime-generated built-application tier; tRPC internal-only; **GraphQL rejected** (arbitrary query graphs make §6's "never reveals existence beyond grant" unestablishable statically); **gRPC deferred** — ADR-005's single deployable means no internal service seam exists yet. |
@@ -174,11 +178,104 @@ Specification phase **complete (T1–T64)** and frozen. The design phase produce
 | **Expand the evaluation criteria set.** The brief weights three dimensions our six/seven-criterion method under-weighted: **machine-checkable correctness** (how much wrongness is caught with no human in the loop), **enterprise batteries off the shelf** (SSO, RBAC, audit, migrations, jobs, i18n, reporting), and **operational resilience to recurring dependency/build maintenance**. At the time this was raised, only the seventh criterion (third-party dependency minimization) existed in `technology-stack-design.md` §2.6, overlapping the third but covering neither of the first two. Rationale: when AI authors the code, the bottleneck shifts from *authoring* to *verifying*. | ✅ **Discharged** — ADR-003 (§13, **Approved**) adopted all three as criteria 8–10 in §2.6, and ADR-008 (§18) applied them. The brief's double-weighting of 8–10 is recorded as *the brief's judgment*, not adopted as settled method. Further criteria raised at the 2026-07-29 standup are **not yet recorded here** — pending lead confirmation. |
 | **Vertical-slice validation** — build one genuinely hard slice and measure (iterations to green tests, bugs escaping to manual QA, legibility to an uncommissioning reviewer, and how well a *fresh* AI session modifies it later), instead of deciding further on paper. Directly answers the admission in `technology-stack-design.md` §2.3 that no empirical token benchmarking exists. Also check the two or three plugins actually depended on for maintainer activity, issue response times, and first-party status. | ⬜ New |
 
-> **⚠ Gate relocated 2026-07-29 — read this before resuming.** The design phase was paused on **ADR-001**, the *cheapest*-to-reverse decision, while the expensive layers stayed open. That inversion is the thing `PROCESS.md` §12 now exists to prevent. Layers 1–5 have since been decided (ADR-004 through ADR-010), so the binding gate is no longer the stack:
+> **✅ GATE CLEARED 2026-07-30 — the decision queue has no blocking cross-cutting item.** Sync posture is answered (`DECISIONS.md` D-11) and ADR-004 was approved **jointly** with it, so the exposure the gate existed to flag never materialised. Approval is recorded in `DECISIONS.md` D-08: six ADRs approved, three deferred pending the data model, one sub-decision parked. **The next gate is the data model**, which the lead named as the next deliverable and on which ADR-001, ADR-008 and ADR-009 all wait. Current status view: `ADR-REGISTER.md`. The relocated-gate note below is retained as the record of what the gate was.
+>
+> **⚠ HISTORICAL — Gate relocated 2026-07-29.** The design phase was paused on **ADR-001**, the *cheapest*-to-reverse decision, while the expensive layers stayed open. That inversion is the thing `PROCESS.md` §12 now exists to prevent. Layers 1–5 have since been decided (ADR-004 through ADR-010), so the binding gate is no longer the stack:
 >
 > **The real gate is now: ADR-004 (datastore) cannot be safely approved until the sync-posture question is answered.** Sync constrains the schema — a bidirectional answer requires version columns, tombstones and per-table conflict rules, changing the shape of the most expensive decision taken. See `BACKLOG.md` §3 (elevated to blocking) and `PROCESS.md` §12.2. Approve ADR-004 **jointly** with the sync answer, or record it as explicitly exposed.
 >
 > Lead approval is still required for ADR-001, 004, 005, 006, 007, **008**, 009 and 010 before any gated design document proceeds — **eight** ADRs carry `Provisional — Pending Lead Approval`. ADR-008 was omitted from this list in error and is restored here; see `ADR-REGISTER.md` for the full status view. ADR-002 is closed and ADR-003 is approved.
 >
-> **Still to do on the ordering change** — both items applied in **H2a**: ~~annotate `docs/design/implementation-document-map.md` with per-document reversal cost~~ ✅, and ~~decouple `tenant-isolation-and-access-control-design.md` from its current dependency on `architecture-realization-design.md`~~ ✅ — the brutal-layer document should not sit downstream of a high-layer one. Note the direct dependency is removed but **survives transitively** through `invariant-enforcement-design.md`, which retains it; the map records this, and whether that document's own dependency is structural is unassessed. The map's *layer* ordering stays as-is: it is a derivation/dependency order, and `PROCESS.md` §12.1 keeps it deliberately distinct from cost-to-reverse.
+> **Still to do on the ordering change** — both items applied in **H2a** (retained for history): ~~annotate `docs/design/implementation-document-map.md` with per-document reversal cost~~ ✅, and ~~decouple `tenant-isolation-and-access-control-design.md` from its current dependency on `architecture-realization-design.md`~~ ✅ — the brutal-layer document should not sit downstream of a high-layer one. Note the direct dependency is removed but **survives transitively** through `invariant-enforcement-design.md`, which retains it; the map records this, and whether that document's own dependency is structural is unassessed. The map's *layer* ordering stays as-is: it is a derivation/dependency order, and `PROCESS.md` §12.1 keeps it deliberately distinct from cost-to-reverse.
+
+---
+
+## Lead Decisions — 2026-07-30 Standup
+
+**Source:** the 2026-07-30 tech standup, at which the `REVIEW-QUESTIONS-2026-07-30.md` sheet was walked through. Answers and their consequences are recorded in `REVIEW-FLAGS-2026-07-30.md`; this section carries only the **work they create**.
+
+**Read this first.** The lead **lifted the specification freeze** and said the spec is expected to keep changing. Spec changes are therefore live work again — but still run as spec-phase tickets, never inline from a design ticket.
+
+### Decisions taken
+
+| Decision | Outcome |
+|---|---|
+| **Multi-tenancy in V1.0** | ✅ **Yes** — retrofitting is "a big change from a data model perspective." Also to be added to the V1.0 completion criteria |
+| **Sync posture** | ✅ **Global framework standardization** — one standardized library pattern (TanStack/React Query named) giving optimistic UI with the **server authoritative underneath**. ⚠️ *Hybrid domain partitioning was an intermediate position he moved off; the meeting notes wrongly record both as decided* |
+| **Offline editing needed at all** | ✅ Yes |
+| **No-code** | ✅ **No-code tier only, professional builders only.** Low-code is now **excluded** — *"let's do only no code."* The citizen-developer exclusion **survives intact** |
+| **Data model wanted** | ✅ **Both** the platform's own schema and the builder-entity schema, "particularly the first" |
+| **API layer** | ✅ **Both** internal and external |
+| **"Enterprise"** | ✅ **The market sold into**, never the product shape — *"it can be anything"* |
+| **Temporal / append-only** | ✅ **Yes, generically, for everything** — audit and history are not optional |
+| **BPMN for C-18** | ✅ **Yes** — gold standard; a simplified view can be derived from BPMN, but detail cannot be added to a simplified model later. *Resolves the `BACKLOG.md` §3 assumption and unblocks `workflow-and-process-automation-design.md`* |
+| **Gartner subscription** | ❌ **No** — closes `BACKLOG.md` §4 |
+| **Data Admin capability** | ✅ **Option A — a new capability, C-27** (lead-adjacent decision, 2026-07-30) |
+
+### ADR outcomes
+
+**Approved:** ADR-004 *(with changes, below)*, ADR-005, ADR-006 *(in part)*, ADR-007, ADR-010.
+**Deferred pending the data model:** ADR-001, ADR-008, ADR-009 — *"9, 1 and 8 we still have to check."*
+**Parked:** the GraphQL rejection inside ADR-006, pending research.
+
+**Changes the lead made while approving ADR-004 — none of these are yet in the ADR:**
+- **PostgreSQL only for V1.0**; MySQL and SQL Server support deferred beyond it.
+- **Separation is per-app as well as per-customer** — three levels: platform-global config → per-customer → **per-app**. Hierarchy: ahaMatic has customers, customers have apps. *This is finer than ADR-004's recorded schema-per-tenant, and multiplies the migration-fan-out and connection-pool risks ADR-004 already flagged as unresolved.*
+- Query builder over ORM: confirmed.
+- Sortable-random keys: confirmed, with individual apps free to add their own business identifiers separately.
+
+**New requirement added to ADR-006:** an **AI-to-AI interaction protocol** must be published so AI agents can interact with the platform. The lead could not recall the protocol's name; from his description this is likely **MCP**, though he said "AI to AI," which would be **A2A**. *Confirm which before designing.*
+
+### Spec-phase tickets (freeze lifted)
+
+| # | Ticket Title | Status | Output File(s) |
+| --- | --- | --- | --- |
+| T65 | Add Data Administration capability (**C-27**) — definition | ⏳ Next | `docs/spec/01-business-and-ux/02-prd.md`, `03-platform-capability-model.md` |
+| T66 | No-code tier commitment — replace the low-code tier commitment; sever tier from audience in the definitions | ⬜ Pending | `01-vision-and-charter.md`, `03-software-and-architecture/02-domain-glossary.md`, `01-business-and-ux/07-competitive-landscape.md` |
+| T67 | Temporal, append-only and history as generic C-05 primitives | ⬜ Pending | `03-software-and-architecture/03-data-model-and-entity-spec.md`, `01-business-and-ux/02-prd.md` |
+| T68 | Propagate T65–T67 across the library, re-sync capability counts, run `ai-aha-consistency-check` | ⬜ Pending | `02-domain-glossary.md`, `04-personas-and-roles.md`, `05-user-journeys.md`, `context-document-map.md`, library-wide |
+
+> **T65 scope (C-27).** Data Administration is a **generic administrative interface auto-derived from builder-defined entities** — define a model, get working CRUD without building an application. It is the builder-facing counterpart to the runtime-generated contract tier of ADR-006 §16.2. It is **not** C-05 (which defines shape, not record operations), **not** C-06 (which configures an application), and **not** C-07 (which runs built software for end users). Precedent for giving builder-facing tooling a capability ID: **C-19**. Per `PROCESS.md` §5 the ID is permanent and never reused; C-26 was the previous highest.
+
+> **T66 caution.** This is a tier **inversion**, not a widening — the charter currently *"commits explicitly to its low-code tier"* and the glossary lists "no-code platform" as a **disallowed synonym** for the platform's identity. The spec also defines each tier **by its audience**, so the definitions must be rewritten to sever tier from audience; otherwise committing to no-code implicitly readmits non-specialist users, which the lead explicitly excluded. The citizen-developer exclusion is **unaffected** and must survive.
+
+### Design-phase work identified — not yet sequenced
+
+Sequencing waits on the data model, which the lead has made the next deliverable.
+
+| Item | Note |
+|---|---|
+| **The data model** | The lead's named next deliverable, and the gate on ADR-001/008/009. Covers both the platform's own schema and the builder-entity schema. **No document in `implementation-document-map.md` is currently positioned to deliver the platform's own schema** |
+| **Sync-posture ADR** | No ADR exists for the highest-cost-to-reverse decision after the datastore. Must record the global-framework-standardization decision and work through its schema consequences **jointly with T67** |
+| **ADR-004 amendment** | Postgres-only for V1.0; per-app separation; whether schema-per-tenant becomes schema-per-app |
+| **ADR-006 amendment** | Add the AI-to-AI protocol requirement; reopen the GraphQL question from rejected to parked |
+| **GraphQL research** | Pros and cons, then a recommendation. Lead is genuinely undecided |
+| **Offline mobile storage engine** | New decision, no ADR |
+| **Server-side cache handling** | New decision, no ADR. Explicitly *not* only an offline concern |
+| **Security standards** | Lead believes this is missing: OWASP, SSL, database encryption, declared explicitly. *Note: the spec already carries a security policy and a certification roadmap, and `security-controls-design.md` is already scheduled in Layer 2 — so this is a design decision not yet made, not a spec gap* |
+| **Design document for C-27** | Add to `implementation-document-map.md` once T65 lands |
+| **New evaluation criteria 11–13** | Human-verifiability, commercial acceptability, and corpus **quality** (not volume). Two favour the current stack, one cuts against it |
+| **Consistency-check remediation** | The 12 findings of the 2026-07-30 run. Most severe: ADR-008's *Consequences* still records Flutter as approved, §10 is stale on the mobile runtime, and the mandatory cost-to-reverse / upstream-assumed ADR fields were never retrofitted |
+| **`DECISIONS.md` entries** | The five approved ADRs need recording. **`DECISIONS.md` currently holds no stack entry at all, so this would be the first binding entry in the project** — until it lands, nothing is approved in fact |
+| **`PROCESS.md` §1 + `CLAUDE.md`** | Both still assert the spec is frozen during the design phase. Must be updated to match the lifted freeze |
+
+### Resolutions recorded 2026-07-30 (tracker pass)
+
+| Q | Resolution |
+|---|---|
+| **Q1a** | Quantified NFR targets **do not apply to V1.0** — *"Does not apply to v1.0."* Recorded as **deferred as an acceptance gate, retained as a design constraint**: V1.0 need not *demonstrate* 50,000 sessions, but must not choose a partitioning that structurally precludes reaching it. **INV-01 and release gate G-1 are unaffected** — he deferred numbers, not gates, and G-1 requires isolation to hold "before anything is hosted." V1.0 is therefore **released from its dependency** on the gated `scalability-availability-and-performance-design.md` |
+| **Q11** | Data Admin's screen vs the deferred front-end is **not a contradiction** — different layers. What was deferred is the **UI generator** for built applications; Data Admin is platform tooling. A V1.0 application is a data model plus Data Admin access, with **no end-user interface** — so C-07 and C-10 are not exercisable in V1.0, as intended |
+| **Q12** | V1.0 sits **exactly on the Tier 1 / Tier 2 seam** — all five Tier 1 capabilities are in it, no Tier 2 capability is. So **no re-tiering is needed**, V1.0 stays a delivery milestone in the tracker rather than entering the PRD, and **C-27 belongs in Tier 1**. One loose end: whether V1.0 needs any of C-12 proper (Tier 3), or only the generated contract falling out of C-05 |
+| **Q13** | Go fallback: **de-name it, do not close it.** Keep the principle that profiled pressure may warrant a different language for one component; withdraw the pre-commitment to Go, which the lead ruled against on grounds that hold at any scale and which was never scored under criteria 7–10. Decide the language when profiling data exists. Folds into the deferred ADR-001/008 decision |
+| **Q14** | Re-evaluation happens **after the data model** — answered by the 001/008/009 deferral. Sound sequencing rather than deference: the data model produces the evidence the re-evaluation turns on. **ADR-008's closure claim is void** and its status line wrong |
+
+> **Sizing question worth adding to the next batch.** V1.0 now has no quantified performance criteria at all, which is fine for an MVP — but one number still matters: **roughly how many customers, and how many apps each, should V1.0 handle?** Separate tables per app behave very differently at 5 customers than at 50, and it is the one figure that shows whether the partitioning shape is comfortable at launch scale.
+
+### Still unanswered
+
+| Q | Item |
+|---|---|
+| **Q1a** | **Does V1.0 have to meet the quantified NFR targets** — 50,000 concurrent sessions per region, 10,000,000 records for one tenant, no measurable degradation on tenant onboarding, 4-hour migration ceiling — or are they targets to build toward? **Never asked; not self-answerable.** More urgent now: multi-tenancy is confirmed for V1.0 *and* separation is per-app, which multiplies the very risks those targets measure |
+| Q11–Q13 | Data Admin's surface vs the deferred UI; V1.0 as re-tiering or separate milestone; whether the Go fallback survives. Team to self-answer |
+| — | **The Flutter disclosure never happened.** ADR-009 is deferred, and the lead is still unaware that `technology-stack-design.md` argues for Flutter in five places against its own verified conclusion |
 ```
