@@ -140,6 +140,7 @@ Specification phase delivered **T1–T64**. The design phase produces the "how" 
 | H1 | Implementation Document Map                | ✅ Done | `docs/design/implementation-document-map.md`  |
 | H2 | Technology Stack & Architecture Decisions  | ✅ Done | `docs/design/technology-stack-design.md`      |
 | H2a | Cost-to-Reverse Annotation & Dependency Correction | ✅ Done | `docs/design/implementation-document-map.md` |
+| H3 | Amendment Ticket — Sync-Posture ADR-011, ADR-004/006 Amendments, Status Retrofit, Consistency-Check Remediation | ✅ Done | `docs/design/technology-stack-design.md` |
 
 > **⚠ SUPERSEDED 2026-07-30 — read the "Lead Decisions" section below instead.** Five ADRs were approved at the 2026-07-30 standup (004, 005, 006-in-part, 007, 010) and three were deferred pending the data model (001, 008, 009). The pause described below no longer reflects reality; the note is retained only as the record of what the gate was. **Approval is not yet recorded in `DECISIONS.md`, so nothing is binding even now.**
 >
@@ -246,16 +247,16 @@ Sequencing waits on the data model, which the lead has made the next deliverable
 | Item | Note |
 |---|---|
 | **The data model** | The lead's named next deliverable, and the gate on ADR-001/008/009. Covers both the platform's own schema and the builder-entity schema. **No document in `implementation-document-map.md` is currently positioned to deliver the platform's own schema** |
-| **Sync-posture ADR** | No ADR exists for the highest-cost-to-reverse decision after the datastore. Must record the global-framework-standardization decision and work through its schema consequences **jointly with T67** |
-| **ADR-004 amendment** | Postgres-only for V1.0; per-app separation; whether schema-per-tenant becomes schema-per-app |
-| **ADR-006 amendment** | Add the AI-to-AI protocol requirement; reopen the GraphQL question from rejected to parked |
+| ~~**Sync-posture ADR**~~ | ✅ **Closed by H3** — recorded as ADR-011 (`technology-stack-design.md` §21). The spec-side interaction with T67 (temporal/append-only) remains separately tracked there. |
+| ~~**ADR-004 amendment**~~ | ✅ **Closed by H3** — PostgreSQL-only for V1.0, per-application separation (finer than schema-per-tenant), and the two isolation strengths recorded in the ADR-004 record and §14.5. |
+| ~~**ADR-006 amendment**~~ | ✅ **Closed by H3** — AI-to-AI protocol requirement added (identity unconfirmed, MCP/A2A); GraphQL rejection changed to Parked pending study. |
 | **GraphQL research** | Pros and cons, then a recommendation. Lead is genuinely undecided |
 | **Offline mobile storage engine** | New decision, no ADR |
 | **Server-side cache handling** | New decision, no ADR. Explicitly *not* only an offline concern |
 | **Security standards** | Lead believes this is missing: OWASP, SSL, database encryption, declared explicitly. *Note: the spec already carries a security policy and a certification roadmap, and `security-controls-design.md` is already scheduled in Layer 2 — so this is a design decision not yet made, not a spec gap* |
 | **Design document for C-27** | Add to `implementation-document-map.md` once T65 lands |
-| **New evaluation criteria 11–13** | Human-verifiability, commercial acceptability, and corpus **quality** (not volume). Two favour the current stack, one cuts against it |
-| **Consistency-check remediation** | The 12 findings of the 2026-07-30 run. Most severe: ADR-008's *Consequences* still records Flutter as approved, §10 is stale on the mobile runtime, and the mandatory cost-to-reverse / upstream-assumed ADR fields were never retrofitted |
+| ~~**New evaluation criteria 11–13**~~ | ✅ **Closed by H3** — added to `technology-stack-design.md` §2.6. Human-verifiability, commercial acceptability, and corpus **quality** (not volume). Two favour the current stack, one cuts against it. |
+| ~~**Consistency-check remediation**~~ | ✅ **Closed by H3** for the items this ticket covered — ADR-008's *Consequences* corrected off Flutter, §10 corrected, the mandatory cost-to-reverse/upstream-assumed/verified-vs-reasoned fields retrofitted on all eleven ADRs, and every stale post-reversal claim (§17.2, §17.5, §18.1, §18.3, §18.5) marked superseded. `ADR-REGISTER.md` itself still needs a sync pass to reflect this closure — out of this ticket's scope. |
 | **`DECISIONS.md` entries** | The five approved ADRs need recording. **`DECISIONS.md` currently holds no stack entry at all, so this would be the first binding entry in the project** — until it lands, nothing is approved in fact |
 | **`PROCESS.md` §1 + `CLAUDE.md`** | Both still assert the spec is frozen during the design phase. Must be updated to match the lifted freeze |
 
