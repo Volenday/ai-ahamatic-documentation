@@ -142,6 +142,7 @@ Specification phase delivered **T1–T64**. The design phase produces the "how" 
 | H2a | Cost-to-Reverse Annotation & Dependency Correction | ✅ Done | `docs/design/implementation-document-map.md` |
 | H3 | Amendment Ticket — Sync-Posture ADR-011, ADR-004/006 Amendments, Status Retrofit, Consistency-Check Remediation | ✅ Done | `docs/design/technology-stack-design.md` |
 | H4 | Schedule the Platform's Own Data Model — `platform-data-model-design.md` Map Entry | ✅ Done | `docs/design/implementation-document-map.md` |
+| H5 | Platform Data Model Design — the Platform's Own Persistent Schema | ✅ Done | `docs/design/platform-data-model-design.md` |
 
 > **⚠ SUPERSEDED 2026-07-30 — read the "Lead Decisions" section below instead.** Five ADRs were approved at the 2026-07-30 standup (004, 005, 006-in-part, 007, 010) and three were deferred pending the data model (001, 008, 009). The pause described below no longer reflects reality; the note is retained only as the record of what the gate was. **Approval is not yet recorded in `DECISIONS.md`, so nothing is binding even now.**
 >
