@@ -293,3 +293,42 @@ Two obligations come with the authority, and they are the point of it:
 - **Attribution in this log changes.** Entries D-01 through D-14 record lead decisions. Decisions taken under this delegation must be attributed to the team, so a later reader can tell what carried lead authority and what did not.
 - **Question compilation moves to a weekly rhythm.** The team proposed batching questions for Monday rather than interrupting per-question, and the lead accepted. Questions worth his input are compiled, not raised singly.
 - **A decision recorded without its criteria is incomplete** under this entry, whatever its technical merit.
+
+---
+
+# Decisions of 2026-08-01 (D-17)
+
+> **First decision recorded under the D-16 delegation.** Attribution: **team decision**, not lead. Per D-16 the criteria are recorded as a first-class part of the entry rather than as supporting prose — D-15 makes the criteria the reusable product, so a decision recorded without them is incomplete.
+
+---
+
+## D-17 — "Tenant" is the canonical structural term; "customer" is commercial metadata
+
+**Decision.** **Tenant** is the isolation boundary and the schema level. Physical schemas are named `tenant_<id>` and `tenant_<id>_app_<id>`. **"Customer" is not a structural level** — it is commercial metadata that may map to one *or several* tenants.
+
+The hierarchy reads: **the platform has tenants; a tenant has applications.**
+
+*(What: realized in `platform-data-model-design.md`, `technology-stack-design.md` §14.5/§14.7, `implementation-document-map.md`, and `ADR-REGISTER.md` by **H7**. **No specification change is required** — see criterion 1.)*
+
+**⚠ Supersedes D-10's terminology, not its substance.** D-10's three-level hierarchy and its two isolation strengths stand exactly as recorded; only the word for the middle level changes. D-10 remains the record of what was decided on 2026-07-30.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Does the term already carry a canonical meaning upstream?** | **Decisive for "tenant."** The entire specification library speaks tenant — INV-01, gate G-1, the access-control model, and NFR §5's *"committed entity instances per tenant"* and *"onboarding one additional tenant."* The glossary makes **"customer" a disallowed synonym**, for a stated reason: such terms *"may import assumptions the charter's generic-builder constraint forbids."* Choosing tenant therefore requires **no spec change at all**; choosing customer would have required amending the glossary, and reviewing INV-01 and NFR §5. The cheaper option in spec terms is also the correct one. |
+| **2** | **Does the term stay portable when the documentation is handed to a client?** *(new criterion, from D-15)* | **Decisive.** Under D-15 the documentation library is the product. A client reading *"each customer gets their own schema"* must work out whose customer is meant — theirs, or ours. A term naming a commercial relationship is the wrong term for a library that must be reusable across clients who each have their own. **Tenant carries no such ambiguity.** |
+| **3** | **Are the two concepts reliably one-to-one?** | **No** — and this is what rules out treating them as synonyms. The lead's own invoicing example: one commercial entity may be modelled as a single client with one application, *or* as several separately-isolated clients, *"up to them."* So one customer may become several tenants. Collapsing the terms would foreclose a flexibility he explicitly wanted. |
+| **4** | **What does reversal cost?** | **Rises sharply with delay.** The term is already in physical schema names in a brutal-cost document — 188 occurrences against 16. Correcting it across four design documents now is mechanical. After `tenant-isolation-and-access-control-design.md`, `data-model-and-entity-design.md`, `scalability-availability-and-performance-design.md` and `api-contract-design.md` are written against `customer_<id>`, it is not. |
+
+**Why the drift happened, recorded so the pattern is recognisable.** The lead used "customer" in natural language while answering a question about *table separation* — he was never asked about terminology. The design then hardened conversational vocabulary into schema names. **Informal language in a meeting is not a terminology decision**, and a design document should reconcile against the glossary before adopting a term from a transcript.
+
+**Alternatives rejected.**
+- **"Customer" as the structural level** — rejected on all four criteria above. It would also have required spec changes that adopting "tenant" avoids entirely.
+- **Treating the two as synonyms and using them interchangeably** — rejected on criterion 3; they are not reliably 1:1, and the glossary already forbids the substitution.
+- **Deferring the decision until more design documents exist** — rejected on criterion 4; the cost is monotonically increasing and nothing is gained by waiting.
+
+**Consequences.**
+- **H7** normalizes four design documents. **No spec ticket is required**, which closes the terminology item without touching `docs/spec/`.
+- **Closes four drift items at once** — the H5 consistency finding, `technology-stack-design.md` §14.5/§14.7's mixed language, the map's line-93 drift note, and the `ADR-REGISTER.md` sync, all of which shared this root cause.
+- Any future term taken from a transcript is checked against `03-software-and-architecture/02-domain-glossary.md` before it enters a design document.
