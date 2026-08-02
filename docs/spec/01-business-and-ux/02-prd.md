@@ -70,6 +70,7 @@ Each capability is platform-level and domain-neutral. "Depends On" lists the cap
 | C-03 | Access control | The means to govern what an authenticated actor may do, enforced before any action proceeds. | C-01, C-02 |
 | C-04 | Generic build capability | The means to construct applications without binding any of them to a predetermined domain. | C-01, C-03 |
 | C-05 | Data and entity modeling | The means for builders to define their own data, entities, and schemas, with rules that keep those definitions valid, consistent, and related correctly. | C-04 |
+| C-27 | Data administration | The means to create, read, update, and delete records over the entities a builder has defined, through a generic administrative interface derived automatically from those definitions — so that defining a data model yields working record operations without an application having been built first, bound to no predetermined domain. It operates strictly within the professional-builder model, extended only by the administrative access a tenant grants (C-03). It carries three explicit boundaries that must never be collapsed: it is distinct from data and entity modeling (C-05), which defines the shape of data rather than the operations performed on records; distinct from application configuration (C-06), which configures an application, whereas this capability presumes no application has been configured; and distinct from application operation (C-07), which runs built software for its end users, whereas this capability serves the builder over arbitrary builder-defined entities before any application exists. It absorbs none of the three, and none of them absorbs it. | C-04, C-05 |
 
 ### Tier 2 — Core Platform
 
@@ -111,7 +112,7 @@ Beyond the active tiers, the capability model maintains a distinct category for 
 
 A capability marked *Future / Not-Yet-Authorized* is recorded for completeness only. While it holds this status, it:
 
-- occupies no priority tier and holds no build-order position among the active capabilities (C-01–C-21, C-23, C-24, C-25);
+- occupies no priority tier and holds no build-order position among the active capabilities (C-01–C-21, C-23, C-24, C-25, C-27);
 - carries a permanent, sequentially-assigned capability ID — assigned once and never renumbered or reused — even while it holds this status;
 - is neither designed nor built, and must not be implemented, expanded, or relied upon by any other capability or by any built software;
 - never gates a release: it is not among the release-gating capabilities of §5, and its absence never blocks a release;
