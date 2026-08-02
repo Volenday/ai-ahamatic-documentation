@@ -223,3 +223,73 @@ Tier 1 follows from V1.0 sitting exactly on the Tier 1 / Tier 2 boundary: every 
 **Alternatives rejected.**
 - **A simpler proprietary process model** — rejected on the one-way-door argument above, despite BPMN's greater complexity being acknowledged.
 - **Adopting BPMN because competitors use it** — explicitly *not* the rationale. Competitor alignment was recorded as market context, never as an adopted design choice.
+
+---
+
+# Decisions of 2026-07-31 (D-15 – D-16)
+
+> **These two entries change what the project is for and who decides.** They are recorded from the 2026-07-31 standup transcript, per the rule that the transcript governs over the meeting summary (`PROCESS.md` §7).
+
+---
+
+## D-15 — Reframe the product: the documentation and criteria library is the deliverable
+
+**Decision.** AI ahaMatic's product becomes a **library of standard documentation, specifications, and decision criteria that AI uses to build software** — together with a **selected set of pre-built utilities**. The generic software-builder platform **continues to be built**, but as a learning exercise that informs the library rather than as the product itself.
+
+The commercial pitch changes correspondingly. Previously: *60–80% of your code is already built.* Now: **60–80% of your specifications, design, and criteria are already built** — leaving the client-specific remainder, **which explicitly includes the technology stack**.
+
+*(What: **no specification document records this yet, and propagation is deliberately not scheduled** — see the propagation note below. It supersedes the product framing in `CLAUDE.md` and `01-business-and-ux/01-vision-and-charter.md`.)*
+
+**Why.** The reasoning was stated as a realisation that built up over the technology-decision work rather than as a reversal: *"deciding the software development language is not relevant until later… it's more important to know what is the specs, the data model, what are we building. **The intellectual property, the secret sauce now is the documentation, the standards and how it's created**."*
+
+The decisive reframing: *"instead of using our brain power on deciding what should be the language — which is what we were doing, because we know we're never going to get the right answer because it depends — **what we are going to be using our brain power on is documenting what are the questions and the criteria to choose the language**."*
+
+And the identity statement: *"**ahaMatic is going to be a library of mostly documents to tell AI what to build.** Plus some of the utils already built — whereas before it was mostly about the utils."*
+
+**What the library contains.** Four kinds of output, three of which are new:
+1. **Standard documentation and specifications** applying to every piece of software built — the existing `docs/spec/` work is the first instance of this.
+2. **Questions and criteria** to ask ourselves or a client before building — *"a set of questions and criterias… that we create the rest of the documentation before we go build the software."* **New; no library currently holds this artifact class.**
+3. **Opinions on third-party tools** — named examples: email delivery, workflow engines (Camunda), dashboards (Metabase). *"a set of ready-made decisions or ready-made tools or modules."* **New.**
+4. **Selected pre-built utilities** — *"it's not just documentation. In some cases going to be some build utilities. For example, we might also build the data admin… that's a standard. For some clients that's enough."* This directly supports **D-13** (C-27 Data Administration).
+
+**Alternatives rejected.**
+- **Keeping the platform as the product** — the prior position. Not rejected outright but **downgraded to instrumental**: *"in the medium run that's not going to be the product; the product is going to be the documentation."*
+- **Stopping the platform build** — explicitly rejected: *"I think we still have to do it… we are investing in ourselves and I want you to build it, so we learn from that process."*
+- **Continuing to spend effort converging on one stack answer** — rejected as unanswerable in principle, because the right answer depends on the client.
+
+**What does NOT change**, stated explicitly by the lead and binding on current work:
+- *"I don't think this should change what you're doing now."*
+- *"Still keep it on version one, minimalistic, minimum viable product."*
+- The specification and design libraries stand. V1.0 continues as scoped.
+
+**⚠ Propagation is deliberately deferred, and this is not an oversight.** The lead expects the documentation approach itself to be revised in light of the pivot: *"I'm pretty sure we're going to change the way you have done the documentation… we have to build the tower, put the marshmallow and see what fails."* Propagating this reframing into `CLAUDE.md` and the charter **now** would restructure a library he anticipates restructuring anyway, on a framing that is still settling. It is therefore recorded here and **left unpropagated by choice**, to be revisited once V1.0's learning has landed. Any session that finds `CLAUDE.md` describing a software-builder platform should read it as accurate for the **current build**, and this entry as the **medium-term product direction**.
+
+**Consequences.**
+- **The technology stack becomes a per-client variable, not a platform commitment.** ADR-001, ADR-008 and ADR-009 change character: from a decision to be made, into a **default plus documented criteria for varying it**. This reframes the H6 ticket and retroactively explains why those three were repeatedly deferred.
+- **The criteria behind a decision become the deliverable, not supporting prose.** The ADR convention (`technology-stack-design.md` §9) records decisions; it must be extended so the question and the criteria are first-class and reusable.
+- **Discovering unasked questions is now a work item**, not a byproduct — see D-16.
+- **The generality constraint strengthens rather than weakens.** Documentation that must apply to every client cannot encode one domain; INV-05 and the builder/built line hold with more force, not less.
+- `REVIEW-QUESTIONS-2026-07-30.md` is, unintentionally, the **first instance of artifact class 2** — a set of questions with criteria and consequences attached. It should be treated as a prototype rather than as spent meeting scaffolding.
+
+---
+
+## D-16 — Delegate technical decision-making, and make the questions the deliverable
+
+**Decision.** Technical and design decisions are **made by the team without waiting for lead approval**. The lead's instruction: *"I want you to **make your own decisions. Ask me less** because now it's less important… make your own decision on how to move forward on these things."* The Flutter-versus-React-Native question was given as the worked example: *"Don't mind this one. Just go ahead do it."*
+
+Two obligations come with the authority, and they are the point of it:
+1. **Record the decision and its criteria.** *"What is more important now is that you still write down what are the decisions we're making — that set of questions you have is more important than the answer."*
+2. **Actively discover questions not yet asked.** *"I want you to push forward to discover what are the other questions that we haven't discovered yet."* This is an instruction, not a permission.
+
+*(What: this changes the working process; `PROCESS.md` is its home.)*
+
+**Why.** It follows directly from D-15. If the stack answer is a per-client variable, converging on one answer centrally has little value, while the **criteria for choosing** have a great deal. Delegation removes a bottleneck on work whose output was never the binding artifact.
+
+**Alternatives rejected.**
+- **Continuing to route technical decisions through lead approval** — rejected as a bottleneck on decisions that are no longer binding platform-wide.
+- **Treating delegation as licence to decide without recording** — expressly excluded; the recording obligation is the condition of the delegation, not an addition to it.
+
+**Consequences.**
+- **Attribution in this log changes.** Entries D-01 through D-14 record lead decisions. Decisions taken under this delegation must be attributed to the team, so a later reader can tell what carried lead authority and what did not.
+- **Question compilation moves to a weekly rhythm.** The team proposed batching questions for Monday rather than interrupting per-question, and the lead accepted. Questions worth his input are compiled, not raised singly.
+- **A decision recorded without its criteria is incomplete** under this entry, whatever its technical merit.

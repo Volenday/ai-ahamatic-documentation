@@ -274,11 +274,43 @@ Sequencing waits on the data model, which the lead has made the next deliverable
 
 > **Sizing question worth adding to the next batch.** V1.0 now has no quantified performance criteria at all, which is fine for an MVP — but one number still matters: **roughly how many customers, and how many apps each, should V1.0 handle?** Separate tables per app behave very differently at 5 customers than at 50, and it is the one figure that shows whether the partitioning shape is comfortable at launch scale.
 
-### Still unanswered
+## Strategic Pivot — 2026-07-31 Standup
 
-| Q | Item |
-|---|---|
-| **Q1a** | **Does V1.0 have to meet the quantified NFR targets** — 50,000 concurrent sessions per region, 10,000,000 records for one tenant, no measurable degradation on tenant onboarding, 4-hour migration ceiling — or are they targets to build toward? **Never asked; not self-answerable.** More urgent now: multi-tenancy is confirmed for V1.0 *and* separation is per-app, which multiplies the very risks those targets measure |
-| Q11–Q13 | Data Admin's surface vs the deferred UI; V1.0 as re-tiering or separate milestone; whether the Go fallback survives. Team to self-answer |
-| — | **The Flutter disclosure never happened.** ADR-009 is deferred, and the lead is still unaware that `technology-stack-design.md` argues for Flutter in five places against its own verified conclusion |
+**Recorded in full as `DECISIONS.md` D-15 and D-16.** This section carries only the effect on the work queue.
+
+**The product changed.** AI ahaMatic's deliverable becomes a **library of standard documentation, specifications, and decision criteria that AI uses to build software**, plus a selected set of pre-built utilities. The platform build **continues** — as a learning exercise that informs the library, not as the product.
+
+**What explicitly does not change**, stated by the lead: *"I don't think this should change what you're doing now"*; *"we still have to do it… I want you to build it, so we learn from that process"*; *"still keep it on version one, minimalistic, minimum viable product."* The spec and design libraries stand. V1.0 continues as scoped.
+
+**Decision-making is delegated** (D-16). Technical and design decisions are made by the team without waiting for lead approval — on two conditions: the decision **and its criteria** are recorded, and unasked questions are **actively discovered**. Questions genuinely needing the lead are **compiled weekly for Monday**, not raised singly.
+
+### Effect on the work queue
+
+| Item | Effect |
+| --- | --- |
+| **H6 — ADR-001/008/009** | ⚠️ **Rescoped, not cancelled.** The stack is now a **per-client variable**: *"one of them is going to be what software stack you want if you care. Some clients don't care. Some clients will go, I only want Microsoft."* So H6 stops being *decide the stack* and becomes **record a default plus the documented criteria for varying it**. This retroactively explains why 001/008/009 were deferred three times |
+| **ADR convention** (`technology-stack-design.md` §9) | Must be extended so the **question and the criteria** are first-class fields rather than supporting prose. Under D-15 the criteria are the reusable product; under D-16 a decision recorded without them is incomplete |
+| **Questions-and-criteria compendium** | **New artifact class with no home in either library.** `REVIEW-QUESTIONS-2026-07-30.md` is its first instance — questions with criteria and consequences attached. Treat as a prototype, not spent meeting scaffolding |
+| **Third-party tool opinions** | **New artifact class, no home.** Named examples: email delivery, workflow engines (**Camunda**), dashboards (**Metabase**). Note Camunda is a BPMN engine, so it is consistent with **D-14**; whether to adopt an engine or build one is an open question he named, not a decision |
+| **C-27 Data Administration** | **Reinforced.** Named as a utility that ships as a standard: *"we might also build the data admin… For some clients that's enough."* Supports **D-13** |
+| **Generality constraint (INV-05)** | **Strengthened, not weakened.** Documentation that must apply to every client cannot encode one domain |
+| **Everything else in flight** | Unchanged. T65–T69, the terminology ticket, and the Layer 2/3 sequencing all stand |
+
+> **Propagation into `CLAUDE.md` and the charter is deliberately deferred** — see D-15. The lead expects the documentation approach itself to be revised once V1.0's learning lands: *"I'm pretty sure we're going to change the way you have done the documentation… build the tower, put the marshmallow and see what fails."* A session finding `CLAUDE.md` describing a software-builder platform should read it as accurate for the **current build**, with D-15 as the **medium-term direction**.
+
+---
+
+### Still open — questions and blockers
+
+*Q1a and Q11–Q14 are answered; see the resolutions table above. What remains:*
+
+| Item | Needs | Deadline pressure |
+|---|---|---|
+| **🔶 Is a customer always exactly one isolated unit, or can one customer have several?** Surfaced by the H5 consistency check and sharpened after review. The glossary lists **"customer" as a disallowed synonym for "Tenant"**, for a substantive reason — such terms *"may import assumptions the charter's generic-builder constraint forbids."* But `DECISIONS.md` D-10, ADR-004 as amended, and `platform-data-model-design.md` all use "customer" as the canonical hierarchy term — **188 times in the latter, including in the schema names `customer_<id>` and `customer_<id>_app_<id>`.**<br><br>**This is an entity-identity question, not a vocabulary preference.** The lead's own invoicing example — Volenday as one client with all legal entities in one application, *or* each legal entity as its own client — implies one commercial customer may become several separately-isolated units. If so, the isolated unit is a **tenant** and "customer" is a commercial attribute of it, making `customer_<id>` the wrong schema name. He was never asked about terminology; he used natural language while answering a question about table separation, and the design hardened it into structure. | **The team** (D-16). Recommendation on the table: **tenant** | **High.** 188 occurrences in one document is tractable; after `tenant-isolation-and-access-control-design.md`, `data-model-and-entity-design.md`, `scalability-availability-and-performance-design.md` and `api-contract-design.md` are written against it, it is not |
+| **C-27's primitive family and canonical name.** Family: Construction or Operation — Construction recommended on the C-19 precedent that builder-facing tooling holds a capability ID there. Name: "Data administration" proposed, matching the existing style | **The team** | Blocks **T65** entirely; both are permanent once **T68** propagates them |
+| **The Flutter disclosure never happened.** H3 remediated the five stale passages in the document, but the conversation has not been had. **ADR-009 remains formally deferred**, so the mobile runtime is unconfirmed rather than quietly settled | **The team** | Degrades while it sits |
+| **V1.0 sizing.** H5 designed against a *stated assumption* of ≤50 customers × ≤20 applications (~1,000 schemas) because no confirmed figure exists. Registry-indirection preserves headroom past it; **connection-pool design and migration fan-out do not** | **The team** (D-16). Recommendation on the table: **~10 tenants x 10 apps** | Already consumed — H5 shipped on the assumption. Confirming it would validate or invalidate that section |
+
+> **One root cause, four drift items.** The terminology question above is the same unresolved question behind three items left outstanding at the end of H3: `technology-stack-design.md` §14.5/§14.7 mixing "schema-per-tenant" with "per-customer/per-application"; the map's line-93 "schema-per-tenant" drift note; and the `ADR-REGISTER.md` sync pass. **Resolve the entity question and one ticket closes all four.** Resolve them separately and the term gets chosen four times.
+
 ```

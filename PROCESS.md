@@ -111,6 +111,20 @@ Generation rules:
 
 ---
 
+## 4b. Decision authority and the questions-as-deliverable rule (2026-07-31)
+
+Recorded in full as `DECISIONS.md` **D-15** and **D-16**; the working consequences are here.
+
+- **Technical and design decisions are made by the team**, without waiting for lead approval. *"Make your own decisions. Ask me less, because now it's less important."*
+- **Two obligations come with that authority, and they are the point of it, not conditions attached to it:**
+  1. **Record the decision *and its criteria*.** Under D-15 the criteria are the product; a decision recorded without them is **incomplete**, whatever its technical merit. *"That set of questions you have is more important than the answer."*
+  2. **Actively discover questions not yet asked.** *"Push forward to discover what are the other questions that we haven't discovered yet."* This is a deliverable, not a byproduct.
+- **Questions genuinely needing the lead are compiled weekly for Monday**, not raised one at a time.
+- **Attribution matters in the record.** `DECISIONS.md` D-01–D-14 carry lead authority; entries from D-16 onward taken under delegation are attributed to the team, so a later reader can tell the difference. Do not blur the two.
+- **Why this changed:** if the technology stack is a per-client variable (D-15), converging centrally on one answer has little value while the criteria for choosing have a great deal. The delegation removes a bottleneck on decisions that were never the binding artifact.
+
+---
+
 ## 5. Capability numbering & status
 
 - Capabilities are `C-01`, `C-02`, … assigned **sequentially and permanently** — IDs are never renumbered or reused.
