@@ -317,4 +317,17 @@ Sequencing waits on the data model, which the lead has made the next deliverable
 
 > ~~**One root cause, four drift items.** The terminology question above is the same unresolved question behind three items left outstanding at the end of H3: `technology-stack-design.md` §14.5/§14.7 mixing "schema-per-tenant" with "per-customer/per-application"; the map's line-93 "schema-per-tenant" drift note; and the `ADR-REGISTER.md` sync pass. **Resolve the entity question and one ticket closes all four.** Resolve them separately and the term gets chosen four times.~~ ✅ **All four closed by H7** (`DECISIONS.md` D-17): `technology-stack-design.md` §14.5/§14.7 normalized to "tenant," the map's line-93 row normalized, and `ADR-REGISTER.md` synced.
 
+
+### Loose findings — surfaced 2026-08-02, none recorded elsewhere
+
+Found by auditing the trackers rather than by a consistency check; each would otherwise be rediscovered from scratch.
+
+| # | Finding | Action |
+|---|---|---|
+| 1 | **🔶 The BPMN gate in `implementation-document-map.md` is stale.** `workflow-and-process-automation-design.md` still reads *"Gated — prerequisite open: the C-18 BPMN-modeling assumption must be lead-confirmed."* **It was confirmed 2026-07-30** (`DECISIONS.md` **D-14**). Closed in `BACKLOG.md` §3, never propagated to the map | Two-line map fix. Design document — needs explicit user direction under `PROCESS.md` §3. **Unblocks that document immediately** |
+| 2 | **The three deferred NFR numerics are the last hard gates in the design library.** Max iterations/retries, per-task and per-session budget ceilings, and max self-correction attempts (`BACKLOG.md` §1) gate `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md` respectively. All three share one number-owner, `03-software-and-architecture/06-non-functional-requirements.md` | **One spec ticket sets all three.** Not urgent — Layer 6 is last — but they are the only remaining hard gates |
+| 3 | **Two malformed citations in `technology-stack-design.md`** (lines 229, 749) read `platform-data-model-design.md` (§18.6)`. §18.6 belongs to `technology-stack-design.md` itself; the cited document has only 14 sections | Fold into the next ticket that opens that file. Cosmetic but wastes a reader's time |
+| 4 | **A second gap in `ai-aha-consistency-check`.** Check 6 verifies a cited `§N` exists, but not that it exists **in the document it is attributed to** — which is how finding 3 passed. Joins the known check-7 issue, where design-map entries with no document on disk are flagged as drift when that is the normal state for a forward-looking schedule | Two small edits to the skill. `.claude/skills/` is now the only copy (`PROCESS.md` §2) |
+| 5 | **H8 concluded D-09 needs no spec change** — that the spec *"does not itself specify an authorship model"* for extensions. Probably right, not certainly: `05-integration-and-extensibility-spec.md` §67 describes the SDK as *"the programmatic contract through which a builder **or extender** works with the platform."* Working with a platform programmatically is writing code | Worth one read of C-11/C-12 to confirm no builder-authorship assumption survives |
+
 ```

@@ -28,7 +28,7 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 | `ai-aha-handoff` | End of every ticket — produces the handoff summary |
 | `ai-aha-consistency-check` | After any capability, shared-concept, or design-decision change — verifies the spec and design libraries against each other and reports drift. Checks and reports only; it never edits. Built in T62 (§6) and extended to the design library on 2026-07-29. |
 
-The `.claude/skills/` copies are the **source of truth**. The Claude desktop app keeps its own copies; keep them in sync with these (the App copies have drifted before).
+The `.claude/skills/` copies are the **only** copies and therefore the source of truth. The desktop app previously kept its own duplicates, which had drifted; **those were deleted on 2026-08-02**, so the drift risk this note used to warn about no longer exists. Do not reintroduce a second copy.
 
 ---
 
@@ -134,7 +134,7 @@ Recorded in full as `DECISIONS.md` **D-15** and **D-16**; the working consequenc
   - **Future / Not-Yet-Authorized:** **C-22** (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-26** (runtime AI automation inside built apps, distinct from build-time C-19).
   - C-24–C-26 were added by T56–T59 and are no longer pending; Desktop/RPA was **declined**. Canonical source: `01-business-and-ux/02-prd.md` §4 and `01-business-and-ux/03-platform-capability-model.md` §4 — never this file.
 - **Adding or changing a capability requires full propagation** (see §6): `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md` (definition) → `03-software-and-architecture/02-domain-glossary.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md` (propagation) → re-sync the capability enumeration/count across **all** documents that cite it, **including `context-document-map.md`**.
-- **UI Localization is a separate, not-yet-ticketed feature** — human-interface-language localization (English + Spanish now; broader European later). It is distinct from C-22 (programming-language *code* export), has **no capability number**, and must never be conflated with C-22. It is a candidate for the Future Capabilities treatment (see T55) if/when it is ticketed.
+- **UI Localization is not planned work** — an earlier note here recorded it as a pending feature; that was a misunderstanding, corrected 2026-08-02. It is **not** on any roadmap and must not be resurfaced as one. The one part worth keeping is the distinction it protected: human-interface-language localization is **not** C-22 (multi-language *code* export, i.e. programming languages). The two must never be conflated.
 
 ---
 
@@ -145,7 +145,7 @@ Whenever a capability or shared concept is added or changed, **propagate it acro
 - After any capability or shared-concept change, run `ai-aha-consistency-check`. It reads the canonical span/active-future split from `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md`, verifies propagation completeness, capability-count consistency, the closing-section convention, cross-reference integrity, terminology, and map accuracy across the library, and produces a per-file drift report. It **checks and reports only** — it never edits documents; remediate the reported drift by hand or via a follow-up ticket, then re-run.
 - Treat `context-document-map.md` as part of the propagation surface — it is the spec library's index and must always reflect the current capability set and document list.
 - **Map authority:** `context-document-map.md` is navigational, not authoritative. If it ever conflicts with a spec document, the **spec prevails** — update the map to match the spec, never the reverse.
-- **Boundary:** the skill verifies the repository library only; it cannot detect or fix drift in the desktop app's separate account-side skill/instruction copies (§2) — keep those in sync manually.
+- **Boundary:** the skill verifies the repository library only. It previously could not reach the desktop app's separate skill copies; **those no longer exist** (§2), so the repository is now the whole surface.
 
 ---
 
