@@ -13,8 +13,8 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 | Specification | **What** | `docs/spec/` | `ai-aha-spec-doc` | `ai-aha-spec-review` | `T##` |
 | Design / Implementation | **How** | `docs/design/` | `ai-aha-design-doc` | `ai-aha-design-review` | `H##` |
 
-- The specification library is **authoritative and frozen** during the design phase. Design documents **realize** the spec without narrowing, expanding, or altering it. On any conflict, the spec prevails; surface it, don't silently diverge.
-- A design ticket may flag a genuine spec gap for the spec-change process, but never edits `docs/spec/` inline.
+- The specification library is **authoritative**, and design documents **realize** it without narrowing, expanding, or altering it. On any conflict, the spec prevails; surface it, don't silently diverge.
+- **The freeze was lifted 2026-07-30** (lead decision; `DECISIONS.md` D-08 context note) — the spec is expected to keep changing. A design ticket may now surface a spec change rather than only flagging it, but the change still runs as a **spec-phase ticket** (`ai-aha-spec-doc`); a design ticket never edits `docs/spec/` inline.
 
 ---
 
@@ -40,7 +40,7 @@ The `.claude/skills/` copies are the **only** copies and therefore the source of
   **What an Orchestrator may write (clarified 2026-07-29).** It always maintains the trackers — `TICKET.md`, `BACKLOG.md`, `PROCESS.md`, `DECISIONS.md`, `OPEN-GAPS-FOR-REVIEW.md` — and may produce reports and summaries for the project lead, which are not library deliverables. Beyond that:
   - **A new document in `docs/` always goes through a ticket.** The Orchestrator generates the prompt; an Executor writes the document. No exception.
   - **An amendment to an existing `docs/design/` document may be made inline by the Orchestrator, but only when the user explicitly directs that specific change.** This is how ADR-002 through ADR-010 were added to `technology-stack-design.md` on 2026-07-29 — each at the user's explicit instruction. Recording the allowance rather than leaving it as undocumented drift; it is a deliberate exception, not a general licence, and the Orchestrator never amends `docs/design/` on its own initiative.
-  - **`docs/spec/` is never edited by an Orchestrator**, inline or otherwise. The specification is frozen (§1); a genuine spec gap is flagged for the spec-change process.
+  - **`docs/spec/` is never edited by an Orchestrator**, inline or otherwise, freeze lifted or not (§1) — a genuine spec gap or change is always routed through a spec-phase ticket.
 
   When in doubt, generate the ticket rather than making the edit — the ticket path is always available and always correct.
 - **Executor.** A fresh session that runs **exactly one** ticket via the 12 steps below, producing that one document **and a handoff summary** (step 10), then ends. It loads context and the phase writing-rules first (steps 4–5) but stays idle — generating nothing — until it receives the **ticket system prompt** (step 7), which is its signal to begin. That handoff is what the user feeds back to the Orchestrator to drive the next ticket.

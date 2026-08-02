@@ -209,7 +209,7 @@ Tier 1 follows from V1.0 sitting exactly on the Tier 1 / Tier 2 boundary: every 
 - **A facet of C-07** — rejected; C-07 serves end users of built software, whereas this serves the builder over arbitrary entities before any application exists.
 - **Leaving it with no capability ID** — rejected for the traceability reason above.
 
-**Open.** Its **primitive family** — Construction or Operation — is not settled. Construction is recommended on the C-19 precedent (builder-facing tooling holds a capability ID and sits there). Family assignment is as permanent as the ID.
+**Primitive family — resolved 2026-08-02 (team decision, D-16 delegation).** **Construction.** Criterion: whether builder-facing tooling that acts *before* an application exists has existing precedent in either family. **C-19** (AI-Assisted Builder Tooling) is the precedent — it is builder-facing, construction-time tooling and already sits in Construction — and C-27 is the same shape: a builder-facing interface exercised over entities the builder has defined but before any application runs for an end user. Operation was rejected because C-27 never operates *built software for end users* (that is C-07's job); it operates the builder's own data model during construction. Family assignment is as permanent as the ID (`PROCESS.md` §5).
 
 ---
 
@@ -332,3 +332,40 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 - **H7** normalizes four design documents. **No spec ticket is required**, which closes the terminology item without touching `docs/spec/`.
 - **Closes four drift items at once** — the H5 consistency finding, `technology-stack-design.md` §14.5/§14.7's mixed language, the map's line-93 drift note, and the `ADR-REGISTER.md` sync, all of which shared this root cause.
 - Any future term taken from a transcript is checked against `03-software-and-architecture/02-domain-glossary.md` before it enters a design document.
+
+---
+
+# Decisions of 2026-08-02 (D-18)
+
+> **Team decision under the D-16 delegation.** Criteria recorded as a first-class part of the entry, per D-16.
+
+---
+
+## D-18 — D-09's no-code commitment reaches the Builder path only, not the Extender role
+
+**Decision.** **D-09 closes the Builder application-code path. It does not close the Extender role's spec-defined authorship of extensions against the programmatic contract (C-11, C-12).** Extension modules therefore have **three** possible origins: platform-team-authored, Extender-authored against the SDK within its grant, and marketplace-submitted (C-13, C-25).
+
+**Consequently, what runtime isolation externally-authored extension code requires is an open question** — not a closed one, and not resolved by the no-code commitment.
+
+*(What: realized by the amended **ADR-016** and the corrected §10.2–§10.4 of `architecture-realization-design.md`. **No specification change is required or proposed** — see criterion 1.)*
+
+**⚠ This corrects a design-side defect, not the specification.** `architecture-realization-design.md` (H8) originally found that the specification *"does not itself specify an authorship model"* for extensions, and concluded from D-09 that the Extender role configures extensions rather than authoring them. **That finding was wrong on the specification**, which had defined the model all along.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Does the specification actually say what it was reported to be silent about?** | **Decisive, and it does.** `02-governance-and-security/03-access-control-and-tenancy-model.md` §6 fixes the Extender's action as *"Extend the platform through modules and its programmatic contract, within its granted scope (C-11, C-12),"* and `03-software-and-architecture/05-integration-and-extensibility-spec.md` §67 describes the SDK as *"the programmatic contract through which a builder **or extender** works with the platform's primitives."* Working a programmatic contract is authoring code. Both predate D-09. The spec is coherent as written; only the design's reading of it was defective — so the correction belongs in `docs/design/`, and **no spec ticket is owed.** |
+| **2** | **Does D-09's stated rationale actually reach this role?** | **No.** D-09's ground is validation cost — *"allowing code into it means a lot of checking, validations"* — which is an argument about **unconstrained** authorship: arbitrary builder logic in an application's runtime path, shaped by no contract. An Extender works a **stable, versioned, documented** contract, **within a grant**, against rules `05-integration-and-extensibility-spec.md` already fixes. The argument may or may not transfer, but it has to be *made* to transfer; D-09 does not name the Extender role at all. **A decision's scope is what it addressed, not everything its rationale might be stretched to cover.** |
+| **3** | **Which direction does the error run — does correcting it narrow or widen the platform?** | **The original finding narrowed a spec-defined role**, which `PROCESS.md` §1 forbids in either direction: design realizes the spec without narrowing or expanding it. Correcting it *restores* the spec's own position rather than adding anything. This is what makes the correction available to the team at all rather than requiring lead input — it is a fidelity repair, not a new commitment. |
+| **4** | **What does the correction cost, and what does it reopen?** | **It increases exposure, and that is recorded rather than smoothed over.** The original record handed downstream documents a *closed* trust model ("not an untrusted-code execution surface"). The correction hands `integration-and-extensibility-design.md`, `marketplace-design.md` and `connector-marketplace-design.md` a **first-order open question** instead. Correcting now costs three amended cross-references; correcting after those documents are written against a false premise costs their rework — the same monotonically-rising cost as D-17 criterion 4. |
+
+**Alternatives rejected.**
+- **Retaining the platform-team-only authorship finding** — rejected on criteria 1 and 3: it contradicts two spec documents and has a design document narrowing a spec-defined role.
+- **Raising a spec ticket to formally retire Extender authorship under no-code** — rejected on criterion 1. Nothing in D-09 asks for it, and retiring a coherent spec role to make a design finding true inverts the phase relationship. If the lead later wants no-code extended to the Extender role, that is a *new* decision with its own rationale, not a consequence of D-09.
+- **Designing untrusted-code sandboxing inside `architecture-realization-design.md`** — rejected as out of scope, but on narrower grounds than the original record gave: the premise is no longer absent, so the question is genuinely open and belongs to the three documents that own the extension surface.
+
+**Consequences.**
+- **`architecture-realization-design.md` §10.2, §10.3, §10.4 and ADR-016 are amended**; §12 gains a boundary entry handing the isolation question over explicitly.
+- **`security-controls-design.md`'s inherited instruction is corrected** — the blanket "extension changes are ordinary governed platform changes" applies to platform-team-authored extensions only.
+- **The process lesson generalizes beyond this instance.** The original finding checked `01-architecture-overview.md` §4 (genuinely silent on authorship) and inferred silence library-wide. **A claim that the specification does not specify X must be checked against the document that owns X**, per the ownership map in `PROCESS.md` §10 — not against the nearest document to hand. Same failure class as D-17's transcript-vocabulary drift: a local reading hardened into a library-wide claim.
