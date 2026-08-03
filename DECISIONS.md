@@ -369,3 +369,137 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 - **`architecture-realization-design.md` §10.2, §10.3, §10.4 and ADR-016 are amended**; §12 gains a boundary entry handing the isolation question over explicitly.
 - **`security-controls-design.md`'s inherited instruction is corrected** — the blanket "extension changes are ordinary governed platform changes" applies to platform-team-authored extensions only.
 - **The process lesson generalizes beyond this instance.** The original finding checked `01-architecture-overview.md` §4 (genuinely silent on authorship) and inferred silence library-wide. **A claim that the specification does not specify X must be checked against the document that owns X**, per the ownership map in `PROCESS.md` §10 — not against the nearest document to hand. Same failure class as D-17's transcript-vocabulary drift: a local reading hardened into a library-wide claim.
+
+---
+
+# Decisions of 2026-08-03 (D-19 – D-22)
+
+> **⚠ Attribution: these four are LEAD decisions, not team decisions.** D-16 delegated technical decision-making to the team, and D-17/D-18 were taken under that delegation. These four were answered directly by the project lead at the 2026-08-03 Monday review — the first use of the weekly compilation rhythm D-16 established. They therefore carry **lead authority**, like D-01–D-16 and unlike D-17–D-18. The distinction is recorded because D-16 requires a later reader to be able to tell which is which.
+>
+> Source: `STANDUP-BRIEF-2026-08-03.md`, questions Q1–Q5. Q6 (V1.0 sizing) was deferred for elaboration and is **not** recorded here.
+
+---
+
+## D-19 — Reject GraphQL finally; close ADR-006's parked sub-decision
+
+**Decision.** GraphQL is **finally rejected** for the platform-primitive contract tier and the runtime-generated built-application contract tier. ADR-006's GraphQL sub-decision moves from **Parked** to **Rejected**. One narrow path stays open: an **internal** backend-for-frontend GraphQL layer is not foreclosed should a profiled need appear, because an internal layer does not carry the external contract's obligation never to reveal existence beyond a grant.
+
+*(What: ADR-006 in `docs/design/technology-stack-design.md`, whose GraphQL sub-decision this closes. OpenAPI + generated clients remain the contract shape, unchanged.)*
+
+**⚠ This closes a question the lead raised himself and was genuinely undecided on.** The research was commissioned on 2026-07-30 precisely because the original rejection was recorded without a study behind it. The study was run 2026-08-03 and **confirmed the original reasoning rather than overturning it** — which is why this is a closure, not a reversal.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Can the contract's isolation obligation be established statically?** | **Decisive, and the original ground now verified.** In a graph API the same sensitive field is reachable by multiple query paths, and authorization must hold identically on every one. Tenant-isolation failures in GraphQL characteristically arise from a *perfectly valid query* where the check never fires because it was wired at the operation entry point rather than at every resolver. **INV-01 is non-negotiable at any scale or release, and gate G-1 requires isolation to hold before anything is hosted** — a failure mode that presents as a valid request is the worst available shape for that obligation. |
+| **2** | **Does the runtime-defined data path change the answer?** *(the argument ADR-006 never made, in either direction)* | **It cuts against GraphQL, not for it.** A platform whose entities are builder-defined at runtime (C-05) is a natural fit for GraphQL's dynamic schema — the strongest available pro-GraphQL argument. But a runtime-generated schema means a **runtime-generated authorization surface**, which makes criterion 1's static provability *less* achievable, not more. The best case for adoption is also the reason to decline. |
+| **3** | **Has the non-security advantage held up?** | **No.** OpenAPI 3.1 is now fully JSON-Schema-compatible, closing the type-safety and documentation advantage GraphQL once held exclusively over our chosen contract. |
+| **4** | **What does the market evidence show?** | Enterprise GraphQL selection has settled at roughly **25%, down from a ~40% peak**, landing mostly as a backend-for-frontend layer rather than a platform-tier contract; REST still serves ~83% of public APIs. Market context, not a deciding ground — recorded as evidence, never as an argument from popularity. |
+| **5** | **Standing operational cost** (criteria 7 and 10) | N+1 remains GraphQL's most common production incident; DataLoader and persisted queries are now mandatory rather than optional mitigations. Permanent complexity for a benefit criteria 1–3 already negate. |
+
+**Verified vs. reasoned.** Criteria 1, 3, 4 and 5 are **verified** against current external sources (2026-08-03; sources listed in `STANDUP-BRIEF-2026-08-03.md`). Criterion 2 is **reasoned** from our own C-05 and the API contract spec.
+
+**Alternatives rejected.**
+- **Adopting GraphQL for the external contract** — rejected on criterion 1; the isolation obligation cannot be discharged statically.
+- **Leaving the sub-decision Parked** — rejected; the study it was waiting on has been run, and a parked decision with its blocking research complete is just an unrecorded one.
+- **Foreclosing GraphQL entirely, internal layers included** — rejected as over-reach. The obligation that rules it out is a property of *external* contracts; an internal BFF does not carry it. Same shape as ADR-012's deferral: decline now, name the conditions under which the answer could differ.
+
+---
+
+## D-20 — Buy, do not build, infrastructure-grade components — extended to workflow engines
+
+**Decision.** The lead's standing principle for sync infrastructure — ***"buy it; do not let AI improvise one"*** — **extends to workflow engines**. AI ahaMatic's C-18 workflow capability is realized by **adopting an existing BPMN engine, not by building one**.
+
+**No engine is selected by this decision.** Camunda was named by the lead as an example, not a choice; which engine is a separate evaluation, run under the criteria in force at the time.
+
+*(What: realized by `workflow-and-process-automation-design.md`, which D-14 unblocked and which is now **Buildable now**. That document designs *integration with* an engine, not an engine.)*
+
+**Why this lands now.** `workflow-and-process-automation-design.md` became buildable when the stale BPMN gate was cleared on 2026-08-02. Without this decision that document's first structural choice — build or adopt — would have been made implicitly by whoever wrote it.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Is this a class of component where AI-authored code is weakest?** | **Decisive, and the same test that decided D-11.** D-11 rejected a hand-built sync engine because distributed-state bugs are non-deterministic race conditions rather than syntax errors — the failure mode AI-authored code handles worst and review catches least. **A workflow engine has the same profile:** long-running state machines, in-flight instance state surviving restarts and redeployments, timer and compensation semantics. The reasoning that decided sync transfers on the structure of the problem, not by analogy. |
+| **2** | **Does adopting a standard-conformant engine follow from D-14?** | **Yes, and it strengthens D-14.** BPMN was adopted precisely because it is the industry standard, which brings *"compatibility with existing engines and models."* Building a bespoke engine would spend BPMN's central benefit while keeping its full complexity cost. |
+| **3** | **What is the cost to reverse?** | **Very high, and asymmetric.** `implementation-document-map.md` rates this document Very high: process definitions and **in-flight instance state are stored builder data** that a reversal must re-author and migrate. Adopting an engine and later replacing it is expensive; building one and later adopting one is worse, because the migration source is bespoke. |
+| **4** | **Does this breach the third-party-dependency policy** (criterion 7, dependency minimization)? | **No — it engages it deliberately.** Criterion 7 minimizes *incidental* dependencies; it was never a prohibition. `02-governance-and-security/08-legal-and-licensing-constraints.md` governs the license category, and the standing obligation that every enterprise-baseline dependency is a **recorded decision rather than a default** is satisfied by this entry. |
+
+**Alternatives rejected.**
+- **Building a workflow engine** — rejected on criteria 1 and 3.
+- **Deciding build-vs-buy inside `workflow-and-process-automation-design.md`** — rejected: it is a strategic build-vs-buy choice with a Very-high reversal cost, not a design detail, and leaving it to the document would have it decided implicitly.
+- **Adopting Camunda by name here** — rejected as premature. The principle is buy-not-build; engine selection is a separate evaluation, exactly as ADR-012 defers cache selection while fixing the constraints.
+
+**Consequences.**
+- **The scope of `workflow-and-process-automation-design.md` changes** before it is written: it designs the integration boundary, the domain-neutral process-modelling surface over an adopted engine, and how in-flight state relates to tenant isolation — not an execution engine.
+- **A new open question, created by this decision:** an adopted engine must satisfy **INV-01** and ADR-010's portable-subset rule, and must not become a second store of authoritative data alongside the server (ADR-011). Engine selection is now gated on those three constraints.
+- **The principle may generalize further.** It has now been applied twice (sync, workflow) on the same criterion. Whether it is a general rule for infrastructure-grade components — and where its boundary lies — is **not decided here** and is worth asking explicitly rather than extending by drift.
+
+---
+
+## D-21 — Establish a third top-level library for the questions-and-criteria artifacts
+
+**Decision.** The two artifact classes **D-15** identified as having no home get a **new top-level library** under `docs/`, alongside the specification and design libraries.
+
+The two classes it holds:
+1. **Questions and criteria** — the questions to ask before building, with criteria and consequences attached. Existing instances: `REVIEW-QUESTIONS-2026-07-30.md`, `REVIEW-FLAGS-2026-07-30.md`, `STANDUP-BRIEF-2026-08-03.md`, currently loose at the repo root.
+2. **Third-party tool opinions** — ready-made positions on tool classes. Named examples: email delivery, workflow engines, dashboards.
+
+*(What: a new `docs/` subtree. Folder name and internal structure are **not fixed by this entry** — see Open below.)*
+
+**Why.** Under **D-15** these are *the product*, not meeting scaffolding — *"that set of questions you have is more important than the answer."* Three instances of class 1 already exist as untracked root files, which is how an artifact class that D-15 calls the deliverable ends up looking like leftover process exhaust.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Does an existing library own this content?** | **No.** `docs/spec/` answers *what the platform is*; `docs/design/` answers *how it is realized*. A question-and-criteria set answers neither — it is what a reader applies *before* either library is written, and it is reusable across clients who will each get a different spec. |
+| **2** | **Does it survive being handed to a client?** *(the D-15 portability criterion, from D-17)* | **Yes, and this is the strongest ground.** These artifacts are the most client-portable thing the project produces: criteria transfer intact where a spec does not. |
+| **3** | **Would folding it into an existing library cost anything?** | **Yes.** Both existing libraries are governed by phase writing rules (`ai-aha-spec-doc`, `ai-aha-design-doc`) that forbid exactly what this content is — open questions, unresolved alternatives, and criteria without a settled answer. Filing it under either would either violate those rules or force the content to pretend to be resolved. |
+
+**Alternatives rejected.**
+- **Leaving them at the repo root** — rejected; D-15 makes them product, and the root is where untracked process exhaust lives.
+- **Folding into `docs/spec/` or `docs/design/`** — rejected on criterion 3.
+- **A fourth library for the tool opinions separately** — rejected as premature fragmentation; both classes share criterion 2's portability property and can share one library until a reason to split appears.
+
+**Open — deliberately not decided here.**
+- **The folder name and internal structure.** Recommended: `docs/criteria/`, with its own index document mirroring `context-document-map.md` and `implementation-document-map.md`, since both existing libraries have one.
+- **Whether the library needs its own writing-rules skill**, as the other two have. Probably yes — the content class is different enough that neither existing skill fits — but a third skill is a real addition and should be decided, not assumed.
+- **Establishing it is a ticket, not an inline edit.** `PROCESS.md` §3: a new document in `docs/` always goes through a ticket. Migrating the three existing root files is mechanical; creating the index is not. `CLAUDE.md`'s folder-structure section and `PROCESS.md` §1 will both need updating.
+
+---
+
+## D-22 — The specification must state the platform's data-protection obligations
+
+**Decision.** A **specification ticket is authorized** to add the platform's data-protection obligations — protection in transit, protection at rest, and key custody — and to name **OWASP ASVS 5.0** at a chosen assurance level as the verification baseline. `security-controls-design.md` then realizes it in Layer 2.
+
+*(What: to be recorded in `02-governance-and-security/02-security-policy.md`, with the verification baseline reflected in `04-devops-and-cloud-infra/03-testing-and-quality-gates.md`. Tracked as **T69**.)*
+
+**Why — the finding, verified 2026-08-03.** The specification library contains **zero** references to encryption, TLS, HTTPS, data-in-transit, or data-at-rest, across every document. Meanwhile `platform-data-model-design.md` §3 and §8 **already design three tiers of encryption key material** — `platform.encryption_keys`, `tenant_key`, `application_key` — with an external key-management-service reference and a full key-wrapping hierarchy.
+
+**This is a phase inversion, not merely a gap.** `PROCESS.md` §1 requires design to realize the spec and never expand it. Here the design invented a security requirement the spec never stated. The design content is almost certainly correct — a multi-tenant platform must encrypt — but it is unanchored: **no release gate or acceptance criterion can test an obligation nothing states.**
+
+**⚠ This corrects the project's own tracker.** `TICKET.md` recorded the security-standards item as *"a design decision not yet made, not a spec gap"* — reasoning that the spec already carried a security policy and a certification roadmap. That reasoning was wrong on the files: the policy covers SOC 2 and ISO 27001 attestation but never states a protection obligation. It is **both** a spec gap and a design decision.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Is the obligation stated anywhere upstream?** | **No.** Verified by direct search across all of `docs/spec/`: no occurrence of encrypt/TLS/HTTPS/in-transit/at-rest, and none of OWASP or ASVS. The absence is total, not partial. |
+| **2** | **Which OWASP artifact is actually adoptable as a baseline?** | **ASVS 5.0, not the Top 10.** The **Top 10 is an awareness document and is not testable**; OWASP itself positions it as the entry point and ASVS as the verification framework. ASVS 5.0 (May 2025) supplies ~350 requirements across 17 chapters at three assurance levels. "Adopting OWASP" without this distinction would be a category error — committing to something no gate can check. |
+| **3** | **Does the 2025 Top 10 bear on decisions already taken?** | **Yes, in three places** — recorded so they are not rediscovered: **A03 Software Supply Chain Failures** meets the standing obligation that every enterprise-baseline dependency is a recorded decision; **A09 Security Logging and *Alerting* Failures** bears on `observability-and-monitoring-design.md`; **A10 Mishandling of Exceptional Conditions** bears on `self-correction-and-fallback-design.md`'s fallback ladder. |
+| **4** | **Spec ticket or design ticket?** | **Spec first, then design.** Realizing the obligation in `security-controls-design.md` without stating it upstream would repeat the inversion the finding exposed, on a larger surface. |
+
+**Verified vs. reasoned.** Criterion 1 is **verified** against the repository. Criterion 2 is **verified** against current OWASP sources (2026-08-03). Criterion 3 is **reasoned** from our own documents.
+
+**Alternatives rejected.**
+- **Treating it as design-only, per the tracker's original reading** — rejected on criterion 1; the design would keep realizing a requirement that does not exist.
+- **Naming the OWASP Top 10 as the baseline** — rejected on criterion 2; it is not testable and could not gate a release.
+- **Retro-fitting the obligation into `platform-data-model-design.md`** to match what is already built — rejected outright: it would have a design document supply its own upstream authority, inverting `PROCESS.md` §1 in the opposite direction.
+
+**Consequences.**
+- **T69 is authorized** as a spec-phase ticket and is the first item in the queue after T66–T68.
+- **`TICKET.md`'s security note must be corrected** — it currently records the opposite finding.
+- **`platform-data-model-design.md` §8 needs no change on its content**, only an upstream citation once T69 lands. The finding is that its authority is missing, not that its design is wrong.
+- **The discovery method generalizes.** This gap was found by searching for a term the spec *should* contain rather than by reviewing what it does contain. **A negative search — "what obligation is absent entirely?" — finds a class of gap that no consistency check catches**, because a consistency checker verifies agreement among statements that exist. Same family as D-18: both were absences that reading the present text could not reveal.

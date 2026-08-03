@@ -27,7 +27,7 @@ It is structured as a pyramid: first the market coverage that establishes the ba
 
 ### 2.1 Market and Category
 
-AI ahaMatic is positioned within the Gartner-defined LCNC market and commits to its **low-code** tier as an Enterprise Low-Code Application Platform (LCAP) serving professional builders (`01-business-and-ux/01-vision-and-charter.md` §2). The category fixes which market expectations apply: the platform is measured against what an Enterprise LCAP is expected to enable, and its worth is the breadth of software it lets professional builders build and operate — never suitability to a single vertical.
+AI ahaMatic is positioned within the Gartner-defined LCNC market and commits to its **no-code** tier as an Enterprise Low-Code Application Platform (LCAP) serving professional builders (`01-business-and-ux/01-vision-and-charter.md` §2). The category fixes which market expectations apply: the platform is measured against what an Enterprise LCAP is expected to enable, and its worth is the breadth of software it lets professional builders build and operate — never suitability to a single vertical.
 
 ### 2.2 The Vendors Compared
 
