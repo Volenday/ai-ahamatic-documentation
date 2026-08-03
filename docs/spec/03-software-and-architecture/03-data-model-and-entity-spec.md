@@ -4,21 +4,22 @@ This document defines **how data and builder-defined entities and schemas are mo
 
 This is a Design-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It elaborates **INV-04 (data integrity)** of `02-governance-and-security/01-system-invariants.md` — the invariant deferred to this document in full — and it may specify INV-04's particulars but never relax them. It elaborates the data- and schema-specific particulars of **INV-08 (reversibility and recovery)** and **INV-09 (backward-compatible evolution)** as they bear on stored data and its structure, without redefining either invariant, each of which remains owned in full by `02-governance-and-security/01-system-invariants.md`. It cites, rather than re-derives, the canonical capabilities (C-01–C-26) and release gates (G-1–G-6) of `01-business-and-ux/02-prd.md` — chiefly **C-05 (data and entity modeling)** and gate **G-3** — the Data and entity modeling capability kind and the primitive/artifact line of `01-business-and-ux/03-platform-capability-model.md` §3.2, the Construction structural component of `03-software-and-architecture/01-architecture-overview.md` §4, and the canonical terms Entity, Schema, and Module of `03-software-and-architecture/02-domain-glossary.md` §6, which it uses without redefining. Every rule here is **platform-level and domain-neutral** — it holds for any data modeled on the platform, in any tenant, any region, and any built artifact, and is never satisfied or excused by the state of a single application.
 
-This document owns what prior documents deferred to it in full: the **core data-model rules** that elaborate INV-04, **entity and schema definition and validation contracts**, **relationship and referential-integrity rules** — including the referential-integrity elaboration `02-governance-and-security/06-data-governance-and-privacy.md` §5 requires deletion to honor — **migration-safety constraints**, and the **stored-data backward-compatibility requirements** that elaborate INV-09's data-specific application. It does not own data-classification tiers, the data-handling matrix, tenant-isolation and access particulars, authentication and session mechanics, API-contract mechanics, extension/module boundary mechanics, numeric thresholds, coding conventions, general deprecation and change-management policy, or enforcement and escalation mechanics — each is owned elsewhere and cited, not restated.
+This document owns what prior documents deferred to it in full: the **core data-model rules** that elaborate INV-04, **entity and schema definition and validation contracts**, **relationship and referential-integrity rules** — including the referential-integrity elaboration `02-governance-and-security/06-data-governance-and-privacy.md` §5 requires deletion to honor — **migration-safety constraints**, the **stored-data backward-compatibility requirements** that elaborate INV-09's data-specific application, and the **temporal-integrity and history obligations** — effective dating, append-only retention, and full history — that hold generically for every builder-defined entity. It does not own data-classification tiers, the data-handling matrix, tenant-isolation and access particulars, authentication and session mechanics, API-contract mechanics, extension/module boundary mechanics, numeric thresholds, coding conventions, general deprecation and change-management policy, or enforcement and escalation mechanics — each is owned elsewhere and cited, not restated.
 
 ---
 
 ## 1. Purpose and Reading Order
 
-The document answers five questions:
+The document answers six questions:
 
 - **What data integrity requires** of committed data, and how that requirement applies uniformly to platform state and builder-defined data alike.
 - **What an entity and a schema must define**, and what a validation contract must guarantee before data is committed.
 - **What a relationship between entities requires**, and what referential integrity requires when related data changes or is removed.
 - **What a migration must preserve** to remain safe, and when it may proceed.
 - **What backward compatibility requires** of stored data as a schema evolves.
+- **What temporal integrity requires** of every builder-defined entity — effective dating, append-only retention, and full history — as a generic obligation of the modeling primitive itself.
 
-It is structured as a pyramid: first the core data-model rules that elaborate INV-04, then the definition and validation contract every entity and schema must satisfy, then the relationship and referential-integrity rules built on both, then the migration-safety constraints that govern how data and structure change, then the backward-compatibility requirements that govern how stored data survives that change.
+It is structured as a pyramid: first the core data-model rules that elaborate INV-04, then the definition and validation contract every entity and schema must satisfy, then the relationship and referential-integrity rules built on both, then the migration-safety constraints that govern how data and structure change, then the backward-compatibility requirements that govern how stored data survives that change, then the temporal-integrity and history obligations that hold across every entity regardless of what it models.
 
 ---
 
@@ -122,24 +123,47 @@ This section elaborates the data-specific particulars of **INV-09 (backward-comp
 
 ---
 
-## 9. Precedence and Ownership Boundaries
+## 9. Temporal Integrity and History
+
+This section states a generic obligation of the platform's data and entity modeling primitive (C-05): **effective dating, append-only retention, and full history** hold for every entity a builder defines, regardless of what that entity models. The obligation is a platform guarantee, never a feature a builder selects into or out of — there is no schema, for any domain, to which it does not already apply.
+
+- **Effective dating is distinct from the write.** The modeling primitive provides the means to record, for any builder-defined entity, when the values a record holds are true *as of*, separately from when the record was written or last changed. A schema may collapse the two onto the same moment, but the means to keep them distinct is always present, and no entity definition forecloses it.
+- **History is retained, not overwritten.** A change to a builder-defined record does not discard the state it supersedes. Every prior state a record has held, and the effective date each held, remains part of that record and is reconstructable — for every entity a builder defines, not a subset selected by the builder or by what an entity models.
+- **Hard deletion is not the default disposition of builder data.** The ordinary way a builder-defined record's relevance ends is by adding a further state to its history — marking it superseded, withdrawn, or no longer current — never by erasing the states that came before. This default is qualified only by the erasure obligations addressed below, which this section does not itself set.
+- **History is auditable by default, not by configuration.** Every builder-defined record's full sequence of prior states, and the effective date each carried, is reconstructable the moment the entity exists; a builder does no additional work to obtain this, and none to opt out of it.
+- **The obligation is generic and domain-neutral (INV-05).** It belongs to the data and entity modeling primitive (C-05) itself, holding identically for every entity any builder defines, in any domain — it is not a pattern illustrated by, adopted for, or withheld from any particular kind of data.
+
+Two boundaries keep this obligation from being read as something it is not.
+
+- **This is not the audit trail.** This section requires that a builder-defined record's own history — the states its data has held — exists and is retained. It says nothing about the platform's or an actor's actions, which `02-governance-and-security/07-audit-and-traceability.md` governs in full as a distinct subject with its own attribution, immutability, and tamper-evidence requirements. A record's history never substitutes for an audit record of what was done to it, and an audit record never substitutes for this section's history of what the record was.
+- **This is not synchronization machinery.** The retention this section requires exists for history and auditability, never to resolve a data-synchronization concern; the platform's data is server-authoritative and carries no bidirectional-sync requirement this retention could serve. A structure that happens to resemble a tombstone exists here for the reasons stated above, and not for that one.
+
+The obligation meets, and does not override, the erasure rules `02-governance-and-security/06-data-governance-and-privacy.md` owns.
+
+- **This document owns the structure; the privacy document owns whether, when, and how a record is erased.** This section requires that history exist, that prior states be retained, and that removal be expressed as a further state rather than as an erasure of what preceded it. Whether and when a specific record or field must be erased, anonymized, or redacted, and the managed path by which that is carried out, is owned in full by `02-governance-and-security/06-data-governance-and-privacy.md` §5; this section does not restate, weaken, or override any rule that document sets.
+- **Numeric retention is not set here.** How long a builder-defined record's history is kept, and any ceiling that bounds it, is a numeric threshold owned by `03-software-and-architecture/06-non-functional-requirements.md`; this section requires that history exist and be reconstructable, not for how long it must persist.
+
+---
+
+## 10. Precedence and Ownership Boundaries
 
 When a rule in this model meets any other consideration, it is resolved by the fixed precedence of `02-governance-and-security/01-system-invariants.md` §6, which extends the trade-off rule of `01-business-and-ux/06-value-proposition-and-success-metrics.md` §7.
 
 - **The charter prevails.** No rule here is read or applied in a way that contradicts the Vision and Charter; where this document appears to conflict with the charter, the charter governs.
 - **INV-04 is a floor, never spent.** Data integrity, and the data-specific particulars of INV-08 and INV-09 elaborated here, are never degraded to improve a success metric, meet a deadline, or satisfy a request; integrity is preserved first, and success is optimized only in the space that leaves intact.
-- **A breach overrides apparent gain.** An outcome that would invalidate data, break a relationship, leave a migration unsafe, or break a backward-compatibility guarantee is refused regardless of the value it appears to create.
+- **A breach overrides apparent gain.** An outcome that would invalidate data, break a relationship, leave a migration unsafe, break a backward-compatibility guarantee, or discard a builder-defined record's history is refused regardless of the value it appears to create.
 
-This document owns the core data-model rules that elaborate INV-04, entity and schema definition and validation contracts, relationship and referential-integrity rules, migration-safety constraints, and the stored-data backward-compatibility requirements that elaborate INV-09's data-specific application. It does not own the specifics other documents govern, and none of those documents may weaken this model:
+This document owns the core data-model rules that elaborate INV-04, entity and schema definition and validation contracts, relationship and referential-integrity rules, migration-safety constraints, the stored-data backward-compatibility requirements that elaborate INV-09's data-specific application, and the temporal-integrity and history obligations of §9. It does not own the specifics other documents govern, and none of those documents may weaken this model:
 
 - **Canonical vocabulary** — the terms Entity, Schema, Module, and the primitive/artifact line — is owned by `03-software-and-architecture/02-domain-glossary.md`; this document uses those terms without redefining them.
 - **Data-classification tiers** and per-region residency rules are owned by `02-governance-and-security/05-compliance-and-data-residency.md`.
-- **The data-handling matrix** — retention, deletion, consent, minimization, and redaction — is owned by `02-governance-and-security/06-data-governance-and-privacy.md`; this document requires that deletion honor referential integrity (§6) without restating that document's retention, consent, or redaction rules.
+- **The data-handling matrix** — retention, deletion, consent, minimization, and redaction — is owned by `02-governance-and-security/06-data-governance-and-privacy.md`; this document requires that deletion honor referential integrity (§6) without restating that document's retention, consent, or redaction rules, and §9 requires that any deletion or anonymization it triggers be expressed as a state within a record's history without this document restating, weakening, or overriding whether, when, or how that occurs.
+- **Audit events, immutability, and tamper-evidence** for what the platform and its actors did are owned by `02-governance-and-security/07-audit-and-traceability.md`; §9's history of what a builder-defined record's data was is a distinct subject, and neither document's record substitutes for the other's.
 - **Tenant isolation, the role-and-permission matrix, and client/application scoping** behind INV-01 and INV-02 are owned by `02-governance-and-security/03-access-control-and-tenancy-model.md`.
 - **Authentication methods, sessions, and identity mechanics** behind INV-02 are owned by `02-governance-and-security/04-auth-and-identity-spec.md`.
 - **API request/response conventions, versioning, and contract-change sign-off** are owned by `03-software-and-architecture/04-api-contract-spec.md`.
 - **Extension/module boundary mechanics, SDK compatibility, and sandboxing** are owned by `03-software-and-architecture/05-integration-and-extensibility-spec.md`.
-- **Numeric thresholds** — migration duration, validation performance, and any other quantified floor — are owned by `03-software-and-architecture/06-non-functional-requirements.md`.
+- **Numeric thresholds** — migration duration, validation performance, history-retention ceilings, and any other quantified floor — are owned by `03-software-and-architecture/06-non-functional-requirements.md`.
 - **Coding patterns, naming and structure conventions, and reuse-vs-rebuild rules** are owned by `03-software-and-architecture/07-coding-standards-and-patterns.md`.
 - **General backward-compatibility obligations, deprecation policy, and the managed path for a platform-level change** are owned by `05-meta-operations/08-change-management-and-evolution-policy.md`; this document defines what backward-compatible means for stored data specifically and does not own how a change is announced or scheduled.
 - **Release-level rollback strategy and time-to-recover targets** are owned by `04-devops-and-cloud-infra/05-release-and-rollback-protocol.md`; this document defines what a migration must preserve to remain reversible and does not own how a rollback is carried out.
@@ -147,7 +171,7 @@ This document owns the core data-model rules that elaborate INV-04, entity and s
 
 ---
 
-## 10. Binding Rules
+## 11. Binding Rules
 
 These rules hold for every entity, schema, relationship, and change subject to this model and are subordinate to the charter.
 
@@ -157,5 +181,7 @@ These rules hold for every entity, schema, relationship, and change subject to t
 - **Referential integrity holds across a relationship's full lifecycle.** No reference is left dangling at creation, during change, or at removal, and no relationship ever resolves across a tenant boundary.
 - **No migration proceeds without a reversible path, and none leaves data partially valid.** A migration either completes in full or leaves the prior state intact, and it preserves referential integrity and tenant isolation throughout.
 - **No schema evolution breaks a guarantee already made to existing stored data except along a managed, announced path.** Uncertainty about backward compatibility resolves to treating the evolution as backward-incompatible.
+- **Every builder-defined entity carries effective dating, append-only retention, and full history, generically and without exception.** No entity is exempt because of the domain it models or because a builder did not request the capability; the obligation belongs to the modeling primitive itself.
+- **Removal is a state in history, never an erasure of it.** Hard deletion is not the default disposition of builder data; where a specific record or field must be erased, anonymized, or redacted, whether, when, and how that occurs is governed by `02-governance-and-security/06-data-governance-and-privacy.md` §5, carried out as a state within the record's history.
 - **The builder/built separation holds throughout.** The platform owns the modeling and validation primitive; the specific entities, schemas, relationships, and data a builder defines remain the builder's own.
 - **Everything remains domain-neutral and platform-level.** No rule in this document encodes the characteristics of any single domain; all remain valid for any data modeled on the platform, in any tenant and any region.
