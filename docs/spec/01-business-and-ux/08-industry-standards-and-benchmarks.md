@@ -2,7 +2,7 @@
 
 This document maps recognized Gartner standards for the Enterprise Low-Code Application Platform (LCAP) market — the Magic Quadrant, the Critical Capabilities, the adoption maturity model, and enterprise adoption benchmarks — against AI ahaMatic's documentation and capability library. It establishes where the platform aligns with those standards and where documentation or platform coverage falls short and requires remediation. It is a Strategy-phase artifact and answers **what** the platform's standing against industry standards is, not how any capability is designed or implemented.
 
-This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-26) and release gates (G-1–G-6) defined in `01-business-and-ux/02-prd.md`, the primitive families defined in `01-business-and-ux/03-platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `01-business-and-ux/01-vision-and-charter.md`, the benchmark framing established in `01-business-and-ux/06-value-proposition-and-success-metrics.md`, and the market baseline and frontier-resolution set established in `01-business-and-ux/07-competitive-landscape.md`. Those are cited, not restated or duplicated. Gartner's standards are synthesized from the authorized research; Gartner and vendor names are used as needed, and no person's name appears anywhere.
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-27) and release gates (G-1–G-6) defined in `01-business-and-ux/02-prd.md`, the primitive families defined in `01-business-and-ux/03-platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `01-business-and-ux/01-vision-and-charter.md`, the benchmark framing established in `01-business-and-ux/06-value-proposition-and-success-metrics.md`, and the market baseline and frontier-resolution set established in `01-business-and-ux/07-competitive-landscape.md`. Those are cited, not restated or duplicated. Gartner's standards are synthesized from the authorized research; Gartner and vendor names are used as needed, and no person's name appears anywhere.
 
 The Gartner material referenced throughout is **publicly-available / secondary data, not a licensed Gartner report**, and is therefore **directional, not authoritative** (`PROCESS.md` §7); the adoption figures in §6 are likewise unverified and directional. No Magic-Quadrant placement is asserted for AI ahaMatic as a Gartner finding, and none appears here.
 
@@ -16,7 +16,7 @@ The document answers five questions:
 
 - **What standards apply** — the Gartner instruments the platform is measured against.
 - **What the entry bar is** — the Magic Quadrant inclusion thresholds and how the model relates to them.
-- **How each capability maps** — the Critical Capabilities coverage across C-01–C-26 and the documents that address them.
+- **How each capability maps** — the Critical Capabilities coverage across C-01–C-27 and the documents that address them.
 - **Where the library sits** — its alignment against the enterprise maturity model, and the adoption benchmarks that anchor its ambition.
 - **Where it stands on remediation** — the triaged disposition of each former remediation gap: resolved, standing market-reality, or an open verification item flagged for approval.
 

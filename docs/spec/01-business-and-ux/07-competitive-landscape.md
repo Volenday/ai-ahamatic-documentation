@@ -2,7 +2,7 @@
 
 This document maps the capabilities of the top Low-Code/No-Code (LCNC) vendors against AI ahaMatic's capability model to establish where the platform **aligns** with market expectations, where it has **gaps**, and where it **differentiates**. It is a Strategy-phase artifact and answers **what** the platform's competitive position is, not how any capability is designed or implemented.
 
-This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-26) and release gates (G-1–G-6) defined in `01-business-and-ux/02-prd.md`, the primitive families defined in `01-business-and-ux/03-platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `01-business-and-ux/01-vision-and-charter.md`, and the differentiator framing established in `01-business-and-ux/06-value-proposition-and-success-metrics.md` (cited, not restated). Vendor and company names are used as needed, and no person's name appears anywhere.
+This document inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It references the canonical capabilities (C-01–C-27) and release gates (G-1–G-6) defined in `01-business-and-ux/02-prd.md`, the primitive families defined in `01-business-and-ux/03-platform-capability-model.md`, the LCAP identity and LCNC positioning defined in `01-business-and-ux/01-vision-and-charter.md`, and the differentiator framing established in `01-business-and-ux/06-value-proposition-and-success-metrics.md` (cited, not restated). Vendor and company names are used as needed, and no person's name appears anywhere.
 
 **Directional, not authoritative.** The vendor findings throughout this document are a **secondary synthesis** — produced via a large language model with live web search, not drawn from primary vendor documentation — and the Gartner references are publicly-available data, not a licensed report. Both are therefore **directional, not authoritative**: they establish a strategic reading of the market, not a settled or verified account of any vendor's product. Every comparison, coverage claim, and market-baseline statement here carries this caveat. Relatedly, no Magic-Quadrant placement is ever asserted for AI ahaMatic as a Gartner finding or external claim — any such positioning is internal analytical judgment only, and this document makes no such claim.
 
@@ -17,7 +17,7 @@ The document answers four questions:
 - **What the market covers** — the capability baseline the leading LCNC vendors establish across core LCAP modules.
 - **Where the platform falls short** — capabilities the market treats as standard, or as an established emerging frontier, that the current model does not yet provide.
 - **Where the platform differentiates** — the positions the capability model establishes beyond the market baseline.
-- **How each capability maps** — a structured inventory of C-01–C-26 against market expectation, marked as alignment, gap, or differentiation.
+- **How each capability maps** — a structured inventory of C-01–C-27 against market expectation, marked as alignment, gap, or differentiation.
 
 It is structured as a pyramid: first the market coverage that establishes the baseline, then the frontier resolutions and remaining shortfall measured against that baseline, then the differentiators that define a distinctive position, and finally the per-capability alignment and shortfall inventory.
 
@@ -142,7 +142,7 @@ Runtime AI automation (C-26) would let AI-driven automation run inside built app
 
 ## 6. Capability Alignment and Shortfall Inventory
 
-This inventory maps every canonical capability (C-01–C-26) against the market expectation, marked as follows:
+This inventory maps every canonical capability (C-01–C-27) against the market expectation, marked as follows:
 
 - **Aligned** — meets a market-standard expectation the compared vendors also cover.
 - **Gap** — a market-standard or established emerging capability the model does not yet provide.
