@@ -503,3 +503,32 @@ The two classes it holds:
 - **`TICKET.md`'s security note must be corrected** — it currently records the opposite finding.
 - **`platform-data-model-design.md` §8 needs no change on its content**, only an upstream citation once T69 lands. The finding is that its authority is missing, not that its design is wrong.
 - **The discovery method generalizes.** This gap was found by searching for a term the spec *should* contain rather than by reviewing what it does contain. **A negative search — "what obligation is absent entirely?" — finds a class of gap that no consistency check catches**, because a consistency checker verifies agreement among statements that exist. Same family as D-18: both were absences that reading the present text could not reveal.
+
+---
+
+## D-23 — The agent-facing programmatic contract is a specification gap, not merely a design choice
+
+**Decision.** The lead's 2026-07-30 requirement that *"an AI-to-AI interaction protocol must be published so AI agents can interact with the platform"* is a **specification obligation the library does not yet state**, and it is closed by a spec-phase ticket (**T70**). The protocol selection itself — MCP, generated from the OpenAPI contract — is already settled as **ADR-013** and is **not reopened**.
+
+*(What: to be recorded by **T70**. The specification currently states nothing: the sole occurrence of `MCP` in `docs/spec/` is in `01-business-and-ux/07-competitive-landscape.md` §5, describing **a competitor's** offering.)*
+
+**Attribution: team decision, under the D-16 delegation.** The question was compiled for the lead and the recommendation confirmed; the criteria are recorded here because D-16 makes a decision without them incomplete.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Does an existing capability already cover the consumer?** | **No — and this is decisive.** **C-12** is defined as the contract through which *"a builder **or extender**"* works with the platform's primitives (`05-integration-and-extensibility-spec.md` §67). **An external, autonomous AI agent is neither.** The specification models four actor classes — the autonomous *platform-operating* agent (`05-meta-operations/01-agent-operating-charter.md`), builders, extenders, and end users — and `02-domain-glossary.md` explicitly holds the platform-operating agent **distinct** from builder-facing tooling. An external agent consuming the platform's contract is a **fifth class nothing in the specification models.** |
+| **2** | **Is the design already committed to something the spec does not authorize?** | **Yes.** ADR-013 selects MCP and binds `api-contract-design.md` to publish it. That is a design realizing an obligation the spec never stated — the same **phase inversion** `DECISIONS.md` D-22 found for encryption, and the second instance of it. Left unstated, no release gate or acceptance criterion can test an obligation nothing requires. |
+| **3** | **How was it found?** | By **searching the specification for what it should contain rather than reviewing what it does** — the method D-22's consequences recorded. This is that method's second catch. A consistency check cannot find this class of defect, because it verifies agreement among statements that exist. |
+| **4** | **Does closing it require a new capability ID?** | **Assessed and answered: no — recorded here so T70 does not re-open it.** D-13 minted C-27 rather than folding data administration into C-05, on the reasoning that *"leaving it unassigned would mean no design document is ever scheduled for it."* **That reasoning does not transfer**: the agent-facing contract is already scheduled — ADR-013 binds it to `api-contract-design.md`. What is missing is the **consumer**, not the capability. The programmatic contract exists (C-12); the specification simply fails to name who may consume it. Capability IDs are permanent and never reused (`PROCESS.md` §5), so minting one to close an actor-model gap would be a permanent answer to a temporary absence. |
+
+**Alternatives rejected.**
+- **Reading (a) — MCP merely realizes C-12, so nothing is owed.** Rejected on criterion 1: C-12's own definition names its consumers, and an external agent is not among them. The reading is only available if that clause is ignored.
+- **Minting a new capability (C-28) for agent-facing interaction.** Rejected on criterion 4 — the gap is in the actor model, not the capability set.
+- **Leaving it to `api-contract-design.md` to state.** Rejected: a design document supplying its own upstream authority is precisely the inversion this entry exists to close.
+
+**Consequences.**
+- **T70 is a spec-phase ticket**, scoped to the actor model and the contract's consumer obligation — **not** to protocol selection, which ADR-013 owns.
+- **`04-personas-and-roles.md` is the actor-model owner** and is where the fifth class lands; `04-api-contract-spec.md` §9 (capability-specific contract coverage) is where the consumer obligation attaches.
+- **The method has now paid twice.** Both D-22 and this entry were absences, invisible to review of the present text. A negative search — *"what obligation is missing entirely?"* — should be run periodically, not only when something prompts it.
