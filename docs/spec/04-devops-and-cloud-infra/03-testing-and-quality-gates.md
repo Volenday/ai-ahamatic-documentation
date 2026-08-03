@@ -2,7 +2,7 @@
 
 This document defines **what a change must be tested against, and the coverage and correctness thresholds it must meet, before it is allowed to advance** — the required test types and layers, the minimum coverage and pass-rate thresholds, the rule for handling a flaky test, and the constraint that no change deploys while a required test does not pass. It states **what** testing must establish and **the numeric floor at which a testing result becomes a blocking condition**; it does not describe how any test is written, executed, instrumented, or tooled.
 
-This is an Execution-phase artifact — the third document of the DevOps & Cloud Infra domain. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It defines the test types, coverage thresholds, and pass-rate requirement that `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md` §5 and §6 treat as a mandatory input to the Merge Gate and the Deploy Gates, and it aligns its "no passing gates, no deploy" constraint with, and cites rather than redefines, the ordered pipeline stages and the no-bypass rule of that document (§4, §8). It references, without redefining, every invariant of `02-governance-and-security/01-system-invariants.md` §4 as a property tests must establish continues to hold, and applies the blocking-check and halt-and-escalate rule of that document's §3 to a testing result. It applies, without redefining, the vulnerability-severity classes and the release-blocking threshold of `02-governance-and-security/02-security-policy.md` §6 and the mandatory security-review trigger of its §7 as conditions a testing gate honors. It validates a change against, without restating or varying, the numeric performance, scalability, availability, reliability, and resource targets and the regression rule of `03-software-and-architecture/06-non-functional-requirements.md` §4–§11, and cites the pre-commit review checklist of `03-software-and-architecture/07-coding-standards-and-patterns.md` §7 as a prerequisite input that testing neither replaces nor is replaced by. It applies the environment tiers and their promotion ordering of `04-devops-and-cloud-infra/01-environment-and-config-spec.md` §4 to where each threshold binds, and cites, rather than re-derives, the canonical capabilities (C-01–C-27) and release gates (G-1–G-6) of `01-business-and-ux/02-prd.md` §5 as the guarantees testing validates. Every threshold here is **platform-level and domain-neutral** — it holds for any change to the platform, in any tenant and any region, regardless of what any builder builds with it.
+This is an Execution-phase artifact — the third document of the DevOps & Cloud Infra domain. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It defines the test types, coverage thresholds, and pass-rate requirement that `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md` §5 and §6 treat as a mandatory input to the Merge Gate and the Deploy Gates, and it aligns its "no passing gates, no deploy" constraint with, and cites rather than redefines, the ordered pipeline stages and the no-bypass rule of that document (§4, §8). It references, without redefining, every invariant of `02-governance-and-security/01-system-invariants.md` §4 as a property tests must establish continues to hold, and applies the blocking-check and halt-and-escalate rule of that document's §3 to a testing result. It applies, without redefining, the vulnerability-severity classes and the release-blocking threshold of `02-governance-and-security/02-security-policy.md` §6 and the mandatory security-review trigger of its §7 as conditions a testing gate honors, and cites, without restating, the data-protection obligations and the verification baseline named in its §9. It validates a change against, without restating or varying, the numeric performance, scalability, availability, reliability, and resource targets and the regression rule of `03-software-and-architecture/06-non-functional-requirements.md` §4–§11, and cites the pre-commit review checklist of `03-software-and-architecture/07-coding-standards-and-patterns.md` §7 as a prerequisite input that testing neither replaces nor is replaced by. It applies the environment tiers and their promotion ordering of `04-devops-and-cloud-infra/01-environment-and-config-spec.md` §4 to where each threshold binds, and cites, rather than re-derives, the canonical capabilities (C-01–C-27) and release gates (G-1–G-6) of `01-business-and-ux/02-prd.md` §5 as the guarantees testing validates. Every threshold here is **platform-level and domain-neutral** — it holds for any change to the platform, in any tenant and any region, regardless of what any builder builds with it.
 
 This document owns what `02-governance-and-security/01-system-invariants.md`, `02-governance-and-security/02-security-policy.md`, `03-software-and-architecture/06-non-functional-requirements.md`, `04-devops-and-cloud-infra/01-environment-and-config-spec.md`, and `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md` each deferred to it: **the required test types and layers**, **the minimum coverage and pass-rate thresholds**, **the flaky-test handling rules**, and **the "no passing gates, no deploy" constraint**. It does not own the invariants themselves, the vulnerability-severity classes, the numeric non-functional targets, the coding-level checklist, the environment tiers, or the pipeline stages and gates a testing result feeds — each remains owned by the document already assigned to it, cited throughout, never redefined here.
 
@@ -10,15 +10,16 @@ This document owns what `02-governance-and-security/01-system-invariants.md`, `0
 
 ## 1. Purpose and Reading Order
 
-The document answers five questions:
+The document answers six questions:
 
 - **What a test, a coverage threshold, and a quality gate are**, and how they differ from a pipeline gate, a release gate, and an invariant.
 - **What test types and layers are required**, and what each one must establish.
 - **What the minimum coverage and pass-rate thresholds are**, and how they bind across the environment tiers.
 - **How a flaky test is handled**, and why it is never counted as a passing test.
 - **Why no change deploys while a required test does not pass**, and how that constraint feeds the pipeline gates that enforce it.
+- **What baseline the security test layer verifies against**, without restating the obligations or reasoning that baseline elaborates.
 
-It is structured as a pyramid: first the concept of a test and a quality gate, then the required test types and layers, then the coverage and pass-rate thresholds those tests must meet and where they bind, then the rule that keeps a flaky result from being mistaken for a pass, then the constraint that gives every threshold above its force by refusing a deploy until it holds.
+It is structured as a pyramid: first the concept of a test and a quality gate, then the required test types and layers, then the coverage and pass-rate thresholds those tests must meet and where they bind, then the rule that keeps a flaky result from being mistaken for a pass, then the constraint that gives every threshold above its force by refusing a deploy until it holds, then the security verification baseline that constraint additionally holds a change to.
 
 ---
 
@@ -137,7 +138,15 @@ The quality gate of this document is a mandatory input to the pipeline gates of 
 
 ---
 
-## 9. Precedence and Ownership Boundaries
+## 9. Security Verification Baseline
+
+- **The security test layer of §4 verifies conformance to the baseline `02-governance-and-security/02-security-policy.md` §9 names.** That document sets **OWASP ASVS 5.0 at Level 2** as the standard the platform's security posture is verified against; this document cites that baseline as what the security test layer's tests are written to, and does not restate it, its assurance-level reasoning, or the data-protection obligations for data in transit, at rest, and key custody that accompany it — each remains owned in full by `02-governance-and-security/02-security-policy.md` §9.
+- **Verification against the baseline is subject to the same coverage and pass-rate floors as any other required test type.** A gap in verification against the named baseline is a coverage shortfall under §5.1, and a failing verification result is a failing required test under §5.2, exactly as any other security-test result is.
+- **A change to the named baseline or its level is a `02-governance-and-security/02-security-policy.md` decision, never one this document originates.** This document's thresholds bind however that document sets the baseline; this document follows a change to it and does not itself raise, lower, or otherwise vary the baseline or the level.
+
+---
+
+## 10. Precedence and Ownership Boundaries
 
 When a rule in this document meets any other consideration, it is resolved by the fixed precedence of `02-governance-and-security/01-system-invariants.md` §6.
 
@@ -148,7 +157,7 @@ When a rule in this document meets any other consideration, it is resolved by th
 This document owns the required test types and layers, the minimum coverage and pass-rate thresholds, the flaky-test handling rules, and the "no passing gates, no deploy" constraint. It does not own the specifics other documents govern, and none of those documents may weaken this model:
 
 - **The invariants themselves** — their binary form, the blocking-check rule, and the halt-and-escalate rule — are owned by `02-governance-and-security/01-system-invariants.md`; this document's tests validate that they hold without redefining any.
-- **Vulnerability severity, the threat model, and the security-review trigger** are owned by `02-governance-and-security/02-security-policy.md`; this document's security tests and blocking conditions apply its severity classes and trigger without restating them.
+- **Vulnerability severity, the threat model, the security-review trigger, the data-protection obligations, and the security verification baseline** are owned by `02-governance-and-security/02-security-policy.md`; this document's security tests and blocking conditions apply its severity classes, trigger, and baseline without restating any of them.
 - **The concrete numeric values for performance, scalability, availability, reliability, and resource budgets, and the regression rule** are owned by `03-software-and-architecture/06-non-functional-requirements.md`; this document's non-functional tests validate against those values without restating or varying them.
 - **The pre-commit review checklist and coding-level patterns** are owned by `03-software-and-architecture/07-coding-standards-and-patterns.md`; this document treats that checklist as a prerequisite input, neither replacing it nor being replaced by it.
 - **Environment tiers and their promotion ordering** are owned by `04-devops-and-cloud-infra/01-environment-and-config-spec.md`; this document states which thresholds bind at which tier without redefining the tiers.
@@ -162,7 +171,7 @@ This document owns the required test types and layers, the minimum coverage and 
 
 ---
 
-## 10. Binding Rules
+## 11. Binding Rules
 
 These rules hold for every change subject to these gates and are subordinate to the charter.
 
@@ -173,4 +182,5 @@ These rules hold for every change subject to these gates and are subordinate to 
 - **No change deploys while a required test does not pass.** The quality gate is a mandatory input to the pipeline gates of `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md`; no change advances past a gate whose required tests have not met these thresholds.
 - **A failed quality gate is never bypassed, overridden, or worked around, by any actor, for any reason.** It is resolved only by fixing the change or the test and re-evaluating against the same, unaltered thresholds.
 - **The builder / built separation holds throughout.** This document binds platform-layer testing; the testing a builder applies to their own built artifact remains the builder's own.
+- **Security verification is checked against the baseline `02-governance-and-security/02-security-policy.md` §9 names.** The security test layer's coverage and pass-rate floors apply to that baseline exactly as to any other required test; the baseline itself, its level, and the data-protection obligations it accompanies remain owned there, never restated here.
 - **Everything remains domain-neutral and platform-level.** No test type, threshold, or blocking condition in this document encodes the characteristics of any single domain; all remain valid for any change to the platform, in any tenant and any region.

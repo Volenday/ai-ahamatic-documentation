@@ -10,7 +10,7 @@ This document owns one set of thresholds the invariants deferred to it: the **vu
 
 ## 1. Purpose and Reading Order
 
-The document answers six questions:
+The document answers seven questions:
 
 - **What the security posture covers** — the two layers it protects and the boundaries it defends.
 - **What is defended, and against what** — the threat model.
@@ -18,8 +18,9 @@ The document answers six questions:
 - **How untrusted input is treated** — the validation and injection-prevention requirements.
 - **What blocks a release, and what forces a security review** — the vulnerability-severity threshold and the mandatory review trigger.
 - **What certifications the platform commits to** — the independent, third-party security certification roadmap and the obligations, including a deployment-blocking condition, that it binds the platform to.
+- **What the platform's data-protection obligations are** — the guarantees data in transit, at rest, and its key material must satisfy, and the baseline that posture is verified against.
 
-It is structured as a pyramid: first the scope of the posture, then the threat model that names what must be defended, then the standing rules that defend it (secrets, then input), then the release-blocking threshold and the review trigger that enforce it, then the certification roadmap that commits the platform to independent third-party attestation, then the precedence and ownership boundaries that bound the whole.
+It is structured as a pyramid: first the scope of the posture, then the threat model that names what must be defended, then the standing rules that defend it (secrets, then input), then the release-blocking threshold and the review trigger that enforce it, then the certification roadmap that commits the platform to independent third-party attestation, then the data-protection obligations that guarantee what is defended is itself protected in transit, at rest, and in its key material, then the precedence and ownership boundaries that bound the whole.
 
 ---
 
@@ -197,7 +198,36 @@ A certification is a **standing obligation, not a one-time achievement**.
 
 ---
 
-## 9. Precedence and Ownership Boundaries
+## 9. Data-Protection Obligations
+
+This section states the platform's obligations to protect data **in transit**, **at rest**, and to **custody the key material** either protection relies on. It elaborates **INV-03 (no secret exposure)** for key material specifically, exactly as §4 elaborates it for secrets generally, and never restates or relaxes what §4 already governs in full. It states what must be guaranteed, not how any protection is designed, configured, or implemented — a future design remains free to satisfy each obligation by whatever means it chooses, provided the guarantee holds.
+
+### 9.1 Protection in Transit
+
+- **Data moving between any two points is protected**, at every entry point to the platform and at every entry point to any built artifact. This holds wherever data crosses from one point to another — between an actor and the platform, between platform components, and between a built artifact and its own users — and no such crossing is exempted because it appears internal to the platform.
+- **The obligation covers both layers.** It protects data moving to, from, and within the platform core, and data moving to, from, and within any built artifact, exactly as the two-layer scope of §2 requires; neither layer's protection in transit is traded for the other's.
+
+### 9.2 Protection at Rest
+
+- **Stored data is protected**, covering both the platform's own stored state and every built artifact's stored data. The obligation attaches to data for as long as it is held, under whatever retention rule applies to it (owned by `02-governance-and-security/06-data-governance-and-privacy.md` §5), and regardless of where it resides (owned by `02-governance-and-security/05-compliance-and-data-residency.md`).
+- **Protection at rest is a guarantee about the data itself, not only about who may reach it.** Authorization and tenant isolation (INV-01, INV-02) govern which actor may reach stored data through a governed path; this obligation additionally requires that the data resist unauthorized reading or alteration should a stored copy be reached outside that path.
+
+### 9.3 Key Custody
+
+- **Key material is held such that the compromise of stored data does not itself yield the means to read it.** Where protection at rest (§9.2) depends on key material, that material is held apart from the data it protects, so that possession of the protected data alone is insufficient to read it.
+- **Key material is a secret and is bound by §4 absolutely.** No key material is ever rendered in any output, log, record, artifact, or stored state, or disclosed to any actor not authorized to hold it — the same rule §4 states for any secret, applying here to key material with no exception and no relaxation.
+- **No single design satisfies this obligation to the exclusion of others.** How key material is generated, structured, stored, rotated, or organized is a design-phase decision; this document requires only that the guarantee above hold, and remains satisfied by any design that holds it.
+
+### 9.4 Verification Baseline
+
+- **The platform's security posture is verified against OWASP ASVS 5.0 at Level 2.** ASVS is a framework of testable verification requirements, at three defined levels; naming a level here gives the release-blocking threshold of §6 and the quality gates of `04-devops-and-cloud-infra/03-testing-and-quality-gates.md` a baseline a release can actually be verified against.
+- **Level 2 is chosen because the platform holds sensitive, multi-tenant data as its ordinary operation, not an exceptional case.** Level 1 is a floor for applications without sensitive data, which a platform holding arbitrary builder-defined data does not credibly claim to be; Level 3 is reserved for the highest-assurance systems and would commit the platform to obligations nothing in this specification currently requires. Should a future obligation warrant it, raising the level is itself a governed change, not a default.
+- **The OWASP Top 10 is awareness framing, never a verification baseline.** It is an entry point that orients builders and reviewers to common risk categories; it states no testable requirement, and a release gate is never satisfied by reference to it alone.
+- **This baseline is a verification standard, distinct from the certification roadmap of §8.** ASVS attests that the posture meets a defined level of testable security requirements at a point of verification; it is not a third-party certification, and it neither substitutes for nor is substituted by SOC 2, ISO 27001, or FedRAMP.
+
+---
+
+## 10. Precedence and Ownership Boundaries
 
 When a security rule meets any other consideration, it is resolved by the fixed precedence of `02-governance-and-security/01-system-invariants.md` §6, which extends the trade-off rule of `01-business-and-ux/06-value-proposition-and-success-metrics.md` §7:
 
@@ -205,21 +235,22 @@ When a security rule meets any other consideration, it is resolved by the fixed 
 - **Invariants are floors, never spent.** The security invariants (INV-01, INV-02, INV-03, INV-04) are never degraded to improve a success metric, meet a deadline, or satisfy a request. Security is preserved first; success is optimized only in the space that leaves intact.
 - **A breach overrides apparent gain.** An outcome that would breach the posture is refused regardless of the value it appears to create.
 
-This document owns the security posture, the secrets-handling rules, the input-validation and injection-prevention requirements, the vulnerability-severity classification and its release-blocking threshold, the mandatory security-review trigger, and the security certification roadmap. It does not own the specifics other documents govern, and none of those documents may weaken this policy:
+This document owns the security posture, the secrets-handling rules, the input-validation and injection-prevention requirements, the vulnerability-severity classification and its release-blocking threshold, the mandatory security-review trigger, the security certification roadmap, and the data-protection obligations for data in transit, at rest, and in key custody, and the verification baseline that posture is checked against. It does not own the specifics other documents govern, and none of those documents may weaken this policy:
 
 - **Access, tenancy, identity, and session** specifics — the role-and-permission matrix, isolation mechanics, auth methods, and session rules — are owned by `02-governance-and-security/03-access-control-and-tenancy-model.md` and `02-governance-and-security/04-auth-and-identity-spec.md`.
 - **Data-model and referential rules** behind INV-04 are owned by `03-software-and-architecture/03-data-model-and-entity-spec.md`.
 - **Personal and sensitive data** handling, classification, retention, consent, and redaction beyond secrets are owned by `02-governance-and-security/06-data-governance-and-privacy.md`.
 - **Audit, attribution, and tamper-evidence** for security-consequential actions are owned by `02-governance-and-security/07-audit-and-traceability.md`.
-- **Per-region residency and jurisdictional compliance regimes** — distinct from the certification roadmap this document owns — are owned by `02-governance-and-security/05-compliance-and-data-residency.md`; a certification here never substitutes for a residency obligation there, nor a residency obligation for a certification.
+- **Per-region residency and jurisdictional compliance regimes** — distinct from the certification roadmap this document owns and from where or how data is protected — are owned by `02-governance-and-security/05-compliance-and-data-residency.md`; the data-protection obligations of §9 hold wherever data resides, a certification here never substitutes for a residency obligation there, and neither substitutes for the other.
 - **License and dependency** constraints on what may be integrated are owned by `02-governance-and-security/08-legal-and-licensing-constraints.md`.
 - **Secret injection, environment topology,** and pipeline gating mechanics are owned by `04-devops-and-cloud-infra/01-environment-and-config-spec.md` and `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md`.
+- **The design realizing the data-protection obligations of §9** — how data is protected in transit or at rest, and how key material is generated, structured, or rotated — is owned by the Design phase; this document requires only that the guarantee hold.
 - **Other numeric thresholds** — coverage, regression floors, quality budgets — are owned by `03-software-and-architecture/06-non-functional-requirements.md` and `04-devops-and-cloud-infra/03-testing-and-quality-gates.md`.
 - **Enforcement mechanics** — how a halt is carried out and how a review or escalation is requested, routed, and recorded — are owned by the Meta-Operations documents named in §7.
 
 ---
 
-## 10. Binding Rules
+## 11. Binding Rules
 
 These rules hold for every change subject to this policy and are subordinate to the charter.
 
@@ -232,4 +263,7 @@ These rules hold for every change subject to this policy and are subordinate to 
 - **Security invariants are floors, not targets.** The security guarantees are never treated as success metrics and never spent to gain one; a breach is never a net gain.
 - **Required certifications gate deployment.** The platform is not deployed into a regulated enterprise environment that requires a given certification (§8) until that certification is achieved for the scope relied upon; where the requirement cannot be established as satisfied, the deployment is blocked.
 - **Certifications are maintained, not achieved once.** Every certification on the roadmap is kept current, renewed, and re-audited as its standard requires; a lapse restores the deployment-blocking condition, and a certification never substitutes for a residency obligation owned by `02-governance-and-security/05-compliance-and-data-residency.md`.
+- **Data is protected in transit and at rest, across both layers.** Every entry point to the platform and to any built artifact protects data in motion, and every stored copy — the platform's own and any built artifact's — is protected regardless of where it resides or how long it is retained.
+- **Key material is held apart from what it protects, and is itself a secret.** Compromise of stored data alone never yields the means to read it; key material is never rendered, logged, or disclosed beyond an authorized holder, under the same absolute rule §4 states for any secret.
+- **The security posture is verified against OWASP ASVS 5.0 Level 2.** The Top 10 is cited only as awareness framing, never as a testable baseline; ASVS is a verification standard, distinct from and never substituted by the certification roadmap of §8.
 - **Everything remains domain-neutral and platform-level.** No rule, threat, severity class, or trigger encodes the characteristics of any single domain; all remain valid for any software built on the platform.
