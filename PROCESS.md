@@ -25,7 +25,8 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 | `ai-aha-context` | Start of every session — loads project context, rules, folder behavior |
 | `ai-aha-spec-doc` / `ai-aha-design-doc` | Start of a spec / design ticket — loads that phase's writing rules |
 | `ai-aha-spec-review` / `ai-aha-design-review` | End of a spec / design ticket — self-review checklist |
-| `ai-aha-handoff` | End of every ticket — produces the handoff summary |
+| `ai-aha-handoff` | End of every **Executor** ticket session — produces the ticket handoff summary |
+| `ai-aha-orchestrator-handoff` | End of an **Orchestrator** session — planning, ticket generation, tracker maintenance, decision recording. Carries decision state, deliberate inconsistencies, and blocked-on-user items rather than a single document's output. **Not interchangeable with `ai-aha-handoff`**; added 2026-08-02 after an Orchestrator handoff had to be improvised. |
 | `ai-aha-consistency-check` | After any capability, shared-concept, or design-decision change — verifies the spec and design libraries against each other and reports drift. Checks and reports only; it never edits. Built in T62 (§6) and extended to the design library on 2026-07-29. |
 
 The `.claude/skills/` copies are the **only** copies and therefore the source of truth. The desktop app previously kept its own duplicates, which had drifted; **those were deleted on 2026-08-02**, so the drift risk this note used to warn about no longer exists. Do not reintroduce a second copy.
@@ -129,11 +130,12 @@ Recorded in full as `DECISIONS.md` **D-15** and **D-16**; the working consequenc
 
 - Capabilities are `C-01`, `C-02`, … assigned **sequentially and permanently** — IDs are never renumbered or reused.
 - **Status:** *Active* (sits in a build tier) or *Future / Not-Yet-Authorized* (recorded in the PRD's Future Capabilities section; not designed or built until explicitly authorized).
-- **Current set — canonical span `C-01–C-26`: 24 active, 2 future.**
-  - **Active:** C-01–C-21 · **C-23** (builder-facing environment management) · **C-24** (cross-system data layer) · **C-25** (connector marketplace, distinct from C-13).
-  - **Future / Not-Yet-Authorized:** **C-22** (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-26** (runtime AI automation inside built apps, distinct from build-time C-19).
+- **Current set — canonical span `C-01–C-27`: 25 active, 2 future.**
+  - **Active:** C-01–C-21 · **C-23** (builder-facing environment management) · **C-24** (cross-system data layer) · **C-25** (connector marketplace, distinct from C-13) · **C-27** (data administration — Tier 1, Construction family; added by T65).
+  - **Future / Not-Yet-Authorized:** **C-22** (multi-language *code* export — programming languages, TBD; never human-language UI localization) · **C-26** (runtime AI automation inside built apps, distinct from build-time C-19). **The future set remains exactly two** — C-27 is active, and did not change this count.
   - C-24–C-26 were added by T56–T59 and are no longer pending; Desktop/RPA was **declined**. Canonical source: `01-business-and-ux/02-prd.md` §4 and `01-business-and-ux/03-platform-capability-model.md` §4 — never this file.
 - **Adding or changing a capability requires full propagation** (see §6): `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md` (definition) → `03-software-and-architecture/02-domain-glossary.md`, `01-business-and-ux/04-personas-and-roles.md`, `01-business-and-ux/05-user-journeys.md` (propagation) → re-sync the capability enumeration/count across **all** documents that cite it, **including `context-document-map.md`**.
+- **⚠ The re-sync above is far wider than the three named propagation documents, and has been under-scoped before.** The span appears in a **boilerplate preamble sentence repeated across most of the library** — *"It references the canonical capabilities (C-01–C-NN) and release gates (G-1–G-6)…"*. When T65 added C-27, the stale span was left in **23 spec documents (36 occurrences)** plus `docs/design/implementation-document-map.md`. A propagation ticket that names only the glossary, personas, and journeys **will miss twenty other spec documents**. Always enumerate the real occurrence list with a grep before scoping the ticket; never work from the three-document shorthand alone.
 - **UI Localization is not planned work** — an earlier note here recorded it as a pending feature; that was a misunderstanding, corrected 2026-08-02. It is **not** on any roadmap and must not be resurfaced as one. The one part worth keeping is the distinction it protected: human-interface-language localization is **not** C-22 (multi-language *code* export, i.e. programming languages). The two must never be conflated.
 
 ---

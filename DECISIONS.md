@@ -195,7 +195,7 @@ Building the second boundary at the first's strength would make the cross-applic
 
 ## D-13 — Add Data Administration as a capability (C-27)
 
-**Decision.** **Data Administration** is a distinct platform capability, assigned **C-27** and placed in **Tier 1 (Foundational)**. It is a **generic administrative interface derived automatically from builder-defined entities** — define a data model, and working create/read/update/delete follows without building an application.
+**Decision.** **Data administration** is a distinct platform capability, assigned **C-27** and placed in **Tier 1 (Foundational)**. *(Canonical rendering is sentence case — "Data administration" — matching the capability-table convention in `01-business-and-ux/02-prd.md` §4, where every capability name is sentence case. T65 corrected this entry's original title-case wording when it landed the definition; cite the spec's rendering, not this log's earlier one.)* It is a **generic administrative interface derived automatically from builder-defined entities** — define a data model, and working create/read/update/delete follows without building an application.
 *(What: to be recorded in `01-business-and-ux/02-prd.md` §3–§4 and `01-business-and-ux/03-platform-capability-model.md` by **T65**; propagated by **T68**.)*
 
 **Why.** It is one of five named V1.0 modules and mapped onto **no** existing capability. C-05 defines the *shape* of data, not operations on records; C-06 configures an application; C-07 runs built software for end users. Leaving it unassigned would mean no design document is ever scheduled for it — the design library derives every document from a capability — so a V1.0 deliverable would be built with no specification behind it.
