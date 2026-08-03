@@ -273,8 +273,12 @@ The third library, established by `DECISIONS.md` **D-21** (lead decision). Folde
 
 | # | Ticket Title | Status | Output File |
 | --- | --- | --- | --- |
-| CR01 | Establish the criteria library and its index — scope, admission test, the four boundaries, conventions, and the forward-looking index | ⏳ Next | `docs/criteria/criteria-document-map.md` |
+| CR01 | Establish the criteria library and its index — scope, admission test, the four boundaries, conventions, and the forward-looking index | ✅ Done | `docs/criteria/criteria-document-map.md` |
+| CR02 | `technology-stack-selection-criteria.md` — distil the reusable stack-selection criteria from the worked instance. **Verified:** admission test passes with zero project leakage; condition method generalized to unnamed candidate *classes*, which ages better than named stacks | ✅ Done | `docs/criteria/technology-stack-selection-criteria.md` |
+| CR03 | `workflow-engine-tool-opinion.md` — standing position on BPMN-conformant workflow engines (`DECISIONS.md` D-20) | ⏳ Next | `docs/criteria/workflow-engine-tool-opinion.md` |
 
+> **CR01's judgment call — decided: reading (ii).** The library holds **distilled, reusable, client-portable sets**; the three dated files stay outside it as source material, unmoved. The deciding argument went further than the ticket's: reading (i) has **no natural stopping point** — once one dated, project-specific file is admitted on the strength of its content, every future meeting record has the same claim, and the library accumulates exactly the process exhaust D-21 ruled out. *Original framing retained below.*
+>
 > **CR01's substantive judgment call.** The three existing root files — `REVIEW-QUESTIONS-2026-07-30.md`, `REVIEW-FLAGS-2026-07-30.md`, `STANDUP-BRIEF-2026-08-03.md` — are **dated internal meeting instruments** and **fail D-21's own admission test** (criterion 2: *does it survive being handed to a client?*). CR01 must decide whether the library holds those instances directly, or holds **distilled, reusable sets** with the dated files remaining source material outside it. **Recommended: the latter** — a library justified on client-portability that opens with three un-portable meeting records contradicts the criterion that created it.
 >
 > **The boundary most likely to be missed:** `technology-stack-design.md` §9 was extended 2026-08-03 so every ADR now carries **its question and criteria as first-class fields**. That is not duplicated by this library. An ADR records criteria applied to **one decision for this platform** — the worked instance; this library holds the **reusable set** those instances distil into. Without that boundary stated, each will assume the other owns criteria.

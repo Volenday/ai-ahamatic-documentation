@@ -12,11 +12,12 @@ The project's knowledge is fully captured in durable files. To pick up the work 
 1. **`CLAUDE.md`** (this file) — project identity and rules.
 2. **`PROCESS.md`** — how the work is produced: phases, per-ticket workflow, ticket-prompt format, cross-document ownership, and conventions.
 3. **`docs/spec/context-document-map.md`** — index of the specification ("what") library; start here to learn the platform.
-4. **`docs/design/implementation-document-map.md`** — index of the design ("how") library (once it exists).
-5. **`DECISIONS.md`** — the strategic decisions and their rationale (the "why").
-6. **`TICKET.md`** — current status; continue from the next pending ticket.
-7. **`OPEN-GAPS-FOR-REVIEW.md`** — gap-review decisions already made.
-8. **`BACKLOG.md`** — known-but-unresolved gaps and unconfirmed assumptions.
+4. **`docs/design/implementation-document-map.md`** — index of the design ("how") library.
+5. **`docs/criteria/criteria-document-map.md`** — index of the criteria library (the "what to ask, before either"); a third library, not a third phase.
+6. **`DECISIONS.md`** — the strategic decisions and their rationale (the "why").
+7. **`TICKET.md`** — current status; continue from the next pending ticket.
+8. **`OPEN-GAPS-FOR-REVIEW.md`** — gap-review decisions already made.
+9. **`BACKLOG.md`** — known-but-unresolved gaps and unconfirmed assumptions.
 
 **Loading context does not assign you a role — wait for your next input, which decides it:**
 
@@ -49,8 +50,10 @@ ai-ahamatic/
 │   │       (each spec document is numbered within its group folder,
 │   │        e.g. 01-business-and-ux/02-prd.md, matching the pyramid
 │   │        reading order of docs/spec/context-document-map.md)
-│   └── design/ ← the "how": design / implementation library
-│       └── implementation-document-map.md ← index (the design-phase counterpart)
+│   ├── design/ ← the "how": design / implementation library
+│   │   └── implementation-document-map.md ← index (the design-phase counterpart)
+│   └── criteria/ ← "what to ask, before either": the criteria library
+│       └── criteria-document-map.md ← index (a third library, not a third phase)
 └── references/ ← aging ahaMatic + research (read-only context)
     ├── repos/ ← aging platform (never reuse)
     ├── docs/ ← aging platform (never reuse)
@@ -64,11 +67,12 @@ ai-ahamatic/
 |---|---|---|
 | `docs/spec/` | The specification library — the "what" | Read and build on; produced under the spec-phase rules (`ai-aha-spec-doc`) |
 | `docs/design/` | The design / implementation library — the "how" | Read and build on; produced under the design-phase rules (`ai-aha-design-doc`) |
+| `docs/criteria/` | The criteria library — reusable questions-and-criteria sets and third-party tool opinions | Read and build on; produced under `CR##` tickets, which invoke **no** phase writing-rules skill (`PROCESS.md` §1). An **input, never an authority** — it may not override or contradict `docs/spec/` |
 | `references/repos/`, `references/docs/` | Aging ahaMatic platform | Read for context only — never reuse, copy, migrate, or adapt any content from here |
 | `references/research/` | Authorized research inputs | Synthesize only where a ticket explicitly cites it; never copy verbatim |
 
 - Only read from `docs/` or `references/` when explicitly instructed by the ticket prompt.
-- Always write new outputs to the correct subfolder — `docs/spec/` for specification ("what") documents, `docs/design/` for design ("how") documents — unless the ticket specifies otherwise.
+- Always write new outputs to the correct subfolder — `docs/spec/` for specification ("what") documents, `docs/design/` for design ("how") documents, `docs/criteria/` for reusable criteria sets and tool opinions — unless the ticket specifies otherwise.
 
 ---
 
@@ -79,7 +83,7 @@ These rules apply to every session and every task without exception:
 - **Atomic execution** — each session handles one ticket only. Do not scope beyond the current task.
 - **Reference-only** — `references/repos/` and `references/docs/` are the aging ahaMatic platform; never reuse, copy, migrate, or adapt any of their content, logic, structure, or implementation into new outputs. `references/research/` holds authorized research inputs that may be synthesized only where a ticket explicitly cites them.
 - **No names** — do not include any person's name in any output. Use role references instead (e.g., "the project lead", "the team").
-- **Two phases** — the specification phase (`docs/spec/`) answers "what" and excludes implementation detail; the design phase (`docs/design/`) answers "how" and realizes the specification without altering it. Each phase has its own writing rules — `ai-aha-spec-doc` for spec, `ai-aha-design-doc` for design — and a ticket follows the rules of its phase.
+- **Two phases, three libraries** — the specification phase (`docs/spec/`) answers "what" and excludes implementation detail; the design phase (`docs/design/`) answers "how" and realizes the specification without altering it. Each phase has its own writing rules — `ai-aha-spec-doc` for spec, `ai-aha-design-doc` for design — and a ticket follows the rules of its phase. The **criteria library** (`docs/criteria/`) is a **third library, not a third phase**: it holds reusable questions-and-criteria sets and third-party tool opinions that precede a specification rather than realizing one, is written under `CR##` tickets that invoke **no** phase writing-rules skill, and is an **input, never an authority** over `docs/spec/` (`PROCESS.md` §1).
 - **Pyramid approach** — structure all outputs from foundational to complex.
 - **No assumptions** — if anything is unclear, ask before proceeding.
 
