@@ -267,6 +267,22 @@ Specification phase delivered **T1–T64**. The design phase produces the "how" 
 
 > **T66 caution.** This is a tier **inversion**, not a widening — the charter currently *"commits explicitly to its low-code tier"* and the glossary lists "no-code platform" as a **disallowed synonym** for the platform's identity. The spec also defines each tier **by its audience**, so the definitions must be rewritten to sever tier from audience; otherwise committing to no-code implicitly readmits non-specialist users, which the lead explicitly excluded. The citizen-developer exclusion is **unaffected** and must survive.
 
+### Criteria-library tickets (`CR##`) — new series, 2026-08-03
+
+The third library, established by `DECISIONS.md` **D-21** (lead decision). Folder confirmed as `docs/criteria/`. **`CR##` tickets invoke no phase writing-rules or review skill** — see `PROCESS.md` §1 for why, and which of the 12 steps they skip.
+
+| # | Ticket Title | Status | Output File |
+| --- | --- | --- | --- |
+| CR01 | Establish the criteria library and its index — scope, admission test, the four boundaries, conventions, and the forward-looking index | ⏳ Next | `docs/criteria/criteria-document-map.md` |
+
+> **CR01's substantive judgment call.** The three existing root files — `REVIEW-QUESTIONS-2026-07-30.md`, `REVIEW-FLAGS-2026-07-30.md`, `STANDUP-BRIEF-2026-08-03.md` — are **dated internal meeting instruments** and **fail D-21's own admission test** (criterion 2: *does it survive being handed to a client?*). CR01 must decide whether the library holds those instances directly, or holds **distilled, reusable sets** with the dated files remaining source material outside it. **Recommended: the latter** — a library justified on client-portability that opens with three un-portable meeting records contradicts the criterion that created it.
+>
+> **The boundary most likely to be missed:** `technology-stack-design.md` §9 was extended 2026-08-03 so every ADR now carries **its question and criteria as first-class fields**. That is not duplicated by this library. An ADR records criteria applied to **one decision for this platform** — the worked instance; this library holds the **reusable set** those instances distil into. Without that boundary stated, each will assume the other owns criteria.
+
+> **Owed after CR01 lands, and not the Executor's:** `CLAUDE.md`'s folder-structure section still describes a two-library `docs/` tree, and any migration of the root files is tracker maintenance. `PROCESS.md` §1 and §3 were already updated on 2026-08-03.
+
+---
+
 ### Design-phase work identified — not yet sequenced
 
 Sequencing waits on the data model, which the lead has made the next deliverable.

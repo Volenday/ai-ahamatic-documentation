@@ -12,6 +12,11 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 |---|---|---|---|---|---|
 | Specification | **What** | `docs/spec/` | `ai-aha-spec-doc` | `ai-aha-spec-review` | `T##` |
 | Design / Implementation | **How** | `docs/design/` | `ai-aha-design-doc` | `ai-aha-design-review` | `H##` |
+| Criteria library | **What to ask, before either** | `docs/criteria/` | **none — see below** | **none — see below** | `CR##` |
+
+**The criteria library is a third library, not a third phase** (`DECISIONS.md` **D-21**, lead decision 2026-08-03). It holds the two artifact classes D-15 identified with no home: reusable questions-and-criteria sets, and third-party tool opinions. It sits *outside* the two-phase model — its artifacts precede a specification rather than realizing one — and it is an **input, never an authority**: it may not override, amend, or contradict `docs/spec/`, and on any apparent conflict the spec prevails.
+
+> **⚠ A `CR##` ticket invokes NO phase writing-rules or review skill, and this is deliberate.** Verified against both skills on 2026-08-03: their generic rules (pyramid structure, the ahaMatic domain-neutrality lens, structure and reference rules) transfer, but their phase-specific rules do not, and one is actively harmful. `ai-aha-spec-doc` requires every document to answer *"what, not how"* — a criteria document answers neither. `ai-aha-design-doc` requires that every document **realize the specification** and that **every element cite the capability it realizes** — a criteria document realizes no capability and cites no spec, so under that skill every line reads as a violation and an Executor will try to "fix" it by inventing spec citations. **A `CR##` ticket therefore loads `/ai-aha-context` only (skipping steps 4 and 8 of §3), and the ticket prompt carries its writing rules directly.** Whether this library eventually warrants its own skill is deliberately deferred until there is evidence it is needed.
 
 - The specification library is **authoritative**, and design documents **realize** it without narrowing, expanding, or altering it. On any conflict, the spec prevails; surface it, don't silently diverge.
 - **The freeze was lifted 2026-07-30** (lead decision; `DECISIONS.md` D-08 context note) — the spec is expected to keep changing. A design ticket may now surface a spec change rather than only flagging it, but the change still runs as a **spec-phase ticket** (`ai-aha-spec-doc`); a design ticket never edits `docs/spec/` inline.
@@ -55,15 +60,32 @@ The `.claude/skills/` copies are the **only** copies and therefore the source of
 1. Open a new Code Mode chat.
 2. Attach the `ai-ahamatic/` folder.
 3. Invoke `/ai-aha-context`.
-4. Invoke `/ai-aha-spec-doc` (spec ticket) **or** `/ai-aha-design-doc` (design ticket).
+4. Invoke `/ai-aha-spec-doc` (spec ticket) **or** `/ai-aha-design-doc` (design ticket). **A `CR##` criteria ticket skips this step** — see §1.
 5. Name the session `<ID> — <Title>` (e.g. `T53 — Extend Security Threat Model…`).
 6. Paste the **previous ticket's handoff summary** (or the bridging handoff for the first ticket in a phase). **This is context only — do not begin any work, generation, or edits on it; wait for step 7.**
 7. Paste the **ticket system prompt** — this defines the task; work begins only now.
-8. Invoke `/ai-aha-spec-review` (spec) **or** `/ai-aha-design-review` (design).
+8. Invoke `/ai-aha-spec-review` (spec) **or** `/ai-aha-design-review` (design). **A `CR##` criteria ticket skips this step** — see §1.
 9. Save the output to the exact `docs/spec/…` or `docs/design/…` path the ticket names.
 10. Invoke `/ai-aha-handoff`.
 11. Update `TICKET.md` — mark the ticket ✅ Done.
 12. Commit: `git commit -m "<ID>: <summary>"`.
+
+### The 10 steps (`CR##` criteria-library Executor session)
+
+The criteria library sits outside the two-phase model (§1), so a `CR##` ticket runs a **10-step** variant — the phase writing-rules and phase review steps drop out.
+
+1. Open a new Code Mode chat.
+2. Attach the `ai-ahamatic/` folder.
+3. Invoke `/ai-aha-context`. **This is the only skill invoked all session.**
+4. Name the session `CR## — <Title>`.
+5. Paste the **bridging handoff** (for the library's first ticket) or the previous `CR##` ticket's handoff. **Context only — no work begins.**
+6. Paste the **ticket system prompt** — work begins now. **This prompt carries the writing rules** that `ai-aha-spec-doc` / `ai-aha-design-doc` supply for the other two libraries.
+7. Save the output to the exact `docs/criteria/…` path the ticket names.
+8. Invoke `/ai-aha-handoff` — this one **still applies**; it is the generic Executor handoff, not phase-specific.
+9. Update `TICKET.md` — mark the ticket ✅ Done.
+10. Commit: `git commit -m "CR##: <summary>"`.
+
+> **⚠ What dropping the review step costs, and how it is compensated.** Omitting the phase writing-rules skill is fully compensated — the ticket prompt carries those rules. **Omitting the phase review skill is not**: it removes the self-review pass, and nothing replaces it by default. A `CR##` Executor must therefore **verify its output against the ticket prompt's own Writing Rules section before saving at step 7**; that section is the checklist. This is the one quality gate the series gives up, and it is given up knowingly rather than overlooked.
 
 **Atomic execution:** one ticket per session; never scope beyond the current ticket.
 
