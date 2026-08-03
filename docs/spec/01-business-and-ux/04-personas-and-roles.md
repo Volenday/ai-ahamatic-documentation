@@ -41,6 +41,18 @@ A third plane sits above both: the **platform steward** — the actor that owns 
 
 The platform must be **designed for both layers**: it provides the means for builders to construct, operate, and govern software, and — through those same means — the identity and access primitives with which builders admit and govern their own end users.
 
+### 2.2 A Fourth Actor: The External Contract Consumer
+
+Neither layer accounts for an actor that consumes the platform's published programmatic contract (C-12) from outside the platform, on some party's behalf, without building software or using a built artifact. It is not a builder persona: it does not construct, operate, or publish software, and it holds none of the primitive-facing authority §3 grants. It is not an end-user persona: it holds no builder-defined role and never touches a built application's own surface. It is a **fourth actor** — the **external contract consumer** — bound entirely by whatever grant it holds, exactly as the client scoping identity `02-governance-and-security/03-access-control-and-tenancy-model.md` §6 already defines for any external caller acting on a tenant's behalf.
+
+Three AI-related actors exist across the specification and must remain distinct:
+
+- The **autonomous platform-operating agent** (`05-meta-operations/01-agent-operating-charter.md`) operates the platform's own lifecycle — a role entirely internal to the platform, never an external consumer of anything the platform publishes.
+- **AI-assisted builder tooling (C-19)** (`03-software-and-architecture/02-domain-glossary.md`) assists a professional builder from inside the platform, producing suggestions the builder must confirm before they are committed.
+- The **external contract consumer** defined here neither operates the platform nor assists a builder from within it. It is an external caller of the platform's own published contract, holding no more standing than any other client of that contract — no implicit authority, no exemption from tenant isolation, and no grant beyond what it is explicitly issued.
+
+§5–§7 place this actor within the hierarchy, permission, and tenancy structure already established for every grant-bound actor.
+
 ---
 
 ## 3. Builder Personas
@@ -89,11 +101,13 @@ Authority flows downward through distinct levels. Each level may grant only what
 | Builder | Access administrator, application builder, operator, publisher, extender | Delegated authority to build, operate, publish, or extend within one tenant. | End-user roles of the software they build. |
 | Application | End-user administrator | Delegated administrative authority within a single built application. | Other end users of the same application. |
 | Consumption | Authenticated end user, public consumer | Use of a built application within the permissions granted to them. | None. |
+| External | External contract consumer | Whatever grant it is issued through the platform's programmatic contract (C-12); never wider than that grant and never self-derived. | None. |
 
 Two rules govern the hierarchy:
 
 - **Grants never exceed the grantor.** No level can confer authority it does not itself hold.
 - **Authority narrows downward.** Each level's scope is contained within the level above it; the platform contains tenants, a tenant contains its builders and built software, a built application contains its end users.
+- **A grant, not a level of its own.** The External row adds no inherent authority above or below the others; the external contract consumer (§2.2) holds only what it is issued at whatever point in the hierarchy that grant is made, and remains contained by both rules above.
 
 ---
 
@@ -113,6 +127,7 @@ Every persona's authority is subject to access control (C-03) enforced after ide
 | End-user administrator | Administers users and content within one built application. | The platform, the tenant, or any other built application. |
 | Authenticated end user | Acts within the permissions the builder granted, inside one built application. | Any capability or data not granted to it. |
 | Public consumer | Acts only where the builder exposed the application publicly. | Anything beyond the publicly exposed surface. |
+| External contract consumer | Acts only within the grant issued to it through the platform's published programmatic contract (C-12). | Acquiring access, capability, or standing beyond what its grant explicitly confers — including any implicit authority from acting autonomously, or reaching across a tenant boundary. |
 
 Two default expectations apply to every persona:
 
@@ -132,6 +147,7 @@ Every persona relates to tenancy, because tenant isolation (C-01, gate G-1) is t
 | Access administrator, application builder, operator, publisher | Bound to the single tenant they act within. | All authority and visibility are confined to that tenant. |
 | Extender | Bound to the tenant it acts within; its extension runs within the grants and isolation of the tenant that uses it. | Cannot cross a tenant boundary through the extension, or widen its reach beyond its grant. |
 | End-user administrator, authenticated end user, public consumer | Bound to one built application within one tenant. | An end user of one tenant's software is not an actor in any other tenant. |
+| External contract consumer | Bound to the tenant scope of whatever grant it holds, exactly as the client scoping unit of `02-governance-and-security/03-access-control-and-tenancy-model.md` §6 defines for any external caller. | Cannot cross a tenant boundary through the contract, or widen its reach beyond its grant — the extender's isolation expectation, applied to an external caller. |
 
 Residency follows the actor: where a persona and its data reside determines the regional obligations that attach to their actions (C-14). A persona's actions may not proceed where they would violate the obligations of the region in which they are performed.
 
