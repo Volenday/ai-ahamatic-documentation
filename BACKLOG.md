@@ -32,6 +32,14 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
+## 1c. Open — `implementation-document-map.md` has one stale layer assignment
+
+**Found 2026-08-03 while sequencing the full remaining design queue into `TICKET.md` (H10–H48), by an exhaustive topological sort of all 39 unwritten documents' `Depends On` columns — not by inspection.** The map states its own governing rule: *"each layer may depend only on the layers beneath it."* Verified against every dependency edge in the map: **exactly one document violates it.** `ai-assisted-builder-tooling-design.md` is catalogued in **Layer 3**, but its own `Depends On` column names three **Layer 6** documents — `agent-runtime-and-control-design.md`, `human-in-the-loop-design.md`, `prompt-and-context-assembly-design.md`. No other row violates the rule; this is isolated, not a symptom of a wider problem.
+
+**Consequence, already applied in `TICKET.md`'s H10–H48 schedule:** that document is sequenced by its real dependencies (H45, after the three Layer-6 documents it needs) rather than by its map layer label (which would have placed it far earlier, before its prerequisites exist). The execution order is therefore already correct. **What remains open is the map's own layer *assignment*** — `ai-assisted-builder-tooling-design.md` should be re-catalogued as a Layer 6 dependent (or the map's layer diagram annotated with an explicit exception), so a future reader trusting the layer label alone doesn't get the same sequencing wrong that a naive read would produce. **Design-file edit — needs explicit user direction (`PROCESS.md` §3), same class as the earlier BPMN-gate and stale-span fixes.**
+
+---
+
 ## 1b. ✅ CLOSED 2026-08-03 — the five loose findings, all closed by T72
 
 **All five verified closed against the files.** The C-12 consumer clause was **reworded rather than extended** — §67 now reads *"through which the platform's primitives are reached,"* removing the enumeration entirely instead of appending a third consumer to a list that had already failed twice. That is the correct fix: the clause can no longer silently exclude a consumer the specification models elsewhere, so it cannot generate a fourth finding. "Audit Trail" is now a canonical glossary term; C-27 has an empty state stating that it *"operates before an application exists at all"*; the ordinal is gone from `04-personas-and-roles.md` §2.2's title; and the context map's security-policy summary now names protection in transit, at rest, and in key custody.

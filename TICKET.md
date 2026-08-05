@@ -295,6 +295,58 @@ Specification phase delivered **T1–T64**. The design phase produces the "how" 
 
 ---
 
+## Design Phase — Remaining Queue (H10–H48)
+
+**Durably recorded 2026-08-03, before executing H10, at explicit user request — the full remaining design phase, sequenced.** Row titles, output files, and dependencies are drawn directly from `implementation-document-map.md`; nothing here is invented. This is a **schedule of rows, not pre-written ticket prompts** — `PROCESS.md` §4's generation rule stands: each ticket's full system prompt is still generated just-in-time, from current on-disk state, right before it runs. What is durable now is the queue itself, so it survives independently of this conversation.
+
+> **⚠ One map defect found while sequencing, not papered over.** `implementation-document-map.md` states *"each layer may depend only on the layers beneath it,"* but `ai-assisted-builder-tooling-design.md` (catalogued Layer 3) genuinely depends on three Layer 6 documents (`agent-runtime-and-control-design.md`, `human-in-the-loop-design.md`, `prompt-and-context-assembly-design.md`) — the only such violation found in the full 39-document dependency graph, verified by an exhaustive topological sort, not by inspection. **The row below is sequenced by its real dependencies (H45, after those three Layer-6 documents), not by its map layer label.** The map's layer *assignment* for that document is stale and should be corrected whenever that document is next opened — it is a Layer 6 dependent, not Layer 3.
+
+| # | Ticket Title | Output File | Depends On (design docs) | Status |
+|---|---|---|---|---|
+| H10 | Scalability, Availability, and Performance Design | `docs/design/scalability-availability-and-performance-design.md` | `architecture-realization-design.md`; `technology-stack-design.md` | 🟢 Ready — no unwritten prerequisite |
+| H11 | Tenant Isolation and Access Control Design | `docs/design/tenant-isolation-and-access-control-design.md` | `technology-stack-design.md` (the multi-tenancy partitioning shape, §14.7 — the constraint this design realizes); `invariant-enforcement-design.md` (INV-01 enforcement). Not `architecture-realization-design.md`: see the per-row refinement under **Design layers and dependency ordering**, which also records that the dependency survives transitively through `invariant-enforcement-design.md`. | ⏳ Next |
+| H12 | Authentication and Identity Design | `docs/design/authentication-and-identity-design.md` | `tenant-isolation-and-access-control-design.md` | ⬜ Pending |
+| H13 | Security Controls Design | `docs/design/security-controls-design.md` | `architecture-realization-design.md`; `invariant-enforcement-design.md` | 🟢 Ready — no unwritten prerequisite |
+| H14 | AI Tooling Security Design | `docs/design/ai-tooling-security-design.md` | `security-controls-design.md` | ⬜ Pending |
+| H15 | Compliance and Data Residency Design | `docs/design/compliance-and-data-residency-design.md` | `tenant-isolation-and-access-control-design.md` | ⬜ Pending |
+| H16 | Data Governance and Privacy Design | `docs/design/data-governance-and-privacy-design.md` | `tenant-isolation-and-access-control-design.md`; `compliance-and-data-residency-design.md` | ⬜ Pending |
+| H17 | Audit and Traceability Design | `docs/design/audit-and-traceability-design.md` | `invariant-enforcement-design.md`; `data-governance-and-privacy-design.md` | ⬜ Pending |
+| H18 | Licensing and Dependency Compliance Design | `docs/design/licensing-and-dependency-compliance-design.md` | `technology-stack-design.md` | 🟢 Ready — no unwritten prerequisite |
+| H19 | Application Construction Design | `docs/design/application-construction-design.md` | `tenant-isolation-and-access-control-design.md`; `authentication-and-identity-design.md` | ⬜ Pending |
+| H20 | Data Model and Entity Design | `docs/design/data-model-and-entity-design.md` | `application-construction-design.md` | ⬜ Pending |
+| H21 | Data Administration Design (C-27) | `docs/design/data-administration-design.md` | `data-model-and-entity-design.md`; `tenant-isolation-and-access-control-design.md`; `authentication-and-identity-design.md` | ⬜ Pending |
+| H22 | Workflow and Process Automation Design (C-18) | `docs/design/workflow-and-process-automation-design.md` | `application-construction-design.md`; `data-model-and-entity-design.md` | ⬜ Pending |
+| H23 | API Contract Design | `docs/design/api-contract-design.md` | `architecture-realization-design.md`; `application-construction-design.md`; `data-model-and-entity-design.md` | ⬜ Pending |
+| H24 | Integration and Extensibility Design | `docs/design/integration-and-extensibility-design.md` | `application-construction-design.md`; `tenant-isolation-and-access-control-design.md`; `api-contract-design.md` | ⬜ Pending |
+| H25 | Cross-System Data Layer Design (C-24) | `docs/design/cross-system-data-layer-design.md` | `data-model-and-entity-design.md`; `integration-and-extensibility-design.md`; `tenant-isolation-and-access-control-design.md` | ⬜ Pending |
+| H26 | Coding Standards and Patterns Design | `docs/design/coding-standards-and-patterns-design.md` | `technology-stack-design.md` | 🟢 Ready — no unwritten prerequisite |
+| H27 | Application Runtime and Lifecycle Design | `docs/design/application-runtime-and-lifecycle-design.md` | `application-construction-design.md` | ⬜ Pending |
+| H28 | Builder-Facing Environment Management Design (C-23) | `docs/design/builder-facing-environment-management-design.md` | `application-runtime-and-lifecycle-design.md` | ⬜ Pending |
+| H29 | Builder-Facing Version Control Design (C-21) | `docs/design/builder-facing-version-control-design.md` | `application-runtime-and-lifecycle-design.md` | ⬜ Pending |
+| H30 | Publishing and Delivery Design | `docs/design/publishing-and-delivery-design.md` | `application-runtime-and-lifecycle-design.md` | ⬜ Pending |
+| H31 | Mobile Application Delivery Design (C-20) | `docs/design/mobile-application-delivery-design.md` | `publishing-and-delivery-design.md` | ⬜ Pending |
+| H32 | Marketplace Design (C-13) | `docs/design/marketplace-design.md` | `publishing-and-delivery-design.md`; `integration-and-extensibility-design.md` | ⬜ Pending |
+| H33 | Connector Marketplace Design (C-25) | `docs/design/connector-marketplace-design.md` | `integration-and-extensibility-design.md`; `marketplace-design.md`; `cross-system-data-layer-design.md` | ⬜ Pending |
+| H34 | Multi-Region Distribution Design (C-14) | `docs/design/multi-region-distribution-design.md` | `tenant-isolation-and-access-control-design.md`; `application-runtime-and-lifecycle-design.md`; `compliance-and-data-residency-design.md` | ⬜ Pending |
+| H35 | Environment and Configuration Design | `docs/design/environment-and-configuration-design.md` | `architecture-realization-design.md`; `technology-stack-design.md` | 🟢 Ready — no unwritten prerequisite |
+| H36 | CI/CD Pipeline Design | `docs/design/ci-cd-pipeline-design.md` | `environment-and-configuration-design.md` | ⬜ Pending |
+| H37 | Testing and Quality Gates Design | `docs/design/testing-and-quality-gates-design.md` | `ci-cd-pipeline-design.md`; `scalability-availability-and-performance-design.md` | ⬜ Pending |
+| H38 | Observability and Monitoring Design | `docs/design/observability-and-monitoring-design.md` | `application-runtime-and-lifecycle-design.md`; `environment-and-configuration-design.md` | ⬜ Pending |
+| H39 | Release and Rollback Design | `docs/design/release-and-rollback-design.md` | `ci-cd-pipeline-design.md`; `testing-and-quality-gates-design.md` | ⬜ Pending |
+| H40 | Incident Response and Recovery Design | `docs/design/incident-response-and-recovery-design.md` | `observability-and-monitoring-design.md`; `release-and-rollback-design.md` | ⬜ Pending |
+| H41 | Agent Runtime and Control Design | `docs/design/agent-runtime-and-control-design.md` | `architecture-realization-design.md`; `invariant-enforcement-design.md` | 🟢 Ready — no unwritten prerequisite |
+| H42 | Token and Compute Budget Design | `docs/design/token-and-compute-budget-design.md` | `agent-runtime-and-control-design.md` | ⬜ Pending |
+| H43 | Human-in-the-Loop Design | `docs/design/human-in-the-loop-design.md` | `agent-runtime-and-control-design.md` | ⬜ Pending |
+| H44 | Prompt and Context Assembly Design | `docs/design/prompt-and-context-assembly-design.md` | `agent-runtime-and-control-design.md` | ⬜ Pending |
+| H45 | AI-Assisted Builder Tooling Design (C-19) | `docs/design/ai-assisted-builder-tooling-design.md` | `application-construction-design.md`; `data-model-and-entity-design.md`; `ai-tooling-security-design.md`; `agent-runtime-and-control-design.md`; `human-in-the-loop-design.md`; `prompt-and-context-assembly-design.md` | ⬜ Pending |
+| H46 | Agent State and Memory Design | `docs/design/agent-state-and-memory-design.md` | `agent-runtime-and-control-design.md`; `data-governance-and-privacy-design.md` | ⬜ Pending |
+| H47 | Self-Correction and Fallback Design | `docs/design/self-correction-and-fallback-design.md` | `agent-runtime-and-control-design.md`; `agent-state-and-memory-design.md`; `observability-and-monitoring-design.md`; `release-and-rollback-design.md` | ⬜ Pending |
+| H48 | Change Management and Evolution Design | `docs/design/change-management-and-evolution-design.md` | `agent-runtime-and-control-design.md`; `self-correction-and-fallback-design.md`; `api-contract-design.md` | ⬜ Pending |
+
+**Reading the Status column.** `⏳ Next` is the ticket about to run. `🟢 Ready` marks documents whose design-doc prerequisites are already written — they do not block, and are not blocked by, tenant-isolation; any could run in parallel or be pulled forward. `⬜ Pending` means at least one prerequisite above it in this table is still unwritten. **This table is a schedule, not a strict must-follow-this-order mandate** — the real constraint is each row's own Depends On column, cited here from the map, never restated.
+
+---
+
 ### Criteria-library tickets (`CR##`) — new series, 2026-08-03
 
 The third library, established by `DECISIONS.md` **D-21** (lead decision). Folder confirmed as `docs/criteria/`. **`CR##` tickets invoke no phase writing-rules or review skill** — see `PROCESS.md` §1 for why, and which of the 12 steps they skip.
