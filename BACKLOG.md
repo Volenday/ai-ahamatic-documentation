@@ -32,11 +32,15 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1c. Open — `implementation-document-map.md` has one stale layer assignment
+## 1c. ✅ NOT A DEFECT — self-correction, 2026-08-03. The map already discloses and justifies this; my earlier entry here was wrong.
 
-**Found 2026-08-03 while sequencing the full remaining design queue into `TICKET.md` (H10–H48), by an exhaustive topological sort of all 39 unwritten documents' `Depends On` columns — not by inspection.** The map states its own governing rule: *"each layer may depend only on the layers beneath it."* Verified against every dependency edge in the map: **exactly one document violates it.** `ai-assisted-builder-tooling-design.md` is catalogued in **Layer 3**, but its own `Depends On` column names three **Layer 6** documents — `agent-runtime-and-control-design.md`, `human-in-the-loop-design.md`, `prompt-and-context-assembly-design.md`. No other row violates the rule; this is isolated, not a symptom of a wider problem.
+**What I claimed, incorrectly:** that `ai-assisted-builder-tooling-design.md`'s dependency on three Layer 6 documents was an undocumented, stale map defect, found only by an exhaustive topological sort. **That was a mistake, caught while gathering H10's dependency context** — I had run the topological sort mechanically against the per-document table without reading the map's own connecting prose in "Design layers and dependency ordering," which contains exactly this exception, named and justified:
 
-**Consequence, already applied in `TICKET.md`'s H10–H48 schedule:** that document is sequenced by its real dependencies (H45, after the three Layer-6 documents it needs) rather than by its map layer label (which would have placed it far earlier, before its prerequisites exist). The execution order is therefore already correct. **What remains open is the map's own layer *assignment*** — `ai-assisted-builder-tooling-design.md` should be re-catalogued as a Layer 6 dependent (or the map's layer diagram annotated with an explicit exception), so a future reader trusting the layer label alone doesn't get the same sequencing wrong that a naive read would produce. **Design-file edit — needs explicit user direction (`PROCESS.md` §3), same class as the earlier BPMN-gate and stale-span fixes.**
+> *"**One cross-layer exception.** `ai-assisted-builder-tooling-design.md` (C-19, Layer 3) additionally depends on the Autonomous-Agent Implementation layer, because C-19 explicitly inherits the Meta-Operations guardrails … per `01-business-and-ux/02-prd.md` §4. **It is the only capability design that reaches into Layer 6.** Every other dependency respects the layer ordering above."*
+
+So the map is internally consistent and already states, in its own words, precisely the fact my topological sort rediscovered — including that it is the *only* such exception, which my sort also confirmed independently. **Nothing needs correcting in the map.** `TICKET.md`'s H45 note (which repeated my error, calling it "stale" and recommending re-cataloguing) needs the same correction and has been fixed alongside this entry.
+
+**What the sort still contributed, and is worth keeping:** independent, exhaustive confirmation — by dependency-edge analysis rather than by trusting the map's prose — that this is the *only* cross-layer exception among all 39 unwritten documents, and correct placement of that document at **H45** in the execution queue (after its three Layer 6 prerequisites), which matches what the map's own exception note would have implied had it been read together with the per-row dependencies at sequencing time.
 
 ---
 
