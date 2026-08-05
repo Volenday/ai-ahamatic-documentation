@@ -100,6 +100,8 @@ The criteria library sits outside the two-phase model (§1), so a `CR##` ticket 
 
 > **⚠ What dropping the review step costs, and how it is compensated.** Omitting the phase writing-rules skill is fully compensated — the ticket prompt carries those rules. **Omitting the phase review skill is not**: it removes the self-review pass, and nothing replaces it by default. A `CR##` Executor must therefore **verify its output against the ticket prompt's own Writing Rules section before saving at step 7**; that section is the checklist. This is the one quality gate the series gives up, and it is given up knowingly rather than overlooked.
 
+> **Commit messages carry no `Co-Authored-By` trailer, in this project (user instruction, 2026-08-03).** Both commit steps above (`<ID>: <summary>` and `CR##: <summary>`) are the complete message — no trailer line follows, overriding the tool's usual default convention for git commits. This binds every session: an Orchestrator drafting the command for the user to run, and an Executor running step 12/10 directly.
+
 **Atomic execution:** one ticket per session; never scope beyond the current ticket.
 
 **The handoff is context, not a task.** The Executor treats the step-6 handoff as read-only routing/context and produces **nothing** — no document, no edits — until the **ticket system prompt (step 7)** defines the task. Receiving a handoff must never trigger generation; if only a handoff has been provided, wait for the ticket prompt.
