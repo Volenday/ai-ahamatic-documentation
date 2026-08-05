@@ -287,6 +287,14 @@ Specification phase delivered **T1–T64**. The design phase produces the "how" 
 
 ---
 
+> **🎉 The design library has zero open prerequisites — first time in the phase (2026-08-03).** Both gates that ever existed are closed, and `implementation-document-map.md` was corrected in five places to match: three Build Status cells (`agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, `self-correction-and-fallback-design.md`), the readiness legend, and the closing prerequisites note. **Zero `Gated — prerequisite open` cells remain; every document in the map reads Buildable now.**
+>
+> The flag itself is retained in the legend for future use, explicitly noted as *"retained for future use, not because anything currently bears it"* — so its presence is not read as an unresolved gate. The cells now cite `DECISIONS.md` **D-24** rather than the closed `BACKLOG.md` §1, and the self-correction cell records that its ≤ 3 is **derived** from the ladder's three rungs rather than chosen — preserving the derived-vs-judgment distinction T71 established, at the point a design ticket will actually read it.
+>
+> **What this unblocks:** the three Layer 6 agent documents above, plus `data-administration-design.md` (C-27, Layer 3) and `invariant-enforcement-design.md`. The design phase has no remaining blocker of any kind.
+
+---
+
 ### Criteria-library tickets (`CR##`) — new series, 2026-08-03
 
 The third library, established by `DECISIONS.md` **D-21** (lead decision). Folder confirmed as `docs/criteria/`. **`CR##` tickets invoke no phase writing-rules or review skill** — see `PROCESS.md` §1 for why, and which of the 12 steps they skip.
