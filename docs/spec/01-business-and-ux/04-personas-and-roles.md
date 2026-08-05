@@ -41,7 +41,7 @@ A third plane sits above both: the **platform steward** — the actor that owns 
 
 The platform must be **designed for both layers**: it provides the means for builders to construct, operate, and govern software, and — through those same means — the identity and access primitives with which builders admit and govern their own end users.
 
-### 2.2 A Fourth Actor: The External Contract Consumer
+### 2.2 The External Contract Consumer
 
 Neither layer accounts for an actor that consumes the platform's published programmatic contract (C-12) from outside the platform, on some party's behalf, without building software or using a built artifact. It is not a builder persona: it does not construct, operate, or publish software, and it holds none of the primitive-facing authority §3 grants. It is not an end-user persona: it holds no builder-defined role and never touches a built application's own surface. It is a **fourth actor** — the **external contract consumer** — bound entirely by whatever grant it holds, exactly as the client scoping identity `02-governance-and-security/03-access-control-and-tenancy-model.md` §6 already defines for any external caller acting on a tenant's behalf.
 

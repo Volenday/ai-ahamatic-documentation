@@ -8,7 +8,17 @@ The durable memory of what is **known-but-unresolved**: gaps, candidate areas, a
 
 ---
 
-## 1. Open — specification numeric gaps
+## 1. ✅ CLOSED 2026-08-03 — specification numeric gaps
+
+**All three are set.** `DECISIONS.md` **D-24** fixed the values and **T71** recorded them in `03-software-and-architecture/06-non-functional-requirements.md` §10: self-correction attempts **≤ 3**, retries per task **≤ 3**, iterations per task **≤ 10**, per-task token envelope **≤ 500,000**, per-session **≤ 2,000,000** (4×), cost **derived** from the token envelope rather than independently fixed.
+
+**This closed the last three hard gates in the design library** — `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md` are now buildable.
+
+**One thing to carry forward, not lose:** three of the six values (the iteration ceiling and both token envelopes) are **judgments, not derivations** — no empirical data fixes them, and `06-non-functional-requirements.md` §13 now carries a binding rule that they are revised on first operating data. The self-correction ceiling of **3** is *derived* from the ladder's three rungs and should **not** move on the same evidence. Do not collapse the two categories when that revision happens.
+
+*Historical framing, retained:*
+
+### 1a. (Closed) The original gap statement
 
 These rules exist in the specs, but their concrete numeric values are deferred to `03-software-and-architecture/06-non-functional-requirements.md` (their owner) and have not been fixed there. Verified against the on-disk specs.
 
