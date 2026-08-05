@@ -609,3 +609,23 @@ The two classes it holds:
 - **`mobile-application-delivery-design.md` owes ADR-017**, and its map entry now records the obligation. That document is the first place the write-queue design is actually specified.
 - **The sync-engine exclusion is a standing consequence of D-11**, not a fresh judgment to re-litigate.
 - **A named product landscape is deliberately absent here.** Products belong in `docs/criteria/` under the tool-opinion class, or in the ADR when it is written against then-current evidence — not in this log, where they would date without any signal that they had.
+
+---
+
+## D-26 — V1.0 sizing confirmed by the lead: ~100 applications total
+
+**Decision.** **~100 applications total, across all clients**, while V1.0 is the running version. This answers **Q6**, elaborated in `STANDUP-BRIEF-2026-08-03.md` and put to the lead directly — the first Q6-class question actually returned from the weekly compilation D-16 established. It is roughly double the team's working assumption of ≤50 (`platform-data-model-design.md` §11: ≤10 tenants × ≤5 applications each, recorded 2026-08-01, reconfirmed 2026-08-02).
+
+**Attribution: lead decision.**
+
+**What this figure is not**, restated so it is not misapplied: not migrated applications (V1.0 starts empty; migration is deferred until after the UI generator ships); not the long-term NFR horizon (50,000 concurrent sessions, 10,000,000 records — already deferred as a V1.0 acceptance gate, `TICKET.md` Q1a); and not a client count — the application, not the client, is the schema unit, so client count does not bear on this figure structurally.
+
+**Why ~100 does not trigger a redesign — checked against the document's own honest-consequence reasoning, not asserted.** At ~100 schemas: migration fan-out is ~100 executions within the existing 4-hour ceiling (`06-non-functional-requirements.md` §10) — roughly 2.4 minutes each, comfortable. Connection-pool pressure at ~100 schemas remains far inside ordinary PostgreSQL bounds; schema-per-tenant deployments of this shape commonly run into the thousands before either pressure becomes a live concern. **The qualitative conclusion `platform-data-model-design.md` §11 already states — "theoretical, not pressing" — still holds at this figure.** In the three-band framing used when Q6 was elaborated, ~100 sits in the middle band ("revisit, likely still fine"), not the top band ("several hundred") that would have made `scalability-availability-and-performance-design.md` a V1.0 prerequisite rather than a follow-on.
+
+**Consequence for `platform-data-model-design.md` §11 — not yet applied.** Two things need correcting there: **(a) status** — from *"a team decision, not a lead-confirmed target"* to lead-confirmed; **(b) the number** — from "≤10 tenants × ≤5 applications each, under 50 schemas" to **~100 total application schemas**, stated independent of any assumed tenant/apps-per-tenant split, since the lead's answer was for the total, not the 10×5 breakdown the team had assumed as one way of reaching a small number. **This is a `docs/design/` amendment and is not applied by this entry** — it requires explicit user direction on the specific change (`PROCESS.md` §3). Recording the decision here makes it durable regardless of when that edit lands.
+
+**Alternatives considered.**
+- **Elevating `scalability-availability-and-performance-design.md` (H10) to a hard V1.0 prerequisite** — not warranted at this figure, for the reasoning above. It remains available/parallel-ready in `TICKET.md`'s H10–H48 schedule, not a blocker.
+- **Treating the figure as a hard ceiling rather than a confirmed operating assumption** — rejected. It is subject to the same headroom property that already protects the ≤50 figure: `platform.applications.schema_name`'s registry indirection means schema *addressing* scales by orders of magnitude regardless of this number: only pooling and migration-batching design are sized against it.
+
+**Open, handed to H10 explicitly.** When `scalability-availability-and-performance-design.md` is written, it should verify against **~100** as the actual confirmed figure, not the abstract *"somewhere between the V1.0 figure and the NFR horizon"* the current §11 hands it. This sharpens that document's job; it does not change it.
