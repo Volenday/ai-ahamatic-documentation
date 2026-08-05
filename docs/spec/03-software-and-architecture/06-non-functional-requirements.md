@@ -156,6 +156,16 @@ The following documents defer a specific numeric floor or ceiling to this docume
 | Audit-event capture floor | 100% (zero-tolerance) of mandatory audit events captured | Mandatory audit events and minimum traceability | `02-governance-and-security/07-audit-and-traceability.md` (`context-document-map.md`) |
 | Audit and log retention floor (minimum) | ≥ 13 months (400 days) before eligible for deletion | Immutability and tamper-evidence requirements | `02-governance-and-security/07-audit-and-traceability.md` (`context-document-map.md`) |
 | Personal and sensitive data retention ceiling (maximum grace period) | ≤ 90 days after the retention purpose lapses | Retention and deletion rules | `02-governance-and-security/06-data-governance-and-privacy.md` (`context-document-map.md`) |
+| Maximum self-correction attempts before mandatory escalation | ≤ 3 | Autonomous correction-attempt ceiling and mandatory escalation | `05-meta-operations/07-self-correction-and-fallback-protocol.md` §7 |
+| Maximum retries per task | ≤ 3 | Retry ceiling within a task's iteration bound | `05-meta-operations/02-agent-loop-constraints.md` §5 |
+| Maximum iterations per task | ≤ 10 | Iteration ceiling — the primary guard against runaway behavior | `05-meta-operations/02-agent-loop-constraints.md` §5 |
+| Per-task token envelope | ≤ 500,000 tokens | Per-task token, compute, and cost envelope | `05-meta-operations/03-token-and-compute-budget.md` §5 |
+| Per-session token envelope | ≤ 2,000,000 tokens (4× the per-task envelope) | Per-session token, compute, and cost envelope | `05-meta-operations/03-token-and-compute-budget.md` §5 |
+| Per-task / per-session cost ceiling | Derived from the token envelope at the prevailing rate — not independently fixed | Cost bound within the token, compute, and cost envelope | `05-meta-operations/03-token-and-compute-budget.md` §5 |
+
+The iteration ceiling nests around the retry and self-correction ceilings: every self-correction and fallback attempt is itself an iteration, so the two nested ceilings can together consume 6 of the task's 10 iterations, leaving 4 for productive work — the iteration ceiling is fixed to strictly exceed their combined maximum, not set independently of it. The per-session token envelope is fixed as a ratio to the per-task envelope, at 4×, so that revising the base figure carries the session figure with it.
+
+Of the six values above, the self-correction ceiling is derived: the autonomous ladder has exactly three rungs — retry, safe alternative, rollback — and a fourth attempt re-treads a rung already classified as a no-op rather than a fresh attempt. The iteration ceiling and both token envelopes are judgments, not derivations: no empirical operating data yet fixes them, and they are initial values, revisable on first operating data — not to be cited as though derived. The distinction is recorded as a binding rule (§13): only the judgment values move on new evidence; the derived value does not.
 
 ---
 
@@ -212,4 +222,5 @@ These rules hold for every target in this document and are subordinate to the ch
 - **A regression blocks release, never proceeds unresolved, and is never waived to meet a schedule.** Uncertainty about whether a regression occurred resolves to treating it as one.
 - **Every target holds for every tenant, every region, and every lifecycle phase.** No target is relaxed for one tenant's convenience, one region, or one moment in the lifecycle.
 - **This document sets values; it does not redefine the rules those values quantify.** Where a target elaborates a rule owned by another document, that document's rule governs the qualitative requirement, and this document governs only the number.
+- **Three of §10's values are judgments, not derivations, and revise on first operating data.** The iteration ceiling and both token envelopes carry no specification-fixed basis and no empirical benchmark; they are initial figures, revisable once real operating data exists, and must never be cited as though derived. The self-correction ceiling in the same table is derived from the fixed length of the autonomous ladder and carries no such revision expectation.
 - **Everything remains domain-neutral and platform-level.** No target in this document encodes the characteristics of any single domain; all remain valid for any software built on the platform, in any tenant and any region.

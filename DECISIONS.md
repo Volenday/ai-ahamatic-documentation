@@ -532,3 +532,47 @@ The two classes it holds:
 - **T70 is a spec-phase ticket**, scoped to the actor model and the contract's consumer obligation — **not** to protocol selection, which ADR-013 owns.
 - **`04-personas-and-roles.md` is the actor-model owner** and is where the fifth class lands; `04-api-contract-spec.md` §9 (capability-specific contract coverage) is where the consumer obligation attaches.
 - **The method has now paid twice.** Both D-22 and this entry were absences, invisible to review of the present text. A negative search — *"what obligation is missing entirely?"* — should be run periodically, not only when something prompts it.
+
+---
+
+## D-24 — Fix the three deferred agent-governance numerics
+
+**Decision.** The three numeric ceilings that three meta-operations documents defer to `03-software-and-architecture/06-non-functional-requirements.md` are set as follows:
+
+| Ceiling | Value |
+|---|---|
+| Maximum self-correction attempts before mandatory escalation | **≤ 3** |
+| Maximum retries per task | **≤ 3** |
+| Maximum iterations per task | **≤ 10** |
+| Per-task token envelope | **≤ 500,000 tokens** |
+| Per-session token envelope | **≤ 2,000,000 tokens** (4× per-task) |
+| Per-task / per-session cost ceiling | **Derived from the token envelope at the prevailing rate — not independently fixed** |
+
+*(What: to be recorded in `06-non-functional-requirements.md` §10 by **T71**. The three deferring documents — `05-meta-operations/02-agent-loop-constraints.md` §5, `07-self-correction-and-fallback-protocol.md` §7, `03-token-and-compute-budget.md` §5 — own the qualitative rules in full and **require no change**: each already states that the concrete value is owned elsewhere.)*
+
+**Attribution: team decision, under the D-16 delegation.** Proposed with criteria and confirmed.
+
+**Why now, when the project's discipline is otherwise "profiled, not anticipated."** These three are the **last hard gates in the design library** — they block `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md`. Deferring further does not avoid a guess; it only keeps three documents unwritable while the guess remains unmade. Setting revisable initial values is the cheaper error.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Does the specification already determine the value?** | **For the self-correction ceiling, yes — it is derived, not chosen.** The autonomous ladder has exactly three rungs (retry → safe alternative → rollback), ordered by escalating intervention. A fourth attempt necessarily re-treads a rung already shown ineffective, and `07-self-correction-and-fallback-protocol.md` §7 **already classifies that as a no-op rather than a fresh attempt**. So 3 is the ladder's own length: above it permits re-treading the spec forbids, below it truncates the ladder the document defines. |
+| **2** | **Is the nesting the three documents fix preserved?** | **Yes, and it is the binding structural constraint.** §7's ceiling is *"a nested bound within the outer bounds"*; §5 states *"every self-correction and fallback attempt is an iteration and counts against the task's ceiling."* So the iteration ceiling must **strictly exceed** the two sub-ceilings, which together can consume 6 in the worst case — 10 leaves 4 iterations for productive work. A value at or below 6 would make a fully-recovered task structurally impossible to complete. |
+| **3** | **Why do retries and self-corrections share a value?** | Both are responses to a failed pass. Granting retries a **larger** allowance would let a task exhaust itself on transient re-attempts while still holding correction budget unspent — the wrong ordering, since correction is the more informed response. Equal values remove that inversion. |
+| **4** | **Which values are derived and which are judgments?** — *the honest split, recorded rather than blurred* | **Derived:** the self-correction ceiling (criterion 1) and the ordering constraints (criteria 2–3). **Judgments:** the iteration ceiling (10) and both token envelopes. Nothing in the specification fixes them, and **no empirical benchmarking exists** — `technology-stack-design.md` §2.3 concedes this directly. They are **initial values, explicitly revisable on first operating data**, and must not be cited as though derived. |
+| **5** | **Why is the per-session envelope a multiple rather than an independent figure?** | Stating it as **4× per-task** makes the *relationship* survive revision of the base figure — revising per-task consumption does not silently break the session ratio. Four also matches one-ticket-per-session atomicity: a session accommodates roughly four full tasks. |
+| **6** | **Why is cost derived rather than independently bounded?** | The rule names *"token, compute, and cost"* as three things, and this **deliberately narrows the third**. A fixed currency figure would date on the next pricing change and require revision for reasons **entirely external to the platform** — a ceiling that moves when a vendor's price list moves is not a property of this system. The token envelope is the real bound; cost follows at the prevailing rate. **Recorded as a narrowing, not presented as compliance.** |
+
+**Alternatives rejected.**
+- **Deferring all three further**, consistent with "profiled, not anticipated" — rejected on the reasoning above: three design documents stay blocked and the guess is still owed.
+- **A single combined ceiling** instead of nested iteration / retry / correction bounds — rejected: it would collapse a nesting three specification documents independently fix, and `PROCESS.md` §11's meta-distinctions rule forbids collapsing exactly this kind of layered bound.
+- **Fixing cost as a currency figure** — rejected on criterion 6.
+- **Setting the iteration ceiling high (25+) for safety margin** — rejected: the ceiling is described as *"the primary guard against runaway behavior,"* and a guard set far above plausible legitimate use stops guarding. Budget envelopes accrue in parallel as the second bound.
+
+**Consequences.**
+- **T71 is a single-document spec ticket** — only `06-non-functional-requirements.md` §10's table grows. The three deferring documents need **no change**, since each already states the value is owned elsewhere. No renumbering.
+- **`BACKLOG.md` §1 closes entirely** once T71 lands — it holds exactly these three gaps.
+- **The last three hard gates in the design library open**, making `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md` buildable.
+- **A revision trigger is now owed, not just a value.** Because three of the six figures are judgments, the first real operating data is the point at which they are re-examined — and that obligation should be recorded where the numbers live, not only here.
