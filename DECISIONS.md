@@ -576,3 +576,36 @@ The two classes it holds:
 - **`BACKLOG.md` §1 closes entirely** once T71 lands — it holds exactly these three gaps.
 - **The last three hard gates in the design library open**, making `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md` buildable.
 - **A revision trigger is now owed, not just a value.** Because three of the six figures are judgments, the first real operating data is the point at which they are re-examined — and that obligation should be recorded where the numbers live, not only here.
+
+---
+
+## D-25 — Mobile local persistence is a local-storage decision, not a sync-engine one
+
+**Decision.** The mobile runtime's offline capability is met by **local persistence plus a durable write queue**, not by adopting a synchronization engine. Specifically: a **local relational store** for structured data (first-party to the committed mobile runtime, with a typed query layer over it), a **fast key-value store** for tokens, settings, and the query-cache persister, and a **write queue that is explicitly designed** rather than assumed to fall out of the caching library.
+
+*(What: to be realized as **ADR-017** inside `mobile-application-delivery-design.md`, which owns mobile delivery and offline behaviour per `implementation-document-map.md`. The ADR is **owed by that document, not by `technology-stack-design.md`** — `technology-stack-design.md` §9 requires an ADR to be co-located with the document whose content depends on it, and mobile offline behaviour is that document's, not the stack document's.)*
+
+**Attribution: team decision, under the D-16 delegation.**
+
+**⚠ The framing correction is the substance of this entry.** This was queued for months as *"offline mobile storage engine — new decision, no ADR,"* which presumes a sync engine is being chosen. **It is not.** **D-11** already made the server authoritative with optimistic UI supplied by one standardised client library, and in doing so **removed the bidirectional-sync requirement entirely** — no version columns, no sync tombstones, no per-table conflict rules. What remains is far narrower: reads that survive a restart, writes that survive being offline, and credentials held safely. Recognising that the question had already shrunk is what makes this decision small.
+
+### Criteria applied
+
+| # | Criterion | How it resolved |
+|---|---|---|
+| **1** | **Has an upstream decision already answered part of this?** | **Decisive.** D-11's server-authoritative posture means a sync engine would solve a problem this platform has deliberately chosen not to have. **PowerSync, ElectricSQL, and Turso offline sync are therefore excluded — not on their merits, but because their problem was removed.** Recording that as a *consequence of D-11* matters: otherwise a later session rediscovers them as a missing piece. |
+| **2** | **Is any candidate foreclosed by an existing rule or by its own status?** | **Two are.** **Firebase and Supabase** remain excluded by ADR-010's portable-subset rule, as D-11 already recorded. **Realm / the Atlas Device SDK is moot**: deprecated September 2024 with **end-of-life 30 September 2025 — already past**; device sync is switched off, and the local SDK carries no cloud sync. **[verified 2026-08-03]** |
+| **3** | **Does the candidate sit inside the committed mobile runtime, or beside it?** | Preferring the runtime's **first-party** local store avoids adding an independently-maintained dependency to the layer whose ecosystem-maintenance claims already caused one reversal (ADR-007 → ADR-009). Criterion 7 (dependency minimisation) and criterion 10 (operational maintenance tax) both point the same way. |
+| **4** | **What does the caching library actually guarantee about offline writes?** | **The finding that shapes the decision.** The standardised query library D-11 adopted has a known behaviour: **when the device goes offline, mutations can error immediately rather than pause**, so they are never persisted by its own persistence plugin. **Durability therefore does not fall out of adopting the library** — the write queue must be designed: persisted, drained on reconnect, with backoff. **[verified 2026-08-03]** This is precisely the class of thing D-11's *"do not let AI improvise one"* reasoning exists to catch, and it would have been assumed away by anyone reading the library's feature list. |
+
+**Alternatives rejected.**
+- **Adopting a sync engine** (PowerSync, ElectricSQL, Turso offline sync) — rejected on criterion 1; it re-imports the complexity D-11 removed.
+- **Realm / Atlas Device SDK** — rejected on criterion 2; end-of-life has passed.
+- **Firebase or Supabase as the offline layer** — rejected on criterion 2; already excluded by the portable-subset rule.
+- **Relying on the query library's persistence plugin alone for offline writes** — rejected on criterion 4. This is the tempting option and the one that fails silently: reads persist, writes are lost, and nothing errors at build time.
+- **Recording this as an ADR inside `technology-stack-design.md`** — rejected on co-location: that document owns the mobile *runtime* choice, not mobile offline *behaviour*. Placing it there would need moving later and would break two external citations to renumber around.
+
+**Consequences.**
+- **`mobile-application-delivery-design.md` owes ADR-017**, and its map entry now records the obligation. That document is the first place the write-queue design is actually specified.
+- **The sync-engine exclusion is a standing consequence of D-11**, not a fresh judgment to re-litigate.
+- **A named product landscape is deliberately absent here.** Products belong in `docs/criteria/` under the tool-opinion class, or in the ADR when it is written against then-current evidence — not in this log, where they would date without any signal that they had.

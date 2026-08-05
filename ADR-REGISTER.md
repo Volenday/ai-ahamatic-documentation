@@ -16,6 +16,8 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 |---|---|---|
 | ✅ **Approved** — in force | 8 | ADR-003, ADR-004, ADR-005, ADR-006 *(in part)*, ADR-007 *(in part)*, **ADR-009**, ADR-010, ADR-011 |
 | ✅ **Resolved** — closed, no further action | 5 | **ADR-001**, ADR-002, **ADR-008**, **ADR-012**, **ADR-013** |
+| ✅ **Approved** — added to this register 2026-08-03; H8's three were never registered | 3 | **ADR-014**, **ADR-015**, **ADR-016** *(016 amended per D-18)* |
+| ⬜ **Owed** — decided, ADR not yet written | 1 | **ADR-017** *(`DECISIONS.md` D-25)* |
 | ⚠️ Superseded *(in part)* | 1 | ADR-007 *(mobile-runtime part, by ADR-009)* |
 | 🅿️ **Parked** | 1 sub-decision | The **GraphQL rejection** inside ADR-006 — a study is owed |
 
@@ -34,14 +36,18 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **011** | Sync posture — server-authoritative, optimistic UI via a standard library | §21.6 | ✅ Approved (D-11) | **Very high** | — *(it was the upstream constraint)* |
 | **004** | Datastore — engine, abstraction, partitioning, keys | §14.7 | ✅ Approved, with amendments | **Brutal** | ✅ ADR-011 — resolved jointly |
 | **005** | Architecture pattern — deployment topology | §15.6 | ✅ Approved | High | ADR-004 |
-| **006** | API contract shape | §16.5 | ✅ Approved in part — **GraphQL parked** | High | ADR-005 |
+| **006** | API contract shape | §16.5 | ✅ **Approved** — **GraphQL now rejected (D-19, 2026-08-03)**; no part remains open | High | ADR-005 |
 | **013** | **AI-to-AI protocol — MCP, generated from the existing OpenAPI contract** | **§23** | ✅ **Resolved** (D-16) | High | **ADR-006** — amends its open flag; does not reopen it |
 | **010** | Cloud provider | §20.3 | ✅ Approved | Moderate–high | ADR-005, ADR-004 |
 | **007** | Client surface shape **(approved)** · mobile runtime **(superseded)** | §17.6 | ✅ Approved in part | Moderate | ADR-001 |
 | **009** | Mobile-delivery runtime — React Native with Expo | §19.3 | ✅ **Approved** — deferral discharged | Moderate | ADR-001, ADR-007 |
-| **012** | **Server-side caching — deliberately deferred, with constraints** | **§22** | ✅ **Resolved** — closed decision to defer (D-16) | Moderate | **ADR-005** *(profiled-pressure philosophy)*, **ADR-010** *(portable subset)* |
+| **012** | **Server-side caching — deliberately deferred, with constraints** | **§22** | ✅ **Resolved** — closed decision to defer (D-16); **amended 2026-08-03**: third constraint (licence category checked at adoption) + Valkey pre-recorded as presumptive candidate, §22.2–§22.3 | Moderate | **ADR-005** *(profiled-pressure philosophy)*, **ADR-010** *(portable subset)* |
 | **001** | Server, web, and mobile-delivery stack | §10 | ✅ **Resolved** — **V1.0 default, not a platform-wide commitment** | Low *(cheapest)* | — |
 | **008** | ADR-001 re-evaluation outcome | **§18.10** | ✅ **Resolved** — discharged under all thirteen criteria | Low | ADR-003, ADR-007 |
+| **014** | Dependency-direction enforcement mechanism | `architecture-realization-design.md` §11.1 | ✅ Approved (H8) | High | ADR-005 |
+| **015** | Codebase topology — ADR-002's parked question answered | `architecture-realization-design.md` §11.2 | ✅ Approved (H8) | High | ADR-005 |
+| **016** | Extension authorship under no-code | `architecture-realization-design.md` §11.3 | ✅ **Amended 2026-08-03 (D-18)** — original finding withdrawn; three extension origins, not one | Moderate | D-09, ADR-005 |
+| **017** | *(owed)* Mobile local persistence — local store + durable write queue, **not** a sync engine | `mobile-application-delivery-design.md` *(not yet written)* | ⬜ **Owed** — decision and criteria recorded as `DECISIONS.md` **D-25**; the ADR follows when its owning document is written | Moderate | ADR-009, ADR-010, D-11 |
 | **003** | Verification-weighted criteria set *(method)* | §13 | ✅ Approved | n/a — method | — |
 | **002** | Post-evaluation review of two further full-stack candidates | §12.3 | ✅ Resolved — no change | n/a — review | ADR-001 |
 
