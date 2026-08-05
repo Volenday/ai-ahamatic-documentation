@@ -32,7 +32,13 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1b. Open — two small findings surfaced by T68 (2026-08-03), each correctly left unfixed
+## 1b. ✅ CLOSED 2026-08-03 — the five loose findings, all closed by T72
+
+**All five verified closed against the files.** The C-12 consumer clause was **reworded rather than extended** — §67 now reads *"through which the platform's primitives are reached,"* removing the enumeration entirely instead of appending a third consumer to a list that had already failed twice. That is the correct fix: the clause can no longer silently exclude a consumer the specification models elsewhere, so it cannot generate a fourth finding. "Audit Trail" is now a canonical glossary term; C-27 has an empty state stating that it *"operates before an application exists at all"*; the ordinal is gone from `04-personas-and-roles.md` §2.2's title; and the context map's security-policy summary now names protection in transit, at rest, and in key custody.
+
+*Historical framing, retained:*
+
+### 1b-historical. (Closed) The five findings as recorded
 
 Both were found during the propagation sweep and deliberately **not** actioned there, because each needs authoring judgment rather than a mechanical edit. Recorded so neither is rediscovered from scratch.
 

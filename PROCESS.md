@@ -50,6 +50,10 @@ The `.claude/skills/` copies are the **only** copies and therefore the source of
   - **`docs/spec/` is never edited by an Orchestrator**, inline or otherwise, freeze lifted or not (§1) — a genuine spec gap or change is always routed through a spec-phase ticket.
 
   When in doubt, generate the ticket rather than making the edit — the ticket path is always available and always correct.
+
+  **⚠ Check `git log` before reporting queue status — the loop's one silent failure mode (added 2026-08-03, after it happened twice).** The loop below assumes each Executor's handoff is pasted back. When a ticket is run and its handoff is **not** returned, the Orchestrator has no signal it happened: `TICKET.md` still reads ⏳ Next, and the Orchestrator will confidently report completed work as outstanding — and may regenerate a ticket for work already committed. This occurred with **T66** and again with **T72**, both caught only incidentally.
+  - **Before answering "what's next?" or "what's still open?", run `git log --oneline` and reconcile it against `TICKET.md`.** A commit named for a ticket is authoritative over a tracker row that says otherwise.
+  - **Verify against the files, not the tracker**, whenever a status claim matters. The tracker records what was reported; the files record what is true.
 - **Executor.** A fresh session that runs **exactly one** ticket via the 12 steps below, producing that one document **and a handoff summary** (step 10), then ends. It loads context and the phase writing-rules first (steps 4–5) but stays idle — generating nothing — until it receives the **ticket system prompt** (step 7), which is its signal to begin. That handoff is what the user feeds back to the Orchestrator to drive the next ticket.
 
 **The loop:** Orchestrator generates ticket N's prompt → user runs N in a fresh Executor session → Executor produces the document + handoff → user pastes N's handoff to the Orchestrator → Orchestrator generates ticket N+1's prompt. Repeat. (When no handoff exists yet — the first ticket of a phase — the Orchestrator supplies a bridging handoff.)
