@@ -106,7 +106,7 @@ The durable record of **why** the platform is shaped the way it is — the strat
 ## D-08 — Approve the platform's foundational technology decisions
 
 **Decision.** Five design-decision records are **approved**: **ADR-004** (datastore), **ADR-005** (architecture pattern), **ADR-006** (API contract shape, *in part* — its GraphQL rejection is reopened, see below), **ADR-007** (client surface shape) and **ADR-010** (cloud provider). Three remain **deferred pending the data model**: **ADR-001** (languages and frameworks), **ADR-008** (the ADR-001 re-evaluation) and **ADR-009** (mobile-delivery runtime).
-*(What: the named ADRs in `docs/design/technology-stack-design.md`. Per §9 of that document, this log records the rationale and the fact of approval and cites the ADR rather than reproducing its content.)*
+*(What: the named ADRs in `docs/design/01-technology-stack-design.md`. Per §9 of that document, this log records the rationale and the fact of approval and cites the ADR rather than reproducing its content.)*
 
 **Why.** Nothing in the design phase was binding before this: five design documents were gated on approval, and the queue had stalled. The three deferrals are deliberate rather than indecision — the lead sequenced language and framework choice *after* the data model, on the reasoning that the data model is both more expensive to reverse and the evidence that decides the language question. That ordering matches the project's own cost-to-reverse rule (`PROCESS.md` §12.1), reached independently.
 
@@ -141,7 +141,7 @@ The durable record of **why** the platform is shaped the way it is — the strat
 ## D-10 — Multi-tenancy from V1.0, with a three-level data hierarchy
 
 **Decision.** V1.0 is **multi-tenant from the outset**. Data is separated at **three levels**: platform-global configuration → per-customer → **per-application**. The hierarchy is *ahaMatic has customers, customers have applications*, and the **application** is the unit that receives its own set of tables.
-*(What: ADR-004 in `docs/design/technology-stack-design.md`, which currently records schema-per-tenant only and requires amendment; V1.0 scope in `TICKET.md`.)*
+*(What: ADR-004 in `docs/design/01-technology-stack-design.md`, which currently records schema-per-tenant only and requires amendment; V1.0 scope in `TICKET.md`.)*
 
 **Two isolation strengths, which must never be collapsed.**
 - **Customer ↔ customer: absolute.** No customer may observe, affect, or detect the existence of another. This is INV-01 and it is not negotiable at any scale or release.
@@ -216,7 +216,7 @@ Tier 1 follows from V1.0 sitting exactly on the Tier 1 / Tier 2 boundary: every 
 ## D-14 — Adopt BPMN as the workflow modelling standard
 
 **Decision.** The platform's own workflow and process automation capability (**C-18**) adopts **BPMN**-style process modelling.
-*(What: realised by `workflow-and-process-automation-design.md`, previously gated on this confirmation. Resolves the open assumption in `BACKLOG.md` §3.)*
+*(What: realised by `04-workflow-and-process-automation-design.md`, previously gated on this confirmation. Resolves the open assumption in `BACKLOG.md` §3.)*
 
 **Why.** BPMN is the industry standard, which brings compatibility with existing engines and models. The decisive argument was directional: **a simplified view can be derived from BPMN, but detail cannot be added to a simplified model later.** Starting at the standard preserves the option of presenting something simpler to particular clients; starting simple forecloses the reverse.
 
@@ -266,7 +266,7 @@ And the identity statement: *"**ahaMatic is going to be a library of mostly docu
 
 **Consequences.**
 - **The technology stack becomes a per-client variable, not a platform commitment.** ADR-001, ADR-008 and ADR-009 change character: from a decision to be made, into a **default plus documented criteria for varying it**. This reframes the H6 ticket and retroactively explains why those three were repeatedly deferred.
-- **The criteria behind a decision become the deliverable, not supporting prose.** The ADR convention (`technology-stack-design.md` §9) records decisions; it must be extended so the question and the criteria are first-class and reusable.
+- **The criteria behind a decision become the deliverable, not supporting prose.** The ADR convention (`01-technology-stack-design.md` §9) records decisions; it must be extended so the question and the criteria are first-class and reusable.
 - **Discovering unasked questions is now a work item**, not a byproduct — see D-16.
 - **The generality constraint strengthens rather than weakens.** Documentation that must apply to every client cannot encode one domain; INV-05 and the builder/built line hold with more force, not less.
 - `REVIEW-QUESTIONS-2026-07-30.md` is, unintentionally, the **first instance of artifact class 2** — a set of questions with criteria and consequences attached. It should be treated as a prototype rather than as spent meeting scaffolding.
@@ -308,7 +308,7 @@ Two obligations come with the authority, and they are the point of it:
 
 The hierarchy reads: **the platform has tenants; a tenant has applications.**
 
-*(What: realized in `platform-data-model-design.md`, `technology-stack-design.md` §14.5/§14.7, `implementation-document-map.md`, and `ADR-REGISTER.md` by **H7**. **No specification change is required** — see criterion 1.)*
+*(What: realized in `02-platform-data-model-design.md`, `01-technology-stack-design.md` §14.5/§14.7, `implementation-document-map.md`, and `ADR-REGISTER.md` by **H7**. **No specification change is required** — see criterion 1.)*
 
 **⚠ Supersedes D-10's terminology, not its substance.** D-10's three-level hierarchy and its two isolation strengths stand exactly as recorded; only the word for the middle level changes. D-10 remains the record of what was decided on 2026-07-30.
 
@@ -319,7 +319,7 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 | **1** | **Does the term already carry a canonical meaning upstream?** | **Decisive for "tenant."** The entire specification library speaks tenant — INV-01, gate G-1, the access-control model, and NFR §5's *"committed entity instances per tenant"* and *"onboarding one additional tenant."* The glossary makes **"customer" a disallowed synonym**, for a stated reason: such terms *"may import assumptions the charter's generic-builder constraint forbids."* Choosing tenant therefore requires **no spec change at all**; choosing customer would have required amending the glossary, and reviewing INV-01 and NFR §5. The cheaper option in spec terms is also the correct one. |
 | **2** | **Does the term stay portable when the documentation is handed to a client?** *(new criterion, from D-15)* | **Decisive.** Under D-15 the documentation library is the product. A client reading *"each customer gets their own schema"* must work out whose customer is meant — theirs, or ours. A term naming a commercial relationship is the wrong term for a library that must be reusable across clients who each have their own. **Tenant carries no such ambiguity.** |
 | **3** | **Are the two concepts reliably one-to-one?** | **No** — and this is what rules out treating them as synonyms. The lead's own invoicing example: one commercial entity may be modelled as a single client with one application, *or* as several separately-isolated clients, *"up to them."* So one customer may become several tenants. Collapsing the terms would foreclose a flexibility he explicitly wanted. |
-| **4** | **What does reversal cost?** | **Rises sharply with delay.** The term is already in physical schema names in a brutal-cost document — 188 occurrences against 16. Correcting it across four design documents now is mechanical. After `tenant-isolation-and-access-control-design.md`, `data-model-and-entity-design.md`, `scalability-availability-and-performance-design.md` and `api-contract-design.md` are written against `customer_<id>`, it is not. |
+| **4** | **What does reversal cost?** | **Rises sharply with delay.** The term is already in physical schema names in a brutal-cost document — 188 occurrences against 16. Correcting it across four design documents now is mechanical. After `02-tenant-isolation-and-access-control-design.md`, `02-data-model-and-entity-design.md`, `04-scalability-availability-and-performance-design.md` and `05-api-contract-design.md` are written against `customer_<id>`, it is not. |
 
 **Why the drift happened, recorded so the pattern is recognisable.** The lead used "customer" in natural language while answering a question about *table separation* — he was never asked about terminology. The design then hardened conversational vocabulary into schema names. **Informal language in a meeting is not a terminology decision**, and a design document should reconcile against the glossary before adopting a term from a transcript.
 
@@ -330,7 +330,7 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 
 **Consequences.**
 - **H7** normalizes four design documents. **No spec ticket is required**, which closes the terminology item without touching `docs/spec/`.
-- **Closes four drift items at once** — the H5 consistency finding, `technology-stack-design.md` §14.5/§14.7's mixed language, the map's line-93 drift note, and the `ADR-REGISTER.md` sync, all of which shared this root cause.
+- **Closes four drift items at once** — the H5 consistency finding, `01-technology-stack-design.md` §14.5/§14.7's mixed language, the map's line-93 drift note, and the `ADR-REGISTER.md` sync, all of which shared this root cause.
 - Any future term taken from a transcript is checked against `03-software-and-architecture/02-domain-glossary.md` before it enters a design document.
 
 ---
@@ -347,9 +347,9 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 
 **Consequently, what runtime isolation externally-authored extension code requires is an open question** — not a closed one, and not resolved by the no-code commitment.
 
-*(What: realized by the amended **ADR-016** and the corrected §10.2–§10.4 of `architecture-realization-design.md`. **No specification change is required or proposed** — see criterion 1.)*
+*(What: realized by the amended **ADR-016** and the corrected §10.2–§10.4 of `03-architecture-realization-design.md`. **No specification change is required or proposed** — see criterion 1.)*
 
-**⚠ This corrects a design-side defect, not the specification.** `architecture-realization-design.md` (H8) originally found that the specification *"does not itself specify an authorship model"* for extensions, and concluded from D-09 that the Extender role configures extensions rather than authoring them. **That finding was wrong on the specification**, which had defined the model all along.
+**⚠ This corrects a design-side defect, not the specification.** `03-architecture-realization-design.md` (H8) originally found that the specification *"does not itself specify an authorship model"* for extensions, and concluded from D-09 that the Extender role configures extensions rather than authoring them. **That finding was wrong on the specification**, which had defined the model all along.
 
 ### Criteria applied
 
@@ -358,16 +358,16 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 | **1** | **Does the specification actually say what it was reported to be silent about?** | **Decisive, and it does.** `02-governance-and-security/03-access-control-and-tenancy-model.md` §6 fixes the Extender's action as *"Extend the platform through modules and its programmatic contract, within its granted scope (C-11, C-12),"* and `03-software-and-architecture/05-integration-and-extensibility-spec.md` §67 describes the SDK as *"the programmatic contract through which a builder **or extender** works with the platform's primitives."* Working a programmatic contract is authoring code. Both predate D-09. The spec is coherent as written; only the design's reading of it was defective — so the correction belongs in `docs/design/`, and **no spec ticket is owed.** |
 | **2** | **Does D-09's stated rationale actually reach this role?** | **No.** D-09's ground is validation cost — *"allowing code into it means a lot of checking, validations"* — which is an argument about **unconstrained** authorship: arbitrary builder logic in an application's runtime path, shaped by no contract. An Extender works a **stable, versioned, documented** contract, **within a grant**, against rules `05-integration-and-extensibility-spec.md` already fixes. The argument may or may not transfer, but it has to be *made* to transfer; D-09 does not name the Extender role at all. **A decision's scope is what it addressed, not everything its rationale might be stretched to cover.** |
 | **3** | **Which direction does the error run — does correcting it narrow or widen the platform?** | **The original finding narrowed a spec-defined role**, which `PROCESS.md` §1 forbids in either direction: design realizes the spec without narrowing or expanding it. Correcting it *restores* the spec's own position rather than adding anything. This is what makes the correction available to the team at all rather than requiring lead input — it is a fidelity repair, not a new commitment. |
-| **4** | **What does the correction cost, and what does it reopen?** | **It increases exposure, and that is recorded rather than smoothed over.** The original record handed downstream documents a *closed* trust model ("not an untrusted-code execution surface"). The correction hands `integration-and-extensibility-design.md`, `marketplace-design.md` and `connector-marketplace-design.md` a **first-order open question** instead. Correcting now costs three amended cross-references; correcting after those documents are written against a false premise costs their rework — the same monotonically-rising cost as D-17 criterion 4. |
+| **4** | **What does the correction cost, and what does it reopen?** | **It increases exposure, and that is recorded rather than smoothed over.** The original record handed downstream documents a *closed* trust model ("not an untrusted-code execution surface"). The correction hands `06-integration-and-extensibility-design.md`, `06-marketplace-design.md` and `07-connector-marketplace-design.md` a **first-order open question** instead. Correcting now costs three amended cross-references; correcting after those documents are written against a false premise costs their rework — the same monotonically-rising cost as D-17 criterion 4. |
 
 **Alternatives rejected.**
 - **Retaining the platform-team-only authorship finding** — rejected on criteria 1 and 3: it contradicts two spec documents and has a design document narrowing a spec-defined role.
 - **Raising a spec ticket to formally retire Extender authorship under no-code** — rejected on criterion 1. Nothing in D-09 asks for it, and retiring a coherent spec role to make a design finding true inverts the phase relationship. If the lead later wants no-code extended to the Extender role, that is a *new* decision with its own rationale, not a consequence of D-09.
-- **Designing untrusted-code sandboxing inside `architecture-realization-design.md`** — rejected as out of scope, but on narrower grounds than the original record gave: the premise is no longer absent, so the question is genuinely open and belongs to the three documents that own the extension surface.
+- **Designing untrusted-code sandboxing inside `03-architecture-realization-design.md`** — rejected as out of scope, but on narrower grounds than the original record gave: the premise is no longer absent, so the question is genuinely open and belongs to the three documents that own the extension surface.
 
 **Consequences.**
-- **`architecture-realization-design.md` §10.2, §10.3, §10.4 and ADR-016 are amended**; §12 gains a boundary entry handing the isolation question over explicitly.
-- **`security-controls-design.md`'s inherited instruction is corrected** — the blanket "extension changes are ordinary governed platform changes" applies to platform-team-authored extensions only.
+- **`03-architecture-realization-design.md` §10.2, §10.3, §10.4 and ADR-016 are amended**; §12 gains a boundary entry handing the isolation question over explicitly.
+- **`04-security-controls-design.md`'s inherited instruction is corrected** — the blanket "extension changes are ordinary governed platform changes" applies to platform-team-authored extensions only.
 - **The process lesson generalizes beyond this instance.** The original finding checked `01-architecture-overview.md` §4 (genuinely silent on authorship) and inferred silence library-wide. **A claim that the specification does not specify X must be checked against the document that owns X**, per the ownership map in `PROCESS.md` §10 — not against the nearest document to hand. Same failure class as D-17's transcript-vocabulary drift: a local reading hardened into a library-wide claim.
 
 ---
@@ -384,7 +384,7 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 
 **Decision.** GraphQL is **finally rejected** for the platform-primitive contract tier and the runtime-generated built-application contract tier. ADR-006's GraphQL sub-decision moves from **Parked** to **Rejected**. One narrow path stays open: an **internal** backend-for-frontend GraphQL layer is not foreclosed should a profiled need appear, because an internal layer does not carry the external contract's obligation never to reveal existence beyond a grant.
 
-*(What: ADR-006 in `docs/design/technology-stack-design.md`, whose GraphQL sub-decision this closes. OpenAPI + generated clients remain the contract shape, unchanged.)*
+*(What: ADR-006 in `docs/design/01-technology-stack-design.md`, whose GraphQL sub-decision this closes. OpenAPI + generated clients remain the contract shape, unchanged.)*
 
 **⚠ This closes a question the lead raised himself and was genuinely undecided on.** The research was commissioned on 2026-07-30 precisely because the original rejection was recorded without a study behind it. The study was run 2026-08-03 and **confirmed the original reasoning rather than overturning it** — which is why this is a closure, not a reversal.
 
@@ -413,9 +413,9 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 
 **No engine is selected by this decision.** Camunda was named by the lead as an example, not a choice; which engine is a separate evaluation, run under the criteria in force at the time.
 
-*(What: realized by `workflow-and-process-automation-design.md`, which D-14 unblocked and which is now **Buildable now**. That document designs *integration with* an engine, not an engine.)*
+*(What: realized by `04-workflow-and-process-automation-design.md`, which D-14 unblocked and which is now **Buildable now**. That document designs *integration with* an engine, not an engine.)*
 
-**Why this lands now.** `workflow-and-process-automation-design.md` became buildable when the stale BPMN gate was cleared on 2026-08-02. Without this decision that document's first structural choice — build or adopt — would have been made implicitly by whoever wrote it.
+**Why this lands now.** `04-workflow-and-process-automation-design.md` became buildable when the stale BPMN gate was cleared on 2026-08-02. Without this decision that document's first structural choice — build or adopt — would have been made implicitly by whoever wrote it.
 
 ### Criteria applied
 
@@ -428,11 +428,11 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 
 **Alternatives rejected.**
 - **Building a workflow engine** — rejected on criteria 1 and 3.
-- **Deciding build-vs-buy inside `workflow-and-process-automation-design.md`** — rejected: it is a strategic build-vs-buy choice with a Very-high reversal cost, not a design detail, and leaving it to the document would have it decided implicitly.
+- **Deciding build-vs-buy inside `04-workflow-and-process-automation-design.md`** — rejected: it is a strategic build-vs-buy choice with a Very-high reversal cost, not a design detail, and leaving it to the document would have it decided implicitly.
 - **Adopting Camunda by name here** — rejected as premature. The principle is buy-not-build; engine selection is a separate evaluation, exactly as ADR-012 defers cache selection while fixing the constraints.
 
 **Consequences.**
-- **The scope of `workflow-and-process-automation-design.md` changes** before it is written: it designs the integration boundary, the domain-neutral process-modelling surface over an adopted engine, and how in-flight state relates to tenant isolation — not an execution engine.
+- **The scope of `04-workflow-and-process-automation-design.md` changes** before it is written: it designs the integration boundary, the domain-neutral process-modelling surface over an adopted engine, and how in-flight state relates to tenant isolation — not an execution engine.
 - **A new open question, created by this decision:** an adopted engine must satisfy **INV-01** and ADR-010's portable-subset rule, and must not become a second store of authoritative data alongside the server (ADR-011). Engine selection is now gated on those three constraints.
 - **The principle may generalize further.** It has now been applied twice (sync, workflow) on the same criterion. Whether it is a general rule for infrastructure-grade components — and where its boundary lies — is **not decided here** and is worth asking explicitly rather than extending by drift.
 
@@ -472,11 +472,11 @@ The two classes it holds:
 
 ## D-22 — The specification must state the platform's data-protection obligations
 
-**Decision.** A **specification ticket is authorized** to add the platform's data-protection obligations — protection in transit, protection at rest, and key custody — and to name **OWASP ASVS 5.0** at a chosen assurance level as the verification baseline. `security-controls-design.md` then realizes it in Layer 2.
+**Decision.** A **specification ticket is authorized** to add the platform's data-protection obligations — protection in transit, protection at rest, and key custody — and to name **OWASP ASVS 5.0** at a chosen assurance level as the verification baseline. `04-security-controls-design.md` then realizes it in Layer 2.
 
 *(What: to be recorded in `02-governance-and-security/02-security-policy.md`, with the verification baseline reflected in `04-devops-and-cloud-infra/03-testing-and-quality-gates.md`. Tracked as **T69**.)*
 
-**Why — the finding, verified 2026-08-03.** The specification library contains **zero** references to encryption, TLS, HTTPS, data-in-transit, or data-at-rest, across every document. Meanwhile `platform-data-model-design.md` §3 and §8 **already design three tiers of encryption key material** — `platform.encryption_keys`, `tenant_key`, `application_key` — with an external key-management-service reference and a full key-wrapping hierarchy.
+**Why — the finding, verified 2026-08-03.** The specification library contains **zero** references to encryption, TLS, HTTPS, data-in-transit, or data-at-rest, across every document. Meanwhile `02-platform-data-model-design.md` §3 and §8 **already design three tiers of encryption key material** — `platform.encryption_keys`, `tenant_key`, `application_key` — with an external key-management-service reference and a full key-wrapping hierarchy.
 
 **This is a phase inversion, not merely a gap.** `PROCESS.md` §1 requires design to realize the spec and never expand it. Here the design invented a security requirement the spec never stated. The design content is almost certainly correct — a multi-tenant platform must encrypt — but it is unanchored: **no release gate or acceptance criterion can test an obligation nothing states.**
 
@@ -488,20 +488,20 @@ The two classes it holds:
 |---|---|---|
 | **1** | **Is the obligation stated anywhere upstream?** | **No.** Verified by direct search across all of `docs/spec/`: no occurrence of encrypt/TLS/HTTPS/in-transit/at-rest, and none of OWASP or ASVS. The absence is total, not partial. |
 | **2** | **Which OWASP artifact is actually adoptable as a baseline?** | **ASVS 5.0, not the Top 10.** The **Top 10 is an awareness document and is not testable**; OWASP itself positions it as the entry point and ASVS as the verification framework. ASVS 5.0 (May 2025) supplies ~350 requirements across 17 chapters at three assurance levels. "Adopting OWASP" without this distinction would be a category error — committing to something no gate can check. |
-| **3** | **Does the 2025 Top 10 bear on decisions already taken?** | **Yes, in three places** — recorded so they are not rediscovered: **A03 Software Supply Chain Failures** meets the standing obligation that every enterprise-baseline dependency is a recorded decision; **A09 Security Logging and *Alerting* Failures** bears on `observability-and-monitoring-design.md`; **A10 Mishandling of Exceptional Conditions** bears on `self-correction-and-fallback-design.md`'s fallback ladder. |
-| **4** | **Spec ticket or design ticket?** | **Spec first, then design.** Realizing the obligation in `security-controls-design.md` without stating it upstream would repeat the inversion the finding exposed, on a larger surface. |
+| **3** | **Does the 2025 Top 10 bear on decisions already taken?** | **Yes, in three places** — recorded so they are not rediscovered: **A03 Software Supply Chain Failures** meets the standing obligation that every enterprise-baseline dependency is a recorded decision; **A09 Security Logging and *Alerting* Failures** bears on `04-observability-and-monitoring-design.md`; **A10 Mishandling of Exceptional Conditions** bears on `06-self-correction-and-fallback-design.md`'s fallback ladder. |
+| **4** | **Spec ticket or design ticket?** | **Spec first, then design.** Realizing the obligation in `04-security-controls-design.md` without stating it upstream would repeat the inversion the finding exposed, on a larger surface. |
 
 **Verified vs. reasoned.** Criterion 1 is **verified** against the repository. Criterion 2 is **verified** against current OWASP sources (2026-08-03). Criterion 3 is **reasoned** from our own documents.
 
 **Alternatives rejected.**
 - **Treating it as design-only, per the tracker's original reading** — rejected on criterion 1; the design would keep realizing a requirement that does not exist.
 - **Naming the OWASP Top 10 as the baseline** — rejected on criterion 2; it is not testable and could not gate a release.
-- **Retro-fitting the obligation into `platform-data-model-design.md`** to match what is already built — rejected outright: it would have a design document supply its own upstream authority, inverting `PROCESS.md` §1 in the opposite direction.
+- **Retro-fitting the obligation into `02-platform-data-model-design.md`** to match what is already built — rejected outright: it would have a design document supply its own upstream authority, inverting `PROCESS.md` §1 in the opposite direction.
 
 **Consequences.**
 - **T69 is authorized** as a spec-phase ticket and is the first item in the queue after T66–T68.
 - **`TICKET.md`'s security note must be corrected** — it currently records the opposite finding.
-- **`platform-data-model-design.md` §8 needs no change on its content**, only an upstream citation once T69 lands. The finding is that its authority is missing, not that its design is wrong.
+- **`02-platform-data-model-design.md` §8 needs no change on its content**, only an upstream citation once T69 lands. The finding is that its authority is missing, not that its design is wrong.
 - **The discovery method generalizes.** This gap was found by searching for a term the spec *should* contain rather than by reviewing what it does contain. **A negative search — "what obligation is absent entirely?" — finds a class of gap that no consistency check catches**, because a consistency checker verifies agreement among statements that exist. Same family as D-18: both were absences that reading the present text could not reveal.
 
 ---
@@ -519,14 +519,14 @@ The two classes it holds:
 | # | Criterion | How it resolved |
 |---|---|---|
 | **1** | **Does an existing capability already cover the consumer?** | **No — and this is decisive.** **C-12** is defined as the contract through which *"a builder **or extender**"* works with the platform's primitives (`05-integration-and-extensibility-spec.md` §67). **An external, autonomous AI agent is neither.** The specification models four actor classes — the autonomous *platform-operating* agent (`05-meta-operations/01-agent-operating-charter.md`), builders, extenders, and end users — and `02-domain-glossary.md` explicitly holds the platform-operating agent **distinct** from builder-facing tooling. An external agent consuming the platform's contract is a class **nothing in the specification models.** *(**Ordinal reconciled 2026-08-03, after T70 landed.** This criterion originally called it the "fifth" class, counting library-wide: platform-operating agent, builder, extender, end user. `04-personas-and-roles.md` §2.2 instead titles it "A Fourth Actor," counting within its own frame: builder layer, end-user layer, the steward's third plane, then this. **Both counts are correct on their own basis and neither is an error** — but the spec is authoritative over this log, so the ordinal is dropped here rather than asserted against the document. The count was never the substance; the substance is that no existing class fits.)* |
-| **2** | **Is the design already committed to something the spec does not authorize?** | **Yes.** ADR-013 selects MCP and binds `api-contract-design.md` to publish it. That is a design realizing an obligation the spec never stated — the same **phase inversion** `DECISIONS.md` D-22 found for encryption, and the second instance of it. Left unstated, no release gate or acceptance criterion can test an obligation nothing requires. |
+| **2** | **Is the design already committed to something the spec does not authorize?** | **Yes.** ADR-013 selects MCP and binds `05-api-contract-design.md` to publish it. That is a design realizing an obligation the spec never stated — the same **phase inversion** `DECISIONS.md` D-22 found for encryption, and the second instance of it. Left unstated, no release gate or acceptance criterion can test an obligation nothing requires. |
 | **3** | **How was it found?** | By **searching the specification for what it should contain rather than reviewing what it does** — the method D-22's consequences recorded. This is that method's second catch. A consistency check cannot find this class of defect, because it verifies agreement among statements that exist. |
-| **4** | **Does closing it require a new capability ID?** | **Assessed and answered: no — recorded here so T70 does not re-open it.** D-13 minted C-27 rather than folding data administration into C-05, on the reasoning that *"leaving it unassigned would mean no design document is ever scheduled for it."* **That reasoning does not transfer**: the agent-facing contract is already scheduled — ADR-013 binds it to `api-contract-design.md`. What is missing is the **consumer**, not the capability. The programmatic contract exists (C-12); the specification simply fails to name who may consume it. Capability IDs are permanent and never reused (`PROCESS.md` §5), so minting one to close an actor-model gap would be a permanent answer to a temporary absence. |
+| **4** | **Does closing it require a new capability ID?** | **Assessed and answered: no — recorded here so T70 does not re-open it.** D-13 minted C-27 rather than folding data administration into C-05, on the reasoning that *"leaving it unassigned would mean no design document is ever scheduled for it."* **That reasoning does not transfer**: the agent-facing contract is already scheduled — ADR-013 binds it to `05-api-contract-design.md`. What is missing is the **consumer**, not the capability. The programmatic contract exists (C-12); the specification simply fails to name who may consume it. Capability IDs are permanent and never reused (`PROCESS.md` §5), so minting one to close an actor-model gap would be a permanent answer to a temporary absence. |
 
 **Alternatives rejected.**
 - **Reading (a) — MCP merely realizes C-12, so nothing is owed.** Rejected on criterion 1: C-12's own definition names its consumers, and an external agent is not among them. The reading is only available if that clause is ignored.
 - **Minting a new capability (C-28) for agent-facing interaction.** Rejected on criterion 4 — the gap is in the actor model, not the capability set.
-- **Leaving it to `api-contract-design.md` to state.** Rejected: a design document supplying its own upstream authority is precisely the inversion this entry exists to close.
+- **Leaving it to `05-api-contract-design.md` to state.** Rejected: a design document supplying its own upstream authority is precisely the inversion this entry exists to close.
 
 **Consequences.**
 - **T70 is a spec-phase ticket**, scoped to the actor model and the contract's consumer obligation — **not** to protocol selection, which ADR-013 owns.
@@ -552,7 +552,7 @@ The two classes it holds:
 
 **Attribution: team decision, under the D-16 delegation.** Proposed with criteria and confirmed.
 
-**Why now, when the project's discipline is otherwise "profiled, not anticipated."** These three are the **last hard gates in the design library** — they block `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md`. Deferring further does not avoid a guess; it only keeps three documents unwritable while the guess remains unmade. Setting revisable initial values is the cheaper error.
+**Why now, when the project's discipline is otherwise "profiled, not anticipated."** These three are the **last hard gates in the design library** — they block `01-agent-runtime-and-control-design.md`, `02-token-and-compute-budget-design.md`, and `06-self-correction-and-fallback-design.md`. Deferring further does not avoid a guess; it only keeps three documents unwritable while the guess remains unmade. Setting revisable initial values is the cheaper error.
 
 ### Criteria applied
 
@@ -561,7 +561,7 @@ The two classes it holds:
 | **1** | **Does the specification already determine the value?** | **For the self-correction ceiling, yes — it is derived, not chosen.** The autonomous ladder has exactly three rungs (retry → safe alternative → rollback), ordered by escalating intervention. A fourth attempt necessarily re-treads a rung already shown ineffective, and `07-self-correction-and-fallback-protocol.md` §7 **already classifies that as a no-op rather than a fresh attempt**. So 3 is the ladder's own length: above it permits re-treading the spec forbids, below it truncates the ladder the document defines. |
 | **2** | **Is the nesting the three documents fix preserved?** | **Yes, and it is the binding structural constraint.** §7's ceiling is *"a nested bound within the outer bounds"*; §5 states *"every self-correction and fallback attempt is an iteration and counts against the task's ceiling."* So the iteration ceiling must **strictly exceed** the two sub-ceilings, which together can consume 6 in the worst case — 10 leaves 4 iterations for productive work. A value at or below 6 would make a fully-recovered task structurally impossible to complete. |
 | **3** | **Why do retries and self-corrections share a value?** | Both are responses to a failed pass. Granting retries a **larger** allowance would let a task exhaust itself on transient re-attempts while still holding correction budget unspent — the wrong ordering, since correction is the more informed response. Equal values remove that inversion. |
-| **4** | **Which values are derived and which are judgments?** — *the honest split, recorded rather than blurred* | **Derived:** the self-correction ceiling (criterion 1) and the ordering constraints (criteria 2–3). **Judgments:** the iteration ceiling (10) and both token envelopes. Nothing in the specification fixes them, and **no empirical benchmarking exists** — `technology-stack-design.md` §2.3 concedes this directly. They are **initial values, explicitly revisable on first operating data**, and must not be cited as though derived. |
+| **4** | **Which values are derived and which are judgments?** — *the honest split, recorded rather than blurred* | **Derived:** the self-correction ceiling (criterion 1) and the ordering constraints (criteria 2–3). **Judgments:** the iteration ceiling (10) and both token envelopes. Nothing in the specification fixes them, and **no empirical benchmarking exists** — `01-technology-stack-design.md` §2.3 concedes this directly. They are **initial values, explicitly revisable on first operating data**, and must not be cited as though derived. |
 | **5** | **Why is the per-session envelope a multiple rather than an independent figure?** | Stating it as **4× per-task** makes the *relationship* survive revision of the base figure — revising per-task consumption does not silently break the session ratio. Four also matches one-ticket-per-session atomicity: a session accommodates roughly four full tasks. |
 | **6** | **Why is cost derived rather than independently bounded?** | The rule names *"token, compute, and cost"* as three things, and this **deliberately narrows the third**. A fixed currency figure would date on the next pricing change and require revision for reasons **entirely external to the platform** — a ceiling that moves when a vendor's price list moves is not a property of this system. The token envelope is the real bound; cost follows at the prevailing rate. **Recorded as a narrowing, not presented as compliance.** |
 
@@ -574,7 +574,7 @@ The two classes it holds:
 **Consequences.**
 - **T71 is a single-document spec ticket** — only `06-non-functional-requirements.md` §10's table grows. The three deferring documents need **no change**, since each already states the value is owned elsewhere. No renumbering.
 - **`BACKLOG.md` §1 closes entirely** once T71 lands — it holds exactly these three gaps.
-- **The last three hard gates in the design library open**, making `agent-runtime-and-control-design.md`, `token-and-compute-budget-design.md`, and `self-correction-and-fallback-design.md` buildable.
+- **The last three hard gates in the design library open**, making `01-agent-runtime-and-control-design.md`, `02-token-and-compute-budget-design.md`, and `06-self-correction-and-fallback-design.md` buildable.
 - **A revision trigger is now owed, not just a value.** Because three of the six figures are judgments, the first real operating data is the point at which they are re-examined — and that obligation should be recorded where the numbers live, not only here.
 
 ---
@@ -583,7 +583,7 @@ The two classes it holds:
 
 **Decision.** The mobile runtime's offline capability is met by **local persistence plus a durable write queue**, not by adopting a synchronization engine. Specifically: a **local relational store** for structured data (first-party to the committed mobile runtime, with a typed query layer over it), a **fast key-value store** for tokens, settings, and the query-cache persister, and a **write queue that is explicitly designed** rather than assumed to fall out of the caching library.
 
-*(What: to be realized as **ADR-017** inside `mobile-application-delivery-design.md`, which owns mobile delivery and offline behaviour per `implementation-document-map.md`. The ADR is **owed by that document, not by `technology-stack-design.md`** — `technology-stack-design.md` §9 requires an ADR to be co-located with the document whose content depends on it, and mobile offline behaviour is that document's, not the stack document's.)*
+*(What: to be realized as **ADR-017** inside `05-mobile-application-delivery-design.md`, which owns mobile delivery and offline behaviour per `implementation-document-map.md`. The ADR is **owed by that document, not by `01-technology-stack-design.md`** — `01-technology-stack-design.md` §9 requires an ADR to be co-located with the document whose content depends on it, and mobile offline behaviour is that document's, not the stack document's.)*
 
 **Attribution: team decision, under the D-16 delegation.**
 
@@ -603,10 +603,10 @@ The two classes it holds:
 - **Realm / Atlas Device SDK** — rejected on criterion 2; end-of-life has passed.
 - **Firebase or Supabase as the offline layer** — rejected on criterion 2; already excluded by the portable-subset rule.
 - **Relying on the query library's persistence plugin alone for offline writes** — rejected on criterion 4. This is the tempting option and the one that fails silently: reads persist, writes are lost, and nothing errors at build time.
-- **Recording this as an ADR inside `technology-stack-design.md`** — rejected on co-location: that document owns the mobile *runtime* choice, not mobile offline *behaviour*. Placing it there would need moving later and would break two external citations to renumber around.
+- **Recording this as an ADR inside `01-technology-stack-design.md`** — rejected on co-location: that document owns the mobile *runtime* choice, not mobile offline *behaviour*. Placing it there would need moving later and would break two external citations to renumber around.
 
 **Consequences.**
-- **`mobile-application-delivery-design.md` owes ADR-017**, and its map entry now records the obligation. That document is the first place the write-queue design is actually specified.
+- **`05-mobile-application-delivery-design.md` owes ADR-017**, and its map entry now records the obligation. That document is the first place the write-queue design is actually specified.
 - **The sync-engine exclusion is a standing consequence of D-11**, not a fresh judgment to re-litigate.
 - **A named product landscape is deliberately absent here.** Products belong in `docs/criteria/` under the tool-opinion class, or in the ADR when it is written against then-current evidence — not in this log, where they would date without any signal that they had.
 
@@ -614,18 +614,18 @@ The two classes it holds:
 
 ## D-26 — V1.0 sizing confirmed by the lead: ~100 applications total
 
-**Decision.** **~100 applications total, across all clients**, while V1.0 is the running version. This answers **Q6**, elaborated in `STANDUP-BRIEF-2026-08-03.md` and put to the lead directly — the first Q6-class question actually returned from the weekly compilation D-16 established. It is roughly double the team's working assumption of ≤50 (`platform-data-model-design.md` §11: ≤10 tenants × ≤5 applications each, recorded 2026-08-01, reconfirmed 2026-08-02).
+**Decision.** **~100 applications total, across all clients**, while V1.0 is the running version. This answers **Q6**, elaborated in `STANDUP-BRIEF-2026-08-03.md` and put to the lead directly — the first Q6-class question actually returned from the weekly compilation D-16 established. It is roughly double the team's working assumption of ≤50 (`02-platform-data-model-design.md` §11: ≤10 tenants × ≤5 applications each, recorded 2026-08-01, reconfirmed 2026-08-02).
 
 **Attribution: lead decision.**
 
 **What this figure is not**, restated so it is not misapplied: not migrated applications (V1.0 starts empty; migration is deferred until after the UI generator ships); not the long-term NFR horizon (50,000 concurrent sessions, 10,000,000 records — already deferred as a V1.0 acceptance gate, `TICKET.md` Q1a); and not a client count — the application, not the client, is the schema unit, so client count does not bear on this figure structurally.
 
-**Why ~100 does not trigger a redesign — checked against the document's own honest-consequence reasoning, not asserted.** At ~100 schemas: migration fan-out is ~100 executions within the existing 4-hour ceiling (`06-non-functional-requirements.md` §10) — roughly 2.4 minutes each, comfortable. Connection-pool pressure at ~100 schemas remains far inside ordinary PostgreSQL bounds; schema-per-tenant deployments of this shape commonly run into the thousands before either pressure becomes a live concern. **The qualitative conclusion `platform-data-model-design.md` §11 already states — "theoretical, not pressing" — still holds at this figure.** In the three-band framing used when Q6 was elaborated, ~100 sits in the middle band ("revisit, likely still fine"), not the top band ("several hundred") that would have made `scalability-availability-and-performance-design.md` a V1.0 prerequisite rather than a follow-on.
+**Why ~100 does not trigger a redesign — checked against the document's own honest-consequence reasoning, not asserted.** At ~100 schemas: migration fan-out is ~100 executions within the existing 4-hour ceiling (`06-non-functional-requirements.md` §10) — roughly 2.4 minutes each, comfortable. Connection-pool pressure at ~100 schemas remains far inside ordinary PostgreSQL bounds; schema-per-tenant deployments of this shape commonly run into the thousands before either pressure becomes a live concern. **The qualitative conclusion `02-platform-data-model-design.md` §11 already states — "theoretical, not pressing" — still holds at this figure.** In the three-band framing used when Q6 was elaborated, ~100 sits in the middle band ("revisit, likely still fine"), not the top band ("several hundred") that would have made `04-scalability-availability-and-performance-design.md` a V1.0 prerequisite rather than a follow-on.
 
-**Consequence for `platform-data-model-design.md` §11 — not yet applied.** Two things need correcting there: **(a) status** — from *"a team decision, not a lead-confirmed target"* to lead-confirmed; **(b) the number** — from "≤10 tenants × ≤5 applications each, under 50 schemas" to **~100 total application schemas**, stated independent of any assumed tenant/apps-per-tenant split, since the lead's answer was for the total, not the 10×5 breakdown the team had assumed as one way of reaching a small number. **This is a `docs/design/` amendment and is not applied by this entry** — it requires explicit user direction on the specific change (`PROCESS.md` §3). Recording the decision here makes it durable regardless of when that edit lands.
+**Consequence for `02-platform-data-model-design.md` §11 — not yet applied.** Two things need correcting there: **(a) status** — from *"a team decision, not a lead-confirmed target"* to lead-confirmed; **(b) the number** — from "≤10 tenants × ≤5 applications each, under 50 schemas" to **~100 total application schemas**, stated independent of any assumed tenant/apps-per-tenant split, since the lead's answer was for the total, not the 10×5 breakdown the team had assumed as one way of reaching a small number. **This is a `docs/design/` amendment and is not applied by this entry** — it requires explicit user direction on the specific change (`PROCESS.md` §3). Recording the decision here makes it durable regardless of when that edit lands.
 
 **Alternatives considered.**
-- **Elevating `scalability-availability-and-performance-design.md` (H10) to a hard V1.0 prerequisite** — not warranted at this figure, for the reasoning above. It remains available/parallel-ready in `TICKET.md`'s H10–H48 schedule, not a blocker.
+- **Elevating `04-scalability-availability-and-performance-design.md` (H10) to a hard V1.0 prerequisite** — not warranted at this figure, for the reasoning above. It remains available/parallel-ready in `TICKET.md`'s H10–H48 schedule, not a blocker.
 - **Treating the figure as a hard ceiling rather than a confirmed operating assumption** — rejected. It is subject to the same headroom property that already protects the ≤50 figure: `platform.applications.schema_name`'s registry indirection means schema *addressing* scales by orders of magnitude regardless of this number: only pooling and migration-batching design are sized against it.
 
-**Open, handed to H10 explicitly.** When `scalability-availability-and-performance-design.md` is written, it should verify against **~100** as the actual confirmed figure, not the abstract *"somewhere between the V1.0 figure and the NFR horizon"* the current §11 hands it. This sharpens that document's job; it does not change it.
+**Open, handed to H10 explicitly.** When `04-scalability-availability-and-performance-design.md` is written, it should verify against **~100** as the actual confirmed figure, not the abstract *"somewhere between the V1.0 figure and the NFR horizon"* the current §11 hands it. This sharpens that document's job; it does not change it.

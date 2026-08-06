@@ -51,7 +51,19 @@ ai-ahamatic/
 │   │        e.g. 01-business-and-ux/02-prd.md, matching the pyramid
 │   │        reading order of docs/spec/context-document-map.md)
 │   ├── design/ ← the "how": design / implementation library
-│   │   └── implementation-document-map.md ← index (the design-phase counterpart)
+│   │   ├── implementation-document-map.md ← index; stays at this root, unprefixed
+│   │   ├── 01-design-foundation/
+│   │   ├── 02-identity-access-security/
+│   │   ├── 03-data-construction-contracts/
+│   │   ├── 04-operation-reach-distribution/
+│   │   ├── 05-infrastructure-deployment-operations/
+│   │   └── 06-autonomous-agent-implementation/
+│   │       (each design document's group folder matches its Layer in
+│   │        docs/design/implementation-document-map.md; group-folder
+│   │        reorg 2026-08-06 — filenames themselves stay unprefixed,
+│   │        e.g. 02-identity-access-security/03-authentication-and-identity-design.md,
+│   │        unlike the spec library, which also numbers each document
+│   │        within its folder)
 │   └── criteria/ ← "what to ask, before either": the criteria library
 │       └── criteria-document-map.md ← index (a third library, not a third phase)
 └── references/ ← aging ahaMatic + research (read-only context)

@@ -4,13 +4,13 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 
 **What this file is.** An index, in the same sense as `docs/spec/context-document-map.md` and `docs/design/implementation-document-map.md` — it routes to decisions and reports their status.
 
-**What this file is not.** It does **not** own, relocate, or duplicate any decision. `docs/design/technology-stack-design.md` §9 fixes the convention that an ADR is recorded **inline in the document that owns it, never in a separate ADR-only file**. This register cites; the owning document governs. Where the two disagree, **the owning document prevails** and this register is corrected.
+**What this file is not.** It does **not** own, relocate, or duplicate any decision. `docs/design/01-technology-stack-design.md` §9 fixes the convention that an ADR is recorded **inline in the document that owns it, never in a separate ADR-only file**. This register cites; the owning document governs. Where the two disagree, **the owning document prevails** and this register is corrected.
 
 ---
 
 ## Status summary
 
-**Every ADR is now in a closed state. Nothing is deferred, and nothing awaits approval** — the first time this has been true in the design phase. The three ADRs that waited on the data model (001, 008, 009) were discharged by H6 on the evidence of `platform-data-model-design.md`.
+**Every ADR is now in a closed state. Nothing is deferred, and nothing awaits approval** — the first time this has been true in the design phase. The three ADRs that waited on the data model (001, 008, 009) were discharged by H6 on the evidence of `02-platform-data-model-design.md`.
 
 | Status | Count | ADRs |
 |---|---|---|
@@ -44,10 +44,10 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **012** | **Server-side caching — deliberately deferred, with constraints** | **§22** | ✅ **Resolved** — closed decision to defer (D-16); **amended 2026-08-03**: third constraint (licence category checked at adoption) + Valkey pre-recorded as presumptive candidate, §22.2–§22.3 | Moderate | **ADR-005** *(profiled-pressure philosophy)*, **ADR-010** *(portable subset)* |
 | **001** | Server, web, and mobile-delivery stack | §10 | ✅ **Resolved** — **V1.0 default, not a platform-wide commitment** | Low *(cheapest)* | — |
 | **008** | ADR-001 re-evaluation outcome | **§18.10** | ✅ **Resolved** — discharged under all thirteen criteria | Low | ADR-003, ADR-007 |
-| **014** | Dependency-direction enforcement mechanism | `architecture-realization-design.md` §11.1 | ✅ Approved (H8) | High | ADR-005 |
-| **015** | Codebase topology — ADR-002's parked question answered | `architecture-realization-design.md` §11.2 | ✅ Approved (H8) | High | ADR-005 |
-| **016** | Extension authorship under no-code | `architecture-realization-design.md` §11.3 | ✅ **Amended 2026-08-03 (D-18)** — original finding withdrawn; three extension origins, not one | Moderate | D-09, ADR-005 |
-| **017** | *(owed)* Mobile local persistence — local store + durable write queue, **not** a sync engine | `mobile-application-delivery-design.md` *(not yet written)* | ⬜ **Owed** — decision and criteria recorded as `DECISIONS.md` **D-25**; the ADR follows when its owning document is written | Moderate | ADR-009, ADR-010, D-11 |
+| **014** | Dependency-direction enforcement mechanism | `03-architecture-realization-design.md` §11.1 | ✅ Approved (H8) | High | ADR-005 |
+| **015** | Codebase topology — ADR-002's parked question answered | `03-architecture-realization-design.md` §11.2 | ✅ Approved (H8) | High | ADR-005 |
+| **016** | Extension authorship under no-code | `03-architecture-realization-design.md` §11.3 | ✅ **Amended 2026-08-03 (D-18)** — original finding withdrawn; three extension origins, not one | Moderate | D-09, ADR-005 |
+| **017** | *(owed)* Mobile local persistence — local store + durable write queue, **not** a sync engine | `05-mobile-application-delivery-design.md` *(not yet written)* | ⬜ **Owed** — decision and criteria recorded as `DECISIONS.md` **D-25**; the ADR follows when its owning document is written | Moderate | ADR-009, ADR-010, D-11 |
 | **003** | Verification-weighted criteria set *(method)* | §13 | ✅ Approved | n/a — method | — |
 | **002** | Post-evaluation review of two further full-stack candidates | §12.3 | ✅ Resolved — no change | n/a — review | ADR-001 |
 
@@ -57,7 +57,7 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 
 **The stack stopped being a platform commitment.** Under `DECISIONS.md` **D-15** the technology stack is a **per-client variable** — *"some clients will go, I only want Microsoft. Fine."* So ADR-001 is now recorded as **the V1.0 default and the default for clients expressing no preference**, together with the criteria for varying it. The criteria are the reusable product; the default is a worked example of applying them.
 
-**A re-evaluation owed twice was finally discharged.** ADR-003 mandated it; ADR-008 claimed to close it under ten criteria when three more had arrived. H6 discharged it under **all thirteen**, on evidence from `platform-data-model-design.md` rather than on further paper argument.
+**A re-evaluation owed twice was finally discharged.** ADR-003 mandated it; ADR-008 claimed to close it under ten criteria when three more had arrived. H6 discharged it under **all thirteen**, on evidence from `02-platform-data-model-design.md` rather than on further paper argument.
 
 **Two new ADRs were recorded**, both team decisions under D-16:
 - **ADR-012** — server-side caching **deferred by decision, not left open**. Q1a removed V1.0's performance targets, so no driver exists; ADR-005's philosophy is to optimize only under profiled pressure. Two constraints bind whenever it arrives: never correctness-critical, and inside ADR-010's portable subset.
@@ -87,7 +87,7 @@ Identifying summaries only. For the decision, its alternatives, and its reasonin
 
 ## Live issues
 
-1. **🔶 Two broken cross-references in `platform-data-model-design.md`, pointing at the wrong content.** H6 inserted ADR-012 and ADR-013 as §22 and §23, pushing *Precedence and Ownership Boundaries* to §24 and *Binding Rules* to §25. Two inbound citations were not updated, and they now resolve to unrelated ADRs rather than dangling:
+1. **🔶 Two broken cross-references in `02-platform-data-model-design.md`, pointing at the wrong content.** H6 inserted ADR-012 and ADR-013 as §22 and §23, pushing *Precedence and Ownership Boundaries* to §24 and *Binding Rules* to §25. Two inbound citations were not updated, and they now resolve to unrelated ADRs rather than dangling:
    - **line 39** cites `§23` meaning *Binding Rules* → now lands on the AI-to-AI protocol ADR
    - **line 251** cites `§22` meaning *Precedence and Ownership Boundaries* → now lands on the caching ADR
 
@@ -97,4 +97,4 @@ Identifying summaries only. For the decision, its alternatives, and its reasonin
 
 3. **The GraphQL study is the one open decision** in this document's set. The lead asked for pros and cons and a recommendation; it is owed back to him.
 
-4. **Section-insertion remains this document's known failure mode.** Finding 1 is its third occurrence. Any ticket inserting a numbered section into `technology-stack-design.md` must fix **inbound** citations from other design documents, not only internal ones — which means naming those documents in the ticket's scope, since an Executor cannot edit files it was not authorized to touch.
+4. **Section-insertion remains this document's known failure mode.** Finding 1 is its third occurrence. Any ticket inserting a numbered section into `01-technology-stack-design.md` must fix **inbound** citations from other design documents, not only internal ones — which means naming those documents in the ticket's scope, since an Executor cannot edit files it was not authorized to touch.
