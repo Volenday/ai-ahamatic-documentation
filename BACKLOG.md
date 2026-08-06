@@ -32,6 +32,21 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
+## 1f. 🔶 OPEN 2026-08-06 — the construct/binding-kind enumeration was deferred to a document that does not own it, and now has no owner
+
+**Found at H19's close.** `01-application-construction-design.md` §4.2 fixes that the vocabulary of construct and binding kinds is "a fixed, finite, platform-owned enumeration" a builder instantiates but never extends — the single rule its whole domain-neutrality argument rests on. §4.3 then declines to enumerate the concrete members, deferring them to `02-data-model-and-entity-design.md` on the reasoning that the members depend "on how those members are physically represented."
+
+**The deferral's reasoning is sound; its destination is not.**
+- **Representation is not enumeration.** Knowing how a kind is stored does not determine which kinds exist. These are separable decisions, and only the first is a data-model question.
+- **The dependency runs the wrong way.** `02-data-model-and-entity-design.md` **depends on** `01-application-construction-design.md` (`implementation-document-map.md`, and H19's own §6). A document cannot resolve a question its own upstream dependency left open for it — H20 will arrive looking upstream for a vocabulary it is being told to define.
+- **The map does not assign it there.** H20's row owns "builder-defined entities, schemas, relationships, and the validation that keeps them valid" — structures *a builder defines*. A platform-owned, closed enumeration is the opposite kind of artifact.
+
+**What is genuinely right about H19's call, and should not be undone:** it verified that no specification fixes this taxonomy — neither `03-platform-capability-model.md` nor `01-architecture-overview.md`'s Construction portion requires it — and declined to invent one without evidence. That check was correct, and inventing a taxonomy to fill the hole would have been worse than leaving it open.
+
+**Net effect: the enumeration currently has no owner**, while the argument that makes the build surface domain-neutral depends on it existing. Not blocking — H19's *shape* is fixed and downstream work can proceed against it — but it must be claimed by some document before the build surface is implementable. **Recommendation: assign it to H20 explicitly in that ticket's prompt**, which makes the deferral valid rather than dangling, and is why H20's prompt now addresses it directly. If the lead prefers it stay with the construction document, that is a one-section amendment to `01-application-construction-design.md` instead.
+
+---
+
 ## 1e. 🔶 OPEN 2026-08-06 — `02-tenant-isolation-and-access-control-design.md` §2 points forward to a restatement §11 never carries
 
 **Found by H15's Executor during its own review pass, and independently confirmed at close.** That document's §2 disclaims four concerns it does not own — "Residency enforcement, secrets-scanning technology, audit-trail storage, or extension/marketplace sandboxing mechanics" — and routes the reader onward: "each owned elsewhere, **restated as a boundary in §11**." §11 is 12 lines and contains **zero** occurrences of *residency*, *region*, or *compliance*. The forward pointer resolves to a section that does not carry the promised restatement.
