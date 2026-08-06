@@ -45,9 +45,35 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 **Net effect: the enumeration currently has no owner**, while the argument that makes the build surface domain-neutral depends on it existing. Not blocking — H19's *shape* is fixed and downstream work can proceed against it — but it must be claimed by some document before the build surface is implementable. **Recommendation: assign it to H20 explicitly in that ticket's prompt**, which makes the deferral valid rather than dangling, and is why H20's prompt now addresses it directly. If the lead prefers it stay with the construction document, that is a one-section amendment to `01-application-construction-design.md` instead.
 
+### 1f-resolution. **H20 made the determination and declined it — the destination is now settled, the work is not.** *(Added 2026-08-06.)*
+
+`02-data-model-and-entity-design.md` §3.4 declines ownership on three grounds, each checked and sound: representation is not enumeration (its `entity_catalog.kind` and `relationship_catalog.kind` columns are complete without the members being named); the dependency runs the wrong way, and enumerating here would mean retroactively deciding part of the build surface's own configuration model on its upstream dependency's behalf; and the map's charge for that row is *structures a builder defines*, whereas a closed, platform-owned vocabulary a builder may only instantiate is, by `01-application-construction-design.md` §4.2's own definition, not builder-defined content at all.
+
+**It routes the enumeration back to `01-application-construction-design.md` by targeted amendment — the alternative this entry itself named — and does not perform that amendment**, correctly, since a design document may not amend a sibling without explicit direction (`PROCESS.md` §3).
+
+**The decoupling is the part worth keeping.** §3.4's closing paragraph establishes that no rework follows from wherever the enumeration lands: whichever document names the concrete kind values, they populate columns that already exist, and `02-data-model-and-entity-design.md`'s own schema does not change. So the open item costs nothing to leave open, and nothing to close later.
+
+**Still owed: a ticket.** The amendment is genuine design work — naming a platform-owned vocabulary under H19's own zero-domain-leakage discipline — not a mechanical edit, so it goes through a ticket rather than an inline Orchestrator amendment. **Unticketed as of 2026-08-06.**
+
+---
+
+## 1g. 🔶 OPEN 2026-08-06 — `02-platform-data-model-design.md` has no region-of-record column, and the mechanism that reads one is already designed
+
+**Found at H20's close, declined there on correct grounds.** `06-compliance-and-data-residency-design.md` §10.1 (ADR-023) binds `02-platform-data-model-design.md` **or** `02-data-model-and-entity-design.md`, "whichever settles it first," to supply region-of-record in a form the Registry Accessor and Region Boundary Check can read at resolution time. H20 declined it (§9.1): region-of-record sits on `platform.tenants` and `platform.applications` — the platform's own schema, fixed at ship time, which that document owns outright and this one explicitly does not.
+
+**That is the right call**, and it resolves the "whichever settles it first" ambiguity in the only direction the bidirectional boundary allows. It also means the obligation now rests on a document written before ADR-023 existed.
+
+**Consequence:** the Region Boundary Check is designed against an attribute the schema does not yet carry. Nothing is blocked — no code exists — but the residency mechanism is not implementable until the column is added. **Still owed: a ticket** amending `02-platform-data-model-design.md`. That document is graded **Brutal** to reverse, so even a single-column addition warrants a ticket rather than an inline edit. **Unticketed as of 2026-08-06.**
+
 ---
 
 ## 1e. 🔶 OPEN 2026-08-06 — `02-tenant-isolation-and-access-control-design.md` §2 points forward to a restatement §11 never carries
+
+---
+
+## 1e. 🔶 OPEN 2026-08-06 — `02-tenant-isolation-and-access-control-design.md` §2 points forward to a restatement §11 never carries
+
+> **Three design-document amendments are now owed and none is ticketed** — this entry (§1e), the construct-vocabulary enumeration (§1f-resolution), and region-of-record (§1g). All three arose the same way: a document written earlier is missing something a document written later depends on. None blocks further design work; all three block implementation. They are cheapest to batch into one amendment pass rather than ticket individually.
 
 **Found by H15's Executor during its own review pass, and independently confirmed at close.** That document's §2 disclaims four concerns it does not own — "Residency enforcement, secrets-scanning technology, audit-trail storage, or extension/marketplace sandboxing mechanics" — and routes the reader onward: "each owned elsewhere, **restated as a boundary in §11**." §11 is 12 lines and contains **zero** occurrences of *residency*, *region*, or *compliance*. The forward pointer resolves to a section that does not carry the promised restatement.
 
