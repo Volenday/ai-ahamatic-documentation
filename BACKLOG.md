@@ -32,7 +32,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1f. 🔶 OPEN 2026-08-06 — the construct/binding-kind enumeration was deferred to a document that does not own it, and now has no owner
+## 1f. ✅ CLOSED 2026-08-06 by H20a — the construct/binding-kind enumeration was deferred to a document that does not own it, and now has no owner
 
 **Found at H19's close.** `01-application-construction-design.md` §4.2 fixes that the vocabulary of construct and binding kinds is "a fixed, finite, platform-owned enumeration" a builder instantiates but never extends — the single rule its whole domain-neutrality argument rests on. §4.3 then declines to enumerate the concrete members, deferring them to `02-data-model-and-entity-design.md` on the reasoning that the members depend "on how those members are physically represented."
 
@@ -53,7 +53,21 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 **The decoupling is the part worth keeping.** §3.4's closing paragraph establishes that no rework follows from wherever the enumeration lands: whichever document names the concrete kind values, they populate columns that already exist, and `02-data-model-and-entity-design.md`'s own schema does not change. So the open item costs nothing to leave open, and nothing to close later.
 
-**Still owed: a ticket.** The amendment is genuine design work — naming a platform-owned vocabulary under H19's own zero-domain-leakage discipline — not a mechanical edit, so it goes through a ticket rather than an inline Orchestrator amendment. **Unticketed as of 2026-08-06.**
+**✅ CLOSED 2026-08-06 by H20a.** The amendment ran as a ticket and landed the vocabulary in `01-application-construction-design.md` §4.2.1–§4.2.5: two construct kinds (Surface, Command), three binding kinds coextensive with §4.1's families (Structural, Behavioral, Access), two action classes (View, Invoke), plus a three-part admission test — genericity, irreducibility, non-duplication — for any future member. §4.3 was rewritten rather than left pointing at a decline. Verified at close: `02-data-model-and-entity-design.md`'s `kind` columns are populated by, not altered by, the amendment, exactly as §3.4 predicted; and the binding-kind cardinality **confirms** that sibling's already-fixed "one of the three binding-kind values" rather than contradicting it. **ADR-029 consumed** by this amendment.
+
+---
+
+## 1h. 🔶 OPEN 2026-08-06 — no design document expresses role-scoped access to *records*, only to constructs
+
+**Surfaced at H20a's close, by asking what the newly-fixed action-class vocabulary does and does not reach.** It is a question not yet asked rather than a defect in any document — the discovery obligation `DECISIONS.md` D-16 makes a deliverable.
+
+**What is now fixed.** `01-application-construction-design.md` §4.1 defines an access binding as mapping a tenant role to **a construct** and a bounded action class, and §4.2.4 fixes that vocabulary as exactly **View** and **Invoke**. Both are construct-scoped: perceive a Surface or Command, or trigger one.
+
+**What is not designed anywhere.** Which *records* a role may reach. `02-data-model-and-entity-design.md`'s `field_catalog` carries governance category and classification tier but no role-access column, and its Entity Access Gateway runs the Validation Engine, the Consent and Minimization Check, and classification resolution — none of which is role-based record authorization. `02-tenant-isolation-and-access-control-design.md` §6 governs the five platform actor classes, not builder-defined end-user roles over builder-defined data.
+
+**The specification does state the obligation**, which is why this is a design gap rather than a spec gap: `02-governance-and-security/03-access-control-and-tenancy-model.md` §89 fixes that for end-user personas, "the specific actions an end-user role may perform, **and the content it may reach**, are set by the builder alone." *Actions on constructs* is now realized; *content it may reach* is not.
+
+**Most likely home: `03-data-administration-design.md` (H21)** — C-27 is the generic administrative surface over records, so it is the first document whose subject matter forces the question. The alternative is that an access binding's target is widened beyond constructs, which would reopen `01-application-construction-design.md` §4.1 and should not be done casually. **H21's ticket puts the question directly**, requiring an explicit determination rather than leaving it to be discovered a third time.
 
 ---
 
@@ -63,17 +77,15 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 **That is the right call**, and it resolves the "whichever settles it first" ambiguity in the only direction the bidirectional boundary allows. It also means the obligation now rests on a document written before ADR-023 existed.
 
-**Consequence:** the Region Boundary Check is designed against an attribute the schema does not yet carry. Nothing is blocked — no code exists — but the residency mechanism is not implementable until the column is added. **Still owed: a ticket** amending `02-platform-data-model-design.md`. That document is graded **Brutal** to reverse, so even a single-column addition warrants a ticket rather than an inline edit. **Unticketed as of 2026-08-06.**
+**Consequence:** the Region Boundary Check was designed against an attribute the schema did not carry. Nothing was blocked — no code exists — but the residency mechanism was not implementable until the column was added.
+
+**✅ CLOSED 2026-08-06 by H20b.** `platform.tenants.region_of_record` and `platform.applications.region_of_record` were added by ticketed amendment, both referencing the **existing** `platform.regions` catalog rather than introducing a second one. Verified from the working-tree diff (no handoff summary was returned for that ticket): an unset value resolves to *unresolved* and is surfaced as such by the Registry Accessor, never coerced to a permissive default, leaving `06-compliance-and-data-residency-design.md` §4's already-fixed refusal path to govern; a change is an ordinary current-state update captured by the audit trail under that document's own §10 convention, not a versioned row. **No ADR was recorded**, judged explicitly rather than by default, on the grounds that every part of the amendment applies an already-fixed decision. The amendment was extended in place with no section renumbering — material, since `ADR-REGISTER.md` live issue 1 records two inbound citations to this very file that broke the last time a sibling document inserted numbered sections.
 
 ---
 
 ## 1e. 🔶 OPEN 2026-08-06 — `02-tenant-isolation-and-access-control-design.md` §2 points forward to a restatement §11 never carries
 
----
-
-## 1e. 🔶 OPEN 2026-08-06 — `02-tenant-isolation-and-access-control-design.md` §2 points forward to a restatement §11 never carries
-
-> **Three design-document amendments are now owed and none is ticketed** — this entry (§1e), the construct-vocabulary enumeration (§1f-resolution), and region-of-record (§1g). All three arose the same way: a document written earlier is missing something a document written later depends on. None blocks further design work; all three block implementation. They are cheapest to batch into one amendment pass rather than ticket individually.
+> **⚠ This entry was fixed once and the fix was lost.** On 2026-08-06 the recommended correction was applied inline on explicit direction — §2's four-concern bullet replaced by four bullets naming each owner directly, forward pointer dropped. That edit was **never committed** and was subsequently discarded from the working tree, along with the H20a/H20b rows in `TICKET.md`, when the tree was reset to commit `9715d2b`. Verified 2026-08-06: the phrase "restated as a boundary in §11" is present again, and the corrected wording is absent. **The entry is therefore open, not closed** — the fix must be re-applied and, this time, committed before anything else touches the tree.
 
 **Found by H15's Executor during its own review pass, and independently confirmed at close.** That document's §2 disclaims four concerns it does not own — "Residency enforcement, secrets-scanning technology, audit-trail storage, or extension/marketplace sandboxing mechanics" — and routes the reader onward: "each owned elsewhere, **restated as a boundary in §11**." §11 is 12 lines and contains **zero** occurrences of *residency*, *region*, or *compliance*. The forward pointer resolves to a section that does not carry the promised restatement.
 
