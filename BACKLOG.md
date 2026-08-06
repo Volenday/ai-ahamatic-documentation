@@ -57,7 +57,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1i. 🔶 OPEN 2026-08-06 — the per-application schema now has three writers, and its ownership statement admits only two
+## 1i. ✅ CLOSED 2026-08-06 by H21a — the per-application schema had three writers, and its ownership statement admitted only two
 
 **Found at H21's close.** `02-platform-data-model-design.md` §3.3 partitions the per-application schema between exactly two parties: itself, fixing "the two platform-owned tables that exist inside it before a builder defines anything" (`application_metadata`, `application_key`), and `02-data-model-and-entity-design.md`, to which it delegates "everything else in this schema — every builder-defined entity, relationship, and the temporal/history structures they carry." Its §12 boundary restates the same two-way split.
 
@@ -68,6 +68,19 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 **Needs a decision, either direction:** amend `02-platform-data-model-design.md` §3.3/§12 to state the partition as three-way (or as an open rule rather than an enumeration), **or** relocate the administrative-scope grant to the per-tenant or platform-global level, where access configuration for tenant-level actors arguably belongs anyway — note that `tenant_user_id` is already carried as a plain value precisely *because* it names a tenant-schema row from an application-schema table (§5.3's own reasoning), which is an argument the grant may be in the wrong schema to begin with.
 
 **Ticket-authoring cause, recorded so it stops recurring.** H21's prompt did not list `02-platform-data-model-design.md` as a dependency input, so its Executor could not check the partition — and said so explicitly in its handoff rather than proceeding silently. This is the **second** ticket-authoring defect of the same family (H16's prompt named a document in its Writing Rules but omitted it from Dependency Inputs). **Orchestrator rule going forward: when a ticket designs a structure that lives inside a schema another document owns, that document is a mandatory dependency input.**
+
+**✅ CLOSED 2026-08-06 by H21a — resolution (a), relocate, and it resolved the gap rather than legalizing it.** The table moved to `tenant_<id>.administrative_scope_grants`, defined by `02-platform-data-model-design.md` §3.2; `03-data-administration-design.md` §5.3 now cites it rather than defining it.
+
+**Why this is the better of the two available resolutions, verified after the fact:** §3.3's two-way partition statement needed *no amendment at all* — it is simply true again once the third structure is gone. Option (b) would have made the statement accommodate the table; option (a) made the table fit the statement. The library ends with one fewer exception rather than one more.
+
+**Verified at close:**
+- `02-platform-data-model-design.md` §3.3 and §12 still assert the two-table partition, and that assertion is now accurate — unchanged, and correctly so.
+- §3.4's hierarchy boundary table and §12's "On C-27" bullet were both corrected; the latter previously stated this document supplies nothing for C-27, which the amendment made false and then fixed.
+- **A real consequence of relocation was caught rather than glossed:** the grant must now name *which* application, so an `application_id` column (FK → `platform.applications`) was added. Moving a table up a level is not a cosmetic move, and the Executor treated it as such.
+- The cross-schema-reference cost inverted honestly — `tenant_user_id` becomes an ordinary same-schema foreign key, and `entity_id` takes over as the plain, unenforced value, for the identical stated reason.
+- ADR-030 amended **in place** with an explicit "Amended, `BACKLOG.md` §1i" note, not superseded — correct, since no semantics, column meaning, check position, or narrowing rule changed.
+- No section inserted or renumbered in either document, avoiding this library's known failure mode on the very file where it has already occurred once.
+- Grep sweep for stale placement references returns only a correct *negative* statement ("not a builder-defined entity inside a per-application schema").
 
 ---
 
