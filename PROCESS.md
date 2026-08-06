@@ -77,11 +77,18 @@ The `.claude/skills/` copies are the **only** copies and therefore the source of
 5. Name the session `<ID> — <Title>` (e.g. `T53 — Extend Security Threat Model…`).
 6. Paste the **previous ticket's handoff summary** (or the bridging handoff for the first ticket in a phase). **This is context only — do not begin any work, generation, or edits on it; wait for step 7.**
 7. Paste the **ticket system prompt** — this defines the task; work begins only now.
-8. Invoke `/ai-aha-spec-review` (spec) **or** `/ai-aha-design-review` (design). **A `CR##` criteria ticket skips this step** — see §1.
+8. Invoke `/ai-aha-spec-review` (spec) **or** `/ai-aha-design-review` (design) — run it over the **completed deliverable**, whether or not the file is already on disk, and apply what it surfaces before step 9 closes the file. **A `CR##` criteria ticket skips this step** — see §1.
 9. Save the output to the exact `docs/spec/…` or `docs/design/…` path the ticket names.
 10. Invoke `/ai-aha-handoff`.
 11. Update `TICKET.md` — mark the ticket ✅ Done.
 12. Commit: `git commit -m "<ID>: <summary>"`.
+
+> **⛔ Steps 8 and 10 are mandatory and explicit, every ticket, without exception (added 2026-08-06, after observed drift).** The review skill and the handoff skill are **invoked by name as skill calls** — not approximated by writing a review-shaped paragraph or a handoff-shaped summary from memory, and not skipped because the deliverable "looks clean" or the session is running long. Observed failure: Executors were casting both skills on some tickets and neither on others, with no signal in the output that anything had been skipped, so a ticket that never ran its self-review was indistinguishable from one that passed it.
+>
+> - **The review runs before the handoff, and both run before the commit.** A finding the review surfaces is fixed in the deliverable first; the handoff then describes what was actually shipped, including anything the review caught. A handoff written before the review is a description of a draft.
+> - **Neither step is satisfied by the ticket prompt's own Writing Rules section.** That section scopes the work; the review skill checks it. The one series that legitimately runs without a review skill — `CR##` — pays for it with the explicit compensating rule below, and that exception is not available to a `T##` or `H##` ticket.
+> - **If a step is genuinely skipped, the handoff must say so and say why.** A silent omission is the failure mode this rule exists to close; a disclosed one is a judgment call the Orchestrator can weigh at verification.
+> - **The ticket prompt carries this too.** §4's template ends with a mandatory **Closing Sequence** block, so the instruction reaches the Executor through the one input it actually acts on — the ticket system prompt — rather than depending on it having internalized this section.
 
 ### The 10 steps (`CR##` criteria-library Executor session)
 
@@ -94,7 +101,7 @@ The criteria library sits outside the two-phase model (§1), so a `CR##` ticket 
 5. Paste the **bridging handoff** (for the library's first ticket) or the previous `CR##` ticket's handoff. **Context only — no work begins.**
 6. Paste the **ticket system prompt** — work begins now. **This prompt carries the writing rules** that `ai-aha-spec-doc` / `ai-aha-design-doc` supply for the other two libraries.
 7. Save the output to the exact `docs/criteria/…` path the ticket names.
-8. Invoke `/ai-aha-handoff` — this one **still applies**; it is the generic Executor handoff, not phase-specific.
+8. Invoke `/ai-aha-handoff` — this one **still applies**; it is the generic Executor handoff, not phase-specific, and it is **mandatory and explicit** on exactly the terms the ⛔ note under the 12 steps sets out.
 9. Update `TICKET.md` — mark the ticket ✅ Done.
 10. Commit: `git commit -m "CR##: <summary>"`.
 
@@ -140,10 +147,17 @@ The `ai-aha-<spec|design>-doc` skill carries the phase standards. In addition, f
 
 ## Output
 A single, clean <file> saved to docs/<spec|design>/. No commentary outside the file content.
+
+## Closing Sequence — mandatory, both steps, in this order
+When the deliverable is complete, before you stop:
+1. Invoke `/ai-aha-<spec|design>-review` and apply what it surfaces to the saved file.
+2. Invoke `/ai-aha-handoff`.
+Invoke both **by name, as skill calls** — do not substitute a self-written review paragraph or handoff summary. The "no commentary outside the file content" rule above governs the deliverable, and does not exempt these two steps. If either is genuinely skipped, say so and why in the handoff.
 ```
 
 Generation rules:
 - **Just-in-time:** generate each prompt right before it runs, from the current on-disk state — not in a batch.
+- **Every generated prompt ends with the Closing Sequence block** (added 2026-08-06). It is not optional boilerplate an Orchestrator may trim for brevity: §3's ⛔ note explains why — the Executor acts on this prompt, not on §3, so an instruction absent here is an instruction that does not reach it. A `CR##` prompt carries the same block with step 1 removed and a line stating that the review skill is deliberately not run (§1), so the omission reads as designed rather than forgotten.
 - **Same-file sequencing:** tickets that edit the same document run sequentially, each building on the prior edit (e.g. the capability-addition chain on `01-business-and-ux/02-prd.md` + `01-business-and-ux/03-platform-capability-model.md`).
 - Give the executing session a **bridging handoff** when it's the first ticket of a phase (no prior handoff exists).
 
