@@ -32,6 +32,18 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
+## 1e. 🔶 OPEN 2026-08-06 — `02-tenant-isolation-and-access-control-design.md` §2 points forward to a restatement §11 never carries
+
+**Found by H15's Executor during its own review pass, and independently confirmed at close.** That document's §2 disclaims four concerns it does not own — "Residency enforcement, secrets-scanning technology, audit-trail storage, or extension/marketplace sandboxing mechanics" — and routes the reader onward: "each owned elsewhere, **restated as a boundary in §11**." §11 is 12 lines and contains **zero** occurrences of *residency*, *region*, or *compliance*. The forward pointer resolves to a section that does not carry the promised restatement.
+
+**Why this is worth an entry rather than a shrug.** It is the mirror of the register's own Live Issue 1 — a citation that lands somewhere real but wrong is harder to notice than one that dangles. It also propagated: `04-security-controls-design.md` §3.3 and §11 went on to attribute *region scoping* to the tenant-isolation document, which never claims it, and the H15 ticket prompt repeated the §11 framing before the Executor corrected it. Three documents now carry a version of the same mistake.
+
+**Not fixed, and deliberately so.** The tenant-isolation document was a read-only input to both H13 and H15, and `PROCESS.md` §3 permits an Orchestrator to amend a `docs/design/` document inline **only on explicit user direction**. Two candidate fixes, either of which is one edit: extend §11 with the four boundary restatements §2 promises, or reword §2 to name the owning documents directly and drop the forward pointer. **The second is the better fix** — §2 already names owners for every other disclaimed concern, and `06-compliance-and-data-residency-design.md` now exists to be named. Needs explicit direction either way.
+
+**Already correctly handled downstream, so nothing is blocked:** `06-compliance-and-data-residency-design.md` cites §2 rather than §11 throughout, builds the region-scoping mechanism the handover anticipated, and states the correction in its own §3.1 — so a reader arriving through that document is not misled.
+
+---
+
 ## 1d. ✅ CLOSED 2026-08-06 — `implementation-document-map.md`'s swapped Depends-On cells, corrected
 
 **Found while establishing dependency order for the group-folder/numbering reorg.** The map's Depends-On column for `01-technology-stack-design.md` named `03-architecture-realization-design.md` as its dependency — chronologically impossible, verified against git history: `technology-stack-design.md` was created 2026-07-28 (commit `abcf413`); `architecture-realization-design.md` did not exist until 2026-08-02, written under ticket H8. Meanwhile `03-architecture-realization-design.md`'s own cell read "—", when it should have named `01-technology-stack-design.md` — the lead's documented sequencing override (`TICKET.md`'s historical H2-pause note) has architecture-realization explicitly follow the stack decision. Both cells were swapped, almost certainly a copy/paste error between the two rows.
