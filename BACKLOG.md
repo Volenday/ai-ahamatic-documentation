@@ -57,7 +57,21 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1h. 🔶 OPEN 2026-08-06 — no design document expresses role-scoped access to *records*, only to constructs
+## 1i. 🔶 OPEN 2026-08-06 — the per-application schema now has three writers, and its ownership statement admits only two
+
+**Found at H21's close.** `02-platform-data-model-design.md` §3.3 partitions the per-application schema between exactly two parties: itself, fixing "the two platform-owned tables that exist inside it before a builder defines anything" (`application_metadata`, `application_key`), and `02-data-model-and-entity-design.md`, to which it delegates "everything else in this schema — every builder-defined entity, relationship, and the temporal/history structures they carry." Its §12 boundary restates the same two-way split.
+
+`03-data-administration-design.md` §5.3 places a third structure there — the administrative-scope grant table — which fits neither side of that partition. It is not one of the two platform-owned tables, and it is not builder-defined content; it is platform-owned access configuration, authored by a third document.
+
+**This is a coordination gap, not a contradiction — state it precisely.** §3.3's "two" is a statement of *what that document fixes*, not a hard cap on the schema's table count, and H20's four catalogs already sit in the same schema under its delegation clause. The gap is that **no ownership statement covers a third contributor**, so nothing in the library says who may add a structure to this schema or under what rule — and the schema in question belongs to the project's only Brutal-graded document.
+
+**Needs a decision, either direction:** amend `02-platform-data-model-design.md` §3.3/§12 to state the partition as three-way (or as an open rule rather than an enumeration), **or** relocate the administrative-scope grant to the per-tenant or platform-global level, where access configuration for tenant-level actors arguably belongs anyway — note that `tenant_user_id` is already carried as a plain value precisely *because* it names a tenant-schema row from an application-schema table (§5.3's own reasoning), which is an argument the grant may be in the wrong schema to begin with.
+
+**Ticket-authoring cause, recorded so it stops recurring.** H21's prompt did not list `02-platform-data-model-design.md` as a dependency input, so its Executor could not check the partition — and said so explicitly in its handoff rather than proceeding silently. This is the **second** ticket-authoring defect of the same family (H16's prompt named a document in its Writing Rules but omitted it from Dependency Inputs). **Orchestrator rule going forward: when a ticket designs a structure that lives inside a schema another document owns, that document is a mandatory dependency input.**
+
+---
+
+## 1h. 🔶 PARTIALLY RESOLVED 2026-08-06 by H21 — no design document expresses role-scoped access to *records*, only to constructs
 
 **Surfaced at H20a's close, by asking what the newly-fixed action-class vocabulary does and does not reach.** It is a question not yet asked rather than a defect in any document — the discovery obligation `DECISIONS.md` D-16 makes a deliverable.
 
@@ -68,6 +82,14 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 **The specification does state the obligation**, which is why this is a design gap rather than a spec gap: `02-governance-and-security/03-access-control-and-tenancy-model.md` §89 fixes that for end-user personas, "the specific actions an end-user role may perform, **and the content it may reach**, are set by the builder alone." *Actions on constructs* is now realized; *content it may reach* is not.
 
 **Most likely home: `03-data-administration-design.md` (H21)** — C-27 is the generic administrative surface over records, so it is the first document whose subject matter forces the question. The alternative is that an access binding's target is widened beyond constructs, which would reopen `01-application-construction-design.md` §4.1 and should not be done casually. **H21's ticket puts the question directly**, requiring an explicit determination rather than leaving it to be discovered a third time.
+
+### 1h-resolution. **H21 resolved half of it, on grounds that hold — and named the other half open.** *(Added 2026-08-06.)*
+
+**Resolved: record-scoped access for professional-builder actors.** `03-data-administration-design.md` §5 designs an administrative-scope grant — narrowing-only, never widening, composing with existing tenant and application scoping — checked by an Administrative Authorization Check that runs *upstream* of the Entity Access Gateway rather than becoming a fourth step inside it. The scope limit was checked and is well-grounded: `01-business-and-ux/02-prd.md` §4's C-27 row states that the capability "operates strictly within the professional-builder model, extended only by the administrative access a tenant grants (C-03)." So resolving this question for builder actors and no further is what C-27's own definition licenses, not a convenient narrowing.
+
+**Still open: end-user-role-scoped, construct-mediated record access** — a Surface presenting entity content to an end user, where the question is which records that user's role may reach. `03-data-administration-design.md` §5.5 names this explicitly as unresolved and **assigns it no destination**, which is the same ownerless-deferral shape §1f had.
+
+**Candidate homes, none yet chosen:** `05-api-contract-design.md` (H23), if record reach is a property of the contract a Surface reads through; a future runtime/operation document under C-07, since the question only arises once built software serves end users; or a widening of `01-application-construction-design.md` §4.1's access-binding target beyond constructs — which would reopen a document amended once already (H20a) and should not be done casually. **The first ticket whose subject matter forces the question should be made to determine it**, on the H21 pattern that worked here.
 
 ---
 
