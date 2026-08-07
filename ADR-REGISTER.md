@@ -1,6 +1,6 @@
 # AI ahaMatic — Design Decision Record (ADR) Register
 
-A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-07** (post-H26c sync — ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
+A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-07** (post-H27 — ADR-038 registered at its own ticket's close, the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
 
 **What this file is.** An index, in the same sense as `docs/spec/context-document-map.md` and `docs/design/implementation-document-map.md` — it routes to decisions and reports their status.
 
@@ -10,7 +10,7 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 
 ## Status summary
 
-**Seventeen ADRs now await lead approval — ADR-021 through ADR-037.** The earlier claim here — that every ADR was closed and nothing awaited approval — was true of the Layer 1 set at H6 and has not been true of the phase since H13. The three ADRs that waited on the data model (001, 008, 009) remain discharged by H6 on the evidence of `02-platform-data-model-design.md`.
+**Eighteen ADRs now await lead approval — ADR-021 through ADR-038.** The earlier claim here — that every ADR was closed and nothing awaited approval — was true of the Layer 1 set at H6 and has not been true of the phase since H13. The three ADRs that waited on the data model (001, 008, 009) remain discharged by H6 on the evidence of `02-platform-data-model-design.md`.
 
 | Status | Count | ADRs |
 |---|---|---|
@@ -18,12 +18,12 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 | ✅ **Resolved** — closed, no further action | 5 | **ADR-001**, ADR-002, **ADR-008**, **ADR-012**, **ADR-013** |
 | ✅ **Approved** — added to this register 2026-08-03; H8's three were never registered | 3 | **ADR-014**, **ADR-015**, **ADR-016** *(016 amended per D-18)* |
 | ✅ **Approved** — self-approved by their own ticket under D-16; **see live issue 5** | 3 | **ADR-018** *(H10)*, **ADR-019** *(H11)*, **ADR-020** *(H12)* |
-| 🔶 **Provisional — Pending Lead Approval** | **17** | **ADR-021**–**ADR-037** *(H13 through H26b)* — every ADR produced since H13, none in `DECISIONS.md` |
+| 🔶 **Provisional — Pending Lead Approval** | **18** | **ADR-021**–**ADR-038** *(H13 through H27)* — every ADR produced since H13, none in `DECISIONS.md` |
 | ⬜ **Owed** — decided, ADR not yet written | 1 | **ADR-017** *(`DECISIONS.md` D-25)* |
 | ⚠️ Superseded *(in part)* | 1 | ADR-007 *(mobile-runtime part, by ADR-009)* |
 | 🅿️ **Parked** | **0 — none remain** | *(Was: the GraphQL sub-decision inside ADR-006. **Closed 2026-08-03 by `DECISIONS.md` D-19** — the commissioned study was run and confirmed the original reasoning, moving the sub-decision from Parked to **Rejected**. This row and live issue 3 had not been updated; corrected 2026-08-06.)* |
 
-**Seventeen ADRs now await lead approval — ADR-021 through ADR-037, none recorded in `DECISIONS.md`.** That is every ADR produced since H13, and it is the design phase's largest standing decision backlog. See live issue 8 on why the register keeps falling behind.
+**Eighteen ADRs now await lead approval — ADR-021 through ADR-038, none recorded in `DECISIONS.md`.** That is every ADR produced since H13, and it is the design phase's largest standing decision backlog. See live issue 8 on why the register keeps falling behind.
 
 **Prior note, superseded but retained:** three open items — the three provisional ADRs. The GraphQL study is **not** among them: it was run and closed on 2026-08-03 (D-19), though this file's own summary and live issue 3 continued to report it as owed until 2026-08-06. **None of ADR-018 through ADR-023 appears in `DECISIONS.md`** — verified 2026-08-06 — which under §9's "approval changes status, not content" rule is the expected state for the three provisional ones and an open question for the three self-approved ones (live issue 5).
 
@@ -72,6 +72,7 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **035** | Coding-standards toolchain — composition over a second mechanism, generated vocabulary check | `08-coding-standards-and-patterns-design.md` §9 | 🔶 **Provisional** (H26); `Context` field **restored by H26c** (`BACKLOG.md` §1m) | **Low** — §12.1's cheapest rung | ADR-014, ADR-005 |
 | **036** | The fourth Entity Access Gateway check, and its composition with process-automated reach | `02-data-model-and-entity-design.md` §13.2 | 🔶 **Provisional** (H26a) | **Moderate** | ADR-028, ADR-031 |
 | **037** | Extension registration and external-system connection — two distinct structures | `02-platform-data-model-design.md` §3.2 | 🔶 **Provisional** (H26b) | **Moderate** | ADR-023, ADR-033, ADR-034 |
+| **038** | The Construct Invocation Point and the structural-continuity lifecycle mechanism | `01-application-runtime-and-lifecycle-design.md` §11 | 🔶 **Provisional** (H27) | **High** — the runtime model every built application executes on; an architecture-rung structure | ADR-005 §7, ADR-027, ADR-029, ADR-036 |
 | **003** | Verification-weighted criteria set *(method)* | §13 | ✅ Approved | n/a — method | — |
 | **002** | Post-evaluation review of two further full-stack candidates | §12.3 | ✅ Resolved — no change | n/a — review | ADR-001 |
 
