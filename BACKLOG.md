@@ -196,7 +196,17 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1g. 🔶 OPEN 2026-08-06 — `02-platform-data-model-design.md` has no region-of-record column, and the mechanism that reads one is already designed
+## 1n. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a per-tenant external-system connection-and-credential table
+
+**Handed over by H25 (`07-cross-system-data-layer-design.md` §5, ADR-034's Consequences), and recorded late.** That ADR binds this document "to add the per-tenant connection-and-credential table this document constrains but does not define, on a future, separately-ticketed amendment, **distinct in content from `tenant_host_connections`**." The constraint names what it must carry: connector identity, credential reference, and a declared region-of-record — the last being what lets the Region Boundary Check resolve an external system at all, absent which H25 §4 resolves the obligation to refusal.
+
+**Recorded late, and that is the finding worth keeping.** H25's handoff named this obligation explicitly and its close did not capture it; it surfaced only when the backlog was surveyed to plan the consolidated amendment pass. **The Orchestrator's own verify-and-record step is where a handed-over obligation gets lost**, not the Executor's — H25 stated it in both its ADR and its handoff. Every handoff's "Unlocks" and every ADR's "Consequences" naming a *future amendment* must be checked against the backlog at close, not only the findings the verification pass turns up on its own.
+
+**Direction is right, no re-routing needed** — per-tenant connection state is what `02-platform-data-model-design.md` §3.2 already owns, alongside `tenant_host_connections`, `tenant_users`, and `administrative_scope_grants`. Fold into the consolidated pass with §1k.
+
+---
+
+## 1g. ✅ CLOSED 2026-08-06 by H20b — `02-platform-data-model-design.md` had no region-of-record column, and the mechanism that reads one was already designed
 
 **Found at H20's close, declined there on correct grounds.** `06-compliance-and-data-residency-design.md` §10.1 (ADR-023) binds `02-platform-data-model-design.md` **or** `02-data-model-and-entity-design.md`, "whichever settles it first," to supply region-of-record in a form the Registry Accessor and Region Boundary Check can read at resolution time. H20 declined it (§9.1): region-of-record sits on `platform.tenants` and `platform.applications` — the platform's own schema, fixed at ship time, which that document owns outright and this one explicitly does not.
 
