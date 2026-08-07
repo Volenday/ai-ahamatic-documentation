@@ -115,7 +115,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1j. 🔶 OPEN 2026-08-06 — `02-data-model-and-entity-design.md` owes a process-definition catalog, and this is the pattern's fourth instance
+## 1j. ✅ CLOSED 2026-08-07 by H26a — `02-data-model-and-entity-design.md` owed a process-definition catalog, and this was the pattern's fourth instance
 
 **Handed over by H22, correctly and in the right direction.** `04-workflow-and-process-automation-design.md` §4.1 fixes that a process definition is builder-authored content stored authoritatively on the platform's own schema-scoped storage, and constrains `02-data-model-and-entity-design.md` to be capable of representing — without loss — the definition's identity and version marker, its step graph including each step's kind and the opaque construct reference an interaction or action step carries, and a backward-compatibility determination analogous to that document's §7. It explicitly declines to design the tables itself, citing `PROCESS.md` §3.
 
@@ -166,7 +166,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1h. 🔶 PARTIALLY RESOLVED 2026-08-06 by H21 — no design document expresses role-scoped access to *records*, only to constructs
+## 1h. ✅ CLOSED 2026-08-07 by H26a — no design document expressed role-scoped access to *records*, only to constructs
 
 **Surfaced at H20a's close, by asking what the newly-fixed action-class vocabulary does and does not reach.** It is a question not yet asked rather than a defect in any document — the discovery obligation `DECISIONS.md` D-16 makes a deliverable.
 
@@ -193,6 +193,20 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 **Destination named: a fourth check on the Entity Access Gateway, `02-data-model-and-entity-design.md` §4.1.** That document already owns the single mediation point every entity read and write passes through, alongside the Validation Engine, the Consent and Minimization Check, and classification resolution — so a role-scoped record-reach check extends a mechanism that document owns outright, on the same compose-with-what-exists discipline `03-data-administration-design.md` §5.4 already applied. H23 did not perform the amendment (`PROCESS.md` §3).
 
 **Status: destination settled, work owed.** Fold into the consolidated amendment §1j recommends rather than ticketing separately — this is the fifth obligation on the same document.
+
+---
+
+## 1o. 🔶 OPEN 2026-08-07 — the Entity Access Gateway now has four checks, and three sibling documents still describe three
+
+**Disclosed by H26a at its own close, correctly and out of its authorized scope.** ADR-036 added a fourth check to `02-data-model-and-entity-design.md` §4.1's Gateway. Documents written while it had three still enumerate three.
+
+**What is actually stale, checked line by line — it is not a "three-step order" phrase:**
+- `03-data-administration-design.md` §2 and `04-workflow-and-process-automation-design.md` §2 each disclaim ownership of "the Entity Access Gateway itself — the Validation Engine, the Consent and Minimization Check, and classification…" — a **three-item enumeration that is now incomplete**. The disclaimers remain true; their lists do not.
+- **The sharper case: `03-data-administration-design.md` §5's ADR-030 criterion 4 weighed "checking the administrative grant upstream of the Gateway versus folding a fourth step into the Gateway" — and rejected the fourth step.** A fourth step now exists. **This is not a contradiction** — H26a §9.6 establishes that the two govern different actor classes at different trigger points, and §9.7 resolves their composition — but a reader meeting criterion 4 without §9.6 will reasonably conclude the library contradicts itself.
+
+**Fix, when it runs:** update the two enumerations, and add one clause to ADR-030 criterion 4 noting that the fourth step it declined for the *professional-builder* actor class was later adopted for the *end-user* class on different grounds, citing ADR-036. **No decision is reopened by any of this** — it is citation accuracy on a mechanism whose arity changed underneath already-written prose.
+
+**Why record rather than fix now:** both target documents were read-only inputs to H26a, and `PROCESS.md` §3 permits an inline Orchestrator amendment only on explicit direction. **Fold into the next consolidated pass** — and note this is the first item of a new kind: not a missing structure, but *staleness created by a later amendment*. Expect more as Layer 4 amends Layer 3 mechanisms.
 
 ---
 
