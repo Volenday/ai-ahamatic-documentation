@@ -204,6 +204,20 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1p. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a stage-schema mapping, and the prediction in §1k held again
+
+**Handed over by H28 (ADR-039), correctly and by the established pattern.** `02-builder-facing-environment-management-design.md` §4 resolves C-23's identity-vs-isolation tension with **sibling per-application schemas under one unchanging identity**: Development is the schema construction already produces, and Testing and Production are additional schemas materialized on first promotion. `platform.applications.schema_name` is never reassigned and no second application row is created — so the constraint `01-application-runtime-and-lifecycle-design.md` §12 placed on it is honored exactly.
+
+**What is owed, in two parts:**
+1. A **new per-tenant stage-schema mapping structure** — `application_id`, stage (Testing | Production), `schema_name`, materialized-at, promoted-from, and a builder-configured approval-required flag for Production.
+2. An **extension to the per-application `application_metadata` table** recording which stage its schema realizes. H28 notes this closes a genuine self-verification gap: without it, a same-application/wrong-stage mis-scoping would pass the existing self-verification read undetected. **That is the more important half** — it is an isolation-adjacent correction, not a convenience.
+
+**§1k's prediction held.** That entry said `02-platform-data-model-design.md` had become a second accumulation point and to "expect more as Layer 4 amends Layer 3 mechanisms." This is the first Layer 4 instance, arriving one ticket after Layer 4 opened. The document has now taken four such obligations — `administrative_scope_grants` (§1i), `extension_registrations` (§1k), `external_system_connections` (§1n), and this.
+
+**Fold into a consolidated pass**, per §1k and §1j's standing recommendation, rather than a fourth standalone amendment to the project's only Brutal-graded document. **But note the asymmetry:** part 2 above is isolation-adjacent, so if Layer 4 runs long, it is the one item here worth pulling forward on its own.
+
+---
+
 ## 1o. 🔶 OPEN 2026-08-07 — the Entity Access Gateway now has four checks, and three sibling documents still describe three
 
 **Disclosed by H26a at its own close, correctly and out of its authorized scope.** ADR-036 added a fourth check to `02-data-model-and-entity-design.md` §4.1's Gateway. Documents written while it had three still enumerate three.
