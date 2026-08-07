@@ -57,6 +57,28 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
+## 1l. 🔶 OPEN 2026-08-07 — `connector-registration` and `extension-registration` may be one event type, and a ticket-scoping defect prevented the check
+
+**Found at H25's close.** `06-integration-and-extensibility-design.md` §11 (H24) added the audit event type `extension-registration`, covering "an extension instance's own registration, grant assignment, or revocation." `07-cross-system-data-layer-design.md` §7 (H25) added `connector-registration`, covering a connection's own registration and revocation. **These may be the same event.** H25 itself treats C-24 as an Extension-family surface and dispatches an Extender-authored connector through the Extension Invocation Point — so a connector, in at least some cases, *is* an extension, and its registration would already be described by the existing type.
+
+**They may also be genuinely distinct** — a marketplace-origin connector need not be an Extender-authored extension, and H25 characterizes a connector's registration as "a *definition*, not an *evaluation*, of access-scoping configuration." **Neither reading is assumed here; the point is that no one has determined it.**
+
+**Cause: a ticket-authoring defect, and the Executor handled it correctly.** H25's prompt instructed "check whether an existing type covers an event before adding one" while authorizing `06-integration-and-extensibility-design.md` at "§5 in full, §8, §9 only" — **excluding §11, the Evidence Produced section where its event types are defined.** The check demanded was made impossible by the scope granted. The Executor noticed precisely this, declined to reuse a type name it could see only outside authorized scope, and derived a self-contained new type from the authorized `08-audit-and-traceability-design.md` §4.3 table instead. That is the right behavior under the constraint, and it is why the problem surfaced as a clean question rather than a silent inconsistency.
+
+### The standing rule this produces — third instance of the same family
+
+| Ticket | Defect |
+|---|---|
+| H16 | A document named in Writing Rules was omitted from Dependency Inputs |
+| H21 | The owner of a schema the ticket designed into was omitted (`BACKLOG.md` §1i) |
+| **H25** | **The section defining what the ticket told the Executor to check against was omitted** |
+
+**Rule, generalizing §1i's:** when a ticket instructs an Executor to *check against*, *reuse*, or *avoid duplicating* something, **the sections where that thing is defined must be inside the authorized scope.** An instruction to check, paired with a scope that forecloses the check, is a defect in the ticket, not in the work.
+
+**Resolution owed:** a determination whether the two event types merge — and if so, which absorbs the other, with a `source_mechanism`-style discriminator on the survivor, the move H25 already used for `authority-refusal`. Fold into the consolidated Layer 3 amendment pass alongside §1j and §1k rather than ticketing alone. **Nothing is blocked**: both types are well-formed and land in the same category; the cost of leaving it is a redundant type, not an incorrect one.
+
+---
+
 ## 1k. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes an extension-registration table, and is now a second accumulation point
 
 **Handed over by H24, correctly and in the right direction.** `06-integration-and-extensibility-design.md` §8 fixes that an Extender's registration and grant state belongs in the per-tenant schema, as a further narrowing of that Extender's existing `tenant_users` binding — explicitly following the `administrative_scope_grants` precedent §1i established, rather than defining a table in a schema it does not own. It constrains what the structure must carry (artifact reference, grant scope, tenant binding) and hands the physical definition to `02-platform-data-model-design.md` §3.2.
