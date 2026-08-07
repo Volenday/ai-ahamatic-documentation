@@ -57,6 +57,29 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
+## 1j. 🔶 OPEN 2026-08-06 — `02-data-model-and-entity-design.md` owes a process-definition catalog, and this is the pattern's fourth instance
+
+**Handed over by H22, correctly and in the right direction.** `04-workflow-and-process-automation-design.md` §4.1 fixes that a process definition is builder-authored content stored authoritatively on the platform's own schema-scoped storage, and constrains `02-data-model-and-entity-design.md` to be capable of representing — without loss — the definition's identity and version marker, its step graph including each step's kind and the opaque construct reference an interaction or action step carries, and a backward-compatibility determination analogous to that document's §7. It explicitly declines to design the tables itself, citing `PROCESS.md` §3.
+
+**This deferral is well-founded, unlike §1f's.** It models itself on `01-application-construction-design.md` §6's constrain-without-owning pattern, and the direction is right: a process definition is *builder-authored* content, and physical representation of builder-authored content is exactly `02-data-model-and-entity-design.md`'s charge. §1f failed because a *platform-owned* vocabulary was deferred to a builder-content document — the opposite case. Nothing here needs re-routing; the work simply needs doing.
+
+### The pattern this is the fourth instance of, and what to do about it
+
+`02-data-model-and-entity-design.md` (H20) was written before most of its dependents. Each dependent since has discovered a storage obligation for it:
+
+| Source | Obligation | Outcome |
+|---|---|---|
+| H14 | Provenance attribute | Declined to `09-ai-assisted-builder-tooling-design.md` (H45) |
+| H15/H16 | Region-of-record, classification tier, retention, consent basis | Discharged in H20 itself, or routed to `02-platform-data-model-design.md` (§1g) |
+| H21 | Administrative-scope grant | Landed in `02-platform-data-model-design.md` after relocation (§1i) |
+| **H22** | **Process-definition catalog + instance anchor** | **Open — this entry** |
+
+**This will keep happening.** `05-api-contract-design.md` (H23), `07-cross-system-data-layer-design.md`, and the remaining Layer 3 documents each have the same relationship to H20 that H22 does. **Recommendation: do not ticket this one amendment now.** Collect representability obligations as Layer 3 proceeds and run a **single consolidated H20c amendment** once the layer closes — one pass over a Brutal-graded document, with every obligation visible at once, rather than four separate edits each re-opening the same schema without sight of the others. H17's consolidation of twenty-two evidence rows is the precedent for why seeing them together produces a better result than seeing them one at a time.
+
+**Nothing is blocked meanwhile.** H22's own mechanism does not depend on the amendment existing, exactly as H19's shape did not depend on §1f's enumeration.
+
+---
+
 ## 1i. ✅ CLOSED 2026-08-06 by H21a — the per-application schema had three writers, and its ownership statement admitted only two
 
 **Found at H21's close.** `02-platform-data-model-design.md` §3.3 partitions the per-application schema between exactly two parties: itself, fixing "the two platform-owned tables that exist inside it before a builder defines anything" (`application_metadata`, `application_key`), and `02-data-model-and-entity-design.md`, to which it delegates "everything else in this schema — every builder-defined entity, relationship, and the temporal/history structures they carry." Its §12 boundary restates the same two-way split.
