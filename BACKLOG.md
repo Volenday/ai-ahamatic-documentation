@@ -73,8 +73,9 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 | H15/H16 | Region-of-record, classification tier, retention, consent basis | Discharged in H20 itself, or routed to `02-platform-data-model-design.md` (§1g) |
 | H21 | Administrative-scope grant | Landed in `02-platform-data-model-design.md` after relocation (§1i) |
 | **H22** | **Process-definition catalog + instance anchor** | **Open — this entry** |
+| **H23** | **A fourth Entity Access Gateway check: role-scoped record reach** | **Open — §1h-destination** |
 
-**This will keep happening.** `05-api-contract-design.md` (H23), `07-cross-system-data-layer-design.md`, and the remaining Layer 3 documents each have the same relationship to H20 that H22 does. **Recommendation: do not ticket this one amendment now.** Collect representability obligations as Layer 3 proceeds and run a **single consolidated H20c amendment** once the layer closes — one pass over a Brutal-graded document, with every obligation visible at once, rather than four separate edits each re-opening the same schema without sight of the others. H17's consolidation of twenty-two evidence rows is the precedent for why seeing them together produces a better result than seeing them one at a time.
+**This prediction held immediately.** The paragraph below was written at H22's close, naming H23 as the next likely source; H23 then produced exactly such an obligation at its own close. `07-cross-system-data-layer-design.md` and the remaining Layer 3 documents stand in the same relationship to H20. **Recommendation: do not ticket this one amendment now.** Collect representability obligations as Layer 3 proceeds and run a **single consolidated H20c amendment** once the layer closes — one pass over a Brutal-graded document, with every obligation visible at once, rather than four separate edits each re-opening the same schema without sight of the others. H17's consolidation of twenty-two evidence rows is the precedent for why seeing them together produces a better result than seeing them one at a time.
 
 **Nothing is blocked meanwhile.** H22's own mechanism does not depend on the amendment existing, exactly as H19's shape did not depend on §1f's enumeration.
 
@@ -126,6 +127,14 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 **Still open: end-user-role-scoped, construct-mediated record access** — a Surface presenting entity content to an end user, where the question is which records that user's role may reach. `03-data-administration-design.md` §5.5 names this explicitly as unresolved and **assigns it no destination**, which is the same ownerless-deferral shape §1f had.
 
 **Candidate homes, none yet chosen:** `05-api-contract-design.md` (H23), if record reach is a property of the contract a Surface reads through; a future runtime/operation document under C-07, since the question only arises once built software serves end users; or a widening of `01-application-construction-design.md` §4.1's access-binding target beyond constructs — which would reopen a document amended once already (H20a) and should not be done casually. **The first ticket whose subject matter forces the question should be made to determine it**, on the H21 pattern that worked here.
+
+### 1h-destination. **H23 assessed it, declined it, and named a destination — the question is now claimed. *(Added 2026-08-07.)***
+
+H23's ticket asked it to claim the question or decline it with grounds and a better candidate, rather than claim it merely because asked. **It declined**, and the reasoning is structural rather than preferential (`05-api-contract-design.md` §11): the open question is an *authorization* determination, not a contract-shape one, and **by the time a response reaches the contract layer the Entity Access Gateway has already bounded what content it may carry** — so no response-envelope or error-shape rule this document fixes could express the outcome, because the decision is already made upstream of it.
+
+**Destination named: a fourth check on the Entity Access Gateway, `02-data-model-and-entity-design.md` §4.1.** That document already owns the single mediation point every entity read and write passes through, alongside the Validation Engine, the Consent and Minimization Check, and classification resolution — so a role-scoped record-reach check extends a mechanism that document owns outright, on the same compose-with-what-exists discipline `03-data-administration-design.md` §5.4 already applied. H23 did not perform the amendment (`PROCESS.md` §3).
+
+**Status: destination settled, work owed.** Fold into the consolidated amendment §1j recommends rather than ticketing separately — this is the fifth obligation on the same document.
 
 ---
 
