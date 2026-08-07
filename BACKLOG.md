@@ -57,6 +57,28 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
+## 1k. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes an extension-registration table, and is now a second accumulation point
+
+**Handed over by H24, correctly and in the right direction.** `06-integration-and-extensibility-design.md` §8 fixes that an Extender's registration and grant state belongs in the per-tenant schema, as a further narrowing of that Extender's existing `tenant_users` binding — explicitly following the `administrative_scope_grants` precedent §1i established, rather than defining a table in a schema it does not own. It constrains what the structure must carry (artifact reference, grant scope, tenant binding) and hands the physical definition to `02-platform-data-model-design.md` §3.2.
+
+**The direction is right and needs no re-routing.** Access-scoping configuration at the tenant level is exactly what that document already owns — `tenant_users`, `tenant_user_application_scope`, and now `administrative_scope_grants` are the same family. H24 applied §1i's lesson rather than repeating its error, which is the outcome recording that entry was for.
+
+### The pattern has a second accumulation point now
+
+§1j records that `02-data-model-and-entity-design.md` collects storage obligations from every Layer 3 document written after it. **`02-platform-data-model-design.md` is doing the same thing**, for a different reason: it owns the platform-global and per-tenant levels, so every access-scoping or registration structure any later document needs lands there.
+
+| Owed to `02-platform-data-model-design.md` | Source | Status |
+|---|---|---|
+| Region-of-record | ADR-023 (H15) | ✅ Closed by H20b |
+| Administrative-scope grant | H21 | ✅ Closed by H21a |
+| **Extension registration + grant** | **H24** | **Open — this entry** |
+
+**Recommendation, matching §1j's:** do not ticket this one alone. The two prior obligations each ran as a separate amendment (H20b, H21a) against a **Brutal-graded** document — three separate openings of the same schema. Collect this one and run it with whatever else Layer 3 produces, in a single consolidated pass alongside §1j's `02-data-model-and-entity-design.md` amendment. Two consolidated amendments at Layer 3's close, not six scattered ones.
+
+**Nothing is blocked meanwhile.** H24's mechanism does not depend on the table existing, exactly as H22's did not.
+
+---
+
 ## 1j. 🔶 OPEN 2026-08-06 — `02-data-model-and-entity-design.md` owes a process-definition catalog, and this is the pattern's fourth instance
 
 **Handed over by H22, correctly and in the right direction.** `04-workflow-and-process-automation-design.md` §4.1 fixes that a process definition is builder-authored content stored authoritatively on the platform's own schema-scoped storage, and constrains `02-data-model-and-entity-design.md` to be capable of representing — without loss — the definition's identity and version marker, its step graph including each step's kind and the opaque construct reference an interaction or action step carries, and a backward-compatibility determination analogous to that document's §7. It explicitly declines to design the tables itself, citing `PROCESS.md` §3.
