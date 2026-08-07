@@ -57,7 +57,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1m. 🔶 OPEN 2026-08-07 — ADR-035 omits the `Context` field the ADR convention requires
+## 1m. ✅ CLOSED 2026-08-07 by H26c — ADR-035 omitted the `Context` field the ADR convention requires
 
 **Found at H26's close, by field-by-field check against the convention.** `01-technology-stack-design.md` §9 fixes what every ADR captures: "an identifier; a title; a status; **the question it answers**; **the context that made a decision necessary**; **the criteria applied, and how each resolved**; the decision itself; the alternatives considered and the tradeoff that ruled each out; and the consequences" — plus cost-to-reverse, upstream-decisions-assumed, and verified-vs-reasoned added later. **ADR-035 (`08-coding-standards-and-patterns-design.md` §9) carries nine of the ten; `Context` is absent.**
 
@@ -71,7 +71,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1l. 🔶 OPEN 2026-08-07 — `connector-registration` and `extension-registration` may be one event type, and a ticket-scoping defect prevented the check
+## 1l. ✅ CLOSED 2026-08-07 by H26c — `connector-registration` and `extension-registration` are two types, determined; a ticket-scoping defect had prevented the check
 
 **Found at H25's close.** `06-integration-and-extensibility-design.md` §11 (H24) added the audit event type `extension-registration`, covering "an extension instance's own registration, grant assignment, or revocation." `07-cross-system-data-layer-design.md` §7 (H25) added `connector-registration`, covering a connection's own registration and revocation. **These may be the same event.** H25 itself treats C-24 as an Extension-family surface and dispatches an Extender-authored connector through the Extension Invocation Point — so a connector, in at least some cases, *is* an extension, and its registration would already be described by the existing type.
 
