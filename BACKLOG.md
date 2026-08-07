@@ -79,6 +79,14 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 **Cause: a ticket-authoring defect, and the Executor handled it correctly.** H25's prompt instructed "check whether an existing type covers an event before adding one" while authorizing `06-integration-and-extensibility-design.md` at "§5 in full, §8, §9 only" — **excluding §11, the Evidence Produced section where its event types are defined.** The check demanded was made impossible by the scope granted. The Executor noticed precisely this, declined to reuse a type name it could see only outside authorized scope, and derived a self-contained new type from the authorized `08-audit-and-traceability-design.md` §4.3 table instead. That is the right behavior under the constraint, and it is why the problem surfaced as a clean question rather than a silent inconsistency.
 
+### 1l-narrowing. **H26a and H26b both bear on this, and together they sharpen the question rather than answering it. *(Added 2026-08-07.)***
+
+**H26b answered the structural half.** ADR-037 determines that extension registration and external-system connection are **genuinely distinct** structures, neither a specialization of the other — a marketplace connector holds a connection row with no registration row; an Extender-authored extension with no external reach holds a registration row with no connection row; they compose only where a connector is Extender-authored, and even then by a plain, origin-discriminated value rather than an enforced key.
+
+**But that does not settle the event question, and it is important not to read it as if it does.** *Distinct structures* does not entail *distinct event types*. The library's own counter-precedent is direct: `authority-refusal` has now been extended **three times** — by `06-integration-and-extensibility-design.md`, `07-cross-system-data-layer-design.md`, and H26a — each time for a genuinely distinct mechanism, each time via a `source_mechanism` discriminator rather than a new type. Distinct mechanisms sharing one event type is the established pattern, not an exception to it.
+
+**So §1l's real question is now narrower than when it was opened:** not *"are these the same thing"* — H26b answered that, and they are not — but **"does an audit consumer need to distinguish them at the type level, or is a discriminator field sufficient?"** That is a question about the consolidated event model's own consumers (`08-audit-and-traceability-design.md` §4.1's "one record shape, not five parallel logs"), and it is answerable on that basis alone. H26c should be judged against this framing.
+
 ### The standing rule this produces — third instance of the same family
 
 | Ticket | Defect |
@@ -93,7 +101,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 ---
 
-## 1k. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes an extension-registration table, and is now a second accumulation point
+## 1k. ✅ CLOSED 2026-08-07 by H26b — `02-platform-data-model-design.md` owed an extension-registration table, and became a second accumulation point
 
 **Handed over by H24, correctly and in the right direction.** `06-integration-and-extensibility-design.md` §8 fixes that an Extender's registration and grant state belongs in the per-tenant schema, as a further narrowing of that Extender's existing `tenant_users` binding — explicitly following the `administrative_scope_grants` precedent §1i established, rather than defining a table in a schema it does not own. It constrains what the structure must carry (artifact reference, grant scope, tenant binding) and hands the physical definition to `02-platform-data-model-design.md` §3.2.
 
@@ -210,7 +218,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1n. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a per-tenant external-system connection-and-credential table
+## 1n. ✅ CLOSED 2026-08-07 by H26b — `02-platform-data-model-design.md` owed a per-tenant external-system connection-and-credential table
 
 **Handed over by H25 (`07-cross-system-data-layer-design.md` §5, ADR-034's Consequences), and recorded late.** That ADR binds this document "to add the per-tenant connection-and-credential table this document constrains but does not define, on a future, separately-ticketed amendment, **distinct in content from `tenant_host_connections`**." The constraint names what it must carry: connector identity, credential reference, and a declared region-of-record — the last being what lets the Region Boundary Check resolve an external system at all, absent which H25 §4 resolves the obligation to refusal.
 
