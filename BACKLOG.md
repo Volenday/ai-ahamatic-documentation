@@ -204,6 +204,32 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1r. 🔶 OPEN 2026-08-07 — one domain-flavored word in `03-builder-facing-version-control-design.md`, the library's first in 24 documents
+
+**Found at H29's close.** §9's second honest-limit paragraph illustrates an instance-level effect as *"a discount a Command's own behavior once applied, a record a Surface's own submission once created, or any other instance-level effect."* The second and third members are structural; **the first names a domain artifact.** Verified library-wide: this is the **only** occurrence of any such term across all 24 design documents.
+
+**Scale it correctly.** One word, in an illustrative triple, inside an honest-limit paragraph — not a design defect, and the paragraph's argument is unaffected. But the standard this library has actually held is that generality is demonstrated by **the absence of a subject**, not by asserting domain-neutrality in prose, and a discount is a subject. Every prior Layer 3 and Layer 4 document cleared a zero-leakage grep.
+
+**Fix: delete the clause or replace it with a structural one** — the sentence reads correctly with two members. **Fold into the consolidated amendment pass.**
+
+**Worth recording rather than fixing silently** because it is a *drift signal*, not a pattern: 24 documents at zero, then one. The value is knowing the discipline slipped once and where, so a future reviewer checking "has domain-neutrality held?" gets a true answer rather than a near-true one.
+
+---
+
+## 1q. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a version-history structure, and the accumulation is now one obligation per ticket
+
+**Handed over by H29 (ADR-040), correctly and by the established pattern.** `03-builder-facing-version-control-design.md` §5 constrains a new per-tenant version-history structure — `application_id`, stage, a version marker monotonic per `(application_id, stage)`, captured-at, capturing-actor reference, a manifest reference set, and, for a revert-produced version, which prior version it restored — and hands the physical definition to `02-platform-data-model-design.md` rather than defining a table in a schema it does not own.
+
+**One difference from §1p worth carrying into the amendment:** H28's stage-schema mapping needs **no** Development row, because Development is the schema construction already produces. This version-history structure **does** need one, since Development carries its own independent version history. Two structures handed over one ticket apart, with opposite treatment of the same stage — exactly the kind of detail a consolidated pass sees and two separate amendments would not.
+
+### The accumulation rate has changed, and that changes the recommendation
+
+`02-platform-data-model-design.md` has now taken **five** constrain-and-hand-over obligations: `administrative_scope_grants` (§1i, closed), `extension_registrations` (§1k, closed), `external_system_connections` (§1n, closed), the stage-schema mapping (§1p, open), and this. **The first three arrived across all of Layer 3; the last two arrived in consecutive tickets.** Layer 4 is producing them roughly one per document.
+
+**Revised recommendation:** §1k and §1j advised batching at Layer 3's close, and that was right then. At one obligation per ticket, waiting for Layer 4's close means a consolidated pass carrying five or six structures into the project's only Brutal-graded document at once. **Consider running the pass after `04-publishing-and-delivery-design.md` (H30) rather than at layer end** — that is the natural checkpoint, and §1p's `application_metadata` stage-recording half is isolation-adjacent and already flagged as the one item worth pulling forward regardless.
+
+---
+
 ## 1p. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a stage-schema mapping, and the prediction in §1k held again
 
 **Handed over by H28 (ADR-039), correctly and by the established pattern.** `02-builder-facing-environment-management-design.md` §4 resolves C-23's identity-vs-isolation tension with **sibling per-application schemas under one unchanging identity**: Development is the schema construction already produces, and Testing and Production are additional schemas materialized on first promotion. `platform.applications.schema_name` is never reassigned and no second application row is created — so the constraint `01-application-runtime-and-lifecycle-design.md` §12 placed on it is honored exactly.
