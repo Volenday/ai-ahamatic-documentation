@@ -214,7 +214,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1r. 🔶 OPEN 2026-08-07 — one domain-flavored word in `03-builder-facing-version-control-design.md`, the library's first in 24 documents
+## 1r. ✅ CLOSED 2026-08-07 by H30b — one domain-flavored word in `03-builder-facing-version-control-design.md`, the library's first in 24 documents
 
 **Found at H29's close.** §9's second honest-limit paragraph illustrates an instance-level effect as *"a discount a Command's own behavior once applied, a record a Surface's own submission once created, or any other instance-level effect."* The second and third members are structural; **the first names a domain artifact.** Verified library-wide: this is the **only** occurrence of any such term across all 24 design documents.
 
@@ -254,7 +254,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1o. 🔶 OPEN 2026-08-07 — the Entity Access Gateway now has four checks, and three sibling documents still describe three
+## 1o. ✅ CLOSED 2026-08-07 by H30b — the Entity Access Gateway gained a fourth check, and sibling documents still described three
 
 **Disclosed by H26a at its own close, correctly and out of its authorized scope.** ADR-036 added a fourth check to `02-data-model-and-entity-design.md` §4.1's Gateway. Documents written while it had three still enumerate three.
 
