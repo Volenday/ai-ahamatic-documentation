@@ -204,7 +204,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1s. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a publication-status **column**, and the departure from precedent is the point
+## 1s. ✅ CLOSED 2026-08-07 by H30a — `02-platform-data-model-design.md` owed a publication-status **column**, and the departure from precedent was the point
 
 **Handed over by H30 (ADR-041).** `04-publishing-and-delivery-design.md` §12 constrains `02-platform-data-model-design.md` to carry, **on the existing `platform.applications` row**, an application's current publication status (`published` / `withdrawn`, defaulting to never-published), when it was last set, and the resolved Publisher-role identity that set it.
 
@@ -226,7 +226,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1q. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a version-history structure, and the accumulation is now one obligation per ticket
+## 1q. ✅ CLOSED 2026-08-07 by H30a — `02-platform-data-model-design.md` owed a version-history structure, and the accumulation was one obligation per ticket
 
 **Handed over by H29 (ADR-040), correctly and by the established pattern.** `03-builder-facing-version-control-design.md` §5 constrains a new per-tenant version-history structure — `application_id`, stage, a version marker monotonic per `(application_id, stage)`, captured-at, capturing-actor reference, a manifest reference set, and, for a revert-produced version, which prior version it restored — and hands the physical definition to `02-platform-data-model-design.md` rather than defining a table in a schema it does not own.
 
@@ -240,7 +240,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1p. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a stage-schema mapping, and the prediction in §1k held again
+## 1p. ✅ CLOSED 2026-08-07 by H30a — `02-platform-data-model-design.md` owed a stage-schema mapping, and the prediction in §1k held again
 
 **Handed over by H28 (ADR-039), correctly and by the established pattern.** `02-builder-facing-environment-management-design.md` §4 resolves C-23's identity-vs-isolation tension with **sibling per-application schemas under one unchanging identity**: Development is the schema construction already produces, and Testing and Production are additional schemas materialized on first promotion. `platform.applications.schema_name` is never reassigned and no second application row is created — so the constraint `01-application-runtime-and-lifecycle-design.md` §12 placed on it is honored exactly.
 
