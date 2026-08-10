@@ -254,6 +254,28 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1t. 🔶 OPEN 2026-08-10 — a standing rule for the Orchestrator: verify a cited section's *content* before asserting it in a ticket prompt
+
+**Found at H33's close, and the defect is the Orchestrator's, not any Executor's.** H33's prompt asserted that `07-cross-system-data-layer-design.md` §4.3 fixes "six hard constraints on any external-system connection," and enumerated them. That section is **"External Data as Untrusted Input, Validated at the Boundary."** The six constraints belong to `04-workflow-and-process-automation-design.md` §4.3, **"What Must Be True of Any Adopted Engine for Isolation to Hold"** — written into that ticket's own close two weeks of work earlier, and recalled onto the wrong document.
+
+**The Executor caught it, raised it mid-session rather than proceeding, and the user directed the correction.** Its judgment was also right on the substance: engine-adoption criteria govern *the platform choosing its own dependency*, whereas C-25 governs *admitting a tenant-facing third-party artifact* — a different decision shape, and forcing the list in would have produced a document constrained by the wrong things.
+
+### The pattern, and the rule it produces
+
+This is the **third** ticket-authoring defect of a recognizable family, each caught by an Executor rather than by the Orchestrator:
+
+| Ticket | Defect | Recorded |
+|---|---|---|
+| H16 | A document named in Writing Rules but omitted from Dependency Inputs | H16's close |
+| H21 | The schema-owning document omitted entirely, so a partition could not be checked | §1i, which produced a standing rule |
+| **H33** | **A section's content asserted from memory and attributed to the wrong document** | **This entry** |
+
+**Standing rule: when a ticket prompt asserts what a specific section contains — especially an enumeration, a count, or a named list — read that section before writing the assertion.** §1i's rule made a document a *mandatory input*; this one is narrower and different: it governs what the Orchestrator may *claim* about a section it is citing. A wrong citation in a prompt is more dangerous than a missing one, because an Executor has no reason to doubt it and every reason to build on it.
+
+**Not blocking anything.** H33's own document relies on the correct sets — `07-cross-system-data-layer-design.md` §4's five guarantees and `06-marketplace-design.md` §5's six submission constraints — and carries a front-matter note recording the correction. This entry exists so the rule survives, not because work is outstanding.
+
+---
+
 ## 1o. ✅ CLOSED 2026-08-07 by H30b — the Entity Access Gateway gained a fourth check, and sibling documents still described three
 
 **Disclosed by H26a at its own close, correctly and out of its authorized scope.** ADR-036 added a fourth check to `02-data-model-and-entity-design.md` §4.1's Gateway. Documents written while it had three still enumerate three.
