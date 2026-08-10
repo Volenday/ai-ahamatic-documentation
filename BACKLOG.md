@@ -204,6 +204,16 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1s. 🔶 OPEN 2026-08-07 — `02-platform-data-model-design.md` owes a publication-status **column**, and the departure from precedent is the point
+
+**Handed over by H30 (ADR-041).** `04-publishing-and-delivery-design.md` §12 constrains `02-platform-data-model-design.md` to carry, **on the existing `platform.applications` row**, an application's current publication status (`published` / `withdrawn`, defaulting to never-published), when it was last set, and the resolved Publisher-role identity that set it.
+
+**This is a column addition, not a new table — and it declines two consecutive precedents deliberately.** §1p and §1q both handed over table-shaped structures, and the easy move here was a third. H30 reasoned it out instead: publication status is a **single current-state fact per application, structurally identical to the existing `status` column**, with none of the history obligation that made the stage-schema and version-history structures tables. **Precedent applied where it fits and declined where it does not** — worth recording as the good case, since three of the last four tickets cited a precedent and this is the first to decline one on grounds.
+
+**Fold into the consolidated pass** — and note it is the cheapest of the three open obligations there.
+
+---
+
 ## 1r. 🔶 OPEN 2026-08-07 — one domain-flavored word in `03-builder-facing-version-control-design.md`, the library's first in 24 documents
 
 **Found at H29's close.** §9's second honest-limit paragraph illustrates an instance-level effect as *"a discount a Command's own behavior once applied, a record a Surface's own submission once created, or any other instance-level effect."* The second and third members are structural; **the first names a domain artifact.** Verified library-wide: this is the **only** occurrence of any such term across all 24 design documents.
