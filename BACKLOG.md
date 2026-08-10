@@ -264,6 +264,22 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 **Fix, when it runs:** update the two enumerations, and add one clause to ADR-030 criterion 4 noting that the fourth step it declined for the *professional-builder* actor class was later adopted for the *end-user* class on different grounds, citing ADR-036. **No decision is reopened by any of this** — it is citation accuracy on a mechanism whose arity changed underneath already-written prose.
 
+### 1o-rescope. **Re-verified 2026-08-07 before ticketing, and the scope is narrower and subtler than recorded above.** *(Corrected.)*
+
+This entry said "three sibling documents still describe three," taken from H26a's disclosure. A direct sweep of all eleven documents citing the Gateway finds:
+
+| Site | State |
+|---|---|
+| `03-data-administration-design.md` §2 | 🔶 **Stale** — a three-item enumeration inside a disclaimer of ownership of "the Gateway itself," which should name all four |
+| `04-workflow-and-process-automation-design.md` §2 | 🔶 **Stale** — the identical disclaimer, identically incomplete |
+| `03-data-administration-design.md` ADR-030 criterion 4 | 🔶 **Stale, and the sharpest case** — asserts "the Gateway's three-step order is fixed by §4.1," which is now simply false as a statement about the Gateway's arity |
+| `02-builder-facing-environment-management-design.md` §6 | ⚠️ **Probably correct — do not blanket-fix** |
+| `01-application-runtime-and-lifecycle-design.md` §2 | ✅ **Already correct** — enumerates all four; written after ADR-036 |
+
+**The fourth row is why this matters.** H28's three-item list appears in a *promotion-failure* context, and a promotion is performed by a **builder-persona** actor. ADR-036's fourth check has a precondition — an **end-user** role reaching content through a construct — so it is **inapplicable** to a promotion, exactly as H26a §9.7 established for automated process steps. **A three-item list is accurate there.**
+
+**Consequence for the fix: this is not "add the fourth check everywhere."** Each site is judged on whether the fourth check is applicable in its own context. A blanket correction would introduce a *new* error — asserting a check fires where its own precondition cannot be met.
+
 **Why record rather than fix now:** both target documents were read-only inputs to H26a, and `PROCESS.md` §3 permits an inline Orchestrator amendment only on explicit direction. **Fold into the next consolidated pass** — and note this is the first item of a new kind: not a missing structure, but *staleness created by a later amendment*. Expect more as Layer 4 amends Layer 3 mechanisms.
 
 ---
