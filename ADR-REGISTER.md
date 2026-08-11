@@ -1,6 +1,6 @@
 # AI ahaMatic — Design Decision Record (ADR) Register
 
-A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-11** (post-H36 — ADR-047 registered at its own ticket's close; ADR-046 at H35's, opening Layer 5. ADR-045 registered at H34's close, closing Layer 4; its row was reconciled at that close against the owning document, having been pre-written from a superseded draft of the same ticket that was set aside before H34 ran; ADR-017 discharged from Owed to Approved at H31; ADR-038 was the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
+A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-11** (post-H37 — ADR-048 registered at its own ticket's close; ADR-047 at H36's; ADR-046 at H35's, opening Layer 5. ADR-045 registered at H34's close, closing Layer 4; its row was reconciled at that close against the owning document, having been pre-written from a superseded draft of the same ticket that was set aside before H34 ran; ADR-017 discharged from Owed to Approved at H31; ADR-038 was the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
 
 **What this file is.** An index, in the same sense as `docs/spec/context-document-map.md` and `docs/design/implementation-document-map.md` — it routes to decisions and reports their status.
 
@@ -10,7 +10,7 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 
 ## Status summary
 
-**Twenty-seven ADRs now await lead approval — ADR-021 through ADR-047.** The earlier claim here — that every ADR was closed and nothing awaited approval — was true of the Layer 1 set at H6 and has not been true of the phase since H13. The three ADRs that waited on the data model (001, 008, 009) remain discharged by H6 on the evidence of `02-platform-data-model-design.md`.
+**Twenty-eight ADRs now await lead approval — ADR-021 through ADR-048.** The earlier claim here — that every ADR was closed and nothing awaited approval — was true of the Layer 1 set at H6 and has not been true of the phase since H13. The three ADRs that waited on the data model (001, 008, 009) remain discharged by H6 on the evidence of `02-platform-data-model-design.md`.
 
 | Status | Count | ADRs |
 |---|---|---|
@@ -18,12 +18,12 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 | ✅ **Resolved** — closed, no further action | 5 | **ADR-001**, ADR-002, **ADR-008**, **ADR-012**, **ADR-013** |
 | ✅ **Approved** — added to this register 2026-08-03; H8's three were never registered | 3 | **ADR-014**, **ADR-015**, **ADR-016** *(016 amended per D-18)* |
 | ✅ **Approved** — self-approved by their own ticket under D-16; **see live issue 5** | 3 | **ADR-018** *(H10)*, **ADR-019** *(H11)*, **ADR-020** *(H12)* |
-| 🔶 **Provisional — Pending Lead Approval** | **27** | **ADR-021**–**ADR-047** *(H13 through H36)* — every ADR produced since H13, none in `DECISIONS.md` |
+| 🔶 **Provisional — Pending Lead Approval** | **28** | **ADR-021**–**ADR-048** *(H13 through H37)* — every ADR produced since H13, none in `DECISIONS.md` |
 | ⬜ **Owed** — decided, ADR not yet written | **0 — none remain** | *(Was ADR-017; written by H31 on 2026-08-10.)* |
 | ⚠️ Superseded *(in part)* | 1 | ADR-007 *(mobile-runtime part, by ADR-009)* |
 | 🅿️ **Parked** | **0 — none remain** | *(Was: the GraphQL sub-decision inside ADR-006. **Closed 2026-08-03 by `DECISIONS.md` D-19** — the commissioned study was run and confirmed the original reasoning, moving the sub-decision from Parked to **Rejected**. This row and live issue 3 had not been updated; corrected 2026-08-06.)* |
 
-**Twenty-seven ADRs now await lead approval — ADR-021 through ADR-047, none recorded in `DECISIONS.md`.** That is every ADR produced since H13, and it is the design phase's largest standing decision backlog. See live issue 8 on why the register keeps falling behind.
+**Twenty-eight ADRs now await lead approval — ADR-021 through ADR-048, none recorded in `DECISIONS.md`.** That is every ADR produced since H13, and it is the design phase's largest standing decision backlog. See live issue 8 on why the register keeps falling behind.
 
 **Prior note, superseded but retained:** three open items — the three provisional ADRs. The GraphQL study is **not** among them: it was run and closed on 2026-08-03 (D-19), though this file's own summary and live issue 3 continued to report it as owed until 2026-08-06. **None of ADR-018 through ADR-023 appears in `DECISIONS.md`** — verified 2026-08-06 — which under §9's "approval changes status, not content" rule is the expected state for the three provisional ones and an open question for the three self-approved ones (live issue 5).
 
@@ -82,6 +82,7 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **045** | Tenant-scoped physical placement; a pre-authentication Region Resolution Point; portable platform-owned redirect over provider-unique global routing | `08-multi-region-distribution-design.md` §13.1 | 🔶 **Provisional** (H34) | **High — stated above §12.1's cloud-substrate rung**, since reversal physically relocates already-resident tenant data across a region boundary — itself a governed transfer under the Region Boundary Check, not a redeploy | ADR-005, ADR-023, ADR-018, ADR-039, ADR-010, ADR-004 |
 | **046** | Structurally separate tier instantiation; deploy-time-injected tier/region identity; discharge of the four named provisioning obligations inside ADR-010's portable subset | `01-environment-and-configuration-design.md` §12.1 | 🔶 **Provisional** (H35) | **Moderate** — §12.1's cloud-provider rung; reversal re-does infrastructure only, touching no stored data, schema, or published contract | ADR-005, ADR-010, ADR-021, ADR-023, ADR-025, ADR-039, ADR-045 |
 | **047** | Consolidated gate placement — the CI-level Merge Gate as the pipeline's own gate, diff-based checks run once at Merge, and Production's no-bypass rule made structural by the singular deploy credential | `02-ci-cd-pipeline-design.md` §12.1 | 🔶 **Provisional** (H36) | **Low** — §12.1's cheapest rung; reversal re-authors pipeline configuration only | ADR-005, ADR-010, ADR-014, ADR-021, ADR-022, ADR-023, ADR-025, ADR-032, ADR-035, ADR-045, ADR-046 |
+| **048** | The Isolation and Trust module's higher bar (100% branch coverage + a boundary-crossing test class), the tier-applicability enforcement model, and no new evidence type | `03-testing-and-quality-gates-design.md` §12.1 | 🔶 **Provisional** (H37) | **Low** — §12.1's cheapest rung; every decision is a threshold, floor, or enforcement point that reversal retunes | ADR-014, ADR-020, ADR-021, ADR-025, ADR-032, ADR-035, ADR-047 |
 | **003** | Verification-weighted criteria set *(method)* | §13 | ✅ Approved | n/a — method | — |
 | **002** | Post-evaluation review of two further full-stack candidates | §12.3 | ✅ Resolved — no change | n/a — review | ADR-001 |
 

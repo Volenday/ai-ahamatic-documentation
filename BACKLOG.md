@@ -254,6 +254,27 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1w. 🔶 OPEN 2026-08-11 — Executor-side citation drift is escalating, and one instance was a fabricated quotation; the mandatory review skill is currently the only thing catching it
+
+**Recorded because the trend is the finding, not any single ticket.** §1t tracks this defect family on the **Orchestrator's** side — a ticket prompt asserting what a section contains. This entry records the same family on the **Executor's** side, in the deliverable itself, where the count per ticket has moved sharply:
+
+| Ticket | Self-caught citation/attribution defects |
+|---|---|
+| H34 | 0 reported (one section-order fix) |
+| H35 | 2 |
+| H36 | 1 |
+| **H37** | **6** |
+
+**One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
+
+**Why this is worth recording anyway.** A quotation mark is a claim of provenance. Every other defect in this family degrades traceability; a fabricated quote *manufactures* it, and it is the one variant a reader cannot detect without opening the source — the same property that makes §1t's wrong-section citations dangerous, one step further. It is also the variant least likely to be caught by the author, since the invented sentence reads as exactly what the argument needed.
+
+**The load-bearing observation: `PROCESS.md` §3's ⛔ note is doing real work.** That note made the review skill mandatory and explicit after observed drift, over an objection that a clean-looking deliverable does not need it. **H37 is direct evidence for it** — six defects in a document whose design reasoning was substantively correct throughout, none of which the design work itself would have surfaced. Any future proposal to relax step 8, or to let a handoff-shaped paragraph substitute for the skill call, should be read against this row.
+
+**Not blocking, and not a document to fix.** Every affected file is correct as shipped. Two things to watch: whether the per-ticket count keeps climbing (which would suggest something about ticket density or dependency-list breadth, not about any Executor), and whether a fabricated quotation ever appears in a ticket that skipped or improvised its review step — that combination is the one this project has no defense against.
+
+---
+
 ## 1v. 🔶 OPEN 2026-08-11 — the library has no live index of `event_type` values; `08-audit-and-traceability-design.md` §4.3 is a point-in-time reconciliation that ten later types never entered
 
 **Found at H36's close, and it is not H36's defect** — that ticket reused eight existing types and correctly added none. It surfaced while verifying its "all eight reused" claim: two of the eight (`standards-check`, `contract-breaking-change-detected`) are absent from the audit document's consolidated table, and checking why exposed the general case.
