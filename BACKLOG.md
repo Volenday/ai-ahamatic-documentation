@@ -254,6 +254,32 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1v. 🔶 OPEN 2026-08-11 — the library has no live index of `event_type` values; `08-audit-and-traceability-design.md` §4.3 is a point-in-time reconciliation that ten later types never entered
+
+**Found at H36's close, and it is not H36's defect** — that ticket reused eight existing types and correctly added none. It surfaced while verifying its "all eight reused" claim: two of the eight (`standards-check`, `contract-breaking-change-detected`) are absent from the audit document's consolidated table, and checking why exposed the general case.
+
+**What §4.3 actually is.** Its own opening scopes it precisely: it places *"every row **the five inherited documents** handed this document"* into eight event-type families. It is a **reconciliation of what five documents handed it at the time it was written** — not a standing registry that later documents register into. It never claimed to be one, so this is not a broken promise; it is a gap nothing owns.
+
+**The measured drift.** §4.3's table carries **23** event types. At least **ten** more are defined in owning documents and appear nowhere in it:
+
+| `event_type` | Defined in |
+|---|---|
+| `standards-check` | `08-coding-standards-and-patterns-design.md` §7 |
+| `contract-breaking-change-detected`, `contract-change-signoff` | `05-api-contract-design.md` §9 |
+| `marketplace-offering-status-change`, `marketplace-obtain` | `06-marketplace-design.md` §10 |
+| `connector-marketplace-offering-status-change`, `connector-marketplace-obtain` | `07-connector-marketplace-design.md` §10 |
+| `locality-resolution-refusal` | `08-multi-region-distribution-design.md` §12 |
+| `secret-injection-refusal` | `01-environment-and-configuration-design.md` §11 |
+| *(plus H30's publishing event with its `result` discriminator)* | `04-publishing-and-delivery-design.md` §13 |
+
+**This is structurally the same failure as live issue 8, and that is the useful part.** `ADR-REGISTER.md` fell fourteen ADRs behind because `PROCESS.md` §3 did not name it among the trackers, so nothing in the per-ticket loop required touching it. **Event types are in exactly that position now** — each Executor correctly applies the H26c test and defines its type in its own owning document, per the convention that the owning document governs; nothing requires or permits it to amend the audit document, which is a read-only dependency input on every such ticket. The mechanism is working as designed and the index still goes stale.
+
+**Why it matters, concretely.** The H26c test asks whether a proposed event is *"a genuinely new definitional fact"* versus *"a recurrence under an already-typed mechanism."* An Executor applying that test reads §4.3 to find out what already exists — and §4.3 is now missing roughly a third of the answer. **The test's own quality degrades as the index decays**, which is how two documents eventually mint near-duplicate types without either noticing. H33 already navigated this by hand, deliberately keeping its two connector types distinct from H32's two.
+
+**Not urgent, and not a document defect to fix in place.** No two existing types collide today — checked. The options are to give the audit document a standing registry section maintained at each ticket's close (mirroring the ADR-REGISTER fix), or to accept owning-document dispersal and give Executors a grep recipe instead of a table. **Either is a decision, not a cleanup**, and it likely belongs with whoever resolves live issue 8's cadence question, since the fix shape is the same.
+
+---
+
 ## 1u. 🔶 OPEN 2026-08-11 — the Region Resolution Point reads registry columns from `components/distribution`, which `02-tenant-isolation-and-access-control-design.md` §5.3 forbids at Full coverage
 
 **Found at H34's close, by checking the new mechanism against the import-boundary rules rather than against the dependency-direction table alone.** H34 §6.2 designs a **second, deliberately narrower read path** for pre-authentication region resolution, realized inside `components/distribution` (§6.1, §8). Its justification for not reusing the Registry Accessor is sound and independently verified: the accessor's signature accepts "only an **already-authenticated** actor identity... never a client-supplied `tenant_id`" (`02-tenant-isolation-and-access-control-design.md` §3.1, quoted accurately), and routing must run before authentication and must be keyed by an address-supplied identifier — so reuse would weaken the accessor's own guarantee rather than compose with it. That reasoning is not in question.
