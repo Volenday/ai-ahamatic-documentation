@@ -254,6 +254,29 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1aa. 🔶 OPEN 2026-08-11 — four structural obligations have accumulated untracked since H30a; the per-obligation tracking that §1i–§1s ran stopped being applied, and the lapse is the Orchestrator's
+
+**Found at H43's close, while checking whether that ticket's new-structure finding needed a running tally. It did, and the tally had stopped.**
+
+`BACKLOG.md` §1i, §1j, §1k, §1p, §1q, §1s each recorded one structural obligation owed to a data-model document, and that discipline worked exactly as intended — the obligations were visible, were batched rather than run as six separate amendments against a **Brutal**-graded document, and were discharged at H26a/H26b/H30a. **After H30a closed the last of them, the practice stopped, and nothing replaced it.** Four obligations have since been named inside design documents' own Consequences fields with no tracker entry anywhere:
+
+| Owed to | Structure | Named in | Ticket |
+|---|---|---|---|
+| `02-platform-data-model-design.md` | One platform-global marketplace structure | `06-marketplace-design.md` (Consequences) | H32 |
+| `02-platform-data-model-design.md` | Platform-global connector catalog | `07-connector-marketplace-design.md` (Consequences) | H33 |
+| `02-platform-data-model-design.md` | Platform-global, cross-tenant-findable **pending-approval record** — updatable, unlike the append-only audit stream | `03-human-in-the-loop-design.md` §10, ADR-054 | **H43** |
+| `01-environment-and-configuration-design.md` | Backup storage medium, retention discipline, and catalog locatability — that document's **fifth** provisioning obligation | `06-incident-response-and-recovery-design.md` §6.2 | H40 |
+
+**Every one is correctly stated in its own document.** No Executor did anything wrong — each named the obligation, declined to edit a read-only dependency, and handed it forward exactly as the discipline requires. **The failure is that nothing aggregated them**, and the aggregation is the Orchestrator's job: an obligation recorded only inside the document that raised it is invisible to whoever eventually schedules the amendment.
+
+**Why this repeats the exact failure §1v and live issue 8 describe.** Three times now, a fact has been correctly recorded in its owning document and then gone stale in the index that was supposed to route to it — ADRs (live issue 8), event types (§1v), and now structural obligations. The common cause is identical: **`PROCESS.md` §3 enumerates what an Orchestrator maintains, and the per-ticket loop only reliably updates what appears on that list.**
+
+**Two things follow.** First, the immediate one: **the pending-approval record is the most consequential of the four**, because H43's §10.1 argues it is genuinely not working state — it must outlive its raising session and be discoverable by a human who was never party to it — so no existing structure covers it, and `05-agent-state-and-memory-design.md` will be written soon believing this is already settled elsewhere. Second, the structural one: whether obligation-tracking becomes a named tracker responsibility belongs with whoever resolves live issue 8, since it is the third instance of one problem.
+
+**Not blocking Layer 6.** Each obligation's own document is correct and citable; what is missing is the list.
+
+---
+
 ## 1z. 🔶 OPEN 2026-08-11 — a design ADR binding a **specification** document is now a three-instance pattern, not three isolated slips; ADR-025 is the third, and H41 inherited it by rewriting it as a binding on itself
 
 **Found at H41's close.** `08-audit-and-traceability-design.md`'s ADR-025 Consequences state that it *"Binds `05-meta-operations/01-agent-operating-charter.md` and the two cited protocols to place the minimum-traceability check's mechanical interception point in the agent's own execution pipeline."*
@@ -340,6 +363,7 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 | **H40** | **6** — including a **recurrence of H39's own item 5**, the `assurance-run` misattribution, in a different session; see the sub-entry below |
 | **H41** | **9 caught — the highest yet — plus one missed** (§1z). Five of the nine were a single *stitched phrase*; three more were the document mis-citing **its own** sections |
 | **H42** | **3** — the lowest since H36. Two were self-referential `§N` drift again; one a stitched paraphrase presented as verbatim |
+| **H43** | **1** — a duplicated phrase in a heading. **The lowest of the series, and the first ticket to report the pre-review step working**: internal `§N` references resolved against the final heading list before *and* after the fix, and several quotes read from the source file rather than trusted from a prior document's secondhand quotation |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
 
