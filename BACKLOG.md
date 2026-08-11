@@ -254,6 +254,32 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1z. 🔶 OPEN 2026-08-11 — a design ADR binding a **specification** document is now a three-instance pattern, not three isolated slips; ADR-025 is the third, and H41 inherited it by rewriting it as a binding on itself
+
+**Found at H41's close.** `08-audit-and-traceability-design.md`'s ADR-025 Consequences state that it *"Binds `05-meta-operations/01-agent-operating-charter.md` and the two cited protocols to place the minimum-traceability check's mechanical interception point in the agent's own execution pipeline."*
+
+**Two things are wrong with that, and they compound.** A design document cannot oblige a specification document to do anything (`CLAUDE.md`'s two-phase rule; `PROCESS.md` §1) — the objection `ADR-REGISTER.md` live issue 6 already raises against ADR-022. And separately, a *specification* cannot place a mechanical interception point at all: placing a mechanism is design work by definition. So the binding names documents that are both the wrong phase and structurally incapable of discharging it.
+
+### The pattern
+
+| Instance | Shape | Recorded |
+|---|---|---|
+| **ADR-022** | Binds a spec's closed mandatory-check list to add a bullet | `ADR-REGISTER.md` live issue 6 |
+| `04-scalability-…-design.md` | Names spec paths three times where it means the design document | §1x |
+| **ADR-025** | Binds spec documents to place a design-phase mechanism | **This entry** |
+
+Three instances across three unrelated documents is a **library-wide habit**, not a coincidence: when a design ADR needs to name "wherever this gets realized," the spec document is the name that comes to mind, because it is the thing that exists and is stable. The design sibling often does not exist yet.
+
+### What H41 did with it, which is the instructive part
+
+`01-agent-runtime-and-control-design.md`'s front matter renders the binding as *"that document's own ADR-025 Consequences name this document to place"* — **ADR-025 does not name it.** But H41 taking the obligation is nonetheless *correct behavior*: it is the charter's design realization, so it is exactly where that interception point belongs. **The action was right and the citation was wrong**, which is the most dangerous combination in this family — nothing downstream will fail, so nothing will prompt a re-check. It also survived a self-review that caught nine other defects.
+
+**The honest rendering was available and is one sentence longer:** *"ADR-025 binds the charter and its two protocols to place this; as the charter's design realization, this document discharges that obligation."* That states the reconciliation instead of manufacturing a citation.
+
+**Resolution is a decision, not a cleanup.** Either design ADRs stop naming spec documents as obligation targets (and name the design sibling, or say "wherever this is realized"), or the convention is stated explicitly so readers stop reading it as a phase violation. It belongs with whoever resolves live issue 6, since that is the same question with the same three instances behind it now.
+
+---
+
 ## 1y. 🔶 OPEN 2026-08-11 — `05-release-and-rollback-design.md` calls the migration ceiling "zero-data-loss" twice, including in a Binding Rule; `06-non-functional-requirements.md` §7 does not use that term
 
 **Found at H39's close, and it is the first defect of the `BACKLOG.md` §1w family to survive a self-review pass** — which is the part worth recording, more than the inaccuracy itself.
@@ -308,6 +334,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 | **H38** | **5** — including two *stitched quotes*: non-adjacent sentences joined inside one pair of quotation marks as if continuous |
 | **H39** | **6** caught — **and one missed**, see §1y: a term attached to an upstream target in a Binding Rule, where the same document renders it correctly twice elsewhere |
 | **H40** | **6** — including a **recurrence of H39's own item 5**, the `assurance-run` misattribution, in a different session; see the sub-entry below |
+| **H41** | **9 caught — the highest yet — plus one missed** (§1z). Five of the nine were a single *stitched phrase*; three more were the document mis-citing **its own** sections |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
 
@@ -316,6 +343,14 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 **The load-bearing observation: `PROCESS.md` §3's ⛔ note is doing real work.** That note made the review skill mandatory and explicit after observed drift, over an objection that a clean-looking deliverable does not need it. **H37 is direct evidence for it** — six defects in a document whose design reasoning was substantively correct throughout, none of which the design work itself would have surfaced. Any future proposal to relax step 8, or to let a handoff-shaped paragraph substitute for the skill call, should be read against this row.
 
 **Not blocking, and not a document to fix.** Every affected file is correct as shipped. Two things to watch: whether the per-ticket count keeps climbing (which would suggest something about ticket density or dependency-list breadth, not about any Executor), and whether a fabricated quotation ever appears in a ticket that skipped or improvised its review step — that combination is the one this project has no defense against.
+
+### Two new variants named at H41's close
+
+**1. The stitched phrase — five instances of one error.** H41 quoted *"a higher guarantee is never spent to satisfy a lower objective"* to `05-meta-operations/01-agent-operating-charter.md` §4, five times. That exact string is in **`PROCESS.md` §11**. The charter §4 says two adjacent, thematically-identical things — a heading, *"never spent for a lower layer"*, and body text, *"never relaxed to satisfy a lower objective"*. The quoted phrase is a **blend of all three sources**, reading perfectly and existing nowhere in the cited one.
+
+This is distinct from the stitched *quote* H38 produced (non-adjacent sentences joined). Here the blend happens **at phrase level, inside a single sentence**, across sources that agree in meaning — which is why it survives re-reading: checking whether the *idea* is in charter §4 returns yes. **Only a literal string search catches it.**
+
+**2. Self-referential `§N` drift — a genuinely new class.** H41's front matter cited three of *its own* sections by the wrong number (§8/§9/§10 for what became §9/§10/§11), because sections shifted during drafting. Every prior entry in this family concerns citations to *other* documents. This one needs no external source to verify — the document contradicts itself — and is fully mechanical to check. **Any document that gains or reorders a section during drafting should re-resolve its own internal `§N` references before the review pass.**
 
 ### One misattribution has now recurred across two independent sessions — the `assurance-run` precedent
 
@@ -339,6 +374,10 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 **Why this matters more than the instance.** The instance is harmless — in a pipeline context the dropped words change nothing, and the shipped document is not worth amending for it. **The mechanism is not harmless.** A ticket prompt is the one input an Executor acts on and has no reason to doubt (§1t's own reasoning). When the prompt paraphrases a source in prose, the Executor cannot see where the paraphrase ends and the source begins — so an Orchestrator's loose rendering can surface as a quotation mark in the library, which is a provenance claim the Orchestrator never made and never checked.
 
 **Standing rule, extending §1t's:** when a ticket prompt renders language from a source document — even unquoted, even as a definition being restated for convenience — **either quote it exactly or signal clearly that it is a paraphrase.** §1t governs what an Orchestrator may *claim* about a section; this governs how it may *render* that section's words. A prompt is not a scratchpad; its prose becomes the library's quotations.
+
+**Second confirmed instance, H41 — and it sharpens the rule.** The H41 prompt instructed: *"Realize the precedence order §4 fixes, and state how the engine resolves a genuine conflict — including that a higher guarantee is never spent to satisfy a lower objective."* The phrase is `PROCESS.md` §11's, verbatim and correctly sourced. But the sentence names **charter §4** and then supplies **`PROCESS.md`'s** wording, with nothing marking the switch — so the Executor quoted it to the charter, five times.
+
+**The rule therefore extends:** it is not enough to quote a source exactly. **When a prompt names document A's obligation and uses document B's phrasing in the same breath, it must mark which words belong to which** — otherwise the nearest named document collects the attribution. Both confirmed instances of this mechanism came from a prompt that was individually accurate about each source and silent about the seam between them.
 
 ---
 
