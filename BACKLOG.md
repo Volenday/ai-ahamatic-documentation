@@ -293,6 +293,11 @@ This is the **third** ticket-authoring defect of a recognizable family, each cau
 | H16 | A document named in Writing Rules but omitted from Dependency Inputs | H16's close |
 | H21 | The schema-owning document omitted entirely, so a partition could not be checked | §1i, which produced a standing rule |
 | **H33** | **A section's content asserted from memory and attributed to the wrong document** | **This entry** |
+| **H35** | **A Consequences field cited at the wrong section of the right document** — `04-security-controls-design.md` "§10's Consequences"; §10 is that document's Precedence section and has no Consequences field, the content being ADR-021's own at **§8.1** | **This entry, 2026-08-11** |
+
+**The fourth instance, and the first where the rule visibly worked.** H35's prompt was written *after* this entry existed, and it carried the halt-and-say-so guard into its own Key Context. The Executor located the correct section, cited it correctly in the deliverable, and reported the defect in its handoff rather than either forcing the mismatch or silently fixing it. **That is the designed outcome, not a near-miss** — the rule cannot prevent the Orchestrator from mis-citing, only ensure an Executor catches it, and here it did.
+
+**But note the narrowing this instance adds.** H33's defect was the *wrong document*; this one is the **right document, wrong section** — a harder error to notice, because the document name reads as correct and only the section number is off. An Orchestrator checking "is this the right document?" would pass this. The check must resolve the **section**, and confirm the named **field** exists in it.
 
 **Standing rule: when a ticket prompt asserts what a specific section contains — especially an enumeration, a count, or a named list — read that section before writing the assertion.** §1i's rule made a document a *mandatory input*; this one is narrower and different: it governs what the Orchestrator may *claim* about a section it is citing. A wrong citation in a prompt is more dangerous than a missing one, because an Executor has no reason to doubt it and every reason to build on it.
 
