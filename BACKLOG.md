@@ -270,11 +270,15 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 Three instances across three unrelated documents is a **library-wide habit**, not a coincidence: when a design ADR needs to name "wherever this gets realized," the spec document is the name that comes to mind, because it is the thing that exists and is stable. The design sibling often does not exist yet.
 
-### What H41 did with it, which is the instructive part
+### What H41 did with it — corrected 2026-08-11 at H42's close, having been overstated when first written
 
-`01-agent-runtime-and-control-design.md`'s front matter renders the binding as *"that document's own ADR-025 Consequences name this document to place"* — **ADR-025 does not name it.** But H41 taking the obligation is nonetheless *correct behavior*: it is the charter's design realization, so it is exactly where that interception point belongs. **The action was right and the citation was wrong**, which is the most dangerous combination in this family — nothing downstream will fail, so nothing will prompt a re-check. It also survived a self-review that caught nine other defects.
+**This entry originally said H41 "manufactured a citation." That was too harsh, and the correction matters.** On re-reading `01-agent-runtime-and-control-design.md` §5.4 during H42's verification, its **body quotes ADR-025 verbatim and in full** — *"`05-meta-operations/01-agent-operating-charter.md` and the two cited protocols to place the minimum-traceability check's mechanical interception point in the agent's own execution pipeline, and to emit one event per self-correction-ladder rung…"* — and then states plainly: *"This document discharges the first half of that obligation concretely."*
 
-**The honest rendering was available and is one sentence longer:** *"ADR-025 binds the charter and its two protocols to place this; as the charter's design realization, this document discharges that obligation."* That states the reconciliation instead of manufacturing a citation.
+**That is exactly the honest reconciliation this entry proposed as the better alternative.** H41 wrote it, in the body, where the reasoning lives.
+
+**The defect is narrower than recorded and is a summarization defect, not a citation one.** Only the **front-matter dependency list** compresses it to *"that document's own ADR-025 Consequences name this document to place"* — dropping the two-step reconciliation into a one-step claim that ADR-025 does not support. The body is correct; the summary of the body is not.
+
+**Which makes it a more interesting failure than the original framing.** A front-matter dependency list is written to be skimmed, and compression is its whole purpose — but a reconciliation is exactly the kind of two-step fact that does not survive compression. **Where a document's body reconciles a defective upstream binding, the front matter must not restate it as a simple citation**; either carry the reconciliation or cite the section that carries it. The underlying three-instance pattern below is unaffected — ADR-025 still binds spec documents, and that is still the thing to resolve.
 
 **Resolution is a decision, not a cleanup.** Either design ADRs stop naming spec documents as obligation targets (and name the design sibling, or say "wherever this is realized"), or the convention is stated explicitly so readers stop reading it as a phase violation. It belongs with whoever resolves live issue 6, since that is the same question with the same three instances behind it now.
 
@@ -335,6 +339,7 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 | **H39** | **6** caught — **and one missed**, see §1y: a term attached to an upstream target in a Binding Rule, where the same document renders it correctly twice elsewhere |
 | **H40** | **6** — including a **recurrence of H39's own item 5**, the `assurance-run` misattribution, in a different session; see the sub-entry below |
 | **H41** | **9 caught — the highest yet — plus one missed** (§1z). Five of the nine were a single *stitched phrase*; three more were the document mis-citing **its own** sections |
+| **H42** | **3** — the lowest since H36. Two were self-referential `§N` drift again; one a stitched paraphrase presented as verbatim |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
 
@@ -350,7 +355,11 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 
 This is distinct from the stitched *quote* H38 produced (non-adjacent sentences joined). Here the blend happens **at phrase level, inside a single sentence**, across sources that agree in meaning — which is why it survives re-reading: checking whether the *idea* is in charter §4 returns yes. **Only a literal string search catches it.**
 
-**2. Self-referential `§N` drift — a genuinely new class.** H41's front matter cited three of *its own* sections by the wrong number (§8/§9/§10 for what became §9/§10/§11), because sections shifted during drafting. Every prior entry in this family concerns citations to *other* documents. This one needs no external source to verify — the document contradicts itself — and is fully mechanical to check. **Any document that gains or reorders a section during drafting should re-resolve its own internal `§N` references before the review pass.**
+**2. Self-referential `§N` drift — a genuinely new class, and it recurred immediately.** H41's front matter cited three of *its own* sections by the wrong number (§8/§9/§10 for what became §9/§10/§11), because sections shifted during drafting. **H42 then produced two more instances in the very next ticket** — one off-by-one subsection reference, and one citing a `§10.2` in a section that has no subsections at all. Five instances across two consecutive documents.
+
+Every prior entry in this family concerns citations to *other* documents. This one needs no external source to verify — **the document contradicts itself** — which makes it the only variant here that is fully mechanical to check.
+
+**Escalated from "a class to watch" to a standing pre-review step**, on H42's own recommendation: **before the review pass, resolve every internal `§N` reference against the document's own final heading list.** Two consecutive tickets caught these only at self-review, and the cause is structural rather than careless — sections get added and renumbered during drafting, and a front matter written early describes a section layout that no longer exists. Prose review does not catch it because each reference reads plausibly in isolation; only checking the number against the heading does.
 
 ### One misattribution has now recurred across two independent sessions — the `assurance-run` precedent
 
