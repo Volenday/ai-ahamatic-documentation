@@ -254,6 +254,30 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1u. 🔶 OPEN 2026-08-11 — the Region Resolution Point reads registry columns from `components/distribution`, which `02-tenant-isolation-and-access-control-design.md` §5.3 forbids at Full coverage
+
+**Found at H34's close, by checking the new mechanism against the import-boundary rules rather than against the dependency-direction table alone.** H34 §6.2 designs a **second, deliberately narrower read path** for pre-authentication region resolution, realized inside `components/distribution` (§6.1, §8). Its justification for not reusing the Registry Accessor is sound and independently verified: the accessor's signature accepts "only an **already-authenticated** actor identity... never a client-supplied `tenant_id`" (`02-tenant-isolation-and-access-control-design.md` §3.1, quoted accurately), and routing must run before authentication and must be keyed by an address-supplied identifier — so reuse would weaken the accessor's own guarantee rather than compose with it. That reasoning is not in question.
+
+**What is unaddressed is a different rule.** `02-tenant-isolation-and-access-control-design.md` §5.3 owns a **sixth** import-boundary rule, additional to the five in `03-architecture-realization-design.md` §4.1:
+
+> **No module outside `components/isolation-and-trust` may import the platform-schema data-access module for `platform.tenants` or `platform.applications`.** Full coverage… This closes, at build time, the one remaining path by which a defect elsewhere in the codebase could bypass the Registry Accessor.
+
+H34 §6.2 and §6.3 step 2 both state the Region Resolution Point reads the tenant's own **`region_of_record`**, which `02-platform-data-model-design.md` §3.1 fixes as a column on `platform.tenants` and `platform.applications`. A module in `components/distribution` reading those tables is precisely what §5.3 forbids — and §5.3 exists to close bypasses of the Registry Accessor, which is exactly what this read path is.
+
+**H34 §8 does not cover this.** It addresses the *architecture-overview* forbidden direction (§5.2 — Isolation/Operation depending on region-specific logic), which this mechanism genuinely does not violate, and it checks `03-architecture-realization-design.md` §4.1's fifth row. It concludes "No extension of the dependency-direction mechanism is required." **§5.3's sixth rule is never mentioned anywhere in the document** (verified by grep). The claim is therefore correct about the rules it checked and silent about the one it collides with.
+
+**Not a defect in the decision — a gap in the reconciliation, and it is not H34's alone to close.** Three resolutions exist, and choosing between them is a design question:
+
+| Option | What it costs |
+|---|---|
+| Narrow the read to `tenant_<id>.tenant_host_connections` only — a per-tenant table §5.3 does not cover | Needs a pre-authentication way to reach the right tenant schema without a registry read; may not be constructible |
+| State a narrow, named exception to §5.3 for the Region Resolution Point | An amendment to `02-tenant-isolation-and-access-control-design.md`, which H34 correctly did not make unilaterally |
+| Place the read path inside `components/isolation-and-trust`, called by Distribution | Contradicts H34 §6.1/§8's placement, and Isolation would then carry a routing concern |
+
+**Who must see this.** Whichever ticket amends `02-tenant-isolation-and-access-control-design.md` next, and `08-coding-standards-and-patterns-design.md` when it configures the boundary tool — a rule asserted at "Full coverage" that a shipped design quietly violates is worse than one stated with its exception. **Does not block Layer 5**; `01-environment-and-configuration-design.md` inherits provisioning obligations from H34, not this one.
+
+---
+
 ## 1t. 🔶 OPEN 2026-08-10 — a standing rule for the Orchestrator: verify a cited section's *content* before asserting it in a ticket prompt
 
 **Found at H33's close, and the defect is the Orchestrator's, not any Executor's.** H33's prompt asserted that `07-cross-system-data-layer-design.md` §4.3 fixes "six hard constraints on any external-system connection," and enumerated them. That section is **"External Data as Untrusted Input, Validated at the Boundary."** The six constraints belong to `04-workflow-and-process-automation-design.md` §4.3, **"What Must Be True of Any Adopted Engine for Isolation to Hold"** — written into that ticket's own close two weeks of work earlier, and recalled onto the wrong document.
