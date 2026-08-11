@@ -254,6 +254,29 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1y. 🔶 OPEN 2026-08-11 — `05-release-and-rollback-design.md` calls the migration ceiling "zero-data-loss" twice, including in a Binding Rule; `06-non-functional-requirements.md` §7 does not use that term
+
+**Found at H39's close, and it is the first defect of the `BACKLOG.md` §1w family to survive a self-review pass** — which is the part worth recording, more than the inaccuracy itself.
+
+**What NFR §7 actually fixes:** a migration *"completes, or safely reverts to the prior valid state, within 4 hours, and introduces no downtime beyond the availability budget of §6."* The phrase **"zero data loss" appears nowhere** in that document — confirmed by grep across the whole file.
+
+**The document is internally inconsistent about it**, which is how the error is visible at all:
+
+| Location | Rendering | Status |
+|---|---|---|
+| §5.1 (line 112) | "four hours, with no downtime beyond the availability budget of §6" | ✅ accurate |
+| §8.1 table (line 180) | "≤ 4 hours, with no downtime beyond the availability budget of §6" | ✅ accurate |
+| §8.3 (line 190) | "The ≤ 4-hour, zero-data-loss ceiling" | ❌ attribute not in source |
+| **§18 Binding Rules (line 396)** | "four hours and zero data loss for a data-affecting one" | ❌ **in a Binding Rule** |
+
+**Why it is worth fixing rather than waving through.** "Safely reverts to the prior valid state" and "zero data loss" are adjacent but not identical claims, and the second is stronger and differently shaped — it reads as a named property of the ceiling rather than a consequence of reverting. A **Binding Rule** is the most authoritative sentence class this library has; a rule that attaches a term to an upstream target the target does not carry is precisely the drift the §1t/§1w discipline exists to prevent. The two accurate renderings in the same document show the Executor did read the source correctly and the looser phrasing crept in later.
+
+**The significant part: self-review caught six defects here and missed this one.** §1w's provisional conclusion was that `PROCESS.md` §3's mandatory review skill is the mechanism catching this family. That still holds — six of seven — but **it is a filter, not a guarantee**, and the one that got through landed in the highest-authority section. Anything that reads §1w as "the review step makes this class safe" should read this row too.
+
+**Fix:** two string replacements in `05-release-and-rollback-design.md` (§8.3 and §18), aligning both to the §5.1/§8.1 wording already correct in the same file. No reasoning changes; the mechanism is sound and §5.1's constraint genuinely is met by construction.
+
+---
+
 ## 1x. 🔶 OPEN 2026-08-11 — `04-scalability-availability-and-performance-design.md` names the **spec** path three times where it means the design document, each with a "(not yet written)" parenthetical
 
 **Found at H38's close; H38 identified it, corrected against the right target, and correctly declined to fix another document.** Three occurrences, all citing `04-devops-and-cloud-infra/04-observability-and-monitoring.md`:
@@ -283,6 +306,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 | H36 | 1 |
 | **H37** | **6** |
 | **H38** | **5** — including two *stitched quotes*: non-adjacent sentences joined inside one pair of quotation marks as if continuous |
+| **H39** | **6** caught — **and one missed**, see §1y: a term attached to an upstream target in a Binding Rule, where the same document renders it correctly twice elsewhere |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
 
