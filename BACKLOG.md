@@ -307,6 +307,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 | **H37** | **6** |
 | **H38** | **5** — including two *stitched quotes*: non-adjacent sentences joined inside one pair of quotation marks as if continuous |
 | **H39** | **6** caught — **and one missed**, see §1y: a term attached to an upstream target in a Binding Rule, where the same document renders it correctly twice elsewhere |
+| **H40** | **6** — including a **recurrence of H39's own item 5**, the `assurance-run` misattribution, in a different session; see the sub-entry below |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
 
@@ -315,6 +316,21 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 **The load-bearing observation: `PROCESS.md` §3's ⛔ note is doing real work.** That note made the review skill mandatory and explicit after observed drift, over an objection that a clean-looking deliverable does not need it. **H37 is direct evidence for it** — six defects in a document whose design reasoning was substantively correct throughout, none of which the design work itself would have surfaced. Any future proposal to relax step 8, or to let a handoff-shaped paragraph substitute for the skill call, should be read against this row.
 
 **Not blocking, and not a document to fix.** Every affected file is correct as shipped. Two things to watch: whether the per-ticket count keeps climbing (which would suggest something about ticket density or dependency-list breadth, not about any Executor), and whether a fabricated quotation ever appears in a ticket that skipped or improvised its review step — that combination is the one this project has no defense against.
+
+### One misattribution has now recurred across two independent sessions — the `assurance-run` precedent
+
+**Flagged by H40's own Executor, and the recurrence is the finding.** The imperfect-fit acknowledgment for an event type landing in an approximate category is owned by **`08-audit-and-traceability-design.md` §4.3**, whose own closing note made it for `assurance-run`. Two consecutive tickets cited it to the wrong document:
+
+| Ticket | Miscited to | Caught by |
+|---|---|---|
+| H39 | `04-observability-and-monitoring-design.md` §4.3 | its own self-review (item 5) |
+| H40 | `04-observability-and-monitoring-design.md` §14.1 | its own self-review (item 4) |
+
+**Both were caught and corrected; nothing shipped wrong.** What makes it worth recording is that the *same* wrong document was reached for twice, by two sessions with no shared context — so this is not one Executor's slip but a **structural attractor**. The likely cause: a Layer 5 Executor reads `04-observability-and-monitoring-design.md` closely as a dependency, encounters imperfect-fit reasoning while doing so (H38 applied the precedent), and later recalls the *reasoning's location* rather than the *precedent's owner*. §1t's H33 defect had the same shape — a rule recalled onto the document where it was last used rather than where it lives.
+
+**Rule, narrow and cheap:** when citing a precedent another document *applied*, cite the document that **minted** it. The applying document is evidence the precedent exists, never its owner. Any ticket touching the audit-event model should expect this specific pull toward `04-observability-and-monitoring-design.md` and check against §4.3 directly.
+
+**Watch item:** whether a third recurrence appears in Layer 6, where the audit-event model remains a dependency but observability is no longer freshly read. If it stops there, the diagnosis above is right; if it continues, the cause is something else.
 
 ### The transmission mechanism, found at H38's close — §1t and this entry are not independent
 
