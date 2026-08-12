@@ -1,6 +1,6 @@
 # AI ahaMatic — Design Decision Record (ADR) Register
 
-A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-11** (post-H43 — ADR-054 registered at its own ticket's close; ADR-053 at H42's; ADR-052 at H41's, opening Layer 6; ADR-051 at H40's, closing Layer 5; ADR-050 at H39's; ADR-049 at H38's; ADR-048 at H37's; ADR-047 at H36's; ADR-046 at H35's, opening Layer 5. ADR-045 registered at H34's close, closing Layer 4; its row was reconciled at that close against the owning document, having been pre-written from a superseded draft of the same ticket that was set aside before H34 ran; ADR-017 discharged from Owed to Approved at H31; ADR-038 was the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
+A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-11** (post-H44 — ADR-055 registered at its own ticket's close; ADR-054 at H43's; ADR-053 at H42's; ADR-052 at H41's, opening Layer 6; ADR-051 at H40's, closing Layer 5; ADR-050 at H39's; ADR-049 at H38's; ADR-048 at H37's; ADR-047 at H36's; ADR-046 at H35's, opening Layer 5. ADR-045 registered at H34's close, closing Layer 4; its row was reconciled at that close against the owning document, having been pre-written from a superseded draft of the same ticket that was set aside before H34 ran; ADR-017 discharged from Owed to Approved at H31; ADR-038 was the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
 
 **What this file is.** An index, in the same sense as `docs/spec/context-document-map.md` and `docs/design/implementation-document-map.md` — it routes to decisions and reports their status.
 
@@ -10,7 +10,7 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 
 ## Status summary
 
-**Thirty-four ADRs now await lead approval — ADR-021 through ADR-054.** The earlier claim here — that every ADR was closed and nothing awaited approval — was true of the Layer 1 set at H6 and has not been true of the phase since H13. The three ADRs that waited on the data model (001, 008, 009) remain discharged by H6 on the evidence of `02-platform-data-model-design.md`.
+**Thirty-five ADRs now await lead approval — ADR-021 through ADR-055.** The earlier claim here — that every ADR was closed and nothing awaited approval — was true of the Layer 1 set at H6 and has not been true of the phase since H13. The three ADRs that waited on the data model (001, 008, 009) remain discharged by H6 on the evidence of `02-platform-data-model-design.md`.
 
 | Status | Count | ADRs |
 |---|---|---|
@@ -18,12 +18,12 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 | ✅ **Resolved** — closed, no further action | 5 | **ADR-001**, ADR-002, **ADR-008**, **ADR-012**, **ADR-013** |
 | ✅ **Approved** — added to this register 2026-08-03; H8's three were never registered | 3 | **ADR-014**, **ADR-015**, **ADR-016** *(016 amended per D-18)* |
 | ✅ **Approved** — self-approved by their own ticket under D-16; **see live issue 5** | 3 | **ADR-018** *(H10)*, **ADR-019** *(H11)*, **ADR-020** *(H12)* |
-| 🔶 **Provisional — Pending Lead Approval** | **34** | **ADR-021**–**ADR-054** *(H13 through H43)* — every ADR produced since H13, none in `DECISIONS.md` |
+| 🔶 **Provisional — Pending Lead Approval** | **35** | **ADR-021**–**ADR-055** *(H13 through H44)* — every ADR produced since H13, none in `DECISIONS.md` |
 | ⬜ **Owed** — decided, ADR not yet written | **0 — none remain** | *(Was ADR-017; written by H31 on 2026-08-10.)* |
 | ⚠️ Superseded *(in part)* | 1 | ADR-007 *(mobile-runtime part, by ADR-009)* |
 | 🅿️ **Parked** | **0 — none remain** | *(Was: the GraphQL sub-decision inside ADR-006. **Closed 2026-08-03 by `DECISIONS.md` D-19** — the commissioned study was run and confirmed the original reasoning, moving the sub-decision from Parked to **Rejected**. This row and live issue 3 had not been updated; corrected 2026-08-06.)* |
 
-**Thirty-four ADRs now await lead approval — ADR-021 through ADR-054, none recorded in `DECISIONS.md`.** That is every ADR produced since H13, and it is the design phase's largest standing decision backlog. See live issue 8 on why the register keeps falling behind.
+**Thirty-five ADRs now await lead approval — ADR-021 through ADR-055, none recorded in `DECISIONS.md`.** That is every ADR produced since H13, and it is the design phase's largest standing decision backlog. See live issue 8 on why the register keeps falling behind.
 
 **Prior note, superseded but retained:** three open items — the three provisional ADRs. The GraphQL study is **not** among them: it was run and closed on 2026-08-03 (D-19), though this file's own summary and live issue 3 continued to report it as owed until 2026-08-06. **None of ADR-018 through ADR-023 appears in `DECISIONS.md`** — verified 2026-08-06 — which under §9's "approval changes status, not content" rule is the expected state for the three provisional ones and an open question for the three self-approved ones (live issue 5).
 
@@ -89,6 +89,7 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **052** | The agent kernel — two-stage classification/precondition enforcement, a precedence engine keyed only to charter §4's rank order, and one shared iteration counter rather than three independent ceilings | `01-agent-runtime-and-control-design.md` §13.1 | 🔶 **Provisional** (H41) | **High** — the structural rung of Layer 6; six Layer 6 siblings plus one cross-layer document compose directly with its control-flow contracts, so reversing a core mechanism forces every one to re-derive its composition point | ADR-014, ADR-018, ADR-025, ADR-046, ADR-049, ADR-050, ADR-051 |
 | **053** | One metered accumulator pair (not three envelopes) with compute bounded transitively and cost derived at read time; the budget check composed at the kernel's existing interception point rather than a sixth precondition | `02-token-and-compute-budget-design.md` §12.1 | 🔶 **Provisional** (H42) | **Low** — for two separately-stated reasons: the ceilings are configured values, and the mechanism mints no schema or event type and adds no pipeline stage | ADR-025, ADR-049, ADR-052 |
 | **054** | Halt as the kernel's hard stop reused a third time; gate and escalation as the two genuinely new concepts; the gate/halt split enforced as a field-level constraint on which resolutions are legal | `03-human-in-the-loop-design.md` §12.1 | 🔶 **Provisional** (H43) | **High** — a genuine irreversibility, not a configuration cost: an action permitted under a superseded trigger set has its `outcome` written once to an append-only stream and cannot be retroactively re-gated | ADR-025, ADR-051, ADR-052, ADR-053 |
+| **055** | Assembly as a third shape relative to the kernel's gate — temporally upstream of classification, not a further condition on it; precedence *detection* owned, resolution always routed to the kernel's engine | `04-prompt-and-context-assembly-design.md` §11.1 | 🔶 **Provisional** (H44) | **Low** — two separate grounds: the window value is read as configuration (no figure minted), and the mechanism mints no schema, event type, or interception point | ADR-052, ADR-053, ADR-054 |
 | **003** | Verification-weighted criteria set *(method)* | §13 | ✅ Approved | n/a — method | — |
 | **002** | Post-evaluation review of two further full-stack candidates | §12.3 | ✅ Resolved — no change | n/a — review | ADR-001 |
 

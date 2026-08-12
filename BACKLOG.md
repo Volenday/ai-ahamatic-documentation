@@ -254,6 +254,39 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ab. 🔶 OPEN 2026-08-11 — **a specification gap:** `05-prompt-and-context-management.md` defers the numeric context-window bound to `06-non-functional-requirements.md` §8 four separate times, and that section contains no such figure. No document in the library fixes one.
+
+**Found at H44's close, by resolving a citation the *specification* made rather than one the ticket prompt made.** This is a genuine spec gap in the shape `ADR-REGISTER.md` live issue 6 already established for ADR-022 — it routes to a **spec-phase ticket** under `ai-aha-spec-doc`, and no design document can close it.
+
+**The deferral is consistent and deliberate**, which is what makes the gap real rather than a typo. `05-meta-operations/05-prompt-and-context-management.md` points at `06-non-functional-requirements.md` §8 for the numeric window in **four** places: its §3 ownership table (*"The concrete numeric window and resource values"*), §7's own binding, §9's Precedence section, and §10's Binding Rules.
+
+**NFR §8 holds exactly four rows, and none is a context window:**
+
+| Row | Value |
+|---|---|
+| Extension invocation ceiling, synchronous | ≤ 5 seconds |
+| Extension invocation ceiling, asynchronous | ≤ 15 minutes |
+| Contract server-side processing budget | p95 ≤ 250 ms |
+| Contract throughput floor, per client | 100 requests/second |
+
+A library-wide grep confirms the only two files that mention a context-window *size* are the spec that defers it and `04-prompt-and-context-assembly-design.md` that keys to it. **Neither fixes it, and nothing else does.** The word "window" elsewhere in NFR means a rolling 24-hour measurement period — a different sense entirely.
+
+### Why this is more than a dangling citation
+
+Specification §7's whole overflow mechanism is defined against this bound: overflow is *"assembling more than the window or scope allows,"* degradation triggers *"as the window nears its limit,"* and H44's design correctly derives that an overflow of the required floor alone must halt and escalate. **Every one of those rules is evaluated against a number that does not exist.** The mechanism is sound and the bound is absent — so the mechanism cannot currently run.
+
+Compare **ADR-053's** treatment of the token envelopes: those *are* fixed in NFR §10, with their judgment-status disclosed. The window was given the same architectural treatment — read as configuration, never inlined — without ever being given a value.
+
+### What H44 did, and the one thing it should have caught
+
+H44 correctly declined to name a figure (the ticket prohibited it, and vendor window sizes are the fastest-moving fact in this domain), and correctly keyed to the specification's own cited location. **But it states NFR §8 "owns it," which is not true** — the section was never checked for content. **The design is unaffected**: keying to configuration is right regardless of where the value eventually lands.
+
+**Refinement this adds to §1t's rule, which has so far governed only citations an Orchestrator or Executor writes:** *verify inherited citations too.* When a specification points at another document for a value you depend on, resolve that pointer before relying on it. A spec's own citation carries the same "no reason to doubt it" force that §1t identifies as the danger in a ticket prompt's citation — and here it was wrong for four consecutive statements.
+
+**Routing:** a spec-phase ticket either adds a context-window row to NFR §8 (with judgment-status disclosed, as §10's envelopes carry) or repoints the four deferrals at whatever document should own it. **Not blocking Layer 6** — H44 ships correctly and every later document keys to configuration the same way — but the platform cannot enforce its own overflow rule until the value exists.
+
+---
+
 ## 1aa. 🔶 OPEN 2026-08-11 — four structural obligations have accumulated untracked since H30a; the per-obligation tracking that §1i–§1s ran stopped being applied, and the lapse is the Orchestrator's
 
 **Found at H43's close, while checking whether that ticket's new-structure finding needed a running tally. It did, and the tally had stopped.**
@@ -363,6 +396,7 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 | **H40** | **6** — including a **recurrence of H39's own item 5**, the `assurance-run` misattribution, in a different session; see the sub-entry below |
 | **H41** | **9 caught — the highest yet — plus one missed** (§1z). Five of the nine were a single *stitched phrase*; three more were the document mis-citing **its own** sections |
 | **H42** | **3** — the lowest since H36. Two were self-referential `§N` drift again; one a stitched paraphrase presented as verbatim |
+| **H44** | **2** — a truncated quote missing its trailing clause, and an unattributed quasi-quotation in quotation marks. Both self-caught; separately, an **inherited** spec citation went unverified — see §1ab |
 | **H43** | **1** — a duplicated phrase in a heading. **The lowest of the series, and the first ticket to report the pre-review step working**: internal `§N` references resolved against the final heading list before *and* after the fix, and several quotes read from the source file rather than trusted from a prior document's secondhand quotation |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
