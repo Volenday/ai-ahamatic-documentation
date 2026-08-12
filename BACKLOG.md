@@ -300,6 +300,7 @@ H44 correctly declined to name a figure (the ticket prohibited it, and vendor wi
 | `02-platform-data-model-design.md` | Platform-global, cross-tenant-findable **pending-approval record** — updatable, unlike the append-only audit stream | `03-human-in-the-loop-design.md` §10, ADR-054 | **H43** |
 | `01-environment-and-configuration-design.md` | Backup storage medium, retention discipline, and catalog locatability — that document's **fifth** provisioning obligation | `06-incident-response-and-recovery-design.md` §6.2 | H40 |
 | `02-platform-data-model-design.md` | Per-tenant **`ai_suggestions`** — suggestion identity, application, requester, assistance kind, target/content references, provenance state, disposition, and a forward `resulting_reference` to what a confirmation produced | `09-ai-assisted-builder-tooling-design.md` §9.1, ADR-056 | **H45** |
+| `02-platform-data-model-design.md` | Platform-global **session-accumulator record** — session identifier, initiating actor reference, accumulated token total, started-at, last-updated-at. Owed because no audit field correlates events across the multiple tasks one session spans: `actor_reference` resolves to a process and a triggering task, never a session | `05-agent-state-and-memory-design.md` §9.1, ADR-057 | **H46** |
 
 **Every one is correctly stated in its own document.** No Executor did anything wrong — each named the obligation, declined to edit a read-only dependency, and handed it forward exactly as the discipline requires. **The failure is that nothing aggregated them**, and the aggregation is the Orchestrator's job: an obligation recorded only inside the document that raised it is invisible to whoever eventually schedules the amendment.
 
@@ -399,6 +400,7 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 | **H42** | **3** — the lowest since H36. Two were self-referential `§N` drift again; one a stitched paraphrase presented as verbatim |
 | **H44** | **2** — a truncated quote missing its trailing clause, and an unattributed quasi-quotation in quotation marks. Both self-caught; separately, an **inherited** spec citation went unverified — see §1ab |
 | **H45** | **4** — including a *fabricated internal subsection* (`§5.4.2`, which does not exist) and a **fabricated attribution** to a document never opened this session, corrected to cite the map it was actually read from |
+| **H46** | **5** — a misquote (`sharper`/`stronger`), two unattributed quasi-quotations, a misattributed phrase, and a stitched quote joining two different sections of one document. **The misquote originated in the ticket prompt** — third such instance, see below |
 | **H43** | **1** — a duplicated phrase in a heading. **The lowest of the series, and the first ticket to report the pre-review step working**: internal `§N` references resolved against the final heading list before *and* after the fix, and several quotes read from the source file rather than trusted from a prior document's secondhand quotation |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
@@ -447,6 +449,20 @@ Every prior entry in this family concerns citations to *other* documents. This o
 **Second confirmed instance, H41 — and it sharpens the rule.** The H41 prompt instructed: *"Realize the precedence order §4 fixes, and state how the engine resolves a genuine conflict — including that a higher guarantee is never spent to satisfy a lower objective."* The phrase is `PROCESS.md` §11's, verbatim and correctly sourced. But the sentence names **charter §4** and then supplies **`PROCESS.md`'s** wording, with nothing marking the switch — so the Executor quoted it to the charter, five times.
 
 **The rule therefore extends:** it is not enough to quote a source exactly. **When a prompt names document A's obligation and uses document B's phrasing in the same breath, it must mark which words belong to which** — otherwise the nearest named document collects the attribution. Both confirmed instances of this mechanism came from a prompt that was individually accurate about each source and silent about the seam between them.
+
+**Third instance, H46 — and the three together generalize.** The H46 prompt wrote: *"Its session accumulator is explicitly flagged as **\"a sharper requirement\"** than H41's counters"*, in the same bullet that pointed at `02-token-and-compute-budget-design.md` **§10**. The Executor quoted it to §10. **H42 §10 actually reads "a *stronger* requirement than the per-task-only lifetime H41's own counters carry."** The phrase "a sharper requirement" is genuinely H42's own — it appears three times, in its criteria, its Consequences, and its Binding Rules — **just not in §10**. The prompt had taken it from H42's *handoff summary*, which used the Consequences wording.
+
+**What the three instances share, stated once:**
+
+| Ticket | The phrase was… | The pairing that was wrong |
+|---|---|---|
+| H38 | real, in `PROCESS.md` §11 | truncated, then presented as complete |
+| H41 | real, in `PROCESS.md` §11 | attributed to charter §4, named in the same sentence |
+| H46 | real, in H42's Consequences | attributed to H42 §10, named in the same bullet |
+
+**In none of the three was the phrase invented.** In all three, the *phrase-to-location pairing* was wrong, and the Executor inherited the pairing rather than the phrase. **The generalized rule: a ticket prompt must pair every quoted phrase with the section it actually appears in, or omit the section pointer entirely.** Naming a nearby section is worse than naming none, because it converts a loose paraphrase into a false citation with a specific target.
+
+**And a sub-rule H46 exposes: a handoff summary is not the document.** A handoff paraphrases, compresses, and re-words its own document — legitimately, since it is a router, not a transcript (`PROCESS.md` §9). Quoting a handoff's phrasing and attributing it to a section of the document it summarizes is how a real phrase acquires a wrong address. **Quote from the file, not from the handoff.**
 
 ---
 
