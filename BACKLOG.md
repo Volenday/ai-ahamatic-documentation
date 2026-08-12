@@ -254,6 +254,37 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ac. 🔶 OPEN 2026-08-13 — **eleven line-number-as-section citations** across four documents in both libraries; the defect set is closed and verified complete, and the first diagnosis of it was wrong in the dangerous direction
+
+**Found by `ai-aha-consistency-check` at the close of the H-series, then re-diagnosed at the Orchestrator's verification pass.** All eleven are one defect class: a **line number written with a `§` prefix**, producing a citation that does not resolve in the named target.
+
+| Bad citation | Occurrences | Where | Correct target |
+|---|---|---|---|
+| `05-integration-and-extensibility-spec.md` **§67** | 6 | `03-architecture-realization-design.md` :243, :260, :302, :304 · `05-api-contract-design.md` :5 · **`04-api-contract-spec.md` :168 (spec side)** | **§5** — SDK Compatibility Contract |
+| `02-prd.md` **§96** | 1 | `08-multi-region-distribution-design.md` :5 | **§4** — Capability Backlog (C-14 row) |
+| `02-prd.md` **§142** | 2 | `08-multi-region-distribution-design.md` :5, :169 | **§5** — Release-Gating Capabilities (G-4) |
+| `04-api-contract-spec.md` **§168** | 2 | `05-api-contract-design.md` :178 (both on one line) | **§9.7** — already present parenthetically |
+
+**The set is closed.** `grep -rnoE "§[0-9]{2,}" docs/ | awk -F'§' '$2+0>30'` returns exactly these eleven and nothing else — no other document in either library carries a `§N` above any plausible section count.
+
+### The corrected diagnosis, and why it matters more than the defect
+
+The consistency report read `§67` as *"a dropped-separator typo"* for **§6–§7**. It is not. The clause quoted at all six sites — *"the stable, supported, programmatic contract through which the platform's primitives are reached"* — sits at **line 67** of `05-integration-and-extensibility-spec.md`, which falls inside **§5** (lines 65–80). `§67` is a line number, identical in class to the other five.
+
+**§6 and §7 both exist in that document.** A correction pass following the original diagnosis would have written a citation that *resolves*, points at the wrong sections, and reads as correct to every subsequent reader — converting eleven visibly-broken references into two invisibly-wrong ones. This is precisely the asymmetry **§1t** names: a wrong citation is more dangerous than a dangling one, because nothing downstream has reason to doubt it.
+
+**What this adds to §1t and §1ab:** both already require verifying a citation's *target section content* before asserting it. This case extends the rule to **a proposed correction** — the fix for a bad citation is itself a citation, and carries the same obligation. A drift report's *diagnosis* is a claim to verify, not a finding to act on.
+
+### Routing — two tickets, and the split is forced
+
+Ten occurrences are design-side and one is spec-side, and `PROCESS.md` §1/§3 forbid a design ticket editing `docs/spec/` under any circumstance:
+- **H49** — the ten design-side occurrences in three documents. Purely mechanical; no decision, no reasoning change.
+- **A spec-phase `T##`** — the single occurrence at `04-api-contract-spec.md` :168. Best bundled with other owed spec work rather than run as a one-line ticket; see `ADR-REGISTER.md` live issue 6 and §1ab, both of which are also spec-phase and also unrouted.
+
+**Note on counting:** the drift report totalled these as "9 sites" by counting lines rather than occurrences — `05-api-contract-design.md` :178 carries two `§168` mentions and `08-multi-region-distribution-design.md` :5 carries two distinct bad citations. A correction pass that stops at nine leaves two behind.
+
+---
+
 ## 1ab. 🔶 OPEN 2026-08-11 — **a specification gap:** `05-prompt-and-context-management.md` defers the numeric context-window bound to `06-non-functional-requirements.md` §8 four separate times, and that section contains no such figure. No document in the library fixes one.
 
 **Found at H44's close, by resolving a citation the *specification* made rather than one the ticket prompt made.** This is a genuine spec gap in the shape `ADR-REGISTER.md` live issue 6 already established for ADR-022 — it routes to a **spec-phase ticket** under `ai-aha-spec-doc`, and no design document can close it.
@@ -287,7 +318,7 @@ H44 correctly declined to name a figure (the ticket prohibited it, and vendor wi
 
 ---
 
-## 1aa. 🔶 OPEN 2026-08-11 — four structural obligations have accumulated untracked since H30a; the per-obligation tracking that §1i–§1s ran stopped being applied, and the lapse is the Orchestrator's
+## 1aa. 🔶 OPEN 2026-08-11 — **six** structural obligations have accumulated untracked since H30a; the per-obligation tracking that §1i–§1s ran stopped being applied, and the lapse is the Orchestrator's *(header count corrected 2026-08-11 at H48's close: the table below grew to six as H45 and H46 each added a row, and this heading still read "four" — the same stale-count class §1o records, in the tracker that exists to catch it)*
 
 **Found at H43's close, while checking whether that ticket's new-structure finding needed a running tally. It did, and the tally had stopped.**
 
