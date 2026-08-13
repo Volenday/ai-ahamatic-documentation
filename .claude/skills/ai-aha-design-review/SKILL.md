@@ -35,7 +35,14 @@ Review the design/implementation ("how") output you just produced for this sessi
 - [ ] Does it distinguish findings **verified against current sources** from those **reasoned from existing knowledge**? Time-sensitive claims — ecosystem maintenance, release cadence, pricing, adoption — must be verified before they decide anything (`PROCESS.md` §12.3). Structural properties may be reasoned about directly.
 - [ ] Are ADR identifiers sequential, permanent, and never renumbered or reused — including where one supersedes another?
 - [ ] If this output supersedes an earlier ADR, is the earlier one marked `Superseded by <ADR-ID>` **in place** rather than edited or deleted, so the reason a decision moved is preserved?
-- [ ] If sections were inserted or renumbered, were `§N` cross-references to this document updated everywhere they appear — inside the document and across the library?
+
+**Citations and Quotations** — applies to every output; nothing in this group is conditional
+- [ ] Does every `§N` reference to **this document's own** sections resolve against its final heading list? Re-check after the last edit — sections move during drafting, and a reference written early still reads plausibly at the wrong number.
+- [ ] Does every citation to another document name the section that **actually carries the cited content** — not an adjacent one, and never a line number written with a `§`? A citation that resolves to the wrong section reads as correct to every later reader.
+- [ ] Was every quoted string confirmed by a **literal string search of the cited section**, rather than by re-reading it for the idea? A phrase blended from sources that agree in meaning passes every check but this one. Whatever the search does not find is a paraphrase — drop the quotation marks or use the source's words.
+- [ ] Does each quotation run to the end of the source's own sentence, or mark what it drops with an ellipsis?
+- [ ] Does every citation and quotation point at its **origin** — the document that *minted* a precedent rather than one that later applied it, and the source file rather than a handoff summary or the ticket prompt's rendering of it?
+- [ ] If sections were inserted or renumbered, were `§N` cross-references to this document updated everywhere they appear across the library?
 
 **Quality**
 - [ ] Is the pyramid structure applied — foundational decisions first, then what builds on them?

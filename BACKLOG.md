@@ -442,6 +442,14 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 
 **Not blocking, and not a document to fix.** Every affected file is correct as shipped. Two things to watch: whether the per-ticket count keeps climbing (which would suggest something about ticket density or dependency-list breadth, not about any Executor), and whether a fabricated quotation ever appears in a ticket that skipped or improvised its review step — that combination is the one this project has no defense against.
 
+### Status 2026-08-13 — the Executor-side check now exists; the entry stays open as case history
+
+**`P02` gave both phase review skills a *Citations and Quotations* group** — six items, identical in `ai-aha-design-review` and `ai-aha-spec-review`, explicitly unconditional. The eight classes below are consolidated on **how each is caught** rather than what each is called: one literal-string-search item covers fabricated quotes, stitched quotes, stitched phrases and unattributed quasi-quotations; truncation is kept separate precisely because it is the one variant that *passes* a literal search of its own string.
+
+**Before P02, `ai-aha-spec-review` had no citation or quotation check of any kind**, and `ai-aha-design-review`'s single relevant line was gated twice — filed under its ADR group and conditioned on sections having been renumbered — so a design document recording no ADR never reached it.
+
+**This entry stays open.** The trend it tracks is still worth watching, and P02 closes the *reachability* half only: whether the checks actually reduce the per-ticket count is an empirical question the next `T##` and `H##` reviews answer. **Two gaps remain, routed as `P05`:** nothing requires a re-review after a review-induced renumber, and the checks reach `T##`/`H##` only — `CR##` skips the review step and `P##` has none, so this entry's own remediation tickets got no citation check.
+
 ### Two new variants named at H41's close
 
 **1. The stitched phrase — five instances of one error.** H41 quoted *"a higher guarantee is never spent to satisfy a lower objective"* to `05-meta-operations/01-agent-operating-charter.md` §4, five times. That exact string is in **`PROCESS.md` §11**. The charter §4 says two adjacent, thematically-identical things — a heading, *"never spent for a lower layer"*, and body text, *"never relaxed to satisfy a lower objective"*. The quoted phrase is a **blend of all three sources**, reading perfectly and existing nowhere in the cited one.

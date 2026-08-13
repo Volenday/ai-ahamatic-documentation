@@ -21,6 +21,14 @@ Review the specification ("what") output you just produced for this session agai
 - [ ] Does the output answer "what" only — no "hows", no implementation details or technology choices?
 - [ ] Does the output reflect ahaMatic as a generic, multi-purpose software builder?
 
+**Citations and Quotations** — applies to every output; nothing in this group is conditional
+- [ ] Does every `§N` reference to **this document's own** sections resolve against its final heading list? Re-check after the last edit — sections move during drafting, and a reference written early still reads plausibly at the wrong number.
+- [ ] Does every citation to another document name the section that **actually carries the cited content** — not an adjacent one, and never a line number written with a `§`? A citation that resolves to the wrong section reads as correct to every later reader.
+- [ ] Was every quoted string confirmed by a **literal string search of the cited section**, rather than by re-reading it for the idea? A phrase blended from sources that agree in meaning passes every check but this one. Whatever the search does not find is a paraphrase — drop the quotation marks or use the source's words.
+- [ ] Does each quotation run to the end of the source's own sentence, or mark what it drops with an ellipsis?
+- [ ] Does every citation and quotation point at its **origin** — the document that *minted* a precedent rather than one that later applied it, and the source file rather than a handoff summary or the ticket prompt's rendering of it?
+- [ ] If sections were inserted or renumbered, were `§N` cross-references to this document updated everywhere they appear across the library?
+
 **Quality**
 - [ ] Is the pyramid structure applied — foundational to complex?
 - [ ] Is there any filler, redundancy, or padding? If yes, remove it.
