@@ -254,6 +254,28 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ae. 🔶 OPEN 2026-08-14 — two residues from H50, one of which is an ADR contradicting itself
+
+**Both found while executing H50, both correctly left unfixed as out of its enumerated scope, and both verified at this close.**
+
+### 1. `04-scalability-availability-and-performance-design.md` line 19 — a fifth "not yet written" site, hyphenated
+
+§1's reading-order list says *"this document's boundary with the **not-yet-written** observability design (§7)."* Both that specification and `04-observability-and-monitoring-design.md` exist. **The hyphenation is why it survived** — every sweep for `not yet written` missed it, and it was found by reading rather than grepping. It carries no backtick path, so it is a prose claim rather than a citation. **A grep-only sweep will not find a defect whose distinguishing feature is punctuation** — worth remembering the next time a "zero remaining" claim rests on one.
+
+### 2. `01-technology-stack-design.md` §16.5 — ADR-006's Decision and Alternatives fields contradict its own Status field
+
+- **Line 558**, the **Decision** field: *"**GraphQL parked** — not decided; a pros-and-cons study is owed before the rejection is confirmed or reversed."*
+- **Line 560**, **Alternatives considered**: *"**this rejection is now parked, not settled** (see Status above)."*
+- **Line 553**, the **Status** field directly above them: the GraphQL rejection *"is final as of 2026-08-03"* (`DECISIONS.md` **D-19**).
+
+**H50's handoff characterized these as "ADR-006's own historical narrative … as originally recorded." That characterization is wrong, and the correction matters more than the defect.** Both sentences assert **present state in the present tense** — *"not decided"*, *"a study is owed"*, *"is now parked, not settled"*. Neither is dated or framed as a record of what was once true. A reader consulting ADR-006's Decision field today is told GraphQL is undecided and a study is outstanding; both are false, and the Status field three lines above says so.
+
+**Leaving them was correct** — H50's scope named ADR-008 and forbade touching other ADRs. **The finding is the framing:** a future session trusting "historical narrative" would leave a live self-contradiction in place. This is the same class as the line-760 site H50 *did* fix, and it is the third instance of D-19's closure being applied incompletely.
+
+**Routing:** `01-technology-stack-design.md` is already edited by **H55** (§9), **H56** (§22) and **H57** (a new section plus renumbering). This lands in §16.5, which none of them touches. **Fold it into whichever runs last, or take it as its own small ticket** — but do not leave it to be discovered a fourth time.
+
+---
+
 ## 1ad. 🔶 PARKED 2026-08-14 — the unticketed decision queue: six decisions plus two lead questions, each producing work on only one branch
 
 **Moved here from `TICKET.md`'s decision docket at the user's direction, before execution of the consolidated tickets begins.** None is blocked, forgotten, or declined — each is parked because **work is owed only if it resolves one way**, so ticketing it now would invent scope. That is the distinction `TICKET.md`'s decision docket records: a decision owed work *either way* gets a ticket immediately, blocked on the answer; a decision owed work on *one* branch waits.
@@ -409,7 +431,17 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 
 ---
 
-## 1y. 🔶 OPEN 2026-08-11 — `05-release-and-rollback-design.md` calls the migration ceiling "zero-data-loss" twice, including in a Binding Rule; `06-non-functional-requirements.md` §7 does not use that term
+## 1y. ✅ CLOSED 2026-08-14 by H50 — **three sites, not the two recorded here**, and the defect was a conflation of two different NFR rows
+
+**All three corrected** — lines 190 (§8.3), **325 (§15.1, inside ADR-050's Consequences)** and 396 (§18 Binding Rules) of `05-release-and-rollback-design.md`.
+
+**The diagnosis is sharper than this entry had it.** `06-non-functional-requirements.md` §7 carries **four** rows, two of which the three sites had merged: a **Data-loss tolerance on committed data | Zero** row (elaborating INV-04, about committed data generally), and a separate **Migration duration and downtime ceiling** row reading *"completes, or safely reverts to the prior valid state, within 4 hours, **and introduces no downtime beyond the availability budget of §6**."* The sites attached the first row's guarantee to the second row's ceiling. The fix takes the migration row's own wording rather than merely deleting the offending term.
+
+**⚠ One consequence worth a second look, recorded rather than assumed away.** The corrected text no longer asserts anything about data loss at these three sites. That is faithful to the migration row and removes a guarantee this document does not own — but the *original* claim was not false in substance (NFR §7 does put data-loss tolerance at zero), only misattributed. Whether `05-release-and-rollback-design.md` should separately assert the data-loss tolerance, rather than drop it, is a design question this terminology correction deliberately did not answer.
+
+*Original entry retained below.*
+
+## 1y-history. 🔶 OPENED 2026-08-11 — `05-release-and-rollback-design.md` calls the migration ceiling "zero-data-loss" twice, including in a Binding Rule; `06-non-functional-requirements.md` §7 does not use that term
 
 **Found at H39's close, and it is the first defect of the `BACKLOG.md` §1w family to survive a self-review pass** — which is the part worth recording, more than the inaccuracy itself.
 
@@ -432,7 +464,15 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 
 ---
 
-## 1x. 🔶 OPEN 2026-08-11 — `04-scalability-availability-and-performance-design.md` names the **spec** path three times where it means the design document, each with a "(not yet written)" parenthetical
+## 1x. ✅ CLOSED 2026-08-14 by H50 — **four sites, not the three recorded here**; one residue carried to §1ae
+
+**All four corrected** — lines 37 (§2), 175 (§7), **210 (§8.1, inside ADR-020's Consequences)** and 222 (§9) of `04-scalability-availability-and-performance-design.md`, each retargeted from the specification path to `04-observability-and-monitoring-design.md`. Every site was determined on its own text to mean the **design** document — all four used mechanism-level language (*"detection mechanism," "tooling," "instrument," "to design"*) — so **`PROCESS.md` §12.2's ADR-to-spec binding rule never applied to line 210**: retargeting dissolved it rather than resolving it. Zero unhyphenated occurrences remain.
+
+**One residue, found by the Executor and carried to §1ae:** line 19 uses the **hyphenated** *"not-yet-written observability design"*, which every sweep grep for `not yet written` missed. It was found by reading, reported rather than silently fixed, and left as out of this ticket's enumerated scope.
+
+*Original entry retained below.*
+
+## 1x-history. 🔶 OPENED 2026-08-11 — `04-scalability-availability-and-performance-design.md` names the **spec** path three times where it means the design document, each with a "(not yet written)" parenthetical
 
 **Found at H38's close; H38 identified it, corrected against the right target, and correctly declined to fix another document.** Three occurrences, all citing `04-devops-and-cloud-infra/04-observability-and-monitoring.md`:
 
