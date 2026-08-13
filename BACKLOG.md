@@ -343,7 +343,17 @@ H44 correctly declined to name a figure (the ticket prohibited it, and vendor wi
 
 ---
 
-## 1z. 🔶 OPEN 2026-08-11 — a design ADR binding a **specification** document is now a three-instance pattern, not three isolated slips; ADR-025 is the third, and H41 inherited it by rewriting it as a binding on itself
+## 1z. ✅ CLOSED 2026-08-13 by P03 — the convention is now stated as a `PROCESS.md` §12.2 rule, on `DECISIONS.md` D-29's authority
+
+**What closes it:** D-29 decided the convention and states that it closes this entry; **P03** wrote it into `PROCESS.md` §12.2 as a binding rule with a yes/no check — *resolve the section the binding cites and ask whether the obligation is already stated there.* The rule permits **realization** (supplying criteria, mechanics, or an enforcement point for an obligation the spec already carries — ADR-023) and forbids **amendment** (binding a spec document to acquire a clause it lacks — ADR-022).
+
+**The three instances are tracked elsewhere and are not closed by this:** ADR-022 → **T74**; the `04-scalability-…-design.md` spec-path naming → **H50(a)** (§1x); ADR-025 → no action, narrowed below to a front-matter summarization defect whose body states the reconciliation correctly.
+
+**⚠ One thing this closure does not buy: reachability.** Verified at P03's close — `ai-aha-design-doc`, the skill loaded *before* an ADR is written, contains **zero** `§12` references, and `ai-aha-design-review` line 34's inbound path fires at review time asking about *upstream decisions*, not bindings. The rule is better-placed than it is reachable, and a review-skill item is routed as **`P05`(d)**. Closing this entry records that the convention exists, not that a fourth instance is now impossible.
+
+*Original entry retained below as case history.*
+
+## 1z-history. 🔶 OPENED 2026-08-11 — a design ADR binding a **specification** document is now a three-instance pattern, not three isolated slips; ADR-025 is the third, and H41 inherited it by rewriting it as a binding on itself
 
 **Found at H41's close.** `08-audit-and-traceability-design.md`'s ADR-025 Consequences state that it *"Binds `05-meta-operations/01-agent-operating-charter.md` and the two cited protocols to place the minimum-traceability check's mechanical interception point in the agent's own execution pipeline."*
 
@@ -590,6 +600,8 @@ This is the **third** ticket-authoring defect of a recognizable family, each cau
 **Two things this settles.**
 1. **The rule was needed, and the evidence is the rule's own ticket.** Five instances now, four of them Orchestrator-authored, and the fifth occurred while writing the fix. Recall is not a reliable substitute for reading, even when the subject is the unreliability of recall.
 2. **The Executor-side guard is doing the real work, and it is still unwritten.** Every instance since H33 was caught by an Executor, never by the Orchestrator. `PROCESS.md` §4's Generation rules now bind the Orchestrator (P01), but nothing requires a ticket prompt to carry the halt-on-a-bad-citation instruction that H33's and H35's Executors acted on. **Routed as `P04`.**
+
+**Status 2026-08-13 — all three legs of the citation discipline are now bound; the entry stays open as case history.** **P01** binds what an Orchestrator may claim (`PROCESS.md` §4's Generation rules). **P02** binds what an Executor must check in its own output (a *Citations and Quotations* group in both review skills). **P04** binds what an Executor does when the **prompt itself** is wrong — a **Citation Integrity** block inside §4's template skeleton, scoped as *never absorb a mismatch silently* rather than as a halt mandate, since two of this table's three recorded responses correctly proceeded. **One residual, routed to `P05`:** nothing verifies that an issued prompt actually contains that block.
 
 **Status: the reachability half is closed; the entry stays open as case history.** `PROCESS.md` §4's Generation rules bind the citation duty at the point a prompt is produced, and §3's Default-rule paragraph binds the status-reconciliation duty at role assignment. This entry is no longer "a rule recorded where nothing reads it."
 
