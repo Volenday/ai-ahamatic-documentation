@@ -254,6 +254,32 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ad. 🔶 PARKED 2026-08-14 — the unticketed decision queue: six decisions plus two lead questions, each producing work on only one branch
+
+**Moved here from `TICKET.md`'s decision docket at the user's direction, before execution of the consolidated tickets begins.** None is blocked, forgotten, or declined — each is parked because **work is owed only if it resolves one way**, so ticketing it now would invent scope. That is the distinction `TICKET.md`'s decision docket records: a decision owed work *either way* gets a ticket immediately, blocked on the answer; a decision owed work on *one* branch waits.
+
+**Read this before answering any of them:** the docket rows they came from are now a single pointer, so this entry is the content, not a summary of it.
+
+| Ref | The question | Produces, if answered one way | Decider |
+|---|---|---|---|
+| **D-h** | Does the criteria library get its own writing-rules skill? `DECISIONS.md` **D-21**'s remaining open item. A `CR##` ticket currently carries its rules inline and `PROCESS.md` §1 records that as deliberate, deferred *"until there is evidence it is needed."* **Five `CR##` tickets have now run without one, and CR05 added a third artifact class** — which is the strongest evidence yet that the inline rules are carrying more than they were designed to. | A `P##` authoring the skill (D-28 gives skill changes a defined path, so this is cheaper than when D-21 deferred it) | Team (D-16) |
+| **D-i** | **Vertical-slice validation** — build one genuinely hard slice and measure: iterations to green tests, bugs escaping to manual QA, legibility to an uncommissioning reviewer, and how well a *fresh* AI session modifies it later. Directly answers `01-technology-stack-design.md` §2.3's admission that no empirical token benchmarking exists. **Carried unresolved since the 2026-07-30 standup.** ⚠ **See D-31**: the daily prototyping loop the lead instructed has the same stated purpose, so this may be superseded in substance rather than answered. | The development-workflow phase | **The lead** |
+| **D-j** | Does **"buy, do not build"** generalize past sync and workflow engines? `DECISIONS.md` **D-20** extended it from sync to workflow engines and stopped. Two independent data points have accumulated since: `ui-component-foundation-tool-opinion.md` §3's verification-asymmetry argument, and `development-principles.md`'s Safe principle. **Neither resolves it, and both were written to avoid doing so.** | Future `CR##` tool opinions, and possibly a `DECISIONS.md` amendment to D-20's scope | **The lead** |
+| **D-k** | The evaluation criteria raised at the **2026-07-29 standup** were never recorded. `TICKET.md`'s cross-cutting table notes them as *"pending lead confirmation"* and nothing since has picked them up. ⚠ **Not actionable as stated** — the criteria themselves are not written down anywhere, so this cannot be ticketed until someone supplies them or confirms they are lost. | An amendment to `01-technology-stack-design.md` §2.6's criteria set | **The lead** |
+| **D-n** | **Is sync posture a platform-core concern at all?** §3 above, open and never ticketed. **D-11** answered the *posture* (server-authoritative, optimistic UI via a standard library) and ADR-011 recorded it — the **scope** question is separate and untouched: must the platform provide a *generic sync primitive*, or is sync builder-defined per application? C-20 references offline behaviour for mobile artifacts, suggesting some platform-level obligation, while the specification defines no sync model. | If platform-core: a `T##` spec gap in the D-22/D-23 shape. If builder-defined: §3's item closes with no work | Team (D-16) |
+| **D-o** | **Is the criteria library content-complete at five documents?** Re-based 2026-08-13 — it originally asked about three; **CR04** and **CR05** have since added two documents and a third artifact class, which is itself evidence three was not the answer. `DECISIONS.md` **D-15** makes the criteria the product, and **D-16** makes discovering unasked questions a deliverable, so "complete" is a judgment about coverage rather than a count. | Further `CR##` tickets | Team (D-16) |
+
+### Two questions for the lead, from `DECISIONS.md` D-31
+
+Both arise from the same instruction and should be put to him together rather than separately.
+
+1. **Which screens does the daily prototyping loop produce?** **Data Administration** is the only reading that contradicts no recorded resolution — `TICKET.md`'s **Q11** holds Data Admin to be platform tooling, distinct from the deferred UI generator, and records that a V1.0 application is *"a data model plus Data Admin access, with no end-user interface."* It is carried as a working assumption. **The one transcript line that would settle it is unintelligible**, so it was not resolved by inference.
+2. **Does the daily loop discharge D-i, or does D-i still name a separate measured exercise?** The loop's stated purpose — *"we're going to start experiencing how the documentation is helping"* — is D-i's purpose in the lead's own words.
+
+**Why this entry exists rather than the docket rows:** execution of the eight ready tickets will make `TICKET.md`'s wrap-up section noisy, and a parked decision inside a section about finished work is a decision that gets lost. Nothing here is closed; each is live and waiting on one answer.
+
+---
+
 ## 1ac. 🔶 OPEN 2026-08-13 — **eleven line-number-as-section citations** across four documents in both libraries; the defect set is closed and verified complete, and the first diagnosis of it was wrong in the dangerous direction
 
 **Found by `ai-aha-consistency-check` at the close of the H-series, then re-diagnosed at the Orchestrator's verification pass.** All eleven are one defect class: a **line number written with a `§` prefix**, producing a citation that does not resolve in the named target.

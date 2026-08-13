@@ -752,3 +752,42 @@ Asked directly *"I thought it was the UI generator,"* the reply transcribes as *
 **Alternatives considered.**
 - **Recording it as superseding D-15** — rejected. Nothing in the transcript reverses D-15; the lead restated it, using *"remember that we are moving into"* to point back at it. A restatement recorded as a supersession would falsely retire D-15's own reasoning and criteria.
 - **Resolving the screens question by inference** — rejected on `BACKLOG.md` §1t's asymmetry. Data Administration is the most probable reading and the only conflict-free one, but recording a probable reading as the lead's instruction would give a guess the authority of a decision, and the one line that would confirm it is unintelligible rather than merely absent.
+
+---
+
+## D-32 — The context-window bound is a configured deployment value, not a figure the specification fixes
+
+**Decision.** `03-software-and-architecture/06-non-functional-requirements.md` §8 gains a row stating that the agent's context-window bound is a **configured deployment value**. The specification owns the requirement that such a value exist and be enforced; it does **not** own the number. The four deferrals in `05-meta-operations/05-prompt-and-context-management.md` are repointed accordingly. Authorizes the specification half of **T73**.
+
+**Attribution: lead decision, 2026-08-13.** Closes `BACKLOG.md` §1ab.
+
+**The defect this closes.** `05-prompt-and-context-management.md` points at NFR §8 for the numeric window in four places — its §3 ownership table, §7's binding, §9's Precedence and §10's Binding Rules. **NFR §8 holds four rows and none is a context window** (extension-invocation ceilings, contract processing budget, throughput floor). So specification §7's whole overflow mechanism — *"assembling more than the window or scope allows"*, degradation *"as the window nears its limit"* — is evaluated against a value that exists nowhere in the library.
+
+**Criteria applied.**
+1. **Does the specification own this kind of fact?** No. `PROCESS.md` §12.3 names vendor-side figures as the fastest-moving claims this project handles, and a model's context window is the clearest instance. A number fixed here would need a revision cadence nothing owns.
+2. **Does the design already treat it this way?** Yes, and this is decisive. H44's `04-prompt-and-context-assembly-design.md` reads the window as configuration and never inlines it. The repoint makes the specification agree with a design that is already correct, rather than obliging the design to change.
+3. **Does it make the mechanism runnable?** Yes. Overflow can be evaluated against a configured value; it cannot be evaluated against an absent one.
+
+**Alternatives considered.**
+- **Fix a numeric value in NFR §8, with judgment status disclosed as §10's token envelopes carry** — rejected on criterion 1. The precedent is real (D-24 fixed six agent numerics that way) but those are properties of *this platform's* chosen behavior; a context window is a property of a vendor's model, and the two are not the same kind of fact.
+- **Leave the deferrals and add the figure elsewhere** — rejected: it preserves the dangling pointer, which `BACKLOG.md` §1ac establishes is the more dangerous failure.
+
+---
+
+## D-33 — The Merge Gate gains ADR-022's mechanical provenance check
+
+**Decision.** `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md` §5's mandatory-check list gains the mechanical provenance check ADR-022 argued for. Authorizes **T74** as a **specification-phase** ticket. Closes `ADR-REGISTER.md` live issue 6, open since H14's close on 2026-08-06.
+
+**Attribution: lead decision, 2026-08-13.** Follows the authorization pattern of D-22, D-23 and D-24.
+
+**Why the check is wanted, not merely owed.** §5 already carries a mandatory-security-review item, but that fires a **human review**. ADR-022's criterion 1 argued specifically for a **mechanical** check that holds independently of whether a workflow was followed correctly — a different guarantee, and one no existing §5 item provides. The gap is real rather than bookkeeping.
+
+**What this also resolves.** Under **D-29**, a design ADR may bind a specification document only where that document already carries the obligation. ADR-022 bound §5's **closed** list — *"It requires all of the following to hold"*, with no equivalent of §4's *"Additional intermediate stages may exist"* allowance — and was therefore a defect under that rule. **Authorizing the check makes the binding retroactively legitimate** rather than leaving ADR-022 to be amended. That is the cleaner of the two available repairs, but note it is a consequence of the decision, not its justification: had the check not been wanted on its merits, amending ADR-022 would have been correct.
+
+**Criteria applied.**
+1. **Does an existing check already deliver it?** No — human review is not a mechanical guarantee.
+2. **Is the closed list closed for a reason?** Nothing in §5 states one. §4 makes its extensibility explicit where extensibility was intended; §5's silence reads as enumeration, not as a prohibition on ever enumerating more.
+3. **Does the change belong to the specification phase?** Yes. `PROCESS.md` §1 and `CLAUDE.md`'s two-phase rule: a design document cannot add a clause to a specification, so this runs as a `T##` and the design side needs no change.
+
+**Alternatives considered.**
+- **Decline, and amend ADR-022's Consequences instead** — rejected. It is cheaper and leaves the specification untouched, but it closes the record without closing the gap: the provenance check would have no home and nothing scheduled to give it one.
