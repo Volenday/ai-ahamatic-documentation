@@ -653,9 +653,13 @@ The two classes it holds:
 
 ## D-28 — Skills and process documents are ticketed work: the `P##` series
 
-**Decision.** `PROCESS.md` and `.claude/skills/` changes run as **`P##` tickets** — a fourth ticket series, defined in `PROCESS.md` §1 and §1b — rather than as Orchestrator inline edits.
+**Decision.** **Substantive** `PROCESS.md` and `.claude/skills/` changes run as **`P##` tickets** — a fourth ticket series, defined in `PROCESS.md` §1 and §1b — rather than as Orchestrator inline edits. For skills, "substantive" means creating a new skill, or any change to what a skill *requires*; the test is whether the effect lands on **future output** rather than on the file's own accuracy.
 
 **Attribution: lead decision, 2026-08-13.**
+
+**⚠ Softened the same day, and the correction is recorded rather than silently applied.** As first written, this entry and `PROCESS.md` §2/§3 barred an Orchestrator from editing `.claude/skills/` **under any circumstance** — placing skills alongside `docs/spec/`, the project's strictest prohibition. **That was stronger than the decision taken**, which was that skills should get ticketed treatment, not that no other path could ever exist. It was corrected on the lead's direction to mirror the rule §3 already applies to `docs/design/`: **an Orchestrator may amend a skill inline only when the user explicitly directs that specific change**, never on its own initiative; everything substantive is a `P##`.
+
+**Why the softer line is the right one.** The silent-failure argument in criterion 2 below is about changing what a skill *demands* — that is what propagates into every future ticket. It does not reach a stale path or a broken citation inside a skill, where the failure is visible and local. Under the absolute rule, fixing a typo in a checklist would have cost a full Executor session, a handoff and a commit, which is the kind of friction that gets routed around rather than followed.
 
 **The gap this closes.** `PROCESS.md` §2 names `.claude/skills/` the single source of truth for the skills; §3 enumerates what an Orchestrator maintains. **Skills appear in neither list**, so a skill change was owned by nobody: not a `docs/` deliverable, so no `T##`/`H##`/`CR##` reached it; not an enumerated tracker, so not an Orchestrator edit by default. The question surfaced only when P02 needed to amend both review skills.
 
