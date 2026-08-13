@@ -696,3 +696,24 @@ The two classes it holds:
 - **Allow binding with a mandatory disclosure field** — rejected on criterion 3. It relies on the field being filled in, which is precisely the discipline that already failed three times; a rule whose enforcement depends on the behavior it is correcting is not a rule.
 
 **Consequence.** **ADR-022 is a defect under this rule**, which is how `ADR-REGISTER.md` live issue 6 already reads it. T74 discharges it — either the specification gains the obligation (making the binding retroactively legitimate) or ADR-022's Consequences clause is amended. The convention itself lands in `PROCESS.md` §12 via **P03**.
+
+---
+
+## D-30 — AI-to-AI protocol support (MCP / A2A) is out of MVP scope; it is a future feature
+
+**Decision.** Neither **MCP** nor **A2A** is required for the minimum viable product. The lead's words, from the transcript: *"Oh, actually, but for version one, we don't need to. Yeah, we don't need it's not part of the criteria. It's remember we said it's an MVP, right? Minimum viable product. We don't need that."* Confirmed in the same exchange as *"future features."*
+
+**Attribution: lead decision, 2026-08-06 standup.** Recorded 2026-08-13 from the **transcript**, per `PROCESS.md` §7.
+
+**⚠ This position was reached by reversal inside the meeting, which is why the transcript governs.** The lead first said *"again choose either. I don't mind"* and *"But yes, uh include one of them"*, then reversed within the same turn. The auto-generated summary's Decisions section records only the endpoint — correct here, but it captures no reversal, which is the precise failure mode §7 exists to guard against.
+
+**What this decides, and what it does not.**
+- **It is a scoping answer, not a reversal of any recorded decision.** Verified 2026-08-13: no document in either library attaches MCP to V1.0. `03-software-and-architecture/04-api-contract-spec.md` §9.7 states the obligation (via **D-23**/T70), **ADR-013** selects the mechanism, and neither claims timing. Both stand unchanged.
+- **It closes a question open since the 2026-07-30 tracker pass.** `TICKET.md`'s **Q12** left one loose end explicitly: *"whether V1.0 needs any of C-12 proper (Tier 3), or only the generated contract falling out of C-05."* The answer is the latter — the generated contract falling out of C-05 suffices for V1.0.
+- **It does not change C-12's tier, status, or the specification's obligation.** C-12 remains an active capability; the obligation remains stated; only its V1.0 delivery is excluded.
+
+**A second thing the transcript records, and it corroborates an existing caution.** On protocol choice the lead said *"again choose either. I don't mind."* **ADR-013 §23.4** already records that identifying MCP was *"a team judgment under the criteria of §23.2, not a confirmed restatement of the lead's instruction"* — because the original requirement named the protocol only as *"AI to AI."* That caution is now independently confirmed: the lead has stated he holds no position on which protocol, which is exactly what §23.4 anticipated.
+
+**Alternatives considered.**
+- **Treating this as reopening ADR-013** — rejected. The lead declined to pick a protocol and excluded the capability from MVP; neither touches the selection criteria ADR-013 applied. Reopening a settled ADR on a scoping remark would be the phase inversion `PROCESS.md` §1 exists to prevent.
+- **Recording it as a capability status change (C-12 → Future / Not-Yet-Authorized)** — rejected, and the distinction matters. `PROCESS.md` §5 reserves *Future / Not-Yet-Authorized* for capabilities not designed or built until explicitly authorized. C-12 is authorized, specified, and designed; only one delivery mechanism within it is out of the first milestone. Conflating milestone scope with capability status would misreport the specification.
