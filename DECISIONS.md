@@ -717,3 +717,38 @@ The two classes it holds:
 **Alternatives considered.**
 - **Treating this as reopening ADR-013** — rejected. The lead declined to pick a protocol and excluded the capability from MVP; neither touches the selection criteria ADR-013 applied. Reopening a settled ADR on a scoping remark would be the phase inversion `PROCESS.md` §1 exists to prevent.
 - **Recording it as a capability status change (C-12 → Future / Not-Yet-Authorized)** — rejected, and the distinction matters. `PROCESS.md` §5 reserves *Future / Not-Yet-Authorized* for capabilities not designed or built until explicitly authorized. C-12 is authorized, specified, and designed; only one delivery mechanism within it is out of the first milestone. Conflating milestone scope with capability status would misreport the specification.
+
+---
+
+## D-31 — D-15 reaffirmed in stronger terms, and a daily prototyping cadence instructed
+
+**Decision.** The lead restated **D-15** more strongly and instructed a **daily rapid-prototyping loop**: screens implemented and shown each day, feedback given the same day, the feedback fed back to the AI, and the next version produced against it.
+
+His words, from the transcript: *"in terms of AIATIC again, remember that we are moving into very likely we're going to just change the approach, right? So code is not important thing is the documentation."* And: *"the software is going to be created is not as important."* On the cadence: *"I would love to if not tomorrow by Monday to start seeing uh screens basically"* — *"every day you show us implementations, new screens, new modules, whatever you want to call it."*
+
+**Attribution: lead decision, 2026-08-06 standup.** Recorded 2026-08-13 from the **transcript**, per `PROCESS.md` §7. **The auto-generated summary's Decisions section records none of this** — the single item it captured was unrelated. This is the second consecutive meeting where the most consequential statement was absent from that section.
+
+**The stated purpose is measurement, not delivery**, and that is what makes it more than a schedule: *"we're going to start experiencing how the documentation is helping but also the next stage of developing with AI."* The prototype is an instrument for testing whether the library works, which is why D-15's reasoning survives it rather than being contradicted by it — the code mattering less is the premise of the exercise, not a concession within it.
+
+**D-16 is reaffirmed in the same breath:** *"just go ahead just make the decision."*
+
+### The open sub-question — which screens, and it is not answerable from the record
+
+**`TICKET.md`'s Q11 resolution states that a V1.0 application is a data model plus Data Admin access, with no end-user interface**, and distinguishes the deferred **UI generator** for built applications from **Data Administration**, which is platform tooling. Three readings of "screens" are available:
+
+| Reading | Consistent with Q11? |
+|---|---|
+| **Data Administration screens (C-27)** | **Yes** — Q11 explicitly holds Data Admin to be platform tooling, distinct from the deferred generator. Fully specified and designed |
+| The builder-facing platform console generally | Yes, but far less specified |
+| The **UI generator** for built applications | **No** — explicitly deferred by Q11 |
+
+Asked directly *"I thought it was the UI generator,"* the reply transcribes as *"I know no induction system. Yeah."* — **unintelligible, and it is the one line that would settle it.** This entry deliberately does not resolve it by inference. **Data Administration is the only reading that contradicts no recorded resolution**, and is therefore the working assumption until the lead is asked; if he meant the generator, Q11 is contradicted and that is a scope question, not a documentation fix.
+
+### Two consequences, stated so they are not assumed
+
+- **D-15's propagation deferral stands.** D-15 deliberately deferred propagating the reframing into `CLAUDE.md` and the charter, on the lead's reasoning that the documentation approach would itself be revised once V1.0's learning landed — *"build the tower, put the marshmallow and see what fails."* **A restatement of the direction is not the arrival of that learning.** The deferral is unchanged, and a session finding `CLAUDE.md` describing a software-builder platform should still read it as accurate for the current build.
+- **`TICKET.md`'s D-i may be superseded in substance rather than answered.** D-i — vertical-slice validation, *"build one genuinely hard slice and measure … instead of deciding further on paper"* — has been deferred since 2026-07-30 as the first item of a development phase. The loop instructed here has the same purpose by the lead's own description. **Whether the daily loop discharges D-i, or D-i still names a separate measured exercise, is not settled by this entry** and should be put to him alongside the screens question.
+
+**Alternatives considered.**
+- **Recording it as superseding D-15** — rejected. Nothing in the transcript reverses D-15; the lead restated it, using *"remember that we are moving into"* to point back at it. A restatement recorded as a supersession would falsely retire D-15's own reasoning and criteria.
+- **Resolving the screens question by inference** — rejected on `BACKLOG.md` §1t's asymmetry. Data Administration is the most probable reading and the only conflict-free one, but recording a probable reading as the lead's instruction would give a guess the authority of a decision, and the one line that would confirm it is unintelligible rather than merely absent.
