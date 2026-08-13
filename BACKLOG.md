@@ -564,6 +564,8 @@ This is the **third** ticket-authoring defect of a recognizable family, each cau
 | **H33** | **A section's content asserted from memory and attributed to the wrong document** | **This entry** |
 | **H35** | **A Consequences field cited at the wrong section of the right document** — `04-security-controls-design.md` "§10's Consequences"; §10 is that document's Precedence section and has no Consequences field, the content being ADR-021's own at **§8.1** | **This entry, 2026-08-11** |
 
+| **P01** | **The prompt that binds this very rule misattributed this table's own contents** — it asserted the four instances as H16, H21, H33 and *the 43-vs-44 count*, substituting for **H35**. The 43-vs-44 correction is real but lives at H48's close in `TICKET.md` under §1ab, not here | **P01's close, by the Executor** |
+
 **The fourth instance, and the first where the rule visibly worked.** H35's prompt was written *after* this entry existed, and it carried the halt-and-say-so guard into its own Key Context. The Executor located the correct section, cited it correctly in the deliverable, and reported the defect in its handoff rather than either forcing the mismatch or silently fixing it. **That is the designed outcome, not a near-miss** — the rule cannot prevent the Orchestrator from mis-citing, only ensure an Executor catches it, and here it did.
 
 **But note the narrowing this instance adds.** H33's defect was the *wrong document*; this one is the **right document, wrong section** — a harder error to notice, because the document name reads as correct and only the section number is off. An Orchestrator checking "is this the right document?" would pass this. The check must resolve the **section**, and confirm the named **field** exists in it.
@@ -571,6 +573,17 @@ This is the **third** ticket-authoring defect of a recognizable family, each cau
 **Standing rule: when a ticket prompt asserts what a specific section contains — especially an enumeration, a count, or a named list — read that section before writing the assertion.** §1i's rule made a document a *mandatory input*; this one is narrower and different: it governs what the Orchestrator may *claim* about a section it is citing. A wrong citation in a prompt is more dangerous than a missing one, because an Executor has no reason to doubt it and every reason to build on it.
 
 **Not blocking anything.** H33's own document relies on the correct sets — `07-cross-system-data-layer-design.md` §4's five guarantees and `06-marketplace-design.md` §5's six submission constraints — and carries a front-matter note recording the correction. This entry exists so the rule survives, not because work is outstanding.
+
+
+### The fifth instance closes the loop this entry opened — 2026-08-13
+
+**P01 was the ticket that made this rule binding, and its own prompt broke it.** The Orchestrator asserted this table's four instances from recall, replaced H35 with the 43-vs-44 count, and issued it. The Executor resolved the table, found the substitution, and wrote the deliverable against what §1t *actually says* rather than what the prompt claimed — then reported the discrepancy rather than quietly correcting it.
+
+**Two things this settles.**
+1. **The rule was needed, and the evidence is the rule's own ticket.** Five instances now, four of them Orchestrator-authored, and the fifth occurred while writing the fix. Recall is not a reliable substitute for reading, even when the subject is the unreliability of recall.
+2. **The Executor-side guard is doing the real work, and it is still unwritten.** Every instance since H33 was caught by an Executor, never by the Orchestrator. `PROCESS.md` §4's Generation rules now bind the Orchestrator (P01), but nothing requires a ticket prompt to carry the halt-on-a-bad-citation instruction that H33's and H35's Executors acted on. **Routed as `P04`.**
+
+**Status: the reachability half is closed; the entry stays open as case history.** `PROCESS.md` §4's Generation rules bind the citation duty at the point a prompt is produced, and §3's Default-rule paragraph binds the status-reconciliation duty at role assignment. This entry is no longer "a rule recorded where nothing reads it."
 
 ---
 
