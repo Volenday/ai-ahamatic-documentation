@@ -366,7 +366,24 @@ H44 correctly declined to name a figure (the ticket prohibited it, and vendor wi
 
 ---
 
-## 1aa. 🔶 OPEN 2026-08-11 — **six** structural obligations have accumulated untracked since H30a; the per-obligation tracking that §1i–§1s ran stopped being applied, and the lapse is the Orchestrator's *(header count corrected 2026-08-11 at H48's close: the table below grew to six as H45 and H46 each added a row, and this heading still read "four" — the same stale-count class §1o records, in the tracker that exists to catch it)*
+## 1aa. ✅ CLOSED 2026-08-14 by H51 — all six obligations discharged in one pass per document
+
+**Part A — five structures supplied to `02-platform-data-model-design.md`:** `platform.marketplace_offerings` (H32/ADR-043), `platform.connector_marketplace_offerings` (H33/ADR-044), `platform.pending_approvals` (H43/ADR-054), `tenant_<id>.ai_suggestions` (H45/ADR-056, the one name fixed by its own naming document), and `platform.session_accumulators` (H46/ADR-057). **No new ADR minted** — each structure's columns and upstream decision were already settled by its naming document, so this document's contribution is physical placement only, recorded as five "No new ADR" notes on the convention it already uses.
+
+**The renumbering trap was avoided.** All four platform-global tables went into **§3.1** and the per-tenant one into §3.2; §1–§14 is unchanged, so the **seven inbound citations to §12** across four documents remain valid.
+
+**Part B — `01-environment-and-configuration-design.md` §8.5**, and its §8 heading now reads *"The Five Provisioning Obligations, Discharged."* Every count corrected — zero occurrences of the four-obligation phrasing remain.
+
+### Two corrections to H51's own ticket prompt, both the Orchestrator's
+
+1. **The prompt's placement instruction was wrong.** It said to put platform-global structures in **§6 (*Platform-Global Configuration*)**. §6 is narrowly scoped to `platform.platform_configuration`'s key/value shape and **itself points at §3.1** for where that table lives; every existing platform-global table already sits in §3.1. The Executor resolved it, placed correctly, and reported — the Citation-Integrity *correct-and-report* branch working as designed.
+2. **The prompt overstated this entry's own defect.** It said §1aa *"describes this obligation wrongly."* More precisely: §1aa's items — storage medium, retention, catalog locatability — are largely **real**, but were **attributed to §6.2 alone** when the obligation spans **§6.2** (granularity, consistency, retention ≥ 13 months), **§6.3** (residency-scoped placement, *"folded into the same handover as §6.2"*), and **§11** (the backup catalog, where *"nothing already fixed provides a table for this"*). Misattribution, not fabrication — and the sharper claim was mine, not the entry's.
+
+**One judgment worth a second look, recorded not flagged as a defect:** discharging Part B required a genuine technical choice — **continuous point-in-time recovery via write-ahead-log archiving, never a scheduled snapshot cadence**, on the reasoning that only a zero-gap mechanism can be shown to meet NFR §7's zero data-loss tolerance. It was recorded as an **amendment to ADR-046** rather than a new ADR, on the argument that it applies already-fixed mechanisms to a new specific case exactly as obligations one through three did. Defensible, and consistent with that ADR's scope — but a reader expecting a new mechanism choice to carry its own ADR should know where to find it.
+
+*Original entry retained below.*
+
+## 1aa-history. 🔶 OPENED 2026-08-11 — **six** structural obligations have accumulated untracked since H30a; the per-obligation tracking that §1i–§1s ran stopped being applied, and the lapse is the Orchestrator's *(header count corrected 2026-08-11 at H48's close: the table below grew to six as H45 and H46 each added a row, and this heading still read "four" — the same stale-count class §1o records, in the tracker that exists to catch it)*
 
 **Found at H43's close, while checking whether that ticket's new-structure finding needed a running tally. It did, and the tally had stopped.**
 
