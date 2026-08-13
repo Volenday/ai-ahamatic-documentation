@@ -34,7 +34,7 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 
 1. Open a new Code Mode chat.
 2. Attach the `ai-ahamatic/` folder.
-3. Invoke `/ai-aha-context`. **This is the only skill invoked all session.**
+3. Invoke `/ai-aha-context`. **No phase writing-rules skill and no phase review skill is invoked at any point in this session** — with `/ai-aha-handoff` at step 8, these two are the only skills it runs. *(Wording corrected 2026-08-13: this line previously read "the only skill invoked all session," which step 8 contradicts. The intent was always "no phase skill," never "no second skill.")*
 4. Name the session `P## — <Title>`.
 5. Paste the previous ticket's handoff (or a bridging handoff). **Context only — no work begins.**
 6. Paste the **ticket system prompt** — work begins now. **This prompt carries the writing rules.**
@@ -135,7 +135,7 @@ The criteria library sits outside the two-phase model (§1), so a `CR##` ticket 
 
 1. Open a new Code Mode chat.
 2. Attach the `ai-ahamatic/` folder.
-3. Invoke `/ai-aha-context`. **This is the only skill invoked all session.**
+3. Invoke `/ai-aha-context`. **No phase writing-rules skill and no phase review skill is invoked at any point in this session** — with `/ai-aha-handoff` at step 8, these two are the only skills it runs. *(Wording corrected 2026-08-13: this line previously read "the only skill invoked all session," which step 8 contradicts. The intent was always "no phase skill," never "no second skill.")*
 4. Name the session `CR## — <Title>`.
 5. Paste the **bridging handoff** (for the library's first ticket) or the previous `CR##` ticket's handoff. **Context only — no work begins.**
 6. Paste the **ticket system prompt** — work begins now. **This prompt carries the writing rules** that `ai-aha-spec-doc` / `ai-aha-design-doc` supply for the other two libraries.
