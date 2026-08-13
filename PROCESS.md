@@ -13,10 +13,39 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 | Specification | **What** | `docs/spec/` | `ai-aha-spec-doc` | `ai-aha-spec-review` | `T##` |
 | Design / Implementation | **How** | `docs/design/` | `ai-aha-design-doc` | `ai-aha-design-review` | `H##` |
 | Criteria library | **What to ask, before either** | `docs/criteria/` | **none — see below** | **none — see below** | `CR##` |
+| Process and tooling | **How the work itself is produced** | `PROCESS.md`, `.claude/skills/` | **none — see §1b** | **none — see §1b** | `P##` |
 
 **The criteria library is a third library, not a third phase** (`DECISIONS.md` **D-21**, lead decision 2026-08-03). It holds the two artifact classes D-15 identified with no home: reusable questions-and-criteria sets, and third-party tool opinions. It sits *outside* the two-phase model — its artifacts precede a specification rather than realizing one — and it is an **input, never an authority**: it may not override, amend, or contradict `docs/spec/`, and on any apparent conflict the spec prevails.
 
 > **⚠ A `CR##` ticket invokes NO phase writing-rules or review skill, and this is deliberate.** Verified against both skills on 2026-08-03: their generic rules (pyramid structure, the ahaMatic domain-neutrality lens, structure and reference rules) transfer, but their phase-specific rules do not, and one is actively harmful. `ai-aha-spec-doc` requires every document to answer *"what, not how"* — a criteria document answers neither. `ai-aha-design-doc` requires that every document **realize the specification** and that **every element cite the capability it realizes** — a criteria document realizes no capability and cites no spec, so under that skill every line reads as a violation and an Executor will try to "fix" it by inventing spec citations. **A `CR##` ticket therefore loads `/ai-aha-context` only (skipping steps 4 and 8 of §3), and the ticket prompt carries its writing rules directly.** Whether this library eventually warrants its own skill is deliberately deferred until there is evidence it is needed.
+
+### 1b. The `P##` process-and-tooling series (established 2026-08-13, `DECISIONS.md` **D-28**)
+
+**`P##` is not a fourth library and not a fourth phase.** It is the ticket series for changes to the artifacts that govern *how* work is produced — this file and `.claude/skills/` — which until 2026-08-13 were owned by nobody: not a `docs/` deliverable, so no `T##`/`H##`/`CR##` reached them; not an enumerated tracker, so not an Orchestrator edit by default.
+
+**Why they are ticketed rather than edited inline.** A skill governs **every future ticket of its phase**, which is more output than any single document governs, and its failure mode is silent — a bad skill edit degrades every subsequent ticket and the damage is attributed to those tickets rather than to the skill. The artifacts with the widest reach must not have the only change path with no review pass (D-28, criterion 2).
+
+**What a `P##` ticket may and may not touch:**
+- **May:** `PROCESS.md`, and any file under `.claude/skills/`.
+- **May not:** anything under `docs/`. A process change that implies a library change routes the library half to its own `T##`/`H##`/`CR##`, exactly as a design ticket routes a spec change.
+- **One ticket, one concern.** Atomic execution applies unchanged; a `P##` never bundles an unrelated second rule because both happen to live in this file.
+
+**The 10 steps (`P##` Executor session).** Same shape as the `CR##` variant — no phase writing-rules skill and no phase review skill exist for this class, and inventing them is deliberately deferred until there is evidence they are needed.
+
+1. Open a new Code Mode chat.
+2. Attach the `ai-ahamatic/` folder.
+3. Invoke `/ai-aha-context`. **This is the only skill invoked all session.**
+4. Name the session `P## — <Title>`.
+5. Paste the previous ticket's handoff (or a bridging handoff). **Context only — no work begins.**
+6. Paste the **ticket system prompt** — work begins now. **This prompt carries the writing rules.**
+7. Save the change to the exact `PROCESS.md` section or `.claude/skills/…` path the ticket names.
+8. **Verify the rule is actually reachable** (see below), then invoke `/ai-aha-handoff` — **mandatory and explicit**, on the terms the ⛔ note under the 12 steps sets out.
+9. Update `TICKET.md` — mark the ticket ✅ Done.
+10. Commit: `git commit -m "P##: <summary>"`.
+
+> **⚠ Step 8's verification is this series' compensating control, and it is not the same check the other series run.** A `P##` ticket's failure mode is not an inaccurate statement — it is a **rule that is stated but never reached**, which is the exact defect the series was created to fix (`BACKLOG.md` §1t and §1w were correctly written for days in a file no session is required to read before working). **Before the handoff, the Executor must state where the new rule is read, and by whom, in the ordinary course of a session** — which numbered step, which skill checklist, which prompt block. *"It is written in `PROCESS.md` §4"* is not an answer unless something requires §4 to be read at the moment the rule applies. If no such point exists, the ticket is not done; say so in the handoff rather than closing it.
+
+> **The bootstrap, recorded so it is not mistaken for a precedent.** Defining this series was itself a `PROCESS.md` §1 change, and no `P##` ticket could run before the series existed. That one edit was made by the Orchestrator under its existing §3 authority over `PROCESS.md`, on D-28's explicit direction. **It does not generalize:** the Orchestrator does not edit `.claude/skills/` directly under any circumstance, and further `PROCESS.md` changes of substance run as `P##` tickets. Routine tracker-style maintenance of this file — correcting a stale count, fixing a citation — remains ordinary Orchestrator work.
 
 - The specification library is **authoritative**, and design documents **realize** it without narrowing, expanding, or altering it. On any conflict, the spec prevails; surface it, don't silently diverge.
 - **The freeze was lifted 2026-07-30** (lead decision; `DECISIONS.md` D-08 context note) — the spec is expected to keep changing. A design ticket may now surface a spec change rather than only flagging it, but the change still runs as a **spec-phase ticket** (`ai-aha-spec-doc`); a design ticket never edits `docs/spec/` inline.
@@ -34,6 +63,8 @@ Companion files: `CLAUDE.md` (project rules), `TICKET.md` (ticket tracker), `OPE
 | `ai-aha-orchestrator-handoff` | End of an **Orchestrator** session — planning, ticket generation, tracker maintenance, decision recording. Carries decision state, deliberate inconsistencies, and blocked-on-user items rather than a single document's output. **Not interchangeable with `ai-aha-handoff`**; added 2026-08-02 after an Orchestrator handoff had to be improvised. |
 | `ai-aha-consistency-check` | After any capability, shared-concept, or design-decision change — verifies the spec and design libraries against each other and reports drift. Checks and reports only; it never edits. Built in T62 (§6) and extended to the design library on 2026-07-29. |
 
+**Who may change a skill: only a `P##` ticket (§1b, `DECISIONS.md` D-28).** This file previously named `.claude/skills/` the source of truth without ever saying who maintained it, and §3's Orchestrator list did not include it — so skill changes were unowned. They are now ordinary ticketed work; an Orchestrator never edits a skill directly.
+
 The `.claude/skills/` copies are the **only** copies and therefore the source of truth. The desktop app previously kept its own duplicates, which had drifted; **those were deleted on 2026-08-02**, so the drift risk this note used to warn about no longer exists. Do not reintroduce a second copy.
 
 ---
@@ -50,6 +81,7 @@ The `.claude/skills/` copies are the **only** copies and therefore the source of
   - **An amendment to an existing `docs/design/` document may be made inline by the Orchestrator, but only when the user explicitly directs that specific change.** This is how ADR-002 through ADR-010 were added to `technology-stack-design.md` on 2026-07-29 — each at the user's explicit instruction. Recording the allowance rather than leaving it as undocumented drift; it is a deliberate exception, not a general licence, and the Orchestrator never amends `docs/design/` on its own initiative.
   - **`docs/criteria/` splits by what is being edited (added 2026-08-03, when the first case arose).** The library's index — `criteria-document-map.md`'s **status rows and index entries** — is *navigational, by that document's own statement*, and the Orchestrator maintains it directly, in the same class as `TICKET.md`: flipping a scheduled document to Done after its ticket lands needs no separate direction. **Everything else needs a ticket**: the content of any criteria document, any new document, and any change to the map's governing sections — its admission test, boundaries, conventions, or precedence — all go through a `CR##` ticket. The distinction is between recording that something happened and deciding what the library holds.
   - **`docs/spec/` is never edited by an Orchestrator**, inline or otherwise, freeze lifted or not (§1) — a genuine spec gap or change is always routed through a spec-phase ticket.
+  - **`.claude/skills/` is never edited by an Orchestrator either** (§1b, `DECISIONS.md` D-28, 2026-08-13). Skill changes run as `P##` tickets. `PROCESS.md` itself stays on the maintained list above for routine upkeep — a stale count, a broken citation — but a **substantive** process change also runs as a `P##`; the line is the same one §3 already draws for `docs/criteria/`, between recording that something happened and deciding what the rules are.
 
   When in doubt, generate the ticket rather than making the edit — the ticket path is always available and always correct.
 

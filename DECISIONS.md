@@ -629,3 +629,66 @@ The two classes it holds:
 - **Treating the figure as a hard ceiling rather than a confirmed operating assumption** — rejected. It is subject to the same headroom property that already protects the ≤50 figure: `platform.applications.schema_name`'s registry indirection means schema *addressing* scales by orders of magnitude regardless of this number: only pooling and migration-batching design are sized against it.
 
 **Open, handed to H10 explicitly.** When `04-scalability-availability-and-performance-design.md` is written, it should verify against **~100** as the actual confirmed figure, not the abstract *"somewhere between the V1.0 figure and the NFR horizon"* the current §11 hands it. This sharpens that document's job; it does not change it.
+
+---
+
+## D-27 — Library-first sequencing: the three libraries close before any development-process or platform-development work
+
+**Decision.** `docs/spec/`, `docs/design/` and `docs/criteria/` are finalized before any ticket is created for **platform-development documentation** — documents describing how the software itself is built — and before **D-i's vertical-slice validation** opens that phase.
+
+**Attribution: lead decision, 2026-08-13.**
+
+**Scope, narrowed on the same day it was set.** The instruction was first read as covering the *documentation-production* process too — `PROCESS.md` and `.claude/skills/` — and P01–P03 were deferred on that basis. **That reading was wrong and is corrected here: the hold covers platform-development documents only.** `PROCESS.md` and the review skills stay in scope, because the rules they carry (`BACKLOG.md` §1t, §1w) are the citation discipline the remaining library tickets depend on. Deferring them would have meant ten tickets running with those rules unenforced, compensated only by repeating them inline in ten separate prompts.
+
+**Criteria applied.**
+1. **Does the change serve library finalization or compete with it?** `PROCESS.md` and skill changes serve it — they harden how the remaining tickets are written and checked. Platform-development documents compete with it, being a different phase against a different subject.
+2. **Would deferring it degrade the work that runs during the hold?** Yes for P01/P02 — four defects across the H-series trace to the unenforced rules. No for platform-development documents, which nothing in the libraries depends on.
+3. **Is the fix once, or repeated?** Fixing `PROCESS.md` once replaces an inline workaround repeated across ten prompts.
+
+**Alternatives considered.**
+- **Holding all process documents** — rejected on criteria 2 and 3. It was the reading initially applied, and it made the citation rules unenforceable for exactly the tickets most exposed to them.
+- **Opening platform-development documentation in parallel** — rejected. The libraries are the input to that work; starting it against a moving base reproduces the phase inversion `PROCESS.md` §1 exists to prevent.
+
+---
+
+## D-28 — Skills and process documents are ticketed work: the `P##` series
+
+**Decision.** `PROCESS.md` and `.claude/skills/` changes run as **`P##` tickets** — a fourth ticket series, defined in `PROCESS.md` §1 and §1b — rather than as Orchestrator inline edits.
+
+**Attribution: lead decision, 2026-08-13.**
+
+**The gap this closes.** `PROCESS.md` §2 names `.claude/skills/` the single source of truth for the skills; §3 enumerates what an Orchestrator maintains. **Skills appear in neither list**, so a skill change was owned by nobody: not a `docs/` deliverable, so no `T##`/`H##`/`CR##` reached it; not an enumerated tracker, so not an Orchestrator edit by default. The question surfaced only when P02 needed to amend both review skills.
+
+**Criteria applied.**
+1. **How much output does the artifact govern?** A skill governs every future ticket of its phase — more output than any single document. That argues for the strongest treatment available, not the lightest.
+2. **Is the failure mode silent?** Yes, and this is decisive. A bad document is visible to its readers; a bad skill edit silently degrades every subsequent ticket and would be attributed to the tickets rather than the skill.
+3. **Does the existing machinery reach it?** No — hence the gap.
+
+**Alternatives considered.**
+- **Adding `.claude/skills/` to `PROCESS.md` §3's Orchestrator-maintained list** — faster, and consistent with how `PROCESS.md` itself is handled. **Rejected on criterion 2:** it gives the highest-leverage artifacts in the project the *only* change path with no review pass.
+- **Case-by-case explicit user direction**, mirroring the `docs/design/` inline-amendment exception — rejected as not scaling, and as putting the lead in the loop for every skill change rather than for the ones that matter.
+
+**Bootstrap, stated explicitly because it is a real circularity.** Defining the `P##` series is itself a `PROCESS.md` §1 change, and no `P##` ticket can run before the series exists. **The defining edit is therefore made by the Orchestrator under `PROCESS.md` §3's existing authority over `PROCESS.md`, on this entry's explicit direction** — once, to create the series. Every subsequent process or skill change runs as a `P##` ticket. This exception is not general and does not extend to `.claude/skills/`, which the Orchestrator never edits directly.
+
+---
+
+## D-29 — A design ADR may bind a specification document only where the specification already obliges the thing
+
+**Decision.** An ADR in `docs/design/` may state a binding on a `docs/spec/` document **only where that document already carries the obligation and was written to be realized**. Anything requiring a *new* specification clause is a **specification gap**: recorded, routed to a `T##` ticket, and never asserted as a binding a design document imposes.
+
+**Attribution: lead decision, 2026-08-13.** Closes `BACKLOG.md` §1z and settles the convention behind `ADR-REGISTER.md` live issue 6.
+
+**The pattern this answers.** A design ADR binding a specification document reached three instances — **ADR-022** (requires a new Merge Gate check in a closed list), **ADR-025** (binds the charter and its protocols), and `BACKLOG.md` §1x's case — which makes it a library habit rather than three slips. `CLAUDE.md`'s two-phase rule and `PROCESS.md` §1 forbid a design document altering the spec, but neither named the line an ADR crosses.
+
+**The line, and why it falls here.** **ADR-023 binds the same specification document legitimately**, because `02-ci-cd-pipeline-spec.md` §6's residency clause already existed and was written to be realized — the ADR supplies its criteria. **ADR-022 does not**, because §5's mandatory-check list is closed (*"It requires all of the following to hold"*) and carries no "additional checks may exist" allowance, unlike §4 for stages. So the distinction is not *whether* an ADR names a spec document, but **whether the obligation already exists there**. Supplying criteria for a stated obligation is realization; requiring a clause to appear is amendment.
+
+**Criteria applied.**
+1. **Does it preserve the two-phase rule without making legitimate realization unsayable?** Yes — ADR-023 stands unchanged, which the stricter alternative would not allow.
+2. **Is it checkable without judgment?** Largely — resolve the cited section and ask whether the obligation is already stated. That is the same check `ai-aha-consistency-check` already performs on citations.
+3. **Does it fail safe?** Yes. The failure mode becomes a recorded gap routed to a spec ticket, which is the outcome live issue 6 reached by hand three times.
+
+**Alternatives considered.**
+- **Never bind a specification document** — trivially checkable, but rejected on criterion 1: ADR-023 would have to be reworded despite having caused no harm, and the rule would forbid the correct case along with the incorrect one.
+- **Allow binding with a mandatory disclosure field** — rejected on criterion 3. It relies on the field being filled in, which is precisely the discipline that already failed three times; a rule whose enforcement depends on the behavior it is correcting is not a rule.
+
+**Consequence.** **ADR-022 is a defect under this rule**, which is how `ADR-REGISTER.md` live issue 6 already reads it. T74 discharges it — either the specification gains the obligation (making the binding retroactively legitimate) or ADR-022's Consequences clause is amended. The convention itself lands in `PROCESS.md` §12 via **P03**.

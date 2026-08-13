@@ -133,11 +133,11 @@ Identifying summaries only. For the decision, its alternatives, and its reasonin
 
 ## Live issues
 
-1. **🔶 Two broken cross-references in `02-platform-data-model-design.md`, pointing at the wrong content.** H6 inserted ADR-012 and ADR-013 as §22 and §23, pushing *Precedence and Ownership Boundaries* to §24 and *Binding Rules* to §25. Two inbound citations were not updated, and they now resolve to unrelated ADRs rather than dangling:
-   - **line 39** cites `§23` meaning *Binding Rules* → now lands on the AI-to-AI protocol ADR
-   - **line 251** cites `§22` meaning *Precedence and Ownership Boundaries* → now lands on the caching ADR
+1. **✅ CLOSED 2026-08-13 — verified fixed against the file, not reported fixed.** This entry recorded two broken inbound cross-references in `02-platform-data-model-design.md`: H6 inserted ADR-012 and ADR-013 as §22 and §23 of `01-technology-stack-design.md`, pushing *Precedence and Ownership Boundaries* to §24 and *Binding Rules* to §25, and line 39 (citing `§23`, meaning Binding Rules) and line 251 (citing `§22`, meaning Precedence) were left resolving to unrelated ADRs.
 
-   H6 correctly declined to fix these — that file was a read-only dependency input for the ticket. **A reference that resolves to the wrong section is worse than one that dangles**, because nothing signals the error to a reader.
+   **A grep of every `01-technology-stack-design.md` §2x citation in that file now returns exactly one — §21 (ADR-011) — which is correct.** Neither bad citation survives; no ticket is owed. Closed during the 2026-08-13 documentation wrap-up sweep, where it had been queued for ticketing and was found already discharged. **No ticket in the record claims this fix**, so it was made in passing by a ticket editing that file for another reason — which is itself the argument for verifying a tracker entry against the files before scheduling work from it (`BACKLOG.md` §1t).
+
+   *The principle this entry established stands and is now recorded in `BACKLOG.md` §1ac:* **a reference that resolves to the wrong section is worse than one that dangles**, because nothing signals the error to a reader.
 
 2. **Status vocabulary has outgrown §9** — see the note under the status summary. Five statuses in use, three defined.
 
