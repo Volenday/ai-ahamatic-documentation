@@ -36,6 +36,7 @@ Do not use the spec-phase rules (`ai-aha-spec-doc`) in this phase; they forbid t
 
 - The "what" library (`docs/spec/`) is authoritative and frozen for this phase. Design documents **consume** it; they never edit it.
 - If a design reveals a genuine gap or error in the specification, **flag it for the spec-phase change process** — do not fix it inline in a design document.
+- An ADR's Consequences may bind a `docs/spec/` document only to **realize** an obligation that document's cited section already states — supplying criteria, mechanics, or an enforcement point, never a clause the section lacks. Requiring a new clause there is the specification gap the bullet above routes to the spec-phase process, not a binding this document may assert (`PROCESS.md` §12.2).
 - Do not re-open settled scope (capabilities, exclusions). A capability marked future / not-yet-authorized is not designed until it is explicitly authorized.
 
 ---

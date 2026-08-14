@@ -29,6 +29,8 @@ Review the specification ("what") output you just produced for this session agai
 - [ ] Does every citation and quotation point at its **origin** — the document that *minted* a precedent rather than one that later applied it, and the source file rather than a handoff summary or the ticket prompt's rendering of it?
 - [ ] If sections were inserted or renumbered, were `§N` cross-references to this document updated everywhere they appear across the library?
 
+**If a fix above inserts, deletes, or renumbers a section, run this checklist again in full against the corrected output before delivering it.** A check that passed before a structural edit is not guaranteed to hold after one.
+
 **Quality**
 - [ ] Is the pyramid structure applied — foundational to complex?
 - [ ] Is there any filler, redundancy, or padding? If yes, remove it.

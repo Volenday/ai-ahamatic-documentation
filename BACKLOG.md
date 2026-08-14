@@ -615,7 +615,7 @@ Every prior entry in this family concerns citations to *other* documents. This o
 - **Closed:** §13 now states that a ticket minting a new type is not complete until it adds a row to §4.5, and this document authorizes that amendment regardless of the ticket's stated primary subject.
 - **Not closed:** nothing in `PROCESS.md` §4's ticket-prompt template tells an Orchestrator to name this document as a second `Document(s)` target when a ticket will mint a type. **So the obligation depends on being remembered, not on being enforced** — which is precisely how §4.3 froze in the first place, and precisely how `ADR-REGISTER.md` fell fourteen ADRs behind before `PROCESS.md` §3 was amended (live issue 8).
 
-**Routed as `P05`(e).** Until it lands, §4.5 will drift the same way §4.3 did, and this entry should be re-opened rather than treated as settled.
+**✅ Closed 2026-08-14 by `P05`(e), and in the stronger form.** §4's Generation rules now require an Orchestrator to check the standing cross-document registries before finalizing `Document(s)` — *a ticket producing an artifact one of them tracks names that registry's owning document as a second target, and updating it is part of closing.* **Taken as a general rule with a growable enumeration rather than a third special case**, so the next registry to appear does not fail identically. §4.5's currency no longer depends on memory.
 
 *Original entry retained below.*
 

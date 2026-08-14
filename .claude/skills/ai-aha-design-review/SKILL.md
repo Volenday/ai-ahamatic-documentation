@@ -32,6 +32,7 @@ Review the design/implementation ("how") output you just produced for this sessi
 - [ ] Does every new ADR carry all fields the convention requires (`technology-stack-design.md` §9): identifier, title, status, context, decision, alternatives with the tradeoff that ruled each out, and consequences?
 - [ ] Does it state its **cost to reverse** — brutal / very high / high / moderate / low, per `PROCESS.md` §12.1?
 - [ ] Does it name the **upstream decisions it assumes**, and flag any that are still undecided? An ADR resting on an open constraint is approved only jointly with that constraint, or is explicitly marked exposed (`PROCESS.md` §12.2).
+- [ ] If this ADR's **Consequences** bind a `docs/spec/` document, does the section it cites already state the obligation being bound — realization, not amendment? An obligation the cited section does not carry is a specification gap: route it to a `T##` ticket rather than asserting the binding (`PROCESS.md` §12.2).
 - [ ] Does it distinguish findings **verified against current sources** from those **reasoned from existing knowledge**? Time-sensitive claims — ecosystem maintenance, release cadence, pricing, adoption — must be verified before they decide anything (`PROCESS.md` §12.3). Structural properties may be reasoned about directly.
 - [ ] Are ADR identifiers sequential, permanent, and never renumbered or reused — including where one supersedes another?
 - [ ] If this output supersedes an earlier ADR, is the earlier one marked `Superseded by <ADR-ID>` **in place** rather than edited or deleted, so the reason a decision moved is preserved?
@@ -43,6 +44,8 @@ Review the design/implementation ("how") output you just produced for this sessi
 - [ ] Does each quotation run to the end of the source's own sentence, or mark what it drops with an ellipsis?
 - [ ] Does every citation and quotation point at its **origin** — the document that *minted* a precedent rather than one that later applied it, and the source file rather than a handoff summary or the ticket prompt's rendering of it?
 - [ ] If sections were inserted or renumbered, were `§N` cross-references to this document updated everywhere they appear across the library?
+
+**If a fix above inserts, deletes, or renumbers a section, run this checklist again in full against the corrected output before delivering it.** A check that passed before a structural edit is not guaranteed to hold after one.
 
 **Quality**
 - [ ] Is the pyramid structure applied — foundational decisions first, then what builds on them?
