@@ -1,6 +1,6 @@
 # AI ahaMatic — Design Decision Record (ADR) Register
 
-A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-11** (post-H48 — **ADR-059 registered at the close of the design library's final document; the library is complete at 43/43**. ADR-058 at H47's close, its handoff arriving late after the ticket had already run; ADR-057 at H46's close; ADR-056 at H45's, closing Layer 3; ADR-055 at H44's; ADR-054 at H43's; ADR-053 at H42's; ADR-052 at H41's, opening Layer 6; ADR-051 at H40's, closing Layer 5; ADR-050 at H39's; ADR-049 at H38's; ADR-048 at H37's; ADR-047 at H36's; ADR-046 at H35's, opening Layer 5. ADR-045 registered at H34's close, closing Layer 4; its row was reconciled at that close against the owning document, having been pre-written from a superseded draft of the same ticket that was set aside before H34 ran; ADR-017 discharged from Owed to Approved at H31; ADR-038 was the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
+A navigational index of every design-phase ADR: its identifier, status, owning document, cost to reverse, and the upstream decisions it assumes. **Last updated 2026-08-14** (post-H57 — **ADR-060 registered at this ticket's close**, the component-and-styling foundation for the platform console. Prior entry: post-H48 — **ADR-059 registered at the close of the design library's final document; the library is complete at 43/43**. ADR-058 at H47's close, its handoff arriving late after the ticket had already run; ADR-057 at H46's close; ADR-056 at H45's, closing Layer 3; ADR-055 at H44's; ADR-054 at H43's; ADR-053 at H42's; ADR-052 at H41's, opening Layer 6; ADR-051 at H40's, closing Layer 5; ADR-050 at H39's; ADR-049 at H38's; ADR-048 at H37's; ADR-047 at H36's; ADR-046 at H35's, opening Layer 5. ADR-045 registered at H34's close, closing Layer 4; its row was reconciled at that close against the owning document, having been pre-written from a superseded draft of the same ticket that was set aside before H34 ran; ADR-017 discharged from Owed to Approved at H31; ADR-038 was the first under `PROCESS.md` §3's new rule. Prior entry: post-H26c sync, ADR-024 through ADR-037 added. The register had drifted **fourteen** ADRs behind in a single day, having been synced at H15 the day before. See live issue 8.)
 
 **What this file is.** An index, in the same sense as `docs/spec/context-document-map.md` and `docs/design/implementation-document-map.md` — it routes to decisions and reports their status.
 
@@ -15,7 +15,7 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 | Status | Count | ADRs |
 |---|---|---|
 | ✅ **Approved** — in force | 8 | ADR-003, ADR-004, ADR-005, ADR-006 *(in part)*, ADR-007 *(in part)*, **ADR-009**, ADR-010, ADR-011 |
-| ✅ **Resolved** — closed, no further action | 5 | **ADR-001**, ADR-002, **ADR-008**, **ADR-012**, **ADR-013** |
+| ✅ **Resolved** — closed, no further action | 6 | **ADR-001**, ADR-002, **ADR-008**, **ADR-012**, **ADR-013**, **ADR-060** |
 | ✅ **Approved** — added to this register 2026-08-03; H8's three were never registered | 3 | **ADR-014**, **ADR-015**, **ADR-016** *(016 amended per D-18)* |
 | ✅ **Approved** — self-approved by their own ticket under D-16; **see live issue 5** | 3 | **ADR-018** *(H10)*, **ADR-019** *(H11)*, **ADR-020** *(H12)* |
 | 🔶 **Provisional — Pending Lead Approval** | **39** | **ADR-021**–**ADR-059** *(H13 through H48 — the whole design phase after H12)* — every ADR produced since H13, none in `DECISIONS.md` |
@@ -42,6 +42,7 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **005** | Architecture pattern — deployment topology | §15.6 | ✅ Approved | High | ADR-004 |
 | **006** | API contract shape | §16.5 | ✅ **Approved** — **GraphQL now rejected (D-19, 2026-08-03)**; no part remains open | High | ADR-005 |
 | **013** | **AI-to-AI protocol — MCP, generated from the existing OpenAPI contract** | **§23** | ✅ **Resolved** (D-16) | High | **ADR-006** — amends its open flag; does not reopen it |
+| **060** | **Component and styling foundation for the platform console — shadcn/ui defaulted to Base UI, Tailwind CSS, CSS custom properties** | **§24** | ✅ **Resolved** (D-16) — discharges `TICKET.md` D-q | Moderate | ADR-001/ADR-008, ADR-007, ADR-005 |
 | **010** | Cloud provider | §20.3 | ✅ Approved | Moderate–high | ADR-005, ADR-004 |
 | **007** | Client surface shape **(approved)** · mobile runtime **(superseded)** | §17.6 | ✅ Approved in part | Moderate | ADR-001 |
 | **009** | Mobile-delivery runtime — React Native with Expo | §19.3 | ✅ **Approved** — deferral discharged | Moderate | ADR-001, ADR-007 |
@@ -109,6 +110,9 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 - **ADR-012** — server-side caching **deferred by decision, not left open**. Q1a removed V1.0's performance targets, so no driver exists; ADR-005's philosophy is to optimize only under profiled pressure. Two constraints bind whenever it arrives: never correctness-critical, and inside ADR-010's portable subset.
 - **ADR-013** — **MCP**, generated from the OpenAPI contract ADR-006 already requires, making it a second rendering of an existing artifact rather than a third interface. Recorded as *MCP first*, not *MCP instead of A2A*: A2A addresses agent-to-peer coordination the platform does not yet have, so adding it later is additive, not a reversal.
 
+**One new ADR was recorded at H57**, a team decision under D-16:
+- **ADR-060** — **component and styling foundation for the platform console**, applying `docs/criteria/ui-component-foundation-tool-opinion.md` (CR04)'s three-layer position and constraints to this platform's own Data Administration screens (`DECISIONS.md` D-31's daily-prototyping driver): shadcn/ui defaulted to Base UI, Tailwind CSS, and CSS custom properties. Scoped to the platform console only — the mobile client and the future built-application UI generator each keep their own component-foundation question open.
+
 ---
 
 ## Per-ADR notes
@@ -128,6 +132,7 @@ Identifying summaries only. For the decision, its alternatives, and its reasonin
 - **ADR-011 (§21.6)** — sync posture. Closed the design phase's blocking constraint; the bidirectional schema machinery is not required.
 - **ADR-012 (§22)** — server-side caching, deferred by decision with two binding constraints.
 - **ADR-013 (§23)** — MCP as the AI-to-system protocol, generated from the existing contract.
+- **ADR-060 (§24)** — component and styling foundation for the platform console: shadcn/ui defaulted to Base UI, Tailwind CSS, CSS custom properties. Scoped to Data Administration screens only; mobile and the future UI generator remain separately open.
 
 ---
 
@@ -155,4 +160,8 @@ Identifying summaries only. For the decision, its alternatives, and its reasonin
 
 8. **🔶 This register falls behind faster than it is synced, and the cadence is the defect.** Synced at H6 (through ADR-013), then found six behind at H15, then **fourteen** behind at H26c — a full day's output, across eleven tickets. Each catch was incidental, triggered by an Executor mentioning staleness rather than by any step that runs. **The cause is structural:** `PROCESS.md` §3 enumerates the trackers an Orchestrator maintains — `TICKET.md`, `BACKLOG.md`, `PROCESS.md`, `DECISIONS.md`, `OPEN-GAPS-FOR-REVIEW.md` — and this file is **absent from that list**, so nothing in the per-ticket loop requires touching it. It is now added to §3's list, and registering any new ADR is part of closing the ticket that produced it. Recorded here as well because a reader of this file should know why its history is discontinuous.
 
-9. **Section-insertion remains this document's known failure mode.** Finding 1 is its third occurrence. Any ticket inserting a numbered section into `01-technology-stack-design.md` must fix **inbound** citations from other design documents, not only internal ones — which means naming those documents in the ticket's scope, since an Executor cannot edit files it was not authorized to touch.
+9. **Section-insertion remains this document's known failure mode.** Finding 1 is its third occurrence; **H57 is its fourth, and sharpens it further.** Any ticket inserting a numbered section into `01-technology-stack-design.md` must fix **inbound** citations from other design documents, not only internal ones — which means naming those documents in the ticket's scope, since an Executor cannot edit files it was not authorized to touch.
+
+   **H57's own citation enumeration, run 2026-08-13 to scope the ticket, was itself incomplete.** It found one inbound citation to §24 (`03-architecture-realization-design.md` line 316) and none to §25. A repo-wide grep run by the Executor during H57 found **two more**: `02-platform-data-model-design.md` line 366 also cites §24 (Precedence), and both `02-platform-data-model-design.md` line 39 and `02-tenant-isolation-and-access-control-design.md` line 246 cite §25 (Binding Rules, via "§14.5, §25") — neither named in the ticket's Document(s) list. **The Executor halted and asked before touching either file**, since fixing them exceeded the ticket's stated scope; the user, acting as Orchestrator, authorized the expansion in-session rather than re-scoping the ticket separately. All four citations — two to §24→§25 and two to §25→§26, once the new ADR-060 section shifted both — are now fixed across the three affected documents (`03-architecture-realization-design.md`, `02-platform-data-model-design.md` ×2, `02-tenant-isolation-and-access-control-design.md`).
+
+   **The lesson this sharpens:** an enumeration scoped by grepping for the filename adjacent to the section symbol can itself under-count — a plain `grep -rl "§24"` across the whole repo, independent of which filename appears nearby, is what actually surfaced the missed pair. A future ticket inserting a section into this file should re-run that repo-wide form, not trust a prior ticket's own enumeration at face value, per `BACKLOG.md` §1t.

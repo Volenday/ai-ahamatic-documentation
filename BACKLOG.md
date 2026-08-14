@@ -697,6 +697,18 @@ This is the **third** ticket-authoring defect of a recognizable family, each cau
 **Not blocking anything.** H33's own document relies on the correct sets — `07-cross-system-data-layer-design.md` §4's five guarantees and `06-marketplace-design.md` §5's six submission constraints — and carries a front-matter note recording the correction. This entry exists so the rule survives, not because work is outstanding.
 
 
+### A sixth instance, and it is a *method* defect rather than a recall defect — 2026-08-14
+
+**H57's ticket prompt asserted "exactly one inbound citation points at §24" and "nothing cites §25." Both were wrong: three more existed.** Unlike instances one through five, this did not come from recall — the Orchestrator *did* run a grep and *did* read its output. **The grep was the defect.**
+
+**The pattern required the `§N` to sit adjacent to the filename**, e.g. `` `01-technology-stack-design.md` §24 ``. It therefore could not see a **compound citation** — `` `01-technology-stack-design.md` §14.5, §25 `` — where the second and later section numbers follow a comma rather than the backtick. Two of the three missed citations were exactly that shape.
+
+**The same error then recurred twice more during verification of H57's deliverable**, briefly producing the false conclusion that the Executor had corrupted two lines. It had not; the pattern had. Three occurrences in one ticket, all from one malformed regex.
+
+**Rule this adds, narrower and more useful than "verify before asserting":** when enumerating inbound citations before a renumbering, **match the filename and the section numbers separately** — find every line naming the file, then extract every `§N` on that line — rather than requiring them adjacent. A pattern that binds them together silently under-reports, and under-reporting before a renumbering is what produces wrong-target citations, which §1ac establishes are worse than dangling ones.
+
+*(The Executor-side counterpart is recorded at `ADR-REGISTER.md` live issue 9, extended by H57 with the same finding.)*
+
 ### The fifth instance closes the loop this entry opened — 2026-08-13
 
 **P01 was the ticket that made this rule binding, and its own prompt broke it.** The Orchestrator asserted this table's four instances from recall, replaced H35 with the 43-vs-44 count, and issued it. The Executor resolved the table, found the substitution, and wrote the deliverable against what §1t *actually says* rather than what the prompt claimed — then reported the discrepancy rather than quietly correcting it.
