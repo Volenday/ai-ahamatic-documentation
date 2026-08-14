@@ -14,7 +14,7 @@ It is structured as a pyramid: first the three mechanical properties every conse
 
 ## 2. Scope and What This Document Does Not Own
 
-This document owns: the consolidated audit-event schema and its discriminated event types (§4); the mandatory-event categories realized as concrete capture points, integrated with the five inherited obligations rather than restated beside them (§5); the append-only storage mechanism, the tamper-evidence mechanism, and their honest limits (§6); the resolution of the immutability/erasure tension (§7); the agent-action logging obligations as an extension of the already-generalized record shape (§8); and the minimum-traceability gate for autonomous change, including where it is checked and what blocks the "applied" transition (§9).
+This document owns: the consolidated audit-event schema and its discriminated event types, including the standing, current index of every `event_type` value the design library mints (§4); the mandatory-event categories realized as concrete capture points, integrated with the five inherited obligations rather than restated beside them (§5); the append-only storage mechanism, the tamper-evidence mechanism, and their honest limits (§6); the resolution of the immutability/erasure tension (§7); the agent-action logging obligations as an extension of the already-generalized record shape (§8); and the minimum-traceability gate for autonomous change, including where it is checked and what blocks the "applied" transition (§9).
 
 This document does **not** own, and does not decide:
 
@@ -124,6 +124,122 @@ The table below places every row the five inherited documents handed this docume
 ### 4.4 A Category This Document Does Not Add
 
 The provenance-related events (`provenance-gate-rejection`, `provenance-transition`) describe AI-suggested content moving through the Merge Gate's own chokepoint — they are not, by themselves, "a change an autonomous agent process initiates, evaluates, or applies" in the sense the specification's §4 row 8 and §6–§7 use. `05-ai-tooling-security-design.md` §7's own evidence row for the provenance transition states that the record captures "that the transition occurred and through which confirmation event" — evidence, by its own naming, that a human confirmation event gates every such transition, never an autonomous application of the artifact on its own authority. This document does not land either provenance event under Autonomous-Change events for that reason, and states the distinction explicitly to prevent a later reader from assuming AI-tooling suggestion traffic is covered by the minimum-traceability gate of §9 — it is not; §9 governs a categorically different case, an agent process applying a change without a human confirmation step in between.
+
+### 4.5 The Standing Event-Type Index
+
+`BACKLOG.md` §1v records the defect this section exists to close: §4.3 above is, by its own opening sentence, a reconciliation of what five documents had handed this document *at the time it was written* — never a standing registry later documents register into. §4.3 is not wrong; it is finished, and nothing here restates or alters its content. Its resolutions (the redaction-block split, the held/halted distinction, the basis-refusal/authority-refusal distinction, and its own two imperfect-fit acknowledgments) remain this document's authoritative account of those specific decisions.
+
+This section **extends** §4.3 — it neither supersedes it (§4.3's own reasoning is not wrong) nor sits beside it as an unrelated list (every one of §4.3's twenty-two rows, plus this document's own native `autonomous-change` type minted at §9 and never inherited from any of the five, are this index's founding entries, not a competing set). Going forward, this section, not §4.3, is what a ticket checks — before minting a type, and to locate one already minted.
+
+**Derivation.** A grep for backticked kebab-case tokens on a line carrying the literal string `event_type` is not sufficient to build this list — it misses any type stated in prose without that string nearby, which is how `stage-promotion`, `release-promoted`, and `assurance-run`'s own later re-applications elsewhere in the library escape such a search. Every row below was instead confirmed from its minting document's own *Evidence Produced* section, read in full — the convention every design document since `09-licensing-and-dependency-compliance-design.md` follows, and the reliable source `BACKLOG.md` §1v itself names.
+
+**Sixty-two distinct `event_type` values are minted across the design library as of this ticket (2026-08-14).** This exceeds every prior estimate by a wide margin — `BACKLOG.md` §1v's own count of twenty-three reconciled plus "at least ten more," and a separate, tighter grep-based floor of twenty-six established while scoping this ticket. Both undercounts share one cause: each was built, wholly or partly, from a grep for the token near the literal string `event_type`, and most of what each missed is stated in an *Evidence Produced* section without that string on the same line. The table below carries exactly 62 rows, for two offsetting reasons: `invariant-check` is omitted from every family table because its own landing category is resolved per invariant, not fixed to one family (`01-invariant-enforcement-design.md` §6.3, cited and not restated here) — one token, zero rows; `redaction-block` lands under two families by match class, exactly as §4.3 already establishes, and appears once in each — one token, two rows. The table is organized by the eight mandatory categories §4–§5 fix.
+
+**Identity and session events.** No dedicated `event_type`. `03-authentication-and-identity-design.md` populates this document's base record shape (§4.2) directly for authentication, session, step-up, and recovery events, and mints no discriminated type of its own (§11) — captured here as a documented absence, not an omission.
+
+**Tenant-boundary events.** No dedicated `event_type` beyond `invariant-check` (`invariant_id = INV-01`, per-invariant mapping, §4.3).
+
+**Authorization and grant events.**
+
+| `event_type` | Minted In | Fit |
+|---|---|---|
+| `authority-refusal` | `05-ai-tooling-security-design.md` §3.2/§7 (§4.3) — extended to further `source_mechanism` values by `06-integration-and-extensibility-design.md` §11, `07-cross-system-data-layer-design.md` §7, and `09-ai-assisted-builder-tooling-design.md` §10 | Direct |
+| `application-construction` | `01-application-construction-design.md` §9 | Imperfect (stated) |
+| `application-structure-configuration` | `01-application-construction-design.md` §9 | Imperfect (stated) |
+| `application-behavior-configuration` | `01-application-construction-design.md` §9 | Imperfect (stated) |
+| `application-access-binding-configuration` | `01-application-construction-design.md` §9 | Direct |
+| `data-administration-grant-configuration` | `03-data-administration-design.md` §8 | Direct |
+| `process-definition-authoring` | `04-workflow-and-process-automation-design.md` §10 | Imperfect (stated) |
+| `contract-change-signoff` | `05-api-contract-design.md` §12 | Direct (stated) |
+| `extension-registration` | `06-integration-and-extensibility-design.md` §11 | Direct |
+| `connector-registration` | `07-cross-system-data-layer-design.md` §7 | Not stated — see Finding 1 below |
+| `stage-promotion` | `02-builder-facing-environment-management-design.md` §10 | Imperfect (stated) |
+| `version-capture` | `03-builder-facing-version-control-design.md` §12 | Imperfect (stated) |
+| `version-revert` | `03-builder-facing-version-control-design.md` §12 | Imperfect (stated) |
+| `publication-status-change` | `04-publishing-and-delivery-design.md` §13 | Imperfect (stated) |
+| `marketplace-offering-status-change` | `06-marketplace-design.md` §8 | Imperfect (inherited reasoning) |
+| `marketplace-obtain` | `06-marketplace-design.md` §8 | Imperfect (inherited reasoning) |
+| `connector-marketplace-offering-status-change` | `07-connector-marketplace-design.md` §10 | Imperfect (inherited reasoning) |
+| `connector-marketplace-obtain` | `07-connector-marketplace-design.md` §10 | Imperfect (inherited reasoning) |
+| `release-promoted` | `05-release-and-rollback-design.md` §14 | Imperfect (stated) |
+| `rollback-executed` | `05-release-and-rollback-design.md` §14 | Imperfect (stated) |
+| `restore-executed` | `06-incident-response-and-recovery-design.md` §12 | Imperfect (stated, same family/rationale as `release-promoted`/`rollback-executed`) |
+| `approval-resolution` | `03-human-in-the-loop-design.md` §11 | Direct (stated) |
+
+**Data-lifecycle events.**
+
+| `event_type` | Minted In | Fit |
+|---|---|---|
+| `category-default-applied` | `07-data-governance-and-privacy-design.md` §3.1/§8 (§4.3) | Direct |
+| `retention-sweep` | `07-data-governance-and-privacy-design.md` §4.2/§8 (§4.3) | Direct |
+| `deletion-action` | `07-data-governance-and-privacy-design.md` §4.3/§8 (§4.3) | Direct |
+| `basis-refusal` | `07-data-governance-and-privacy-design.md` §5.2/§8 (§4.3) | Direct |
+| `consent-withdrawal` | `07-data-governance-and-privacy-design.md` §5.3/§8 (§4.3) | Direct |
+| `pii-exposure-classification` | `07-data-governance-and-privacy-design.md` §6.2/§8 (§4.3) | Direct |
+| `redaction-block` (classification-driven/PII-shape branch) | `07-data-governance-and-privacy-design.md` §7.3/§8 (§4.3) | Direct |
+| `entity-schema-definition` | `02-data-model-and-entity-design.md` §12 | Imperfect (stated) |
+| `schema-evolution-determination` | `02-data-model-and-entity-design.md` §12 | Imperfect (stated) |
+| `migration-execution` | `02-data-model-and-entity-design.md` §12 | Imperfect (stated) |
+| `data-administration-action` | `03-data-administration-design.md` §8 | Imperfect (reasoning adopted from `02-data-model-and-entity-design.md` §12) |
+| `process-instance-lifecycle` | `04-workflow-and-process-automation-design.md` §10 | Fit (precedent-following) |
+| `contract-version-lifecycle` | `05-api-contract-design.md` §12 | Fit (precedent-following) |
+
+**Residency and compliance events.**
+
+| `event_type` | Minted In | Fit |
+|---|---|---|
+| `residency-refusal` | `06-compliance-and-data-residency-design.md` §3.4/§9 (§4.3) | Direct |
+| `residency-transfer` | `06-compliance-and-data-residency-design.md` §3.4/§9 (§4.3) | Direct |
+| `tier-default-applied` | `06-compliance-and-data-residency-design.md` §5/§9 (§4.3) | Direct |
+| `residency-promotion-approval` | `06-compliance-and-data-residency-design.md` §8.1/§9 (§4.3) | Direct |
+| `residency-hold` | `06-compliance-and-data-residency-design.md` §8.2/§9 (§4.3) | Direct |
+| `tier-reclassification` | `06-compliance-and-data-residency-design.md` §8.3/§9 (§4.3) | Direct |
+| `locality-resolution-refusal` | `08-multi-region-distribution-design.md` §12 | Direct (stated as the correct fit, not merely the closest) |
+
+**Security events.**
+
+| `event_type` | Minted In | Fit |
+|---|---|---|
+| `pipeline-scan` | `04-security-controls-design.md` §2.1/§6.1 (§4.3) | Direct |
+| `redaction-block` (secret-shaped branch) | `04-security-controls-design.md` §2.2/§6.1 (§4.3) | Direct |
+| `vulnerability-classification` | `04-security-controls-design.md` §4.2/§6.1 (§4.3) | Direct |
+| `review-trigger` | `04-security-controls-design.md` §5.2/§6.1 (§4.3) — extended to further `source_mechanism` values by `06-marketplace-design.md` §8 and `07-connector-marketplace-design.md` §10 | Direct |
+| `key-custody` | `04-security-controls-design.md` §7.3/§6.1 (§4.3) | Direct |
+| `assurance-run` | `04-security-controls-design.md` §7.4/§6.1 (§4.3) | Imperfect (§4.3's own closing note) |
+| `provenance-gate-rejection` | `05-ai-tooling-security-design.md` §5.3/§7 (§4.3) | Direct |
+| `provenance-transition` | `05-ai-tooling-security-design.md` §5.2/§7 (§4.3) | Direct |
+| `dependency-admission-check` | `09-licensing-and-dependency-compliance-design.md` §9 | Direct (stated) |
+| `dependency-license-resweep` | `09-licensing-and-dependency-compliance-design.md` §9 | Direct (stated) |
+| `license-incompatibility-finding` | `09-licensing-and-dependency-compliance-design.md` §9 | Direct (stated) |
+| `attribution-generation-run` | `09-licensing-and-dependency-compliance-design.md` §9 | Direct (stated) |
+| `generated-content-similarity-check` | `09-licensing-and-dependency-compliance-design.md` §9 | Direct (stated) |
+| `contract-breaking-change-detected` | `05-api-contract-design.md` §12 | Direct (grouped with the Merge Gate's other emissions) |
+| `standards-check` | `08-coding-standards-and-patterns-design.md` §8 | Imperfect (stated, for the vocabulary-check specifically) |
+| `secret-injection-refusal` | `01-environment-and-configuration-design.md` §11 | Direct (stated as the correct fit) |
+| `incident-declared` | `06-incident-response-and-recovery-design.md` §12 | Imperfect (stated) |
+| `incident-contained` | `06-incident-response-and-recovery-design.md` §12 | Imperfect (stated, same rationale) |
+| `documentation-consistency-check` | `07-change-management-and-evolution-design.md` §13 | Direct (grouped with the Merge Gate's other emissions; a ninth category was considered and rejected) |
+
+**Invariant violations and halts.** No dedicated `event_type`; realized by any `invariant-check` event whose `outcome` is `halted-and-escalated` (§4.3, §5) — a state of that one cross-cutting type, not a family of its own.
+
+**Autonomous-change events.**
+
+| `event_type` | Minted In | Fit |
+|---|---|---|
+| `autonomous-change` | This document, §9 (native — not inherited from any of the five, and not restated in §4.3's own reconciliation table) | Native |
+
+**Finding 1 — one type with no stated family, reported rather than resolved here.** `connector-registration`'s own evidence table (`07-cross-system-data-layer-design.md` §7) carries no landing-category column at all, unlike every sibling table cited above; no family is stated for it, and none is assigned here. Its closest structural analog is `extension-registration` (Authorization and grant events, `06-integration-and-extensibility-design.md` §11) — the two are already explicitly reconciled with each other as independently-occurring facts about distinct structures, not a naming collision, per `BACKLOG.md` §1l and ADR-037 (`02-platform-data-model-design.md` §3.2) — but analogy is not a stated fact, and this index records identity, owner, and family; it does not supply the third where the minting document did not. Left for whichever ticket next touches `07-cross-system-data-layer-design.md` or this index.
+
+No other naming collision or category ambiguity was found while building this table. Every pair of similarly-shaped types (`extension-registration`/`connector-registration`; `marketplace-obtain`/`connector-marketplace-obtain`; `marketplace-offering-status-change`/`connector-marketplace-offering-status-change`; `version-capture`+`version-revert` against `publication-status-change`; `rollback-executed`/`restore-executed`) was already explicitly reconciled by its own minting document, cited above; none required this index to adjudicate.
+
+**How a new `event_type` enters this index — the liveness mechanism, stated honestly.** Every minting document already states its new type in its own *Evidence Produced* section; that discipline is well-established and is what made deriving the table above possible at all. What has never existed is the step after it: nothing requires, or even permits, the ticket that mints a type to also add a row here. This document is named as a read-only Dependency Input on every such ticket, never as a Document(s) target (`PROCESS.md` §4) — so an Executor who correctly defines a type in its own owning document has no scope to touch this one, and the index goes stale the moment that ticket closes, exactly as §4.3 itself did. This is the identical failure shape `BACKLOG.md` §1v records for `ADR-REGISTER.md`, under the name "live issue 8": a fact correctly recorded in its owning place, with no tracker obligated to reach back to the index that lists it. `PROCESS.md` §7's own tracker table does not name this document, or any event-type index, among the files a ticket's close must reconcile.
+
+Two things follow, one within this document's authority and one outside it:
+
+1. **Within scope, fixed here.** §13 below now states the obligation on this document's own side: a ticket minting a new `event_type` is not complete until a row is added to this section, and this document authorizes that amendment as within its own scope for such a ticket, regardless of which document is the ticket's stated primary subject.
+2. **Outside scope, flagged rather than fixed.** That authorization is necessary but not sufficient — nothing in `PROCESS.md`'s per-ticket workflow or its ticket-prompt template yet instructs whoever assembles a minting ticket's prompt to name this document as a second Document(s) target. Until it does, obligation 1 depends on that step being remembered rather than enforced. This is a process-tooling matter — `PROCESS.md` §4's ticket-prompt template, or a dedicated `P##` ticket — outside a design document's authority to fix (`CLAUDE.md`'s two-phase rule; `PROCESS.md` §1), and is recorded here rather than silently left to memory.
+
+**What this buys, concretely.** A majority of the documents surveyed to build this table already checked a proposed type against the library for collision before minting one — among others, `08-coding-standards-and-patterns-design.md` §8, `09-ai-assisted-builder-tooling-design.md` §10, `06-integration-and-extensibility-design.md` §11, `07-cross-system-data-layer-design.md` §7, `06-marketplace-design.md` §8, `07-connector-marketplace-design.md` §10, `03-human-in-the-loop-design.md` §11, and `07-change-management-and-evolution-design.md` §13. Each did so by grepping the whole design library, or by re-reading every prior *Evidence Produced* section, for want of a single place to check against. This table is that place; obligation 1 above is what keeps it trustworthy enough to keep serving that purpose.
 
 ---
 
@@ -278,6 +394,7 @@ This document owns the consolidated audit-event schema (§4), the mandatory-even
 These rules hold for every actor and every action subject to this model and are subordinate to the charter.
 
 - **Every consequential action produces exactly one audit event, in the consolidated model of §4, never a separate log per owning document.** The reconciliation table of §4.3 is the authoritative mapping from every inherited obligation to this document's own event types.
+- **The event-type index of §4.5 is a standing obligation, not a one-time listing.** A ticket that mints a new `event_type` is not complete until a corresponding row is added there; this document authorizes that amendment as within its own scope for such a ticket, regardless of which document is the ticket's stated primary subject.
 - **Attributable, logged, and reconstructable are three distinct mechanical properties, each independently required.** An action satisfying two of the three is not traced in this document's sense (§3).
 - **A written audit event is never altered or deleted.** Correction is additive only, redaction is applied before capture at all four choke points (including the audit-event writer itself), and tampering must be detectable; uncertainty about a trail's integrity resolves to treating it as compromised (§6).
 - **The tamper-evidence mechanism delivers evidence, not proof.** A hash chain plus an external anchor detects alteration, deletion, and reordering from the anchor's own point forward; it does not prevent a sufficiently privileged rewrite, and this document states that limit rather than overclaiming prevention (§6.3).

@@ -254,7 +254,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ae. 🔶 OPEN 2026-08-14 — two residues from H50, one of which is an ADR contradicting itself
+## 1ae. 🔶 OPEN 2026-08-14 — three residues from H50 and H53, correctly left unfixed by the tickets that found them
 
 **Both found while executing H50, both correctly left unfixed as out of its enumerated scope, and both verified at this close.**
 
@@ -271,6 +271,10 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 **H50's handoff characterized these as "ADR-006's own historical narrative … as originally recorded." That characterization is wrong, and the correction matters more than the defect.** Both sentences assert **present state in the present tense** — *"not decided"*, *"a study is owed"*, *"is now parked, not settled"*. Neither is dated or framed as a record of what was once true. A reader consulting ADR-006's Decision field today is told GraphQL is undecided and a study is outstanding; both are false, and the Status field three lines above says so.
 
 **Leaving them was correct** — H50's scope named ADR-008 and forbade touching other ADRs. **The finding is the framing:** a future session trusting "historical narrative" would leave a live self-contradiction in place. This is the same class as the line-760 site H50 *did* fix, and it is the third instance of D-19's closure being applied incompletely.
+
+### 3. `07-cross-system-data-layer-design.md` §7 — one `event_type` with no landing family *(found by H53)*
+
+`connector-registration`'s own evidence table states **no category** for it — the only one of 62 types whose minting document leaves its family unstated. H53 recorded it as *"Not stated"* in the new §4.5 index and reported it rather than assigning one, per that ticket's rule that the index must not re-decide. Its closest analog, `extension-registration`, is noted but deliberately not applied. **Routing:** whichever ticket next opens that document, or a small amendment alongside the §1ae items below.
 
 **Routing:** `01-technology-stack-design.md` is already edited by **H55** (§9), **H56** (§22) and **H57** (a new section plus renumbering). This lands in §16.5, which none of them touches. **Fold it into whichever runs last, or take it as its own small ticket** — but do not leave it to be discovered a fourth time.
 
@@ -598,7 +602,24 @@ Every prior entry in this family concerns citations to *other* documents. This o
 
 ---
 
-## 1v. 🔶 OPEN 2026-08-11 — the library has no live index of `event_type` values; `08-audit-and-traceability-design.md` §4.3 is a point-in-time reconciliation that ten later types never entered
+## 1v. ✅ CLOSED 2026-08-14 by H53 — **62 types, not the ~30 estimated**; and the liveness half is only half closed
+
+**New §4.5, *The Standing Event-Type Index*, placed after §4.4** — §5 through §13 unchanged, so none of the 122 inbound citations to §4 or the 50-odd to later sections moved. §4.3 is left **unedited** as the authoritative historical reconciliation; §4.5 extends it rather than superseding it.
+
+**The count is the headline: 62 distinct `event_type` values.** That exceeds this entry's own estimate (23 reconciled plus "at least ten more") and H53's ticket floor of 26 — a floor that came from the ticket's own scoping grep, **not from this entry**, a misattribution the Executor caught in its own review pass and corrected. Verified: 62 table rows against 61 distinct first-column tokens, reconciling exactly as the deliverable states — `invariant-check` is cross-cutting and carries no row, `redaction-block` lands under two families and carries two.
+
+**The derivation method matters more than the number, and is recorded so a later session knows whether to trust or rebuild the list.** Not a grep — every design document outside the five originally-inherited ones was read for its own *Evidence Produced* section. The ticket had already proven a same-line grep insufficient: `stage-promotion`, `release-promoted` and `assurance-run` appear on **zero** lines containing `event_type`.
+
+### ⚠ Liveness is half closed, and the open half is what this entry existed to prevent
+
+- **Closed:** §13 now states that a ticket minting a new type is not complete until it adds a row to §4.5, and this document authorizes that amendment regardless of the ticket's stated primary subject.
+- **Not closed:** nothing in `PROCESS.md` §4's ticket-prompt template tells an Orchestrator to name this document as a second `Document(s)` target when a ticket will mint a type. **So the obligation depends on being remembered, not on being enforced** — which is precisely how §4.3 froze in the first place, and precisely how `ADR-REGISTER.md` fell fourteen ADRs behind before `PROCESS.md` §3 was amended (live issue 8).
+
+**Routed as `P05`(e).** Until it lands, §4.5 will drift the same way §4.3 did, and this entry should be re-opened rather than treated as settled.
+
+*Original entry retained below.*
+
+## 1v-history. 🔶 OPENED 2026-08-11 — the library has no live index of `event_type` values; `08-audit-and-traceability-design.md` §4.3 is a point-in-time reconciliation that ten later types never entered
 
 **Found at H36's close, and it is not H36's defect** — that ticket reused eight existing types and correctly added none. It surfaced while verifying its "all eight reused" claim: two of the eight (`standards-check`, `contract-breaking-change-detected`) are absent from the audit document's consolidated table, and checking why exposed the general case.
 
