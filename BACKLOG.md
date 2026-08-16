@@ -254,6 +254,34 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1af. 🔶 OPEN 2026-08-14 — T74's new Merge Gate check cites the wrong section for its grounding obligation, and has no §7 counterpart; the first defect sits inside a mandatory specification check
+
+**Both found at T74's close. The check itself is well-built** — mechanical rather than human-satisfiable, matched to the list's form, placed deliberately, and its content drawn from ADR-022 at source rather than from D-33's or the ticket's summary. Neither finding is about the check's substance.
+
+### (a) Right document, wrong section — and it sits in a mandatory check
+
+The new §5 bullet reads: *"Per `02-governance-and-security/02-security-policy.md` **§5**, an artifact the AI-assisted builder tooling (C-19) generates is untrusted until validated, and its platform origin confers it no trust before it crosses any boundary."*
+
+**Security-policy §5 is "Input Validation and Injection Prevention," and its AI bullet governs the opposite direction:** *"Input crossing the AI-assisted-tooling boundary of §3.2 is untrusted and validated as any other input is; it may never be interpreted as instruction that drives the AI-assisted builder tooling…"* — prompt-injection resistance, about input **to** the tooling. It says nothing about the provenance of artifacts the tooling **produces**.
+
+**The obligation described is real and is in that document — at §11, its Binding Rules:** *"**AI-generated artifacts are untrusted until validated.** An artifact produced with AI-assisted builder tooling (C-19) is granted no trust by virtue of its platform origin; it is validated and held to the secrets rules before it crosses any boundary, and input to that tooling may never be interpreted as instruction that drives it outside an actor's authorization."* That single rule carries **both** directions — the output half T74 needed, and §5's input half condensed. Which is likely how the two got conflated.
+
+**Why this one matters more than a typical mis-citation.** It is inside a **mandatory Merge Gate check** in a specification, and the citation is not decorative: **D-29 permits a design ADR to bind a specification only where that document already carries the obligation**, and D-33's entire legitimacy argument for ADR-022's binding rests on that criterion holding. A reader following the citation to §5 finds input-validation rules and cannot see the grounding. **The grounding exists; the pointer misses it.**
+
+**Fix:** cite **§11** — or cite both, §5 for the input half and §11 for the binding rule, which is the more complete statement. A spec-phase ticket; the Orchestrator does not edit `docs/spec/` (`PROCESS.md` §3).
+
+### (b) Every other §5 item has a §7 counterpart. This one does not.
+
+**Flagged by T74's own Executor, correctly, and correctly not acted on** — D-33 and the ticket authorized §5 alone, and extending §7 would have been unauthorized scope.
+
+§7 ("Conditions That Automatically Block Promotion") carries a counterpart for **all five** of §5's original items, including the Merge-Gate-scoped one — the pre-commit checklist appears there with an explicit *"at the Merge Gate"* qualifier. **So §7 covering only some gates is not the explanation**; the list includes even single-gate items. The new provenance check is the only §5 item with no §7 entry.
+
+**The open question is scope, not whether to add it:** does an artifact not recorded as builder-approved block only at the Merge Gate (mirroring the pre-commit checklist's qualifier), or at any gate (mirroring the vulnerability and invariant rows)? That is a decision, not a transcription — which is why T74 was right to stop.
+
+**Both are one ticket's worth of work** and belong together: same document family, same authorizing decision, and (b) cannot be written without settling the scope question (a) does not raise.
+
+---
+
 ## 1ae. 🔶 OPEN 2026-08-14 — three residues from H50 and H53, correctly left unfixed by the tickets that found them
 
 **Both found while executing H50, both correctly left unfixed as out of its enumerated scope, and both verified at this close.**
