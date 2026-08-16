@@ -254,11 +254,38 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1af. 🔶 OPEN 2026-08-14 — T74's new Merge Gate check cites the wrong section for its grounding obligation, and has no §7 counterpart; the first defect sits inside a mandatory specification check
+## 1af. ⚠️ PART (a) WITHDRAWN — NOT A DEFECT, 2026-08-14. Part (b) remains open. **The withdrawn half is the Orchestrator's own verification failure, and it reached a shipped specification edit before an Executor caught it.**
+
+### (a) — withdrawn. T74's citation to security-policy §5 was correct all along.
+
+**What this entry originally claimed:** that §5 *"says nothing about the provenance of artifacts the tooling produces,"* and that the obligation lived only at §11.
+
+**That claim is false.** §5's third bullet carries **both** directions, and its second sentence is the output-side obligation almost verbatim:
+
+> *"An artifact the tooling generates is itself untrusted until validated: its platform origin confers no trust, and it is held to these validation rules and to the secrets rules of §4 before it crosses any boundary, exactly as any other artifact is."*
+
+**How the error was made, stated plainly because the mechanism is the lesson.** The Orchestrator's verification pass printed §5's bullets through a script that truncated each to 250 characters. The cut landed **mid-bullet, immediately before that sentence**. A flat negative — "says nothing about" — was then asserted from the truncated read, written into this entry, carried into T76's ticket prompt as established fact, and executed.
+
+**This is the exact defect class this file has been recording against Executors all session**, and the Orchestrator committed the most consequential instance of it:
+- **§1t** — verify a cited section's *content* before asserting it.
+- **§1ac** — its own note that the first diagnosis of that defect set was "wrong in the dangerous direction." So was this one.
+- **§1w** — the *truncated quote presented as complete*. Here the truncation was in the reading tool rather than the prose, which is worse: nothing in the output marked it as partial.
+
+**The specific trap: a negative claim cannot be established from a partial read.** "Section X does not say Y" requires reading all of X. Every other finding this session was a positive claim — *this string is here, that count is six* — which a partial read can still support. **This was the first negative claim, and it was the first to be wrong.**
+
+**What T76 shipped, and whether it needs undoing.** T76 repointed the citation §5 → §11. **Both sections state the obligation, so the current citation is accurate, not misleading** — this is a style inconsistency, not a live defect. But by the sibling pattern the T76 Executor themselves identified, **§5 was the better citation**: §5's other items cite the operative sections that own their content (§6 severity thresholds, §7 review trigger), and the provenance item is now the only one in the list pointing at §11's Binding Rules restatement. Reverting is optional cleanup, not a correction — and any revert is a spec-phase ticket, since the Orchestrator does not edit `docs/spec/` (`PROCESS.md` §3).
+
+**The catch is the system working.** The T76 Executor read §5 in full rather than trusting the ticket prompt's rendering of it, and said so — which is `BACKLOG.md` §1t's standing rule pointed back at its own author. **That is now the fifth prompt-originated defect an Executor has caught** (§1w's table records three; §1ab's a fourth), and the first where the prompt's premise, not merely its phrasing, was wrong.
+
+---
+
+### (b) — still open. Every other §5 item has a §7 counterpart. This one does not.
+
+*(Original heading retained for the record: "T74's new Merge Gate check cites the wrong section for its grounding obligation, and has no §7 counterpart".)*
 
 **Both found at T74's close. The check itself is well-built** — mechanical rather than human-satisfiable, matched to the list's form, placed deliberately, and its content drawn from ADR-022 at source rather than from D-33's or the ticket's summary. Neither finding is about the check's substance.
 
-### (a) Right document, wrong section — and it sits in a mandatory check
+### (a) — the original text, retained and superseded by the withdrawal above
 
 The new §5 bullet reads: *"Per `02-governance-and-security/02-security-policy.md` **§5**, an artifact the AI-assisted builder tooling (C-19) generates is untrusted until validated, and its platform origin confers it no trust before it crosses any boundary."*
 
