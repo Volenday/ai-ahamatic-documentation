@@ -791,3 +791,50 @@ Asked directly *"I thought it was the UI generator,"* the reply transcribes as *
 
 **Alternatives considered.**
 - **Decline, and amend ADR-022's Consequences instead** — rejected. It is cheaper and leaves the specification untouched, but it closes the record without closing the gap: the provenance check would have no home and nothing scheduled to give it one.
+
+---
+
+## D-34 — The prototyping build order, and the API's three minimal increments
+
+**Decision.** Prototyping proceeds in a fixed sequence: **API → App Creator → Entity Creator → Data Entry (Data Administration)**. The API is built **iteratively and minimally**, in three increments that match the three consumers above it:
+
+| Increment | Minimum functionality | Consumer it unblocks |
+|---|---|---|
+| 1 | Create an application | App Creator |
+| 2 | Create a data model | Entity Creator |
+| 3 | Manage data (CRUD) | Data Entry / Data Administration |
+
+The lead's words: *"API first, app creator, then actually after the app creator is the data model … So the entity creator and then the the the data entry thingy."* And on the API: *"just create the minimum to be able to create an app and then you keep upgrading … depending what is needed."*
+
+**Attribution: lead decision, 2026-08-14 standup.** Recorded from the **transcript**, per `PROCESS.md` §7.
+
+**⚠ Reached by a reversal inside the meeting, and the reversal is the reasoning.** The lead first gave the order as app-creator-then-API. Asked *"even though we don't have the API we would generate the [app creator] first?"* he answered *"Good point. You need the API first"* and restated the sequence. The summary records only the corrected order — right this time, but it captures no reversal, which is the §7 pattern in its third consecutive instance.
+
+### This answers `BACKLOG.md` §1ad question 1, and **overturns the working assumption**
+
+§1ad carried **Data Administration** as the answer to *"which screens does the daily loop produce"* — the only reading consistent with `TICKET.md`'s Q11. **That was wrong as a starting point.** Data Administration is **last**, not first, and the first increment is the **API**, which has no screens at all. The Executor-side observation was made in the meeting and acknowledged: *"for generating the API the prototype there's no screens for that yet"* — *"Right. Right. All right … No, I understand that."*
+
+**Consequence for D-31, which must not be read as contradicted:** D-31 instructed a daily screen-and-feedback loop. **The first increment of D-34 produces no screens**, so the cadence begins when the App Creator does, not on day one. D-31's *purpose* — measuring whether the documentation helps — applies from the first increment regardless; only the screens do not.
+
+**Consequence for the architectural answer given earlier, stated so it is not read as a contradiction.** An earlier Orchestrator answer held that *"you do not need to build the API first"* — that was about **ADR-006 §16.2's second tier**, the per-tenant generated built-application contract, which Data Administration genuinely does not consume (it reads the catalogs and writes through the Entity Access Gateway). **D-34 concerns the first tier** — the platform-primitive contract, by which an application, a data model, and records are created. Both hold: the platform-primitive API comes first; the generated built-application tier is not a prerequisite for anything in this sequence.
+
+**Criteria applied.**
+1. **Does each step have what it needs to run?** This is the criterion the reversal turned on — the App Creator calls the API, so the API precedes it.
+2. **Does the API grow on demand rather than up front?** Yes, and deliberately: each increment is scoped by the single consumer it unblocks, so nothing is built before a caller exists for it.
+3. **Does the order match the platform's own dependency chain?** Yes — it mirrors catalogs → creation surface → derivation, which `03-data-administration-design.md` §3 already fixes: Data Administration derives from entity definitions and therefore cannot precede them.
+
+**Alternatives considered.**
+- **App Creator first** — the lead's own initial answer, withdrawn in the same turn once the dependency was named. Recorded because the withdrawal is what makes the sequence reasoned rather than arbitrary.
+- **Building the API completely before any consumer** — rejected by the iterative instruction: *"you keep upgrading the API depending what is needed."*
+
+---
+
+## D-35 — The Bedrock evaluation takes priority over AI ahaMatic work
+
+**Decision.** The AWS Bedrock cost-and-necessity evaluation is prioritized **above** AI ahaMatic work, including the prototyping D-34 sequences. The lead: *"Let's if you don't mind give that priority … actually before the eye [AI]"* and *"please put that on top."*
+
+**Attribution: lead decision, 2026-08-14 standup**, from the transcript.
+
+**The stated ground is security and complexity, not cost alone.** *"I really got scared with the the hacking we had and I do wonder … if we don't need it what's the point right as risks"* — and, on the policy and role surface it requires, *"I really wonder what the value is for the complexity and the risk."*
+
+**⚠ This is not AI ahaMatic scope, and it is recorded here only because it deprioritizes work that is.** Bedrock serves Project Vector; **ADR-010 already fixes GCP as this platform's cloud** and is not reopened by this evaluation. Nothing in either library changes. The entry exists so a later reader understands why the prototyping start date moved.

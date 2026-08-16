@@ -299,8 +299,26 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 Both arise from the same instruction and should be put to him together rather than separately.
 
-1. **Which screens does the daily prototyping loop produce?** **Data Administration** is the only reading that contradicts no recorded resolution — `TICKET.md`'s **Q11** holds Data Admin to be platform tooling, distinct from the deferred UI generator, and records that a V1.0 application is *"a data model plus Data Admin access, with no end-user interface."* It is carried as a working assumption. **The one transcript line that would settle it is unintelligible**, so it was not resolved by inference.
+1. ✅ **ANSWERED 2026-08-14 — `DECISIONS.md` D-34, and it overturned the assumption carried here.** The sequence is **API → App Creator → Entity Creator → Data Entry (Data Administration)**, with the API built in three minimal increments (create an application · create a data model · manage data). **Data Administration is last, not first**, and the **first increment has no screens at all** — raised in the meeting and acknowledged by the lead. The reading recorded below was Q11-consistent and still wrong as a *starting point*; it named the right capability and the wrong position in the order. *(Original text retained.)*
+
+1-original. **Which screens does the daily prototyping loop produce?** **Data Administration** is the only reading that contradicts no recorded resolution — `TICKET.md`'s **Q11** holds Data Admin to be platform tooling, distinct from the deferred UI generator, and records that a V1.0 application is *"a data model plus Data Admin access, with no end-user interface."* It is carried as a working assumption. **The one transcript line that would settle it is unintelligible**, so it was not resolved by inference.
 2. **Does the daily loop discharge D-i, or does D-i still name a separate measured exercise?** The loop's stated purpose — *"we're going to start experiencing how the documentation is helping"* — is D-i's purpose in the lead's own words.
+
+3. **What does a daily "shown" artifact actually consist of?** Where the prototype runs, what is presented each day, and **how feedback is captured so it accumulates rather than evaporating**. *(Added 2026-08-14 — this had been named as a prerequisite in conversation for several sessions and recorded nowhere, which is the drift `BACKLOG.md` §1t tracks, in the Orchestrator's own routing.)*
+
+**Unlike 1 and 2 this is not a lead decision** — it is an operational agreement, and it needs no ticket. **But it is the one with a compounding cost if skipped.** `DECISIONS.md` D-31 makes the loop's purpose *measurement* — *"we're going to start experiencing how the documentation is helping"* — and a loop whose feedback is not captured measures nothing. **`BACKLOG.md` §2's seventeenth area (UI/UX and design-system coverage) is the gap this answer partially substitutes for:** with no design system written, the daily record of what feedback settled *is* the emerging standard. Without it, ten days produce ten screens and no rules.
+
+### ⚠ A new gap, opened by the same meeting — 2026-08-14
+
+**The lead has now issued a build instruction, and no ticket series exists to hold it.** D-34 fixes a four-step prototyping sequence and three API increments. `PROCESS.md` §1 defines four series — `T##` (spec), `H##` (design), `CR##` (criteria), `P##` (process and tooling) — **all of them documentation.** Nothing covers building software.
+
+**`DECISIONS.md` D-27 is what stands in the way, and it was the right call when made:** no development-phase ticket may be created until the three libraries are closed. **They are now effectively closed** — four documentation tickets remain (T73, T74, T75, P06), none of which prototyping depends on, and two blocked decisions (D-b, D-e) that it does not depend on either.
+
+**So D-27's hold is now the only thing between the lead's instruction and executable work.** Two questions follow, and they are the lead's:
+- **Does D-27's hold lift?** The libraries are closed in substance if not in ticket count.
+- **What series holds development work?** A fifth prefix needs defining in `PROCESS.md` §1 — which is itself a `P##`, and which D-28's bootstrap note already establishes how to do.
+
+**Do not create a development ticket before that is settled.** D-27 is a recorded lead decision; it is lifted by the lead, not inferred from progress.
 
 **Why this entry exists rather than the docket rows:** execution of the eight ready tickets will make `TICKET.md`'s wrap-up section noisy, and a parked decision inside a section about finished work is a decision that gets lost. Nothing here is closed; each is live and waiting on one answer.
 
