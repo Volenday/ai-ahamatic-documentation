@@ -116,8 +116,9 @@ The mean-time-to-recovery target is the numeric floor this document owns for a p
 | Extension invocation ceiling, asynchronous or background | ≤ 15 minutes per invocation before the extension's grant must be re-authorized to continue. | `03-software-and-architecture/05-integration-and-extensibility-spec.md` §7, capability confinement |
 | Contract server-side processing budget, synchronous | p95 ≤ 250 ms of the 400 ms end-to-end target in §4, leaving the remainder for transit outside the platform core. | `03-software-and-architecture/04-api-contract-spec.md` §10 (deferred latency floor) |
 | Contract throughput floor, per client | A client's grant is served without platform-core-caused throttling below 100 requests per second, absent an explicit, narrower rate granted to that client. | `03-software-and-architecture/04-api-contract-spec.md` §10 (deferred throughput floor) |
+| Agent context-window bound | A configured deployment value that must exist and be enforced; this document fixes no figure for it. | `05-meta-operations/05-prompt-and-context-management.md` §7 (context-window and scoping limits) |
 
-Every budget above is a ceiling or floor an extension instance or contract consumer operates within; none may be exceeded by widening a grant, and none is satisfied by a builder-defined artifact's own resource use outside the platform core.
+Every budget above is a ceiling or floor an extension instance, a contract consumer, or the platform's own agent operates within; none may be exceeded by widening a grant, and none is satisfied by a builder-defined artifact's own resource use outside the platform core.
 
 ---
 

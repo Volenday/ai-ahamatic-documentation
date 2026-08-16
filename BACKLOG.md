@@ -324,7 +324,15 @@ Both arise from the same instruction and should be put to him together rather th
 
 ---
 
-## 1ac. 🔶 OPEN 2026-08-13 — **eleven line-number-as-section citations** across four documents in both libraries; the defect set is closed and verified complete, and the first diagnosis of it was wrong in the dangerous direction
+## 1ac. ✅ CLOSED 2026-08-14 — all eleven corrected; H49 took the ten in design documents, T73 the one in a spec document
+
+**The split was structural, not incidental.** H49 could not reach the eleventh: it sits in `04-api-contract-spec.md`, and `PROCESS.md` §1 forbids a design ticket from editing `docs/spec/`. T73 corrected it (`§67` → `§5`), having first read `05-integration-and-extensibility-spec.md` §5 directly to confirm the target carries the clause quoted at the citation site — the check §1ac's own note demanded, since its first diagnosis was wrong "in the dangerous direction."
+
+**Verified closed at T73's close** by the entry's own detection method: `grep -rnoE "§[0-9]{2,}" docs/` filtered to values above 30 returns nothing across both libraries.
+
+---
+
+## 1ac-original. 🔶 SUPERSEDED — the finding as first recorded 2026-08-13: across four documents in both libraries; the defect set is closed and verified complete, and the first diagnosis of it was wrong in the dangerous direction
 
 **Found by `ai-aha-consistency-check` at the close of the H-series, then re-diagnosed at the Orchestrator's verification pass.** All eleven are one defect class: a **line number written with a `§` prefix**, producing a citation that does not resolve in the named target.
 
@@ -355,7 +363,26 @@ Ten occurrences are design-side and one is spec-side, and `PROCESS.md` §1/§3 f
 
 ---
 
-## 1ab. 🔶 OPEN 2026-08-11 — **a specification gap:** `05-prompt-and-context-management.md` defers the numeric context-window bound to `06-non-functional-requirements.md` §8 four separate times, and that section contains no such figure. No document in the library fixes one.
+## 1ab. ✅ CLOSED 2026-08-14 by T73 — the deferral now resolves to a real requirement, and the site count was **six**, not four
+
+**Closed under `DECISIONS.md` D-32** (lead, 2026-08-13): the context-window bound is a **configured deployment value**; the specification owns that one must exist and be enforced, never the number. `06-non-functional-requirements.md` §8 gained an "Agent context-window bound" row stating exactly that and fixing no figure — verified at close, along with a one-clause extension to §8's own chapeau, which previously read that every budget bounds "an extension instance or contract consumer" and would have been **falsified** by a row bounding the platform's own agent. That catch was the Executor's, not the ticket's.
+
+**The count was wrong in the tracker, and the correction is the durable lesson.** D-32 and this entry both named **four** deferral sites. T73 found **six**:
+
+| Site | Surfaced by a literal grep for the path + `§8`? |
+|---|---|
+| §3 ownership table | ✅ |
+| §7 binding | ✅ |
+| §9 Precedence | ✅ |
+| Front matter — "the source of any numeric window it keys to" | ✅ (not in D-32's list) |
+| §10 Binding Rules — deferred *without citing the path or §8* | ❌ — named by D-32, invisible to text-match |
+| Front matter — the "does not own" list, bare-cited | ❌ — in neither D-32 nor the grep |
+
+**Two sites were reachable by neither method alone.** A grep for the citation string misses a deferral phrased as *"owned by the documents assigned to them"*; D-32's enumeration misses the ones phrased loosely enough that its author did not count them. **Finding all six required running both and then reading the sections.** Any future ticket that repoints a deferral should assume the same — an enumeration and a grep are two partial views, not two confirmations of one list.
+
+---
+
+## 1ab-original. 🔶 SUPERSEDED — the finding as first recorded 2026-08-11: `05-prompt-and-context-management.md` defers the numeric context-window bound to `06-non-functional-requirements.md` §8 four separate times, and that section contains no such figure. No document in the library fixes one.
 
 **Found at H44's close, by resolving a citation the *specification* made rather than one the ticket prompt made.** This is a genuine spec gap in the shape `ADR-REGISTER.md` live issue 6 already established for ADR-022 — it routes to a **spec-phase ticket** under `ai-aha-spec-doc`, and no design document can close it.
 
