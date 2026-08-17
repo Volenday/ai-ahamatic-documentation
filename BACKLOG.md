@@ -254,7 +254,19 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ah. 🔶 OPEN 2026-08-14 — the standing event-type index went stale on the first ticket after it was built, because the Orchestrator did not follow a rule that already existed
+## 1ah. ✅ CLOSED 2026-08-17 by H60 — the index carries `builder-admission`, and the count was established by counting
+
+**The row is in**, in §4.5's Authorization and grant events family, and the count reads **Sixty-three**. **Verified at close by independent per-family count** — Authorization and grant 23, Data-lifecycle 13, Residency and compliance 7, Security 19, Autonomous-change 1, summing to 63 — matching the Executor's own reported tally exactly, and matching this Orchestrator's pre-edit count of 62 plus the one row added.
+
+**The counting method is the part worth keeping.** §4.5's own derivation note records that counts of this exact thing had been wrong twice, both from grep-based methods; a sixth counting error was added at H54's close, when an occurrence count was compared against a line count and drift inferred from the difference. **H60 counted the five sub-tables directly and reported each**, so the arithmetic is checkable rather than asserted. Any future ticket touching this index should do the same.
+
+**H60 also caught a self-referential trap the ticket did not name:** §4.5's derivation sentence said *"as of this ticket (2026-08-14)"* and *"established while scoping this ticket"* — where "this ticket" meant the ticket that *built* the index, not whichever later ticket amends the sentence. Left alone, the phrase would have silently re-pointed at each amending ticket. Reworded to name the founding ticket explicitly.
+
+**The prompt-side defect this entry records is closed too:** H60's `Document(s)` named `08-audit-and-traceability-design.md` explicitly, which is exactly what H58's prompt lacked and what `PROCESS.md` §4's standing-registry rule requires.
+
+---
+
+## 1ah-original. ✅ SUPERSEDED — the finding as first recorded, retained because the error is the lesson:
 
 > **⚠ CORRECTED 2026-08-15, before any work was generated from it.** This entry originally concluded that the enforcing step *"does not exist yet"* and recommended a `P##` ticket to create it. **Both were wrong.** `PROCESS.md` §4 already carries the rule — added **2026-08-14 by P05**, the same day §4.5 was built — and it names this exact case: *"**Known registries to check today:** `ADR-REGISTER.md` (any ticket recording or amending an ADR) and `08-audit-and-traceability-design.md` §4.5 (any ticket minting a new `event_type`)."* It even states why the `Document(s)` field is the only route: that index lives inside `docs/design/`, so *"only a ticket's own `Document(s)` field can authorize an Executor to touch it; Orchestrator tracker-maintenance cannot reach it."*
 >
@@ -732,6 +744,7 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 | **H44** | **2** — a truncated quote missing its trailing clause, and an unattributed quasi-quotation in quotation marks. Both self-caught; separately, an **inherited** spec citation went unverified — see §1ab |
 | **H45** | **4** — including a *fabricated internal subsection* (`§5.4.2`, which does not exist) and a **fabricated attribution** to a document never opened this session, corrected to cite the map it was actually read from |
 | **H46** | **5** — a misquote (`sharper`/`stronger`), two unattributed quasi-quotations, a misattributed phrase, and a stitched quote joining two different sections of one document. **The misquote originated in the ticket prompt** — third such instance, see below |
+| **H60** | **1 self-caught, and a new variant named:** an *emphasis-restructured quote* — a source sentence carrying its own inline bold was re-wrapped in the quoter's italics, which reads as faithful and fails a literal-match check. Caught by byte-comparison, not by re-reading for sense. **Reproduce a source's own emphasis structure; do not restyle it** |
 | **H54** | **2 self-caught** — plus **a fifth Orchestrator-side error in the prompt**: it asserted 26 occurrences of a term against `TICKET.md`'s 23 and concluded *"the library grew."* Both numbers were right and measured different things — **23 lines, 26 occurrences** — and the Executor was correct that the staleness inference did not hold. A `grep -c` count compared against a `grep -o` count, with drift inferred from the difference |
 | **H43** | **1** — a duplicated phrase in a heading. **The lowest of the series, and the first ticket to report the pre-review step working**: internal `§N` references resolved against the final heading list before *and* after the fix, and several quotes read from the source file rather than trusted from a prior document's secondhand quotation |
 
@@ -863,7 +876,19 @@ Every prior entry in this family concerns citations to *other* documents. This o
 
 ---
 
-## 1ai. 🔶 OPEN 2026-08-17 — three residues from H54, two handed forward correctly and one missed
+## 1ai. 🔶 PARTLY CLOSED 2026-08-17 by H60 — (a) and (c) resolved; **(b) remains genuinely open**
+
+**H60 closed both statement-level residues and found two more the ticket had not named.** (a) `01-agent-runtime-and-control-design.md` §9.3 was **retitled and rewritten** rather than deleted — *"§1u — Resolved by ADR-062, Not by This Document's Placement"* — on the judgment that its substantive point still informs: a reader could otherwise wonder whether the kernel's own design helped close §1u, and the section now answers that it did not. **Verified at close:** the replacement quote matches §5.3's current wording **byte-for-byte**, and all four stale phrases are gone. (c) §2's ADR count is now "three," matching §13; zero occurrences of "two ADRs" remain.
+
+**The Executor found two stale sites the ticket did not name** — a §1 reading-order signpost calling §1u *"the one open import-boundary question"*, and a §14 boundary bullet restating §9.3's old framing. **That is §1ai(c)'s own pattern applied by someone who had just read it**: the second statement is always far from the first, so the fix is a grep for the *premise*, not for the sentence.
+
+### (b) — still open. The boundary rule is not yet enumerable.
+
+`08-coding-standards-and-patterns-design.md` must turn §5.3's restated property rule and its one named exception into a concrete source-path configuration in the dependency-cruiser rule set it extends from ADR-014. **A property stated in prose is not yet a rule a tool can run** — and §5.3's entire correction was that a rule can be satisfied in letter while missing its purpose. **Owed to whichever ticket next opens that document.**
+
+---
+
+## 1ai-original. ✅ SUPERSEDED — the three residues as first recorded:
 
 **(a) `01-agent-runtime-and-control-design.md` §9.3 is now false, and H54 flagged it correctly.** That section is titled *"`BACKLOG.md` §1u — Checked, Not Resolved"*, quotes §5.3's **superseded** wording verbatim (*"may import the platform-schema data-access module"*), and asserts *"the collision remains exactly as `BACKLOG.md` §1u states it."* All three are stale. **Verified at this close.** H54 correctly declined to edit it — outside its `Document(s)` — and handed it forward.
 

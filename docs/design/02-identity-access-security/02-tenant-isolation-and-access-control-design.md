@@ -37,7 +37,7 @@ This document does **not** own, and does not decide:
 - **Secrets-scanning technology and emission-boundary redaction** — `04-security-controls-design.md` §2.1–§2.2's, as extended by `07-data-governance-and-privacy-design.md` §7.3 and `08-audit-and-traceability-design.md` §6.2.
 - **Audit-trail capture, storage, immutability, and tamper-evidence** — `08-audit-and-traceability-design.md`'s.
 - **Extension- and marketplace-origin sandboxing mechanics** — `06-integration-and-extensibility-design.md`'s, `06-marketplace-design.md`'s, and `07-connector-marketplace-design.md`'s (none yet written); `04-security-controls-design.md` §5.3 states this as an open first-order question for each, and nothing here narrows it.
-- **Any independent technology, topology, or scope decision beyond the one named in §9** — this document records two ADRs (§10), and states plainly where no further one is warranted.
+- **Any independent technology, topology, or scope decision beyond the one named in §9** — this document records three ADRs (§10), and states plainly where no further one is warranted.
 
 ---
 
