@@ -182,7 +182,7 @@ These rules exist in the specs, but their concrete numeric values are deferred t
 
 **What is not designed anywhere.** Which *records* a role may reach. `02-data-model-and-entity-design.md`'s `field_catalog` carries governance category and classification tier but no role-access column, and its Entity Access Gateway runs the Validation Engine, the Consent and Minimization Check, and classification resolution — none of which is role-based record authorization. `02-tenant-isolation-and-access-control-design.md` §6 governs the five platform actor classes, not builder-defined end-user roles over builder-defined data.
 
-**The specification does state the obligation**, which is why this is a design gap rather than a spec gap: `02-governance-and-security/03-access-control-and-tenancy-model.md` §89 fixes that for end-user personas, "the specific actions an end-user role may perform, **and the content it may reach**, are set by the builder alone." *Actions on constructs* is now realized; *content it may reach* is not.
+**The specification does state the obligation**, which is why this is a design gap rather than a spec gap: `02-governance-and-security/03-access-control-and-tenancy-model.md` §5 fixes that for end-user personas, "the specific actions an end-user role may perform, **and the content it may reach**, are set by the builder alone." *Actions on constructs* is now realized; *content it may reach* is not.
 
 **Most likely home: `03-data-administration-design.md` (H21)** — C-27 is the generic administrative surface over records, so it is the first document whose subject matter forces the question. The alternative is that an access binding's target is widened beyond constructs, which would reopen `01-application-construction-design.md` §4.1 and should not be done casually. **H21's ticket puts the question directly**, requiring an explicit determination rather than leaving it to be discovered a third time.
 
@@ -403,7 +403,31 @@ Both arise from the same instruction and should be put to him together rather th
 
 ---
 
-## 1ac. ✅ CLOSED 2026-08-14 — all eleven corrected; H49 took the ten in design documents, T73 the one in a spec document
+## 1ac. ⚠️ REOPENED 2026-08-14 at T79's close — the closure was verified against `docs/` only, and the root trackers were never swept
+
+**The eleven in the libraries are genuinely fixed. The verification that declared the class "closed and verified complete" was scoped to `docs/`** — as was the original sweep that found the eleven — **so `TICKET.md`, `BACKLOG.md`, `DECISIONS.md` and `PROCESS.md` were never checked.** Re-running the entry's own detection grep with the root files included returns hits immediately.
+
+**Found and fixed at this pass — five live citations, all resolving to `§5`:**
+
+| Location | Was | Now |
+|---|---|---|
+| `DECISIONS.md`:358 | `05-integration-and-extensibility-spec.md` §67 | §5 |
+| `DECISIONS.md`:521 | `05-integration-and-extensibility-spec.md` §67 | §5 |
+| `BACKLOG.md`:185 | `03-access-control-and-tenancy-model.md` §89 | §5 |
+| `TICKET.md`:264 | `05-integration-and-extensibility-spec.md` §67 | §5 |
+| `TICKET.md`:472 | `05-integration-and-extensibility-spec.md` §67 | §5 |
+
+Both targets verified by line: integration-spec line 67 falls in §5 (spans 65–80), and access-control line 89 falls in §5 — its content, *"Permission scope for the three end-user personas is always builder-defined content"*, is exactly what the citing sentence describes. These are trackers the Orchestrator maintains (`PROCESS.md` §3), so they were corrected directly rather than ticketed.
+
+**Why the class is reopened rather than re-closed.** Eighteen hits remain, and **most are correct** — §1ac's own correction table, ticket rows recording what H49 and T73 fixed, and prose *describing* the defect all necessarily contain strings like `§67`. **Distinguishing a live citation from a record of the defect requires reading each in context**, and this pass did that only for the clearly-live ones. At least one is genuinely ambiguous (`TICKET.md`:543's `ai-aha-design-review` §38, which may be a line number into a skill file — a target class nobody has swept at all).
+
+**Do not re-close this entry on a grep count.** The detection grep cannot separate the two cases, which is precisely why a mechanical re-run would report either a false alarm or a false all-clear. Closing it needs a reading pass over the remaining eighteen, and that is a task, not a check.
+
+**The transferable lesson, and it is the third instance of one shape.** A verification whose scope is narrower than the defect's scope reports a clean result that is true only of what it looked at. `BACKLOG.md` §1af(a) was a truncated *read*; this was a truncated *search path*; `BACKLOG.md` §1v records an index that went stale because nothing in the loop covered it. **All three are the same failure: a negative conclusion drawn from a bounded view, stated as if unbounded.** When a sweep declares a class closed, the closure should state what it searched — not only what it found.
+
+---
+
+## 1ac-closed-scope. ✅ The libraries' eleven — original closure record, still accurate for `docs/`
 
 **The split was structural, not incidental.** H49 could not reach the eleventh: it sits in `04-api-contract-spec.md`, and `PROCESS.md` §1 forbids a design ticket from editing `docs/spec/`. T73 corrected it (`§67` → `§5`), having first read `05-integration-and-extensibility-spec.md` §5 directly to confirm the target carries the clause quoted at the citation site — the check §1ac's own note demanded, since its first diagnosis was wrong "in the dangerous direction."
 

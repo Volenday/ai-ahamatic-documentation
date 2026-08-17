@@ -4,7 +4,7 @@ This document defines **who can do what, and within what boundary** — for the 
 
 This is a Guardrails-phase artifact. It inherits its framing from the Vision and Charter and is subordinate to it; where it appears to conflict with the charter, the charter prevails. It elaborates the two invariants of `02-governance-and-security/01-system-invariants.md` whose particulars it was assigned to own — **INV-01 (tenant isolation)** and **INV-02 (authorization before access)** — and it may specify their particulars but never relax them. It cites, rather than re-derives, the canonical capabilities (C-01–C-27) and release gates (G-1–G-6) of `01-business-and-ux/02-prd.md`, the primitive / artifact line of `01-business-and-ux/03-platform-capability-model.md`, and the personas and permission expectations of `01-business-and-ux/04-personas-and-roles.md`. Every rule here is **platform-level and domain-neutral** — it holds for any software built on the platform, in any tenant and any region, and is never satisfied or excused by the state of a single application.
 
-This document owns three things `01-business-and-ux/04-personas-and-roles.md` and `02-governance-and-security/01-system-invariants.md` deferred to it: the **internal role taxonomy of the platform steward plane**, the **role-and-permission matrix** that formalizes the permission expectations `01-business-and-ux/04-personas-and-roles.md` §6 set, and the **tenancy and application-scoping specifics** behind INV-01 and INV-02. It does not own the personas themselves, the auth methods or session mechanics behind INV-02, the referential rules behind INV-04, the vulnerability-severity thresholds, or per-region residency obligations — each is owned elsewhere and cited, not restated.
+This document owns four things `01-business-and-ux/04-personas-and-roles.md` and `02-governance-and-security/01-system-invariants.md` deferred to it: the **internal role taxonomy of the platform steward plane**, the **role-and-permission matrix** that formalizes the permission expectations `01-business-and-ux/04-personas-and-roles.md` §6 set, the **tenancy and application-scoping specifics** behind INV-01 and INV-02, and **the admission of a person to hold a role within an already-provisioned tenant**. It does not own the personas themselves, the auth methods or session mechanics behind INV-02, the referential rules behind INV-04, the vulnerability-severity thresholds, or per-region residency obligations — each is owned elsewhere and cited, not restated.
 
 ---
 
@@ -90,6 +90,18 @@ Permission scope for the three end-user personas is always **builder-defined con
 
 Every permission in this matrix is enforced only after identity is established (INV-02); an actor whose identity is not established holds no entry in this matrix and no permission it would otherwise carry.
 
+A person becomes a member of an already-provisioned tenant, holding one of the builder roles above, through an act of admission. The authority to perform it is not new: it is the exercise of the tenant owner's own **May Grant Onward To** entry above — the only entry in this matrix authorizing a builder role to be granted onward, within the same tenant. The access administrator's own onward grant (row above) reaches only the access policy of end-user roles, never a builder role. Admission exercises the authority this matrix already fixes; it adds no authority beyond it.
+
+Admission takes effect only once every one of the following already holds:
+
+- **The identity of the person being admitted is established.** The same precondition the paragraph above already fixes for holding any entry in this matrix (INV-02; particulars owned by `02-governance-and-security/04-auth-and-identity-spec.md`).
+- **The membership is bound to exactly one tenant.** Admission never spans, and confers no standing beyond, the single tenant boundary of §3.
+- **The role admitted never exceeds what the admitting authority itself holds.** The grants-never-exceed-the-grantor rule of §8 binds an admission grant exactly as it binds every other grant in this matrix.
+
+Admission of a member to a tenant is an access-consequential action, subject to the audit, attribution, and tamper-evidence obligations of `02-governance-and-security/07-audit-and-traceability.md`, cited and not restated here.
+
+Where the identity of the person being admitted, the admitting authority's own standing, or the tenant boundary the membership is bound to cannot be established, the admission does not proceed — matching the deny-by-default rule of `02-governance-and-security/01-system-invariants.md` §3 and the uncertainty-resolves-to-denial rule of §8 below.
+
 ---
 
 ## 6. Client and Application Scoping Rules
@@ -148,7 +160,7 @@ When a rule in this model meets any other consideration, it is resolved by the f
 - **Invariants are floors, never spent.** INV-01 and INV-02 are never degraded to improve a success metric, meet a deadline, or satisfy a request; access and isolation are preserved first, and success is optimized only in the space that leaves intact.
 - **A breach overrides apparent gain.** An outcome that would breach tenant isolation or bypass authorization is refused regardless of the value it appears to create.
 
-This document owns the tenant-isolation particulars behind INV-01, the platform steward's internal role taxonomy, the role-and-permission matrix, and the client/application scoping rules. It does not own the specifics other documents govern, and none of those documents may weaken this model:
+This document owns the tenant-isolation particulars behind INV-01, the platform steward's internal role taxonomy, the role-and-permission matrix, the client/application scoping rules, and the admission of a person to a role within an already-provisioned tenant. It does not own the specifics other documents govern, and none of those documents may weaken this model:
 
 - **The personas themselves** — their definitions, hierarchy, and per-role permission expectations at the concept level — are owned by `01-business-and-ux/04-personas-and-roles.md`; this document formalizes their access and tenancy scope, never redefines who they are.
 - **Auth methods, sessions, and identity mechanics** behind INV-02 are owned by `02-governance-and-security/04-auth-and-identity-spec.md`.
