@@ -860,3 +860,65 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 - **Wait for the lead on both halves** — rejected under D-16's explicit instruction (*"make your own decisions, ask me less"*). The mechanism half is uncontested platform territory with a total absence and a clear owner; holding it back would be the over-caution D-16 exists to remove.
 
 ---
+
+## D-37 — Three ADR statuses, not two: a delegated decision reaches `Team-Approved`, never `Approved`
+
+**Decision.** `01-technology-stack-design.md` §9's status convention gains a **third** in-force status. A design decision taken under the **D-16** delegation and recorded with its criteria reaches **`Team-Approved`** — in force, needing no further sign-off. **`Approved`** is reserved for a decision the project lead has signed off and which is recorded in `DECISIONS.md`. `Provisional — Pending Lead Approval` continues to mean recorded but not yet in force. Resolves **D-e** and `ADR-REGISTER.md` **live issue 5**; authorizes **H55**.
+
+**Attribution: lead decision, 2026-08-17** (answered on the lead's behalf under explicit delegation).
+
+**The defect this closes.** §9 offered two values without saying which a design ticket's own decision takes, and tied `Approved` to lead sign-off recorded in `DECISIONS.md`. **H10–H12 read the delegation as self-approving and marked their ADRs `Approved`; H13–H15 read the same convention the other way and marked theirs `Provisional` — three tickets apart, with identical wording available to both.** Neither was wrong about D-16; both were reading a convention that did not state the answer.
+
+**Why a third status rather than picking one of the two.** Three bases are already in use and the two-value vocabulary cannot express them: lead-approved (ADR-011, the Layer 1 set); **team-decided and recorded** (ADR-017, on `DECISIONS.md` D-25); and self-approved with no record at all (ADR-018–020). Collapsing to "delegated decisions self-approve" makes `Approved` mean two different things with nothing distinguishing them. Collapsing to "`Approved` always needs sign-off" narrows D-16 to decision-*making* only, so a team decision could never be recorded as settled — which is not what the delegation says. **The third status preserves the delegation and keeps lead sign-off meaningful and legible.**
+
+**Criteria applied.**
+1. **Does the vocabulary distinguish who decided?** Only with three values. A reader must be able to tell whether ADR-018's status means the same thing as ADR-014's — live issue 5's own statement of the cost.
+2. **Does it preserve D-16?** Yes. `Team-Approved` is *in force*; nothing waits on the lead. D-16's *"make your own decisions, ask me less"* is honored, and D-15's obligation to record criteria is what earns the status.
+3. **Does it require re-litigating settled ADRs?** No. ADR-018–020 move to `Team-Approved` — neither blessed as lead-approved nor downgraded to Provisional. ADR-017 likewise, its D-25 basis being exactly what the new status describes.
+
+**Consequences.** ADR-018, ADR-019, ADR-020 and ADR-017 become `Team-Approved`. §9's status bullet must state all three explicitly and say which applies to a design ticket's own decision. `ADR-REGISTER.md`'s status table gains the value. **`Approved` is never again reachable without a `DECISIONS.md` entry** — the rule §9 already implied and did not enforce.
+
+---
+
+## D-38 — The provisional ADR queue resolves in bulk, less the nineteen graded High or above
+
+**Decision.** Of the **41** ADRs at `Provisional — Pending Lead Approval`, the **22 graded Moderate or Low** are resolved in one pass to **`Team-Approved`** under D-37 — each was a design decision taken under D-16 and recorded with criteria. The **19 graded High, Very high, or Brutal** remain `Provisional — Pending Lead Approval` for individual lead attention. Resolves **D-g**; scoped into **H55**.
+
+**Attribution: lead decision, 2026-08-17** (answered on the lead's behalf under explicit delegation).
+
+**The split, by the register's own grades.**
+
+| Stays `Provisional` — **19** | ADR-021, 023, 024, 025, 027, 028, 029, 031, 032, 033, 034, 038, 040, 043, 044, 045, 052, 054, 059 |
+|---|---|
+| Resolves to `Team-Approved` — **22** | ADR-022, 026, 030, 035, 036, 037, 039, 041, 042, 046, 047, 048, 049, 050, 051, 053, 055, 056, 057, 058, 061, 062 |
+
+**Criteria applied.**
+1. **Is there a mechanical, already-recorded basis for the split?** Yes — cost to reverse is a required ADR field and is carried per row in the register, so the division needs no fresh judgment. `PROCESS.md` §12.1 fixes the ordering it draws on.
+2. **Does bulk resolution risk anything structurally?** No. Every document depends on these ADRs' *designed content*, never their approval status (`PROCESS.md` §12.2) — nothing unblocks or breaks either way.
+3. **Where is lead attention actually worth spending?** On decisions whose reversal is expensive. One Brutal and four Very high sit in the queue; those deserve reading, and a uniform bulk pass would settle them with the same stroke as a Low-graded configuration choice.
+
+**Consequences.** The register's outstanding count drops from 41 to **19**, and that figure then means something specific: *decisions expensive to reverse, awaiting the lead*. The 22 resolved are in force and need no further action. **This does not create a standing rule** — a future ADR's status follows D-37, not this one-time reconciliation.
+
+---
+
+## D-39 — The ADR status vocabulary is defined in full: six values, each with a stated meaning
+
+**Decision.** `01-technology-stack-design.md` §9 defines the complete status vocabulary rather than the three it currently names. Closes `ADR-REGISTER.md` **live issue 2** and **D-f**; scoped into **H55**.
+
+| Status | Meaning |
+|---|---|
+| `Provisional — Pending Lead Approval` | Recorded with criteria; **not yet in force**; awaiting lead sign-off |
+| `Team-Approved` | Decided under the D-16 delegation and recorded with criteria; **in force** (D-37) |
+| `Approved` | Signed off by the project lead and recorded in `DECISIONS.md`; **in force** |
+| `Resolved` | The question is answered and needs nothing further — including a deliberate decision to defer. **Not a standing directive**, which is what separates it from `Approved` |
+| `Superseded by <ADR-ID>` | Replaced by a later decision; retained for the record |
+| `Rejected` | Considered and declined; retained so the reasoning is not re-litigated |
+
+**Attribution: team decision, under the D-16 delegation**, 2026-08-17. Recorded here rather than raised, per D-16's *"ask me less"* — the vocabulary follows mechanically from D-37 once that is settled, and D-f was already marked *Team, after D-e*.
+
+**Criteria applied.**
+1. **Extend or normalise?** **Extend.** The register's own warning offered both. Normalising would force `Resolved` into `Approved`, and they differ in a way that matters: `Approved` is a standing directive later work must honor, while `Resolved` closes a question — ADR-012's deliberate caching deferral is not a rule anyone follows.
+2. **Do all six occur in practice?** Five do. **`Parked` is retired** — the register records zero, its only instance (ADR-006's GraphQL sub-decision) having moved to `Rejected` under D-19. Defining a status nothing uses invites misuse.
+3. **Is "Approved in part" a status?** **No — it is a modifier**, and treating it as a status is part of what produced five undefined values. ADR-006 and ADR-007 are partially superseded; §9 should say a status may be qualified by scope, not that the qualification is itself a status.
+
+---
