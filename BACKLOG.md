@@ -254,6 +254,32 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1aj. 🔶 OPEN 2026-08-17 — H55's register update outran its `Document(s)`: 22 ADRs read `Team-Approved` in the register and `Provisional` in the documents that own them
+
+**The drift is the ticket prompt's, not the Executor's.** `DECISIONS.md` **D-38** resolved 22 ADRs to `Team-Approved`, but H55's prompt named only **two** `Document(s)` — `01-technology-stack-design.md` and `ADR-REGISTER.md`. The Executor applied the status in the register, **declined** to edit 22 documents it had no authorization to touch, and flagged the mismatch inline in the register itself. That is the correct call and the same restraint H58 showed at `BACKLOG.md` §1ah.
+
+**Why it matters more than a cosmetic lag.** `ADR-REGISTER.md`'s own framing states: *"Where the two disagree, the **owning document prevails** and this register is corrected."* By that rule the register is currently the wrong one for 22 rows — **it is asserting a status its own precedence rule says it cannot hold.** Verified by spot-check: ADR-046, ADR-050, ADR-057 and ADR-062 each read `Provisional — Pending Lead Approval` in their owning documents while the register reads `Team-Approved`.
+
+**Contrast the four that were done properly.** ADR-017, 018, 019 and 020 were corrected **in both places**, because Critical Element (1) of the prompt named their owning documents explicitly. Verified: all four read `Team-Approved` in the owning document. **The prompt did the right thing for four ADRs and not for twenty-two, in the same ticket** — the instruction to correct the owning document appeared in the element about the four and was never repeated in the element about the twenty-two.
+
+**The owed pass — 22 documents, one status line each.** Owning documents are identifiable from the register's own Owner § column for ADR-022, 026, 030, 035, 036, 037, 039, 041, 042, 046, 047, 048, 049, 050, 051, 053, 055, 056, 057, 058, 061, 062. **Queued as H61.**
+
+**The transferable rule, and it generalizes past status fields.** §9 fixes that *approval changes status, not content* — which means a status change is an edit to **every** place the status is recorded, and the register is never the only one. **A ticket that changes N ADRs' status needs all N owning documents in `Document(s)`, not just the register.** This is the same shape as `PROCESS.md` §4's standing-registry rule read backwards: that rule stops a minting ticket from forgetting the index; nothing yet stops an index-updating ticket from forgetting the sources.
+
+---
+
+## 1ak. 🔶 OPEN 2026-08-17 — two small residues in `ADR-REGISTER.md`, both spotted at H55's close
+
+**(a) ADR-016's row states a status the vocabulary does not define.** Its cell reads *"✅ **Amended 2026-08-03 (D-18)** — original finding withdrawn"* — and **"Amended" is not one of D-39's six statuses.** The summary table does classify it correctly (it appears in the Approved row, counted among the 11, with the note *"016 amended per D-18"*), and the arithmetic checks: 11 + 6 + 26 + 19 = 62 across 62 rows. **So the classification is right and only the row cell fails to state it** — a reader scanning rows sees a seventh value where six are defined.
+
+This is a small residue of the exact defect live issue 2 named, and it survived H55 because the cell leads with an amendment note instead of a status. **Fix: state the status and keep the amendment as a qualifier** — which is precisely what D-39 established for scope-qualification ("a status may be qualified, the qualifier is not itself a status").
+
+**(b) A stale path, spotted by H55's Executor and correctly left alone.** `ADR-REGISTER.md` line 7 cites `docs/design/01-technology-stack-design.md` §9, missing the `01-design-foundation/` group-folder prefix added in the 2026-08-06 reorg. Unrelated to that ticket's scope; a one-token fix for whoever next opens the register.
+
+**Both are register-file edits.** `ADR-REGISTER.md` is an Orchestrator-maintained tracker (`PROCESS.md` §3), so unlike §1aj these need no ticket — they can be taken in a tracker pass.
+
+---
+
 ## 1ah. ✅ CLOSED 2026-08-17 by H60 — the index carries `builder-admission`, and the count was established by counting
 
 **The row is in**, in §4.5's Authorization and grant events family, and the count reads **Sixty-three**. **Verified at close by independent per-family count** — Authorization and grant 23, Data-lifecycle 13, Residency and compliance 7, Security 19, Autonomous-change 1, summing to 63 — matching the Executor's own reported tally exactly, and matching this Orchestrator's pre-edit count of 62 plus the one row added.
