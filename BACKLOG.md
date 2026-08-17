@@ -254,7 +254,33 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ah. 🔶 OPEN 2026-08-14 — the standing event-type index went stale on the very first ticket after it was built, exactly as its own §4.5 predicted; the cause was the ticket prompt, not the Executor
+## 1ah. 🔶 OPEN 2026-08-14 — the standing event-type index went stale on the first ticket after it was built, because the Orchestrator did not follow a rule that already existed
+
+> **⚠ CORRECTED 2026-08-15, before any work was generated from it.** This entry originally concluded that the enforcing step *"does not exist yet"* and recommended a `P##` ticket to create it. **Both were wrong.** `PROCESS.md` §4 already carries the rule — added **2026-08-14 by P05**, the same day §4.5 was built — and it names this exact case: *"**Known registries to check today:** `ADR-REGISTER.md` (any ticket recording or amending an ADR) and `08-audit-and-traceability-design.md` §4.5 (any ticket minting a new `event_type`)."* It even states why the `Document(s)` field is the only route: that index lives inside `docs/design/`, so *"only a ticket's own `Document(s)` field can authorize an Executor to touch it; Orchestrator tracker-maintenance cannot reach it."*
+>
+> **The correction matters more than the original finding.** The process was already right. **The Orchestrator wrote H58's prompt without checking the standing registries, which §4 requires before finalizing `Document(s)`** — and then diagnosed its own omission as a missing process step, and recommended building a rule that was one day old. A redundant `P##` was nearly generated on that premise. **Nothing is owed to `PROCESS.md`.**
+>
+> **This is the fourth negative claim asserted without checking in one session** — §1af(a)'s truncated read, §1ac's `docs/`-scoped closure, a suspected NFR/design RPO conflict that was checked and did not exist, and this. Only the third was checked *before* it cost anything. The pattern is specific and worth naming: **the Orchestrator reaches for "the rule is missing" before "I did not follow the rule,"** and the two are indistinguishable from the outcome alone.
+
+**What actually happened.** `08-audit-and-traceability-design.md` §4.5 was created 2026-08-14 as the library's standing `event_type` index — 62 types, derived by reading every minting document's *Evidence Produced* section in full, because grep was shown to miss types stated in prose. **H58 minted `builder-admission` the same day. It is not in the index** — verified, zero occurrences.
+
+### The Executor did the right thing, and the reasoning is worth preserving
+
+§13 of that document authorizes a minting ticket to add its own row *"regardless of which document is the ticket's stated primary subject."* **H58 added the row on that authority, then reverted it**, because §4.5's own point 2 calls that authorization **"necessary but not sufficient"** absent a prompt naming the document as a second `Document(s)` target — and H58's prompt named it only as a Dependency Input.
+
+**The Executor declined to edit a file it was not authorized to touch, and flagged the owed edit in §6.1 and ADR-061's Consequences instead.** That is correct under `PROCESS.md` §1 and §4, and it is the opposite of the failure this file usually records: a session that stopped exactly where its authorization stopped, and said so.
+
+### What remains owed — one row, and nothing else
+
+Add to §4.5's table, and bump its count from **62 to 63**:
+
+`| \`builder-admission\` | \`02-tenant-isolation-and-access-control-design.md\` §6.1 | Direct |`
+
+**It needs a ticket whose `Document(s)` field names `08-audit-and-traceability-design.md`, or the user's explicit direction** (`PROCESS.md` §3). It is a `docs/design/` amendment; Orchestrator tracker-maintenance cannot reach it — as §4's own rule already says.
+
+---
+
+## 1ah-original. 🔶 SUPERSEDED — the finding as first recorded, retained because the error is the lesson:
 
 **`08-audit-and-traceability-design.md` §4.5** was created on 2026-08-14 as the library's standing `event_type` index — 62 types, derived by reading every minting document's *Evidence Produced* section in full rather than by grep, because grep was shown to miss types stated in prose. It exists to end the drift `BACKLOG.md` §1v records.
 
