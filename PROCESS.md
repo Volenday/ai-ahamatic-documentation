@@ -162,6 +162,25 @@ The criteria library sits outside the two-phase model (§1), so a `CR##` ticket 
 
 ---
 
+## 3b. Root-report tickets — a third ticket shape, named 2026-08-14 after T75
+
+Some tickets produce **a dated report at the repository root for the project lead**, not a library document: `REVIEW-FLAGS-2026-07-30.md`, `REVIEW-QUESTIONS-2026-07-30.md`, `STANDUP-BRIEF-2026-08-03.md`, and `COVERAGE-AUDIT-2026-08-14.md`. Four now exist, produced ad hoc each time, with no recorded convention — T75's Executor asked for one so a future session need not re-derive which rules bind.
+
+**They keep their series prefix.** A report that scopes specification work is a `T##`; nothing about the deliverable changes which phase the work belongs to. This is *not* a fourth series.
+
+**Both phase skills still run** — §3's ⛔ note is unconditional for `T##` and `H##`, and the `CR##` exemption is explicitly unavailable to them. **But only their generic rules bind**: pyramid structure, domain neutrality, no names, no assumptions, no filler. The document-shaped rules do not, and the ticket prompt must say which:
+- `ai-aha-spec-doc`'s **"answer what, never how"** governs specification documents. A report routinely must state what a document specifies, including mechanisms. **The prompt carries an explicit carve-out**; T75's did, and its Executor reported the override worked cleanly with no residual conflict.
+- `ai-aha-design-doc`'s **realize-the-spec and cite-the-capability** rules do not apply at all — the same reason §1 gives for keeping them away from `CR##` tickets.
+- `ai-aha-spec-review` **applies directly and productively.** Its citation and quotation checks are exactly what a report full of quoted evidence needs, and T75 reported them catching real things.
+
+**Convention:** an uppercase, dated filename at the repository root — `<NAME>-<YYYY-MM-DD>.md` — addressed to the lead. Never `docs/`; a report is not a library artifact and must not be mistaken for one.
+
+**A report recommends; it never specifies.** It mints no capability ID, defines no term, and writes nothing into `docs/`. Its verdicts become individually ticketed work.
+
+> **⚠ A report whose findings are negative claims needs the §1af(a) discipline in its prompt.** A coverage audit's core output is *"the library does not cover X"* — a claim about every document, which no keyword search or partial read can establish. `BACKLOG.md` §1af(a) records what that failure cost when an Orchestrator asserted one from a truncated read. **Require every negative finding to state the method behind it**, so a reader can check the negative rather than trust it. T75's prompt did, and its Executor independently re-ran its two highest-consequence negatives rather than relying on delegated research.
+
+---
+
 ## 4. Ticket-prompt format
 
 **Orchestrator deliverable — always two labeled parts, never one without the other:**

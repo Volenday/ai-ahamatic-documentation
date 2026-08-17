@@ -254,6 +254,30 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ag. 🔶 OPEN 2026-08-14 — two library findings surfaced as side effects of T75's coverage audit, neither in its scope to fix
+
+**Found while establishing coverage, not while looking for defects** — which is why they had gone unnoticed: each sits in a seam between two documents rather than inside either.
+
+### (a) `05-user-journeys.md`'s "Safe evolution" journey implies a scope the PRD's own capability definitions do not grant
+
+The journey reads as though **C-15 and C-17 cover a built application's own deprecation**. The PRD scopes both to **the platform's own** evolution. A built application's lifecycle — its deprecation, sunset, and retirement — is therefore implied by a journey and defined by no capability.
+
+**This is the drift class `ai-aha-consistency-check` exists to catch** (`PROCESS.md` §6), and it did not — worth noting when that skill is next reviewed, since a journey-to-capability scope mismatch is squarely within its remit.
+
+**It blocks the Application Lifecycle area**, which T75 could not resolve without knowing whether the platform intends to cover a built application's end-of-life at all. Fixing the journey and answering that question may be the same work or two pieces of it — that ordering is itself the open question.
+
+### (b) `platform.tenants` and `platform.applications` share a status enum with no transition-workflow owner
+
+Both carry `active` / `suspended` / `offboarding`. **No document owns the transitions** — what moves a tenant or an application between these states, who may trigger it, what must be true first, or what happens to resident data on `offboarding`.
+
+`offboarding` is the consequential one: it names an end-of-life path for a tenant's data with no mechanism behind it, and it touches residency and retention obligations that *are* fully specified elsewhere.
+
+**Possibly one fix rather than two** — T75 named it in its Overlap section on that basis. Whether the two enums genuinely share a workflow or merely share a vocabulary is the first thing any ticket here must establish, not assume.
+
+**Both are reported findings, not verdicts.** T75 was scoped to audit coverage, and correctly declined to resolve either.
+
+---
+
 ## 1af. ⚠️ PART (a) WITHDRAWN — NOT A DEFECT, 2026-08-14. Part (b) remains open. **The withdrawn half is the Orchestrator's own verification failure, and it reached a shipped specification edit before an Executor caught it.**
 
 ### (a) — withdrawn. T74's citation to security-policy §5 was correct all along.
@@ -952,7 +976,7 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
 - **Accessibility / internationalization** — distinct from, but adjacent to, the UI-localization note in `PROCESS.md` §5 (cross-referenced, not duplicated here); accessibility proper is unaddressed
 - **Data migration / import** — `03-software-and-architecture/03-data-model-and-entity-spec.md` covers migration-*safety* and NFR sets a migration duration/downtime ceiling; bulk data import/onboarding into built apps is the un-scoped part
 - **Offline resilience** — C-20 (mobile) references offline behavior for mobile artifacts; platform-wide offline resilience is broader and unaddressed
-- **UI / UX and design-system coverage** — **verified 2026-08-13: zero hits across all 80 documents** for design system, component library, style guide, wireframe, or visual design. `docs/spec/01-business-and-ux/` is product and business material — vision, PRD, capability model, personas, journeys, value proposition, competitive landscape, benchmarks — not interface design. **Distinct from the accessibility/internationalization item above**, which is adjacent but narrower. `docs/criteria/ui-component-foundation-tool-opinion.md` (CR04) supplies criteria for *choosing* a foundation and is **not** a UI specification, so it does not close this. **Currently the most immediately blocking of these areas**, given `DECISIONS.md` D-31's daily screen-prototyping instruction. *(Added 2026-08-13 — surfaced while answering what prototyping needs, and missing from this list until then.)*
+- **UI / UX and design-system coverage** — **verified 2026-08-13: zero hits across all 80 documents; re-verified by T75 on 2026-08-14 — now three hits, all non-substantive** (`01-technology-stack-design.md`'s ADR-060, `criteria/ui-component-foundation-tool-opinion.md`, `criteria/development-principles.md`), none of which is a UI specification for design system, component library, style guide, wireframe, or visual design. `docs/spec/01-business-and-ux/` is product and business material — vision, PRD, capability model, personas, journeys, value proposition, competitive landscape, benchmarks — not interface design. **Distinct from the accessibility/internationalization item above**, which is adjacent but narrower. `docs/criteria/ui-component-foundation-tool-opinion.md` (CR04) supplies criteria for *choosing* a foundation and is **not** a UI specification, so it does not close this. **Prominence downgraded by T75, 2026-08-14.** ADR-060 landed the day after this note was written and selected a component-and-styling foundation for the platform console, relieving the acute D-31 prototyping pressure — **without** closing the underlying questions (visual identity, brand, colour, typography, accessibility, and any surface beyond the console). Still owed; no longer the most blocking. *(Added 2026-08-13 — surfaced while answering what prototyping needs, and missing from this list until then.)*
 - **Load testing** — NFR sets scalability targets and `04-devops-and-cloud-infra/03-testing-and-quality-gates.md` governs test layers; a dedicated load/stress-testing regime is the un-scoped part
 
 ---
