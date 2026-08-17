@@ -254,6 +254,35 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ah. 🔶 OPEN 2026-08-14 — the standing event-type index went stale on the very first ticket after it was built, exactly as its own §4.5 predicted; the cause was the ticket prompt, not the Executor
+
+**`08-audit-and-traceability-design.md` §4.5** was created on 2026-08-14 as the library's standing `event_type` index — 62 types, derived by reading every minting document's *Evidence Produced* section in full rather than by grep, because grep was shown to miss types stated in prose. It exists to end the drift `BACKLOG.md` §1v records.
+
+**H58 minted `builder-admission` the same day. It is not in the index.** Verified: zero occurrences in that document.
+
+### The Executor did the right thing, and the reasoning is worth preserving
+
+§13 of that document authorizes a minting ticket to add its own row *"regardless of which document is the ticket's stated primary subject."* **H58 added the row on that authority, then reverted it** — because §4.5's own point 2 says the authorization is **"necessary but not sufficient"**:
+
+> *"nothing in `PROCESS.md`'s per-ticket workflow or its ticket-prompt template yet instructs whoever assembles a minting ticket's prompt to name this document as a second `Document(s)` target. Until it does, obligation 1 depends on that step being remembered rather than enforced."*
+
+**H58's prompt named that document only as a Dependency Input.** So the Executor declined to edit a file it was not authorized to touch, and flagged the owed edit in both §6.1 and ADR-061's Consequences instead. That is the correct call under `PROCESS.md` §1 and §4, and it is the opposite of the failure mode this file usually records — a session that stopped where its authorization stopped.
+
+### The defect is the Orchestrator's
+
+**The prompt should have named `08-audit-and-traceability-design.md` as a second `Document(s)` target.** The ticket asked the Executor to run the H26c test and consider minting a type — so the possibility was foreseen in the prompt's own text, and the consequence of minting one was not. §4.5 had named this exact gap in writing, one day earlier.
+
+**Two things are now owed, and they are different in kind:**
+
+| Owed | Shape |
+|---|---|
+| Add `\| \`builder-admission\` \| \`02-tenant-isolation-and-access-control-design.md\` §6.1 \| Direct \|` to §4.5's table, and update its count from **62 to 63** | A `docs/design/` amendment — needs a ticket, or the user's explicit direction (`PROCESS.md` §3) |
+| Add the second-target step to `PROCESS.md` §4's ticket-prompt template, so a minting ticket's prompt is *required* to name that document | A **`P##`** ticket per `DECISIONS.md` D-28 — process changes are not Orchestrator inline edits |
+
+**The second is the one that matters.** The first is a single row; without the second, the next minted type drifts the same way, and §4.5's index degrades toward the state §1v already records for §4.3. **The index was built to be authoritative and is now one row wrong on day one** — not through neglect, but because the enforcing step it explicitly asked for does not exist yet.
+
+---
+
 ## 1ag. 🔶 OPEN 2026-08-14 — two library findings surfaced as side effects of T75's coverage audit, neither in its scope to fix
 
 **Found while establishing coverage, not while looking for defects** — which is why they had gone unnoticed: each sits in a seam between two documents rather than inside either.
