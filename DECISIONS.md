@@ -838,3 +838,25 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **The stated ground is security and complexity, not cost alone.** *"I really got scared with the the hacking we had and I do wonder … if we don't need it what's the point right as risks"* — and, on the policy and role surface it requires, *"I really wonder what the value is for the complexity and the risk."*
 
 **⚠ This is not AI ahaMatic scope, and it is recorded here only because it deprioritizes work that is.** Bedrock serves Project Vector; **ADR-010 already fixes GCP as this platform's cloud** and is not reopened by this evaluation. Nothing in either library changes. The entry exists so a later reader understands why the prototyping start date moved.
+
+## D-36 — The builder-add mechanism is specified; builder training and certification stay with the lead
+
+**Decision.** `02-governance-and-security/03-access-control-and-tenancy-model.md` §5–§6 gains the mechanism by which a builder is added to an **already-provisioned** tenant — a `tenant_users` binding-creation workflow. Authorizes **T79** as a specification-phase ticket. **The broader onboarding slice — training, certification, a documentation portal — is not authorized and remains open as `TICKET.md` D-u's residue**, for the lead.
+
+*(What: to be recorded by **T79**, with its design counterpart following as a separate `H##`.)*
+
+**Attribution: team decision, under the D-16 delegation.** Taken on the D-23 precedent, where a team decision under the same delegation authorized a specification-phase ticket (T70).
+
+**The gap this closes.** `COVERAGE-AUDIT-2026-08-14.md` §4 verified that the library covers only the definitional edge — who a builder persona is, and a journey for granting a role *inside* an already-provisioned tenant. **Nothing states how a builder is added at all.** Roughly fifteen search variants for an invite or add-member mechanism return zero hits, and the asymmetry is itself the evidence: the journey table names fifteen journeys, including "Tenant establishment" for the tenant owner, and none for adding a builder.
+
+**Criteria applied, and how each resolved.**
+1. **Is the gap real and total, or partially covered?** Total for the mechanism, verified by search *and* by the structural asymmetry above — two independent methods, per `BACKLOG.md` §1af(a)'s rule that a negative claim needs its method stated.
+2. **Does an existing document already own this territory?** Yes, decisively. `03-access-control-and-tenancy-model.md` §5–§6 owns the steward plane and the role-and-permission matrix; binding an actor to a tenant is squarely inside it. This is an **extension**, not a new document, so it raises none of the library-scope questions gating the other audit areas.
+3. **Is this a technical decision the team holds under D-16, or a scope decision the lead holds?** Technical. It asks *how* an actor is bound to a tenant within a capability the library already carries — not *whether* this library covers a kind of content. **The contrast is the point:** training and certification ask the second question, plausibly resolve to Customer Success material, and are therefore excluded here and left with the lead.
+4. **Does it mint new capability surface?** No. Tenancy and access control are existing capabilities; this states a mechanism inside them, creating no capability ID and no new term.
+
+**Alternatives considered.**
+- **Authorize the whole area, training included** — rejected under criterion 3. It would take a scope decision that is the lead's, and the audit's own assessment is that the likely answer for training is out of scope. Deciding it here would foreclose that on weaker grounds than the lead has.
+- **Wait for the lead on both halves** — rejected under D-16's explicit instruction (*"make your own decisions, ask me less"*). The mechanism half is uncontested platform territory with a total absence and a clear owner; holding it back would be the over-caution D-16 exists to remove.
+
+---
