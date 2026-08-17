@@ -732,6 +732,7 @@ Three instances across three unrelated documents is a **library-wide habit**, no
 | **H44** | **2** — a truncated quote missing its trailing clause, and an unattributed quasi-quotation in quotation marks. Both self-caught; separately, an **inherited** spec citation went unverified — see §1ab |
 | **H45** | **4** — including a *fabricated internal subsection* (`§5.4.2`, which does not exist) and a **fabricated attribution** to a document never opened this session, corrected to cite the map it was actually read from |
 | **H46** | **5** — a misquote (`sharper`/`stronger`), two unattributed quasi-quotations, a misattributed phrase, and a stitched quote joining two different sections of one document. **The misquote originated in the ticket prompt** — third such instance, see below |
+| **H54** | **2 self-caught** — plus **a fifth Orchestrator-side error in the prompt**: it asserted 26 occurrences of a term against `TICKET.md`'s 23 and concluded *"the library grew."* Both numbers were right and measured different things — **23 lines, 26 occurrences** — and the Executor was correct that the staleness inference did not hold. A `grep -c` count compared against a `grep -o` count, with drift inferred from the difference |
 | **H43** | **1** — a duplicated phrase in a heading. **The lowest of the series, and the first ticket to report the pre-review step working**: internal `§N` references resolved against the final heading list before *and* after the fix, and several quotes read from the source file rather than trusted from a prior document's secondhand quotation |
 
 **One of H37's six was categorically worse than the rest: a fabricated quotation.** Invented language — *"100%, because the alternative leaves a gap in exactly the wrong place"* — was placed inside quotation marks with no source anywhere. The others were misattribution (paraphrase presented as verbatim; the right content cited to the wrong section; a phrase from `PROCESS.md` attributed to a spec table; an upstream row's classification overgeneralized). **Verified at this close: all six fixes landed**, the fabricated string is absent from the file, and the corrected §18.6 attribution now cites `03-architecture-realization-design.md` §4 — whose line 77 does carry the quoted phrase verbatim, and does itself cite §18.6. The shipped document is sound.
@@ -848,7 +849,33 @@ Every prior entry in this family concerns citations to *other* documents. This o
 
 ---
 
-## 1u. 🔶 OPEN 2026-08-11 — the Region Resolution Point reads registry columns from `components/distribution`, which `02-tenant-isolation-and-access-control-design.md` §5.3 forbids at Full coverage
+## 1u. ✅ CLOSED 2026-08-17 by H54 (ADR-062) — and the resolution found the rule's own formulation was the defect
+
+**Resolved as decision D-b, Team under D-16.** All four candidate resolutions were tested and two were eliminated on structural grounds, not preference:
+- **Confining the read to `tenant_<id>.tenant_host_connections`** is *not constructible* — that table lives inside the very per-tenant schema whose region the read exists to resolve. A circularity, not a trade-off.
+- **Relocating the read into `components/isolation-and-trust`** is *foreclosed* — `03-architecture-realization-design.md` §3.1's module table fixes "any region-specific branch" as something that never lives in that module.
+
+**The finding that mattered was the fourth option, and it changed the shape of the fix.** §5.3 originally forbade importing *"the platform-schema data-access module"* — naming **one specific module** rather than the property that module's exclusivity protects. A second, independently-written query path satisfies that literal wording while defeating its purpose entirely. **The rule's formulation was the defect, not merely a missing exception.**
+
+**The resolution is therefore both halves.** §5.3 is restated in property terms — no module outside Isolation and Trust may obtain *a query-capable handle on either table, however obtained* — plus one named, tightly bounded exception for the Region Resolution Point (`region_of_record` only, addressed tenant only, pre-authentication only, resolving no role, permission, or grant content). And the coverage claim is now **"Full coverage, less this one named exception,"** with the document stating its own reasoning: *"A Full-coverage claim with an unstated exception is worse than a narrower claim honestly made."* ADR-018 and ADR-045 were not reopened.
+
+**Three residues, none of them H54's to fix — see §1ai.**
+
+---
+
+## 1ai. 🔶 OPEN 2026-08-17 — three residues from H54, two handed forward correctly and one missed
+
+**(a) `01-agent-runtime-and-control-design.md` §9.3 is now false, and H54 flagged it correctly.** That section is titled *"`BACKLOG.md` §1u — Checked, Not Resolved"*, quotes §5.3's **superseded** wording verbatim (*"may import the platform-schema data-access module"*), and asserts *"the collision remains exactly as `BACKLOG.md` §1u states it."* All three are stale. **Verified at this close.** H54 correctly declined to edit it — outside its `Document(s)` — and handed it forward.
+
+**(b) `08-coding-standards-and-patterns-design.md` needs the boundary rule made enumerable.** §5.3's restated property rule and its one named exception have to become a concrete source-path configuration in the dependency-cruiser rule set that document extends from ADR-014. **A property stated in prose is not yet a rule a tool can run** — and §5.3's whole correction was that a rule can be satisfied in letter while missing its purpose. Assessed and flagged by H54, not made; it was a Dependency Input only.
+
+**(c) The document now contradicts itself on its own ADR count — missed by H54, found at this close.** `02-tenant-isolation-and-access-control-design.md` **§2 (line 40)** reads *"this document records **two** ADRs (§10)"*; **§13 (line 331)** reads *"This document records **three** ADRs."* H54 added ADR-062 and updated §13's chapeau but not §2's.
+
+**This is the third instance of one class in four tickets** — T73 found a table row falsifying its section's chapeau, H58 found and fixed two of its own, and H54 fixed one and missed one. **The pattern is not carelessness; it is that a document states its own shape in more than one place, and the places are far apart.** §2 and §13 sit 291 lines and eleven sections apart, and nothing links them. A one-word fix, needing a ticket or explicit direction (`PROCESS.md` §3) since it is a `docs/design/` file.
+
+---
+
+## 1u-original. ✅ SUPERSEDED — the finding as first recorded 2026-08-11:
 
 **Found at H34's close, by checking the new mechanism against the import-boundary rules rather than against the dependency-direction table alone.** H34 §6.2 designs a **second, deliberately narrower read path** for pre-authentication region resolution, realized inside `components/distribution` (§6.1, §8). Its justification for not reusing the Registry Accessor is sound and independently verified: the accessor's signature accepts "only an **already-authenticated** actor identity... never a client-supplied `tenant_id`" (`02-tenant-isolation-and-access-control-design.md` §3.1, quoted accurately), and routing must run before authentication and must be keyed by an address-supplied identifier — so reuse would weaken the accessor's own guarantee rather than compose with it. That reasoning is not in question.
 
