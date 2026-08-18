@@ -4,7 +4,7 @@ A navigational index of every design-phase ADR: its identifier, status, owning d
 
 **What this file is.** An index, in the same sense as `docs/spec/context-document-map.md` and `docs/design/implementation-document-map.md` — it routes to decisions and reports their status.
 
-**What this file is not.** It does **not** own, relocate, or duplicate any decision. `docs/design/01-technology-stack-design.md` §9 fixes the convention that an ADR is recorded **inline in the document that owns it, never in a separate ADR-only file**. This register cites; the owning document governs. Where the two disagree, **the owning document prevails** and this register is corrected.
+**What this file is not.** It does **not** own, relocate, or duplicate any decision. `docs/design/01-design-foundation/01-technology-stack-design.md` §9 fixes the convention that an ADR is recorded **inline in the document that owns it, never in a separate ADR-only file**. This register cites; the owning document governs. Where the two disagree, **the owning document prevails** and this register is corrected.
 
 ---
 
@@ -50,7 +50,7 @@ Cost to reverse is derived from `PROCESS.md` §12.1, highest first: data model a
 | **008** | ADR-001 re-evaluation outcome | **§18.10** | ✅ **Resolved** — discharged under all thirteen criteria | Low | ADR-003, ADR-007 |
 | **014** | Dependency-direction enforcement mechanism | `03-architecture-realization-design.md` §11.1 | ✅ Approved (H8) | High | ADR-005 |
 | **015** | Codebase topology — ADR-002's parked question answered | `03-architecture-realization-design.md` §11.2 | ✅ Approved (H8) | High | ADR-005 |
-| **016** | Extension authorship under no-code | `03-architecture-realization-design.md` §11.3 | ✅ **Amended 2026-08-03 (D-18)** — original finding withdrawn; three extension origins, not one | Moderate | D-09, ADR-005 |
+| **016** | Extension authorship under no-code | `03-architecture-realization-design.md` §11.3 | ✅ **Approved**, *amended 2026-08-03 (D-18)* — original finding withdrawn; three extension origins, not one. The amendment qualifies the status; it is not itself a status (`DECISIONS.md` D-39) | Moderate | D-09, ADR-005 |
 | **017** | Mobile local persistence — local store, split key-value store, explicitly designed durable write queue; **not** a sync engine | `05-mobile-application-delivery-design.md` §11.1 | ✅ **Team-Approved** (`DECISIONS.md` D-25; D-37) — **written 2026-08-10 by H31, discharging the longest-standing owed ADR in the phase**; corrected from `Approved`, live issue 5 (closed) | Moderate | ADR-009, ADR-010, D-11 |
 | **018** | Tenant-isolation enforcement — connection-scoped structural access, registry-scoped identity resolution, boundary self-verification | `02-tenant-isolation-and-access-control-design.md` §10.1 | ✅ **Team-Approved** (H10, decided under D-16 — `DECISIONS.md` D-37; corrected from self-approved `Approved`, live issue 5 closed) | **Brutal** *(core mechanism)* · Low *(engine-level provisioning primitive)* | ADR-004, ADR-005 |
 | **019** | Session-record-backed authentication — server-side revocation authority over a stateless bearer token | `03-authentication-and-identity-design.md` §8.1 | ✅ **Team-Approved** (H11, decided under D-16 — `DECISIONS.md` D-37; corrected from self-approved `Approved`, live issue 5 closed) | **High** *(mechanism shape)* · Low *(signing algorithm / token encoding)* | ADR-018, ADR-004 |

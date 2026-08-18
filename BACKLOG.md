@@ -254,7 +254,20 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1aj. 🔶 OPEN 2026-08-17 — H55's register update outran its `Document(s)`: 22 ADRs read `Team-Approved` in the register and `Provisional` in the documents that own them
+## 1aj. ✅ CLOSED 2026-08-17 by H61 — all 22 owning documents now agree with the register
+
+**Verified at close, by diff rather than by claim:** 25 files changed, **27 line-level edits, every one a `- **Status:**` field** — zero collateral edits, zero added or removed lines of any other kind. All 22 ADRs confirmed reading `Team-Approved` in their own documents; heading counts identical to HEAD across all 25; `ADR-REGISTER.md` untouched, as its read-only designation required.
+
+**The scoping pass found three things that would have derailed the ticket mid-run**, and each is worth keeping:
+- **`02-platform-data-model-design.md` records ADR-037 and ADR-042 as bold inline paragraphs, not `###` headings** — it is the only document in the library with zero ADR headings. An Executor searching for headings finds nothing; the ticket directed locating them by their Status field instead.
+- **Ten Status lines carried a trailing clause — *"consistent with every design-phase ADR recorded since ADR-021"* — that D-38 falsified at all ten**, including the five whose status did not change: it is no longer true that every ADR since ADR-021 shares one status. The ticket was widened from 20 documents to 25 to remove all ten rather than leave a false claim standing in five. **Confirmed zero occurrences repo-wide.**
+- ADR-032's clause carried a supporting parenthetical (*"none of ADR-021–ADR-031 is yet approved"*) that existed only to prop up the same false claim; H61 removed it as part of the same trailing justification rather than leaving it dangling.
+
+**The rule this leaves behind.** A status field states a status; D-37 and D-39 now define what each means, so it needs no argument attached — **and that the clause could go false at all is the argument against ever attaching one.**
+
+---
+
+## 1aj-original. ✅ SUPERSEDED — the finding as first recorded:
 
 **The drift is the ticket prompt's, not the Executor's.** `DECISIONS.md` **D-38** resolved 22 ADRs to `Team-Approved`, but H55's prompt named only **two** `Document(s)` — `01-technology-stack-design.md` and `ADR-REGISTER.md`. The Executor applied the status in the register, **declined** to edit 22 documents it had no authorization to touch, and flagged the mismatch inline in the register itself. That is the correct call and the same restraint H58 showed at `BACKLOG.md` §1ah.
 
@@ -268,7 +281,15 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ak. 🔶 OPEN 2026-08-17 — two small residues in `ADR-REGISTER.md`, both spotted at H55's close
+## 1ak. ✅ CLOSED 2026-08-17 — both taken in the Orchestrator's tracker pass
+
+`ADR-REGISTER.md` is an Orchestrator-maintained tracker (`PROCESS.md` §3), so neither needed a ticket. **(a)** ADR-016's row now reads **`✅ Approved, *amended 2026-08-03 (D-18)*`** with the note that the amendment qualifies the status and is not itself a status — applying D-39's own modifier rule to the row that most needed it. **(b)** The stale `docs/design/01-technology-stack-design.md` path was corrected to `01-design-foundation/…`; verified zero remaining occurrences.
+
+**Row tally re-verified after both edits:** 11 Approved + 6 Resolved + 26 Team-Approved + 19 Provisional = **62 across 62 rows**, matching the register's own summary table.
+
+---
+
+## 1ak-original. ✅ SUPERSEDED — the residues as first recorded:
 
 **(a) ADR-016's row states a status the vocabulary does not define.** Its cell reads *"✅ **Amended 2026-08-03 (D-18)** — original finding withdrawn"* — and **"Amended" is not one of D-39's six statuses.** The summary table does classify it correctly (it appears in the Approved row, counted among the 11, with the note *"016 amended per D-18"*), and the arithmetic checks: 11 + 6 + 26 + 19 = 62 across 62 rows. **So the classification is right and only the row cell fails to state it** — a reader scanning rows sees a seventh value where six are defined.
 

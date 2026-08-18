@@ -124,7 +124,7 @@ This is a fixed input list `08-audit-and-traceability-design.md` inherits and de
 
 ### 8.1 ADR-022 — Provenance-Boundary Enforcement Point for AI-Suggested Artifacts
 
-- **Status:** Provisional — Pending Lead Approval.
+- **Status:** Team-Approved.
 - **Cost to reverse:** Moderate — relocating the check to a different chokepoint, or removing it, is a pipeline-configuration change with no data migration; the engineering cost of reversal is bounded, but any weakening of the check directly reopens the provenance boundary this decision exists to hold, which is a security-consequential outcome independent of engineering cost.
 - **Upstream decisions assumed:** `04-security-controls-design.md` §5.2 — the Merge Gate as the already-established mandatory-check chokepoint for platform-team-authored code, which this decision extends rather than duplicates. The provenance attribute's own storage shape, assumed to exist and be readable at the Merge Gate, is `09-ai-assisted-builder-tooling-design.md`'s or `02-data-model-and-entity-design.md`'s to fix (neither yet written) — this decision is exposed to whichever of those two settles that shape, and does not itself settle it.
 - **Verified vs. reasoned:** Reasoned throughout. The argument is structural (single chokepoint versus a parallel one; independence from the confirmation workflow's own correctness) and makes no claim about any specific tool, provider, or ecosystem state.
