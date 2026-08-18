@@ -953,15 +953,15 @@ Every prior entry in this family concerns citations to *other* documents. This o
 
 ---
 
-## 1ai. 🔶 PARTLY CLOSED 2026-08-17 by H60 — (a) and (c) resolved; **(b) remains genuinely open**
+## 1ai. ✅ CLOSED 2026-08-18 by H62 — (a) and (c) resolved by H60; **(b) resolved by H62**
 
 **H60 closed both statement-level residues and found two more the ticket had not named.** (a) `01-agent-runtime-and-control-design.md` §9.3 was **retitled and rewritten** rather than deleted — *"§1u — Resolved by ADR-062, Not by This Document's Placement"* — on the judgment that its substantive point still informs: a reader could otherwise wonder whether the kernel's own design helped close §1u, and the section now answers that it did not. **Verified at close:** the replacement quote matches §5.3's current wording **byte-for-byte**, and all four stale phrases are gone. (c) §2's ADR count is now "three," matching §13; zero occurrences of "two ADRs" remain.
 
 **The Executor found two stale sites the ticket did not name** — a §1 reading-order signpost calling §1u *"the one open import-boundary question"*, and a §14 boundary bullet restating §9.3's old framing. **That is §1ai(c)'s own pattern applied by someone who had just read it**: the second statement is always far from the first, so the fix is a grep for the *premise*, not for the sentence.
 
-### (b) — still open. The boundary rule is not yet enumerable.
+### (b) — ✅ RESOLVED 2026-08-18 by H62. The boundary rule is now enumerable.
 
-`08-coding-standards-and-patterns-design.md` must turn §5.3's restated property rule and its one named exception into a concrete source-path configuration in the dependency-cruiser rule set it extends from ADR-014. **A property stated in prose is not yet a rule a tool can run** — and §5.3's entire correction was that a rule can be satisfied in letter while missing its purpose. **Owed to whichever ticket next opens that document.**
+`08-coding-standards-and-patterns-design.md` §4.1 (new subsection) turns §5.3's restated property rule and its one named exception into a concrete dependency-cruiser rule extending ADR-014's configuration — this document's second such extension, alongside the existing guardrail-routing rule. Both quoted passages verified byte-for-byte against §5.3's current text. Coverage stated as Partial, honestly, with its one residual (a query issued through an already-permitted generic access primitive, table name as string content only) routed to §7's existing "Tenant isolation preserved" item. **A property stated in prose is now also a rule a tool can run.**
 
 ---
 
