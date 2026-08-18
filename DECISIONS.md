@@ -649,6 +649,8 @@ The two classes it holds:
 - **Holding all process documents** — rejected on criteria 2 and 3. It was the reading initially applied, and it made the citation rules unenforceable for exactly the tickets most exposed to them.
 - **Opening platform-development documentation in parallel** — rejected. The libraries are the input to that work; starting it against a moving base reproduces the phase inversion `PROCESS.md` §1 exists to prevent.
 
+**⚠ Reaffirmed 2026-08-18, asked directly now that the three libraries are effectively closed** (all four documentation tickets once open — T73, T74, T75, P06 — are done; `BACKLOG.md` §1ad's own tracking note said as much). **The hold stays in place.** No further condition was specified for when it lifts; the fifth ticket-series prefix question (`BACKLOG.md` §1ad) therefore remains moot until it does. `DECISIONS.md` D-34's build instruction stays unactionable in the meantime.
+
 ---
 
 ## D-28 — Skills and process documents are ticketed work: the `P##` series
@@ -962,5 +964,41 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **Alternatives considered.**
 - **Wait for D-40 to resolve first** — rejected. The mechanism question does not depend on whether a builder-facing deprecation capability is ever authorized; a tenant can be suspended (e.g., policy violation) or offboarded entirely independent of any application-level deprecation program.
 - **Treat this as out of scope until the lead defines a tenant-lifecycle capability** — rejected under criterion 1. The obligation already exists in the auth-and-identity spec; this closes a mechanism gap under an obligation already recorded, not manufactured scope.
+
+---
+
+## D-42 — `BACKLOG.md` §1ad D-s: third-party risk management is in scope, as a new document
+
+**Decision.** Third-party/vendor risk management belongs in this technical specification library. It lands as a **new document**, sibling to `08-legal-and-licensing-constraints.md` in `docs/spec/02-governance-and-security/`, rather than an extension of the existing License Sweep. Unblocks **T77**.
+
+**Attribution: lead decision, given directly in session, 2026-08-18.**
+
+**The gap this closes.** `TICKET.md`'s D-s row records T75's verification: six vendor-risk search terms return zero hits library-wide, and full reads confirmed the three adjacent mechanisms each cover something distinct — `08-legal-and-licensing-constraints.md` is license-compliance only; ADR-033's sandboxing bounds *reach*, not vetted *intent*; `docs/criteria/`'s tool opinions are a one-time selection framework, not an ongoing monitoring process. Nothing tiers dependencies, integrations, or marketplace vendors by criticality, and nothing requires ongoing non-license monitoring of a vendor's security posture, breach history, or continuity.
+
+**Why a new document over the License Sweep extension.** T75 named this the cleaner fit on the evidence available, and that evidence stands: license compliance and vendor operational risk are different mechanisms answering different questions (does this dependency's license permit use? vs. does this vendor remain trustworthy over time?), and stretching one document's sweep to cover both would blur a distinction `08-legal-and-licensing-constraints.md`'s own scope is built around.
+
+---
+
+## D-43 — `BACKLOG.md` §1ad D-t: non-IT business continuity is in scope, as its own document
+
+**Decision.** Non-IT business continuity (staffing, facilities, operator continuity, outage communications) belongs in this library, as its **own document** — distinct from the RPO/RTO/DR terminology and region-failover-scenario work T78 already covers on its IT-recovery half. Fully unblocks **T78's** BCP-scope question; the IT-recovery half was never blocked.
+
+**Attribution: lead decision, given directly in session, 2026-08-18.**
+
+**The gap this closes.** T75 found DR/BCP coverage deeper than assumed on the IT-recovery side (six recovery guarantees, an MTTR floor, honest design-side limits) but a total absence — zero hits — for RPO/RTO/DR/BCP terminology and for any non-IT continuity content: staffing continuity, facility failover, or outage-time customer/operator communications. T75 judged the non-IT half organizationally distinct enough to warrant its own document if the library holds it at all; this decision confirms it does.
+
+**Scope note for the ticket that follows.** This decision authorizes the *document*, not its content — T78 (or a successor ticket split from it, since this is now two genuinely separate documents: an IT-recovery extension and a new BCP document) still does the work of specifying what non-IT continuity requires for a platform-building company, distinct from the built platform's own IT recovery guarantees.
+
+---
+
+## D-44 — `BACKLOG.md` §1ad D-u residue: builder training and certification is declined outright
+
+**Decision.** The broader builder-onboarding slice — training, certification, a documentation portal — is **declined**, not deferred. The narrower slice T79 already specified (the builder-add mechanism) stands as the library's complete coverage of builder onboarding; nothing further is authorized or owed.
+
+**Attribution: lead decision, given directly in session, 2026-08-18.**
+
+**The gap this closes.** `TICKET.md`'s D-u row recorded T75's assessment that this broader slice is very plausibly Customer Success / DevRel material outside this library's charter — the library's own framing already pointed this way, and this decision confirms it rather than leaving it re-litigated.
+
+**Why declined rather than deferred.** `TICKET.md`'s own D-u row named the asymmetry: deferring leaves the area re-opened at every future coverage audit, paying the assessment cost repeatedly for a question whose likely answer was already clear. Declining closes it once. If circumstances change materially (e.g., the platform later takes on a formal certification program as a product decision), that is a new question with new evidence, not a reopening of this one.
 
 ---

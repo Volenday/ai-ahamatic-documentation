@@ -549,13 +549,11 @@ Both arise from the same instruction and should be put to him together rather th
 
 **The lead has now issued a build instruction, and no ticket series exists to hold it.** D-34 fixes a four-step prototyping sequence and three API increments. `PROCESS.md` §1 defines four series — `T##` (spec), `H##` (design), `CR##` (criteria), `P##` (process and tooling) — **all of them documentation.** Nothing covers building software.
 
-**`DECISIONS.md` D-27 is what stands in the way, and it was the right call when made:** no development-phase ticket may be created until the three libraries are closed. **They are now effectively closed** — the four documentation tickets once open here (T73, T74, T75, P06) are **all closed as of 2026-08-17** — and the blocked decisions that remain (D-s, D-t, D-u) do not gate prototyping either.
+**`DECISIONS.md` D-27 is what stood in the way, and it was the right call when made:** no development-phase ticket may be created until the three libraries are closed. **They were effectively closed** — the four documentation tickets once open here (T73, T74, T75, P06) closed by 2026-08-17 — and D-s, D-t, and D-u were all subsequently resolved (`DECISIONS.md` D-42, D-43, D-44) and no longer gate anything either.
 
-**So D-27's hold is now the only thing between the lead's instruction and executable work.** Two questions follow, and they are the lead's:
-- **Does D-27's hold lift?** The libraries are closed in substance if not in ticket count.
-- **What series holds development work?** A fifth prefix needs defining in `PROCESS.md` §1 — which is itself a `P##`, and which D-28's bootstrap note already establishes how to do.
+**Asked directly and reaffirmed 2026-08-18 (`DECISIONS.md` D-27's own entry, updated).** The hold **stays in place** — no further condition was specified for when it lifts. The fifth ticket-series prefix question is therefore **still moot**: nothing defines it until D-27 lifts.
 
-**Do not create a development ticket before that is settled.** D-27 is a recorded lead decision; it is lifted by the lead, not inferred from progress.
+**Do not create a development ticket.** D-27 is a recorded lead decision, reaffirmed directly rather than inferred from progress; it lifts only when the lead says so.
 
 **Why this entry exists rather than the docket rows:** execution of the eight ready tickets will make `TICKET.md`'s wrap-up section noisy, and a parked decision inside a section about finished work is a decision that gets lost. Nothing here is closed; each is live and waiting on one answer.
 
