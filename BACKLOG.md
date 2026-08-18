@@ -281,6 +281,36 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1al. ✅ CLOSED 2026-08-17 by P06 — the example rewritten as a historical case; both further claims checked
+
+**Found while scoping P06; recorded here because a ticket prompt is not durable.** §12.2 offers **ADR-022** as its canonical *"Amendment, forbidden"* example, reasoning that `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md` §5 *"opens 'It requires all of the following to hold:', a closed list"* with no room for the check ADR-022's Consequences bind it to add.
+
+**Both halves are now out of date.** **T74** added that mechanical provenance check to §5 as its fourth mandatory item, and **`DECISIONS.md` D-33** states plainly that authorizing it *"makes the binding retroactively legitimate rather than leaving ADR-022 to be amended."* **`PROCESS.md` mentions neither D-33 nor T74** — verified, zero occurrences.
+
+**The rule is not in question; its example is.** D-29's convention — an ADR may bind a specification only where that document already carries the obligation — stands unchanged and is correctly stated. What is wrong is that §12.2's illustration reads as though the defect is currently open, when the project closed it three days later.
+
+**Two further claims in the same passage to check when this is fixed:** the paragraph following the examples cites *"three instances across three unrelated documents"* as case history — that count may have moved with the resolution — and §12.2's other example, **ADR-023 as "Realization, permitted"**, has not been verified against its owning document (`06-compliance-and-data-residency-design.md` §10.1) since it was written.
+
+**Scoped into P06**, which checks P01–P04's deliverables against the discipline they created; §12.2 is P03's. **If P06 does not run, this remains owed** — which is why it is recorded here rather than only in that prompt. The repair is a judgment (rewrite as historical, replace with a live example, or annotate the resolution), not a substitution.
+
+**The general point, and it is the session's sharpest:** a worked example is a citation to a *state of the world*, and states of the world change. §12.2's example was accurate the day P03 wrote it. **Nothing in the citation discipline catches an example that decays** — every check in P02's block verifies that a quote matches its source, and this quote still does; what moved was the fact underneath.
+
+**What closes it:** the ADR-022 bullet is repaired as a historical case, not replaced — reworded to past tense, with a closing sentence citing T74/D-33 and stating plainly it *"no longer describes ADR-022's present status."* A grep found no other current forbidden-binding case to substitute instead: `§1x`'s scalability-doc naming and ADR-025 both turned out, on H50's and this entry's own record, not to be genuine instances of the pattern. **Both further claims checked.** The ADR-023 quote was verified literal against `06-compliance-and-data-residency-design.md` §10.1 — exact match, clean. The "three instances" count itself — not §12.2's citation of it, but whether `BACKLOG.md` §1z-history should still say three now that only ADR-022 was ever genuine — is a live question about that entry's own content, outside `PROCESS.md` and outside what a citation-resolution check can settle. Recorded separately as `1am` rather than resolved here.
+
+---
+
+## 1am. 🔶 OPEN 2026-08-17 — `1z-history`'s "three instances" may now overstate: only ADR-022 was ever a genuine case, and it is resolved
+
+**Surfaced while closing `1al` at P06.** `1z-history` (§709–717) records the ADR-binding pattern as three instances — ADR-022, the `04-scalability-…-design.md` spec-path naming, and ADR-025 — and `PROCESS.md` §12.2 cites that count as case history. On the entries' own current text, only one was ever a genuine instance:
+
+- **ADR-022** — genuine, and **closed** by T74/D-33 (`1al`).
+- **`04-scalability-…-design.md`** — H50(a)'s own closure states *"`PROCESS.md` §12.2 therefore never applied to line 210: retargeting dissolved the ADR-to-spec binding rather than resolving it"* — i.e. never a genuine instance once traced to source.
+- **ADR-025** — `1z`'s own closure already narrows this to *"a front-matter summarization defect whose body states the reconciliation correctly,"* not a binding at all.
+
+**Not acted on here.** Whether `1z-history`'s count and table should now read "one genuine instance, resolved" rather than "three" is a judgment about that entry's own historical record, not a citation defect — `1z` is already `✅ CLOSED`, and rewriting closed case history is a different kind of edit than correcting a live count. Left for a maintenance pass or the next ticket that touches `1z`/`1z-history` directly.
+
+---
+
 ## 1ak. ✅ CLOSED 2026-08-17 — both taken in the Orchestrator's tracker pass
 
 `ADR-REGISTER.md` is an Orchestrator-maintained tracker (`PROCESS.md` §3), so neither needed a ticket. **(a)** ADR-016's row now reads **`✅ Approved, *amended 2026-08-03 (D-18)*`** with the note that the amendment qualifies the status and is not itself a status — applying D-39's own modifier rule to the row that most needed it. **(b)** The stale `docs/design/01-technology-stack-design.md` path was corrected to `01-design-foundation/…`; verified zero remaining occurrences.
@@ -505,7 +535,7 @@ Both arise from the same instruction and should be put to him together rather th
 
 **The lead has now issued a build instruction, and no ticket series exists to hold it.** D-34 fixes a four-step prototyping sequence and three API increments. `PROCESS.md` §1 defines four series — `T##` (spec), `H##` (design), `CR##` (criteria), `P##` (process and tooling) — **all of them documentation.** Nothing covers building software.
 
-**`DECISIONS.md` D-27 is what stands in the way, and it was the right call when made:** no development-phase ticket may be created until the three libraries are closed. **They are now effectively closed** — four documentation tickets remain (T73, T74, T75, P06), none of which prototyping depends on, and two blocked decisions (D-b, D-e) that it does not depend on either.
+**`DECISIONS.md` D-27 is what stands in the way, and it was the right call when made:** no development-phase ticket may be created until the three libraries are closed. **They are now effectively closed** — the four documentation tickets once open here (T73, T74, T75, P06) are **all closed as of 2026-08-17** — and the blocked decisions that remain (D-s, D-t, D-u) do not gate prototyping either.
 
 **So D-27's hold is now the only thing between the lead's instruction and executable work.** Two questions follow, and they are the lead's:
 - **Does D-27's hold lift?** The libraries are closed in substance if not in ticket count.
