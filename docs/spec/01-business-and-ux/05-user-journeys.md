@@ -63,7 +63,7 @@ Build-time journeys are the experiences of the builder personas. They follow the
 | Mobile publishing and delivery | Publisher | Producing a mobile artifact of a built application and delivering it to a mobile target so its end users can reach it there, holding every guarantee that holds for non-mobile output, with web and mobile forms kept at parity except where divergence is expressly permitted. | C-20 |
 | Platform extension | Extender | Extending the platform through modules and its programmatic contract, strictly within a granted scope and without introducing domain content into the core. | C-11, C-12 |
 | Cross-system data access | Extender | Unifying access to data residing across multiple or external systems through a single, domain-neutral data-access layer — keeping all accessed data strictly tenant-scoped, treating external data as untrusted input validated at the boundary, and honoring the residency obligations of where the data resides — distinct from modeling the builder's own entities and schemas and from the module and programmatic-contract extension mechanisms. | C-24 |
-| Safe evolution | Operator, application builder | Changing, maintaining, and deprecating built software over time on a managed path that preserves every guarantee already made. | C-15, C-16, C-17 |
+| Safe evolution | Operator, application builder | Evolving the platform itself — introducing, deprecating, and retiring its own capabilities and contracts on a managed path that gives built software time to adapt — while detecting, containing, and recovering from problems in the platform and built software, preserving every guarantee already made. | C-15, C-16, C-17 |
 
 ### 3.1 The Continuous Build-Time Flow
 
