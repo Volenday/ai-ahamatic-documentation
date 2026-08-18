@@ -1046,3 +1046,15 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 - **Split into two tickets rather than one** — adopted, not rejected: given the corrected cost, a spec-phase T-ticket (add the row) and a design-phase H-ticket (classify it, update the ten stale references) are cleaner than one ticket spanning both phases, consistent with this project's own phase-separation rule.
 
 ---
+
+## D-47 — Lead sign-off on the nineteen retained ADRs (`DECISIONS.md` D-38's series), recorded incrementally as each is reviewed
+
+**What this entry is.** `DECISIONS.md` D-38 split the ADR backlog into 22 bulk-resolved and 19 retained, graded High, Very high, or Brutal, each needing individual lead attention before it reaches `Approved` (`DECISIONS.md` D-37: `Approved` requires lead sign-off recorded here; nothing else reaches it). This entry is that record, one ADR at a time, added to as each is reviewed rather than reproduced as nineteen separate top-level entries. Per §9/§10 of each ADR's owning document, this log records the rationale and the fact of approval and cites the ADR rather than reproducing its content.
+
+**Attribution: lead decision, given directly in session, starting 2026-08-18.**
+
+| ADR | Cost | Owning Document | Reviewed | Outcome |
+|---|---|---|---|---|
+| **028** | Brutal | `02-data-model-and-entity-design.md` §13.1 | 2026-08-18 | **Approved.** The physical entity-storage model (one insert-only versioned table per builder entity; four catalogs; one Entity Access Gateway mediating validation/consent/classification; the construct-vocabulary and provenance-attribute declines correctly routed rather than absorbed) was reviewed in full and signed off. Reasoning judged sound: real alternatives were considered and rejected on stated grounds (an EAV store, multiple independent check paths, version-level deletion for erasure), and the two declined obligations are correctly handed to their proper owning documents rather than silently discharged here. |
+
+---
