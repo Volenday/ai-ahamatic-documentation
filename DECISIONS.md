@@ -1002,3 +1002,22 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **Why declined rather than deferred.** `TICKET.md`'s own D-u row named the asymmetry: deferring leaves the area re-opened at every future coverage audit, paying the assessment cost repeatedly for a question whose likely answer was already clear. Declining closes it once. If circumstances change materially (e.g., the platform later takes on a formal certification program as a product decision), that is a new question with new evidence, not a reopening of this one.
 
 ---
+
+## D-45 — T78's region-outage scope: the honest limit is stated, not a new cross-region failover capability
+
+**Decision.** T78 states plainly that **no cross-region failover exists or is promised for a tenant's own data.** A tenant's data lives in exactly one region (`region_of_record`) and is never cross-region replicated; a whole-region outage means that region's tenants are unavailable until the region itself recovers. This is recorded as a bounded, honestly-stated limit — the identical discipline `06-incident-response-and-recovery-design.md` §6.5 already applies to the recovery-point gap and restore's own non-infinite reversibility — not designed as a new failover mechanism.
+
+**Attribution: lead decision, given directly in session, 2026-08-18.**
+
+**The gap this closes.** T75 found "no whole-region or provider-outage failover scenario" and flagged it as "a genuine new claim needing authorization," without specifying which shape that claim should take. Verified while scoping T78: the platform-global **registry** (tenant/application list) replicates cross-region read-only, for routing lookups only (`08-multi-region-distribution-design.md` §3.2) — but a tenant's own data replicates **only intra-region**, synchronously, for the zero-data-loss guarantee (`04-scalability-availability-and-performance-design.md` §3.4). Nothing in the library today replicates a tenant's own data across regions, and doing so would interact directly with data residency (INV-07) — routinely holding a tenant's data in a second jurisdiction is not a decision this library has made.
+
+**Criteria applied, and how each resolved.**
+1. **Does the existing architecture already answer this, once traced fully?** Yes. The intra-region-only replication design is already fixed; what was missing was stating its consequence for a whole-region outage explicitly, not designing a new mechanism.
+2. **Would designing real cross-region failover be a bounded addition or a new architectural commitment?** A new commitment, and a significant one — it would require deciding whether tenant data may exist in a second region at all (a residency-classification question, not an availability one), which is outside the narrow, evidence-driven scope T75's audit established for T78.
+3. **Does stating the limit honestly cost anything the platform doesn't already have?** No — it makes an already-true architectural fact **findable** under DR/BCP terminology, exactly as the terminology half of T78 does for the existing RPO/RTO figures. It commits to nothing new.
+
+**Alternatives considered.**
+- **Design real cross-region failover for tenant data** — rejected under criterion 2. This would be a genuine new capability with residency implications requiring its own dedicated decision and likely its own document, not something to fold into a narrowly-scoped terminology-and-findability ticket.
+- **Leave the scenario undesigned and unstated, as it stands today** — rejected. `06-incident-response-and-recovery-design.md` §6.5's own discipline is to state a limit plainly rather than leave it silently assumed; the library should say what happens during a region outage, even if the answer is "that region's tenants wait."
+
+---
