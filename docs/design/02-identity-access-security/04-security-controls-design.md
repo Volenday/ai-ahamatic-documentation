@@ -187,7 +187,7 @@ Every mechanism this document fixes — the secrets-scanning gate and redaction 
 
 ### 8.1 ADR-021 — Key-Management-Service Selection and the Key-Custody Operational Model
 
-- **Status:** Provisional — Pending Lead Approval.
+- **Status:** Approved (`DECISIONS.md` D-47, 2026-08-18).
 - **Cost to reverse:** High — re-keying every wrapped key in the hierarchy (`02-platform-data-model-design.md` §8.1) against a new external service is a data-touching migration across every tenant and application, though the opaque `kms_key_reference` abstraction that document already fixes contains the blast radius to a re-wrap operation rather than a schema rewrite.
 - **Upstream decisions assumed:** ADR-004 (§14.7, `01-technology-stack-design.md`) — the per-application schema partitioning the key hierarchy mirrors; ADR-010 (§20, `01-technology-stack-design.md`) — the default cloud target and its portable-subset rule; `02-platform-data-model-design.md` §8 — the storage shape this decision operates underneath, already fixed and not reopened here.
 - **Verified vs. reasoned:** Reasoned throughout. The candidate comparison below argues from the portable-subset rule's own structure (which services it does and does not name) and from the opaque-reference abstraction's effect on switching cost, not from any provider's current pricing, feature availability, or ecosystem standing — none of which is asserted as currently true.
