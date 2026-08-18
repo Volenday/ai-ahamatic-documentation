@@ -329,7 +329,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ap. 🔶 PARTLY CLOSED 2026-08-18 — T82's spec-side row landed and verified; **H67's design-layer classification remains open**
+## 1ap. ✅ CLOSED 2026-08-18 by T82 (spec) and H67 (design) — fully discharged
 
 **Found and reasoned around, not fixed, by H65.** `05-meta-operations/04-human-in-the-loop-protocol.md` §5 fixes a closed, twelve-row trigger vocabulary that `platform.pending_approvals.matched_trigger` is bound to (`02-platform-data-model-design.md` §3.1) — none of the twelve names a third-party vendor-risk trigger by title. `10-third-party-risk-management-design.md` §4.4 needed to record its own re-assessment triggers under this vocabulary (reusing `platform.pending_approvals` rather than a parallel structure, per `DECISIONS.md`-style composition discipline) and, finding no exact row, reasoned a best fit onto the existing **"Invariant breach or possible breach"** row — both this specification and that HITL row cite `02-governance-and-security/01-system-invariants.md` §3, which is the textual basis for the mapping. **Stated explicitly as a reasoned judgment, not a settled fact**, and correctly not fixed: editing that closed vocabulary is outside a document that only consumes it, on the identical `docs/design/` boundary this project applies everywhere else (`ADR-REGISTER.md` live issue 6 is the standing precedent for this exact shape of gap).
 
@@ -337,7 +337,21 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 **⚠ Cost corrected 2026-08-18, before tickets were generated.** Adding the row is not a small spec-table edit alone: `03-human-in-the-loop-design.md` references "the twelve trigger rows" at ten load-bearing sites, including §3.4's gate-shaped/halt-shaped classification of all twelve — a thirteenth row needs the identical classification, a genuine design-layer judgment. Two tickets, not one: **T82** (spec-phase, adds the row) must land first; **H67** (design-phase, classifies the new row and updates every stale "twelve" reference across `03-human-in-the-loop-design.md` and any sibling document that states the count) runs after, reading T82's actual row text. Once H67 lands, `10-third-party-risk-management-design.md` §4.4's own reasoned-fit mapping should also be revisited to point at the new row instead of "Invariant breach or possible breach" — noted for that follow-up, not itself ticketed here.
 
-**T82 verified 2026-08-18 by diff, not by claim.** New row, **"Third-party vendor risk trigger,"** added to `04-human-in-the-loop-protocol.md` §5, citing `09-third-party-risk-management.md` §5's blocking-check condition accurately; table confirmed at 13 data rows. **H67 (the design-layer classification) is still owed** — `03-human-in-the-loop-design.md`'s ten "twelve"-referencing sites, including §3.4's gate/halt split, remain unaddressed.
+**T82 verified 2026-08-18 by diff, not by claim.** New row, **"Third-party vendor risk trigger,"** added to `04-human-in-the-loop-protocol.md` §5, citing `09-third-party-risk-management.md` §5's blocking-check condition accurately; table confirmed at 13 data rows.
+
+**H67 verified 2026-08-18 by diff, not by claim.** Classified **gate-shaped** (the seventh), reasoned against §3.4's own criterion, independently spot-checked (zero hits for "vendor"/"third-party" in `01-agent-operating-charter.md`; §8's bullet count confirmed at exactly seven). Group arithmetic 7+4+2=13 verified. All thirteen "twelve"/"twelfth" sites corrected across the three affected design documents (13 in `03-human-in-the-loop-design.md`, 5 in `10-third-party-risk-management-design.md`, 1 in `02-platform-data-model-design.md`) — more than the ~10 originally estimated, found by the Executor's own grep rather than trusted from this entry's count. `10-third-party-risk-management-design.md` §4.4 now cites the new row directly, superseding the prior best-fit mapping. **Fully closed.**
+
+**One residue disclosed by H67, recorded separately:** `03-human-in-the-loop-design.md` §9's consolidated inventory ("fourteen already-written design documents... sixty-two references") does not yet count `10-third-party-risk-management-design.md`, which now also routes an approval point through this mechanism — see `BACKLOG.md` §1aq.
+
+---
+
+## 1aq. 🔶 OPEN 2026-08-18 — `03-human-in-the-loop-design.md` §9's consolidated inventory undercounts by one document
+
+**Found and correctly left unfixed by H67, disclosed rather than silently absorbed.** §9's own defining-task sentence states "fourteen already-written design documents route an approval, escalation, or human-authorization step here, sixty-two references in total." `10-third-party-risk-management-design.md` (H65, 2026-08-18) now also routes an approval point through this mechanism — it reuses `platform.pending_approvals` and the `approval-resolution` event type, and its own re-assessment trigger reaches this document as a third, independent upstream source alongside H41's two (§4.1's mapping table, added by H67). The "fourteen"/"sixty-two" figures predate that document and do not count it.
+
+**Not fixed by H67, correctly.** That ticket's own scope was restricted to trigger-row classification and stale-count correction (`03-human-in-the-loop-design.md`'s "twelve"/"twelfth" references specifically) — extending or re-deriving §9's own inventory table is a different, larger task (reading `10-third-party-risk-management-design.md` in full for its own approval-routing references, adding a row, and recomputing "fourteen" → "fifteen" and the reference count), outside what that ticket authorized.
+
+**Low urgency, cheap to verify when picked up.** The inventory table's own shape is well-established (one row per routing document, per §9's existing pattern) — this is a small, well-precedented addition whenever a ticket next opens this document, not a design question needing a decision first.
 
 ---
 
