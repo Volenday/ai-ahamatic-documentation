@@ -321,6 +321,22 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1ao. 🔶 OPEN 2026-08-18 — `06-incident-response-and-recovery.md`'s opening now falsely claims to be the domain's "final" document
+
+**Found while verifying T81's handoff, correctly disclosed by the Executor rather than fixed.** T81 added `07-business-continuity.md` as a seventh DevOps & Cloud Infra document. `06-incident-response-and-recovery.md`'s own opening paragraph (line 5) still reads *"the sixth and final document of the DevOps & Cloud Infra domain"* — now false on both counts of emphasis: it is still the sixth, but no longer the final one.
+
+**Not fixed here.** This is a `docs/spec/` file, and unlike `docs/design/`, the Orchestrator has no inline-correction path for the specification library at all — not even with explicit direction (`PROCESS.md` §1's absolute prohibition). Owed to whichever ticket next opens this document, or a small standalone correction ticket if none is already scheduled. A one-phrase fix: "sixth and final" → "sixth" (or "sixth of seven," matching whatever phrasing the library's other multi-document domains use, if any do).
+
+---
+
+## 1ap. 🔶 OPEN 2026-08-18 — the Human-in-the-Loop protocol's twelve-trigger vocabulary has no row naming third-party vendor risk
+
+**Found and reasoned around, not fixed, by H65.** `05-meta-operations/04-human-in-the-loop-protocol.md` §5 fixes a closed, twelve-row trigger vocabulary that `platform.pending_approvals.matched_trigger` is bound to (`02-platform-data-model-design.md` §3.1) — none of the twelve names a third-party vendor-risk trigger by title. `10-third-party-risk-management-design.md` §4.4 needed to record its own re-assessment triggers under this vocabulary (reusing `platform.pending_approvals` rather than a parallel structure, per `DECISIONS.md`-style composition discipline) and, finding no exact row, reasoned a best fit onto the existing **"Invariant breach or possible breach"** row — both this specification and that HITL row cite `02-governance-and-security/01-system-invariants.md` §3, which is the textual basis for the mapping. **Stated explicitly as a reasoned judgment, not a settled fact**, and correctly not fixed: editing that closed vocabulary is outside a document that only consumes it, on the identical `docs/design/` boundary this project applies everywhere else (`ADR-REGISTER.md` live issue 6 is the standing precedent for this exact shape of gap).
+
+**Not yet a decision, needs one.** Whether the HITL protocol's own trigger table should gain a distinct thirteenth row for vendor risk — rather than continuing to route it through the "Invariant breach or possible breach" fit — is a genuine question for whoever next reviews that document, or a small `H##`/`T##` pair if the fit is judged too imprecise to leave as reasoning alone. Low urgency: the current mapping is defensible and cited, not silently forced.
+
+---
+
 ## 1ak. ✅ CLOSED 2026-08-17 — both taken in the Orchestrator's tracker pass
 
 `ADR-REGISTER.md` is an Orchestrator-maintained tracker (`PROCESS.md` §3), so neither needed a ticket. **(a)** ADR-016's row now reads **`✅ Approved, *amended 2026-08-03 (D-18)*`** with the note that the amendment qualifies the status and is not itself a status — applying D-39's own modifier rule to the row that most needed it. **(b)** The stale `docs/design/01-technology-stack-design.md` path was corrected to `01-design-foundation/…`; verified zero remaining occurrences.
