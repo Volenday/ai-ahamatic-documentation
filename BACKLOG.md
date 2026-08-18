@@ -321,7 +321,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ao. 🔶 OPEN 2026-08-18 — `06-incident-response-and-recovery.md`'s opening now falsely claims to be the domain's "final" document
+## 1ao. ✅ CLOSED 2026-08-18 by T82 — corrected to "the sixth document"
 
 **Found while verifying T81's handoff, correctly disclosed by the Executor rather than fixed.** T81 added `07-business-continuity.md` as a seventh DevOps & Cloud Infra document. `06-incident-response-and-recovery.md`'s own opening paragraph (line 5) still reads *"the sixth and final document of the DevOps & Cloud Infra domain"* — now false on both counts of emphasis: it is still the sixth, but no longer the final one.
 
@@ -329,13 +329,15 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ap. ✅ RESOLVED 2026-08-18 by `DECISIONS.md` D-46 — a thirteenth row is authorized; T82 (spec) and H67 (design) queued
+## 1ap. 🔶 PARTLY CLOSED 2026-08-18 — T82's spec-side row landed and verified; **H67's design-layer classification remains open**
 
 **Found and reasoned around, not fixed, by H65.** `05-meta-operations/04-human-in-the-loop-protocol.md` §5 fixes a closed, twelve-row trigger vocabulary that `platform.pending_approvals.matched_trigger` is bound to (`02-platform-data-model-design.md` §3.1) — none of the twelve names a third-party vendor-risk trigger by title. `10-third-party-risk-management-design.md` §4.4 needed to record its own re-assessment triggers under this vocabulary (reusing `platform.pending_approvals` rather than a parallel structure, per `DECISIONS.md`-style composition discipline) and, finding no exact row, reasoned a best fit onto the existing **"Invariant breach or possible breach"** row — both this specification and that HITL row cite `02-governance-and-security/01-system-invariants.md` §3, which is the textual basis for the mapping. **Stated explicitly as a reasoned judgment, not a settled fact**, and correctly not fixed: editing that closed vocabulary is outside a document that only consumes it, on the identical `docs/design/` boundary this project applies everywhere else (`ADR-REGISTER.md` live issue 6 is the standing precedent for this exact shape of gap).
 
 **Resolved.** `DECISIONS.md` D-46: the fit is imperfect enough to warrant a genuine new row, not just a defensible reading — the existing "Invariant breach or possible breach" row's own citation names both §3 and §4 (the nine numbered invariants), while vendor risk explicitly invokes only §3's general principle. A thirteenth row is authorized.
 
 **⚠ Cost corrected 2026-08-18, before tickets were generated.** Adding the row is not a small spec-table edit alone: `03-human-in-the-loop-design.md` references "the twelve trigger rows" at ten load-bearing sites, including §3.4's gate-shaped/halt-shaped classification of all twelve — a thirteenth row needs the identical classification, a genuine design-layer judgment. Two tickets, not one: **T82** (spec-phase, adds the row) must land first; **H67** (design-phase, classifies the new row and updates every stale "twelve" reference across `03-human-in-the-loop-design.md` and any sibling document that states the count) runs after, reading T82's actual row text. Once H67 lands, `10-third-party-risk-management-design.md` §4.4's own reasoned-fit mapping should also be revisited to point at the new row instead of "Invariant breach or possible breach" — noted for that follow-up, not itself ticketed here.
+
+**T82 verified 2026-08-18 by diff, not by claim.** New row, **"Third-party vendor risk trigger,"** added to `04-human-in-the-loop-protocol.md` §5, citing `09-third-party-risk-management.md` §5's blocking-check condition accurately; table confirmed at 13 data rows. **H67 (the design-layer classification) is still owed** — `03-human-in-the-loop-design.md`'s ten "twelve"-referencing sites, including §3.4's gate/halt split, remain unaddressed.
 
 ---
 
