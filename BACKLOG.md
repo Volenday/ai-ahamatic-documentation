@@ -301,7 +301,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ## 1am. 🔶 OPEN 2026-08-17 — `1z-history`'s "three instances" may now overstate: only ADR-022 was ever a genuine case, and it is resolved
 
-**Surfaced while closing `1al` at P06.** `1z-history` (§709–717) records the ADR-binding pattern as three instances — ADR-022, the `04-scalability-…-design.md` spec-path naming, and ADR-025 — and `PROCESS.md` §12.2 cites that count as case history. On the entries' own current text, only one was ever a genuine instance:
+**Surfaced while closing `1al` at P06.** `1z-history` (below) records the ADR-binding pattern as three instances — ADR-022, the `04-scalability-…-design.md` spec-path naming, and ADR-025 — and `PROCESS.md` §12.2 cites that count as case history. On the entries' own current text, only one was ever a genuine instance:
 
 - **ADR-022** — genuine, and **closed** by T74/D-33 (`1al`).
 - **`04-scalability-…-design.md`** — H50(a)'s own closure states *"`PROCESS.md` §12.2 therefore never applied to line 210: retargeting dissolved the ADR-to-spec binding rather than resolving it"* — i.e. never a genuine instance once traced to source.
@@ -561,7 +561,7 @@ Both arise from the same instruction and should be put to him together rather th
 
 ---
 
-## 1ac. ⚠️ REOPENED 2026-08-14 at T79's close — the closure was verified against `docs/` only, and the root trackers were never swept
+## 1ac. ✅ CLOSED 2026-08-18 — the reading pass over the remaining hits is done; the one ambiguous case resolved
 
 **The eleven in the libraries are genuinely fixed. The verification that declared the class "closed and verified complete" was scoped to `docs/`** — as was the original sweep that found the eleven — **so `TICKET.md`, `BACKLOG.md`, `DECISIONS.md` and `PROCESS.md` were never checked.** Re-running the entry's own detection grep with the root files included returns hits immediately.
 
@@ -580,6 +580,14 @@ Both targets verified by line: integration-spec line 67 falls in §5 (spans 65�
 **Why the class is reopened rather than re-closed.** Eighteen hits remain, and **most are correct** — §1ac's own correction table, ticket rows recording what H49 and T73 fixed, and prose *describing* the defect all necessarily contain strings like `§67`. **Distinguishing a live citation from a record of the defect requires reading each in context**, and this pass did that only for the clearly-live ones. At least one is genuinely ambiguous (`TICKET.md`:543's `ai-aha-design-review` §38, which may be a line number into a skill file — a target class nobody has swept at all).
 
 **Do not re-close this entry on a grep count.** The detection grep cannot separate the two cases, which is precisely why a mechanical re-run would report either a false alarm or a false all-clear. Closing it needs a reading pass over the remaining eighteen, and that is a task, not a check.
+
+**The reading pass, done 2026-08-18.** Re-ran the detection grep (`§[0-9]+` above 30) across all four root trackers — now ~24 hits, the file having grown since this entry's own count. Read every hit in context. **All but two are correctly-retained historical record** — §1ac's own correction table above, `TICKET.md` rows for T66/H49/H50/T73/P05 narrating what each found and fixed, and this entry's own text — each necessarily contains a string like `§67`, `§553`, or `§153` because it is *describing* a citation defect, not committing one. None is a live pointer a reader would follow to the wrong place.
+
+**The one genuinely ambiguous case, resolved.** `TICKET.md`'s P02 row cited `ai-aha-design-review §38` — checked against the file directly: it carries no `§`-numbering at all, so this was always a line number, not a section, and it has also gone stale since P02 wrote it (the *"if sections were inserted or renumbered"* checklist item now sits at **line 46**, not 38, the skill having grown under later `P##` tickets). Corrected in place to a line reference.
+
+**One further instance, caught in this entry's own sibling, `1am`.** That entry cited `1z-history (§709–717)` — the identical defect, self-committed while writing about the defect class two days ago. Corrected to a name-only reference; a numbered-line citation into a growing file is exactly what this entry exists to warn against, whatever symbol it uses.
+
+**Closed on a reading, not a count**, per this entry's own rule.
 
 **The transferable lesson, and it is the third instance of one shape.** A verification whose scope is narrower than the defect's scope reports a clean result that is true only of what it looked at. `BACKLOG.md` §1af(a) was a truncated *read*; this was a truncated *search path*; `BACKLOG.md` §1v records an index that went stale because nothing in the loop covered it. **All three are the same failure: a negative conclusion drawn from a bounded view, stated as if unbounded.** When a sweep declares a class closed, the closure should state what it searched — not only what it found.
 
