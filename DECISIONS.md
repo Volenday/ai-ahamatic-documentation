@@ -922,3 +922,45 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 3. **Is "Approved in part" a status?** **No — it is a modifier**, and treating it as a status is part of what produced five undefined values. ADR-006 and ADR-007 are partially superseded; §9 should say a status may be qualified by scope, not that the qualification is itself a status.
 
 ---
+
+## D-40 — `BACKLOG.md` §1ag(a): the Safe Evolution journey is corrected; no capability is expanded
+
+**Decision.** `01-business-and-ux/05-user-journeys.md`'s "Safe evolution" journey (line 66) is corrected to remove its implication that C-15/C-16/C-17 grant a builder the means to deprecate or retire their own built application. The journey is narrowed to what those capabilities actually state: the platform's own evolution (C-15, C-17) and maintenance/recovery reaching built software (C-16). No capability is added, extended, or re-scoped. Authorizes a **T-ticket** as a specification-phase correction.
+
+*(What: to be recorded by the T-ticket this decision authorizes.)*
+
+**Attribution: team decision, under the D-16 delegation.**
+
+**The gap this closes.** `COVERAGE-AUDIT-2026-08-14.md` and `BACKLOG.md` §1ag(a) found the journey table asserts "changing, maintaining, and **deprecating** built software over time" under C-15/C-16/C-17. Verified against the PRD directly: C-15 is scoped to "**the platform**"; C-17 to "**capabilities and contracts**" (platform-level artifacts, with adaptation time given *to* builders and built software as consumers of a platform-level change, not as the deprecating party); only C-16 explicitly reaches "problems in the platform **and built software**," and only for maintenance/recovery, never deprecation. No capability grants a builder the mechanism to deprecate or retire their own application.
+
+**Criteria applied, and how each resolved.**
+1. **Correct the journey, or expand a capability to match it?** Decisive for correcting the journey. Cost to reverse (`PROCESS.md` §12.1): a journey-text correction is **Low** and confined to one document; a capability-scope expansion requires full propagation (`PROCESS.md` §5) across the PRD, capability model, glossary, personas, and every citing document, and is a durable product commitment the platform has not evaluated demand or design cost for.
+2. **Is there evidence the platform actually intends to support a built application's own deprecation/retirement as a first-class capability?** Mixed, not decisive. The capability-model's family-level description frames Evolution as covering "the platform and built software," and C-16 already extends a sibling capability to built software for maintenance — but C-15/C-17's own per-capability text, which governs over any looser family-level framing, does not. Weak, ambiguous evidence does not meet the bar for a durable capability commitment.
+3. **Does correcting the journey foreclose authorizing this later?** No. Narrowing the journey today does not prevent a future, explicitly-evidenced capability addition; it declines to imply the capability exists where the PRD does not currently grant it.
+
+**Alternatives considered.**
+- **Expand C-17 to explicitly cover a built application's own deprecation** — rejected under criterion 1. `platform.applications.status`'s `offboarding` value is real evidence the schema anticipated some such mechanism, but a data column existing is not the same as a capability being authorized; building the capability grant backward from a column risks committing the product to more than has actually been decided. (See **D-41**, which resolves the mechanism without this expansion.)
+- **Leave the inconsistency unresolved, pending further evidence** — rejected; the coverage audit already named this the sole blocker on the Application Lifecycle coverage area, and D-16 instructs deciding rather than waiting where the team holds the authority.
+
+---
+
+## D-41 — `BACKLOG.md` §1ag(b): the tenant/application status-transition mechanism is design-layer work, realizing an obligation already stated
+
+**Decision.** The `platform.tenants`/`platform.applications` `active`/`suspended`/`offboarding` status transition — who may trigger each transition, what preconditions apply, and how it composes with the already-specified session-termination trigger and the already-specified data-disposition obligations — is a **design-layer mechanism question**, realizing an existing spec-level obligation and an existing schema column, not a new capability requiring propagation. Authorizes an **H-ticket**.
+
+*(What: to be recorded by the H-ticket this decision authorizes.)*
+
+**Attribution: team decision, under the D-16 delegation.**
+
+**The gap this closes.** `BACKLOG.md` §1ag(b) found no document owns the transition into `suspended` or `offboarding` for either table. Verified at this decision: `02-platform-data-model-design.md` §3.1 states the `active`/`suspended`/`offboarding` enum for `platform.tenants` but is **silent on it for `platform.applications`**, even though `04-publishing-and-delivery-design.md` (line 211) already cites §3.1 as stating it for applications too — a small citation-precision gap the authorized ticket should also close. `02-governance-and-security/04-auth-and-identity-spec.md`'s session-expiry-trigger table already requires the platform to recognize a tenant, application, or account that has been "**removed, suspended, or disabled**," with session termination as the stated consequence — grounding the mechanism in an obligation the specification already carries, not inventing one.
+
+**Criteria applied, and how each resolved.**
+1. **Does realizing this mechanism require a new capability grant, or does it realize an obligation already stated?** Realizes one already stated. The auth-and-identity spec already requires the platform to recognize a suspended/removed tenant or application; the schema already carries the status column. What is missing is the trigger authority and preconditions — mechanism, not a new "what."
+2. **Is this the same question as D-40's?** No. D-40 asks whether the platform grants a *builder* the means to deprecate their *own* application (a capability question). This asks who — administratively, likely a tenant owner or platform steward — may change a tenant's or application's own operating status, and what happens procedurally when they do (a mechanism question). Related in subject, independent in scope: resolving D-40 either way does not change this decision.
+3. **Which document should own it?** Not decided here — routed to the ticket, which weighs `02-tenant-isolation-and-access-control-design.md` (already owns the closest analog, admission, §6.1) against `02-platform-data-model-design.md` (owns the schema itself) and states its reasoning, mirroring how H58 reasoned about admission's own placement.
+
+**Alternatives considered.**
+- **Wait for D-40 to resolve first** — rejected. The mechanism question does not depend on whether a builder-facing deprecation capability is ever authorized; a tenant can be suspended (e.g., policy violation) or offboarded entirely independent of any application-level deprecation program.
+- **Treat this as out of scope until the lead defines a tenant-lifecycle capability** — rejected under criterion 1. The obligation already exists in the auth-and-identity spec; this closes a mechanism gap under an obligation already recorded, not manufactured scope.
+
+---

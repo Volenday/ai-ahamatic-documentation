@@ -398,7 +398,7 @@ Add to §4.5's table, and bump its count from **62 to 63**:
 
 ---
 
-## 1ag. 🔶 OPEN 2026-08-14 — two library findings surfaced as side effects of T75's coverage audit, neither in its scope to fix
+## 1ag. ✅ RESOLVED 2026-08-18 — both decided under D-16; T80 and H64 authorized
 
 **Found while establishing coverage, not while looking for defects** — which is why they had gone unnoticed: each sits in a seam between two documents rather than inside either.
 
@@ -419,6 +419,10 @@ Both carry `active` / `suspended` / `offboarding`. **No document owns the transi
 **Possibly one fix rather than two** — T75 named it in its Overlap section on that basis. Whether the two enums genuinely share a workflow or merely share a vocabulary is the first thing any ticket here must establish, not assume.
 
 **Both are reported findings, not verdicts.** T75 was scoped to audit coverage, and correctly declined to resolve either.
+
+**(a) resolved by `DECISIONS.md` D-40: correct the journey, do not expand a capability.** Cost-to-reverse decisive — a journey-text fix is Low; a capability-scope expansion needs full propagation (`PROCESS.md` §5) and is a durable commitment the evidence (mixed, not decisive) does not support. Authorizes **T80**.
+
+**(b) resolved by `DECISIONS.md` D-41: the transition mechanism realizes an obligation already stated, not a new capability.** `02-governance-and-security/04-auth-and-identity-spec.md`'s session-expiry-trigger table already requires the platform to recognize a "removed, suspended, or disabled" tenant/application; the schema already carries the column. What's missing — trigger authority, preconditions, and which document owns it — is mechanism work, independent of (a). Authorizes **H64**.
 
 ---
 
@@ -477,7 +481,7 @@ The new §5 bullet reads: *"Per `02-governance-and-security/02-security-policy.m
 
 ---
 
-## 1ae. 🔶 OPEN 2026-08-14 — three residues from H50 and H53, correctly left unfixed by the tickets that found them
+## 1ae. ✅ CLOSED 2026-08-18 by H63 — all three residues corrected
 
 **Both found while executing H50, both correctly left unfixed as out of its enumerated scope, and both verified at this close.**
 

@@ -152,7 +152,7 @@ This section **extends** §4.3 — it neither supersedes it (§4.3's own reasoni
 | `process-definition-authoring` | `04-workflow-and-process-automation-design.md` §10 | Imperfect (stated) |
 | `contract-change-signoff` | `05-api-contract-design.md` §12 | Direct (stated) |
 | `extension-registration` | `06-integration-and-extensibility-design.md` §11 | Direct |
-| `connector-registration` | `07-cross-system-data-layer-design.md` §7 | Not stated — see Finding 1 below |
+| `connector-registration` | `07-cross-system-data-layer-design.md` §7 | Direct (stated) |
 | `stage-promotion` | `02-builder-facing-environment-management-design.md` §10 | Imperfect (stated) |
 | `version-capture` | `03-builder-facing-version-control-design.md` §12 | Imperfect (stated) |
 | `version-revert` | `03-builder-facing-version-control-design.md` §12 | Imperfect (stated) |
@@ -229,7 +229,7 @@ This section **extends** §4.3 — it neither supersedes it (§4.3's own reasoni
 |---|---|---|
 | `autonomous-change` | This document, §9 (native — not inherited from any of the five, and not restated in §4.3's own reconciliation table) | Native |
 
-**Finding 1 — one type with no stated family, reported rather than resolved here.** `connector-registration`'s own evidence table (`07-cross-system-data-layer-design.md` §7) carries no landing-category column at all, unlike every sibling table cited above; no family is stated for it, and none is assigned here. Its closest structural analog is `extension-registration` (Authorization and grant events, `06-integration-and-extensibility-design.md` §11) — the two are already explicitly reconciled with each other as independently-occurring facts about distinct structures, not a naming collision, per `BACKLOG.md` §1l and ADR-037 (`02-platform-data-model-design.md` §3.2) — but analogy is not a stated fact, and this index records identity, owner, and family; it does not supply the third where the minting document did not. Left for whichever ticket next touches `07-cross-system-data-layer-design.md` or this index.
+**Finding 1 — closed.** `connector-registration`'s own evidence table (`07-cross-system-data-layer-design.md` §7) carried no landing-category column at all, unlike every sibling table cited above, so no family was stated for it and none was assigned here. That document now states the family in prose, next to the table, in the same place this finding was originally reported: **Authorization and grant events**, on the same reasoning `06-integration-and-extensibility-design.md` §11 already states for `extension-registration`'s own landing in the identical category — this event is, in substance, the tenant's own definition of an access-scoping structure, not an evaluation against one already defined. The two remain distinct types occurring independently, not a naming collision, per `BACKLOG.md` §1l and ADR-037 (`02-platform-data-model-design.md` §3.2). The Fit column above now reads **Direct (stated)**, matching the row's actual state.
 
 No other naming collision or category ambiguity was found while building this table. Every pair of similarly-shaped types (`extension-registration`/`connector-registration`; `marketplace-obtain`/`connector-marketplace-obtain`; `marketplace-offering-status-change`/`connector-marketplace-offering-status-change`; `version-capture`+`version-revert` against `publication-status-change`; `rollback-executed`/`restore-executed`) was already explicitly reconciled by its own minting document, cited above; none required this index to adjudicate.
 

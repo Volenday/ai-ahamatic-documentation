@@ -16,7 +16,7 @@ This document answers six questions, in pyramid order:
 - **What connection-pool mechanism this platform uses, and where the pooling and migration-fan-out risk actually becomes real** — the crossover point between the ~100-schema V1.0 figure and the NFR §5/§7 horizon (§4).
 - **How the three quantified scalability targets of NFR §5 are each met as a concrete mechanism**, not an aspiration (§5).
 - **What mechanism holds the availability and reliability floors of NFR §6–§7** (§6).
-- **Where a breach of any target above is detected, and against what threshold** — this document's boundary with the not-yet-written observability design (§7).
+- **Where a breach of any target above is detected, and against what threshold** — this document's boundary with `04-observability-and-monitoring-design.md` (§7).
 - **What design decision this ticket warrants recording** (§8).
 
 It is structured as a pyramid: the deployment-shape-atop scaling model first, then connection pooling and the crossover-point finding, then the scalability targets built on both, then the availability and reliability mechanisms, then the regression-detection boundary, then the decision record, then boundaries, precedence, and binding rules.
