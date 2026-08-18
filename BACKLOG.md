@@ -311,6 +311,16 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
+## 1an. 🔶 OPEN 2026-08-18 — `02-tenant-isolation-and-access-control-design.md` §2 still says "three ADRs"; §13 correctly says "four"
+
+**Found while verifying H64's handoff, independent of the Executor's own disclosed residues.** H64 added ADR-063 (§10.4) and correctly updated §13's Binding Rules bullet from "This document records three ADRs" to "four" — but §2's *Scope and What This Document Does Not Own* (line 40) still reads "this document records three ADRs (§10)," unchanged by this session.
+
+**The identical defect class this same document hit once before.** H54 added ADR-062 and updated §13 but missed §2, recorded as `BACKLOG.md` §1ai(c) and fixed by H60 (2026-08-17) — one day before this recurrence. The two statements sit far apart (§2 near the top, §13 near the bottom) with nothing linking them, the same structural cause H60's own closing note named.
+
+**Not fixed here, on the user's explicit direction** — a one-word correction (`three` → `four`), owed to whichever ticket next opens this document. `PROCESS.md` §3 requires the user's explicit direction before an Orchestrator edits a `docs/design/` file inline, and that direction was not given for this specific change at H64's close.
+
+---
+
 ## 1ak. ✅ CLOSED 2026-08-17 — both taken in the Orchestrator's tracker pass
 
 `ADR-REGISTER.md` is an Orchestrator-maintained tracker (`PROCESS.md` §3), so neither needed a ticket. **(a)** ADR-016's row now reads **`✅ Approved, *amended 2026-08-03 (D-18)*`** with the note that the amendment qualifies the status and is not itself a status — applying D-39's own modifier rule to the row that most needed it. **(b)** The stale `docs/design/01-technology-stack-design.md` path was corrected to `01-design-foundation/…`; verified zero remaining occurrences.
@@ -398,7 +408,7 @@ Add to §4.5's table, and bump its count from **62 to 63**:
 
 ---
 
-## 1ag. ✅ RESOLVED 2026-08-18 — both decided under D-16; T80 and H64 authorized
+## 1ag. ✅ CLOSED 2026-08-18 — both decided under D-16; T80 and H64 both run and verified
 
 **Found while establishing coverage, not while looking for defects** — which is why they had gone unnoticed: each sits in a seam between two documents rather than inside either.
 
@@ -422,7 +432,7 @@ Both carry `active` / `suspended` / `offboarding`. **No document owns the transi
 
 **(a) resolved by `DECISIONS.md` D-40: correct the journey, do not expand a capability.** Cost-to-reverse decisive — a journey-text fix is Low; a capability-scope expansion needs full propagation (`PROCESS.md` §5) and is a durable commitment the evidence (mixed, not decisive) does not support. Authorizes **T80**.
 
-**(b) resolved by `DECISIONS.md` D-41: the transition mechanism realizes an obligation already stated, not a new capability.** `02-governance-and-security/04-auth-and-identity-spec.md`'s session-expiry-trigger table already requires the platform to recognize a "removed, suspended, or disabled" tenant/application; the schema already carries the column. What's missing — trigger authority, preconditions, and which document owns it — is mechanism work, independent of (a). Authorizes **H64**.
+**(b) resolved by `DECISIONS.md` D-41: the transition mechanism realizes an obligation already stated, not a new capability.** `02-governance-and-security/04-auth-and-identity-spec.md`'s session-expiry-trigger table already requires the platform to recognize a "removed, suspended, or disabled" tenant/application; the schema already carries the column. What's missing — trigger authority, preconditions, and which document owns it — is mechanism work, independent of (a). **H64 verified 2026-08-18:** new §6.2 and ADR-063 in `02-tenant-isolation-and-access-control-design.md`, on the identical placement reasoning H58 applied to admission; every load-bearing quote confirmed byte-for-byte against source. One residue found independent of the Executor's own disclosures, recorded as **`BACKLOG.md` §1an**.
 
 ---
 
