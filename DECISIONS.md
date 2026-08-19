@@ -1214,3 +1214,17 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Closes `BACKLOG.md` §1ad's D-i without further action needed. Once D-27 lifts and the daily loop actually runs, its own output is the vertical-slice evidence D-i asked for — no separate hard-slice exercise is additionally owed. Confirms D-31's own two-consequences note (which raised this exact question) is now answered rather than reopened.
 
 ---
+
+## D-54 — `BACKLOG.md` §1ar: human-notification awareness is a platform-core concern; authorizes a `T##` spec gap
+
+**Decision.** The design library specifies a platform-core mechanism for a human to become aware of a pending approval or escalation — push notification, a steward-facing dashboard, or both — rather than leaving this to deployment-time configuration. Authorizes a **`T##`** spec-phase ticket to determine the mechanism's shape and its home in the capability model; the design counterpart follows once the specification obligation exists.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The gap, sharpened before this decision was put to the lead.** `03-human-in-the-loop-design.md` §2 states three times, independently, that "no governing document fixes" the notification channel through which a human is reached. Checking whether a *pull* mechanism (a dashboard) already substitutes for a *push* one found neither exists: the platform-steward role is acknowledged in `04-personas-and-roles.md` but its own UI is never elaborated; ADR-060's console work is scoped to Data Administration screens only; and Data Administration (C-27) itself is explicitly scoped to builder-defined entity records, never platform-internal control-plane state like `platform.pending_approvals`. **Today, there is no way — push or pull — for a human to learn a pending-approval record exists.** No NFR sets a resolution-time floor for a pending approval, so nothing forces urgency on timeliness grounds specifically, but the absence of any mechanism at all is the finding, independent of how urgent it turns out to be.
+
+**Not yet resolved by this decision, deliberately.** Whether the eventual mechanism is push, pull, or both; whether it extends an existing capability (C-09 Observability was checked as a candidate — its own definition covers "real-world health and behavior," not routing an actionable request to a specific authorized human, so it is not an obvious fit without its own scope amendment) or names a new one; and which tool class this maps to in the criteria library (`BACKLOG.md` §1ad's own D-o found "email delivery" and "dashboards" both named by `DECISIONS.md` D-15 and never scheduled) are all left to the authorized `T##`'s own investigation, on the same shape T77's boundary-assessment against three adjacent mechanisms already used for third-party risk management.
+
+**Consequences:** Authorizes a `T##` spec-phase ticket. Discharges `BACKLOG.md` §1ar's own scope question; the entry itself stays open until the ticket resolves it. Does not itself amend the capability model, write a criteria-library document, or design a mechanism — each is the authorized ticket's own work.
+
+---
