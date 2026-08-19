@@ -1099,3 +1099,25 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **Discharges `BACKLOG.md` §1af(b)** on issuance of the authorized ticket.
 
 ---
+
+## D-49 — `BACKLOG.md` §1ad's D-h: the criteria library gets its own writing-rules skill
+
+**Decision.** `docs/criteria/` moves from carrying its writing rules inline in each `CR##` ticket prompt (the deliberate deferral `PROCESS.md` §1's ⚠ note records) to a dedicated skill, `ai-aha-criteria-doc`, on the identical model `ai-aha-spec-doc` and `ai-aha-design-doc` already provide their own phases. Authorizes a **`P##` ticket**.
+
+**Attribution: team decision, under the D-16 delegation.**
+
+**The gap this closes.** `DECISIONS.md` D-21 (2026-08-03) made the criteria library a third library, and `PROCESS.md` §1's own note deferred a dedicated skill "until there is evidence it is needed," reasoning that a `CR##` ticket's writing rules are carried in the prompt itself because reusing either phase skill is "actively harmful" — `ai-aha-spec-doc` demands *what, not how* (a criteria document answers neither), and `ai-aha-design-doc` demands every element cite the capability it realizes (a criteria document cites no spec). Five `CR##` tickets have since run — CR01 through CR05 — each restating the admission test, the four boundaries, and the filename/structure conventions inline; CR05 additionally admitted a third artifact class (principles, alongside questions-and-criteria and tool opinions), widening what a single ticket prompt must restate correctly each time.
+
+**Criteria applied, and how each resolved.**
+1. **Has the evidence D-21's own deferral asked for actually arrived?** Yes — five worked instances, one of which changed the library's own governing structure (CR05's third class), is exactly the kind of accumulated evidence a one-off deferral is meant to wait for, not a single ticket's worth of doubt.
+2. **Does carrying the rules inline cost something the other two phases' skills exist to avoid?** Yes, on the same grounds `PROCESS.md` §4 already states for prompt-carried citations — "duplicated content goes stale the moment its source changes." Each `CR##` prompt is a separate copy of the admission test and conventions; a future correction to either (as CR05's own amendment to the map's governing sections already shows happens) does not propagate to any ticket prompt already issued or drafted from an earlier copy.
+3. **Is now cheap relative to when D-21 deferred it?** Yes — the `P##` series (`DECISIONS.md` D-28) exists now and did not exist on 2026-08-03; building a skill through it is a small, reviewed, bounded ticket, not the unowned, ad hoc edit path D-21's own deferral was implicitly weighing against.
+4. **Does building the skill carry any risk to `docs/criteria/` itself?** No — `PROCESS.md` §1b's own scope rule forbids a `P##` ticket from touching anything under `docs/`; this decision changes only how future `CR##` tickets are briefed, never the library's existing content.
+
+**Alternatives considered.**
+- **Continue deferring, on the reasoning that five tickets is still a small number** — rejected under criterion 1; the deferral's own stated condition was evidence of need, not a headcount threshold, and a structural change to the library (CR05's third class) is stronger evidence than a sixth similar ticket would have been.
+- **Fold criteria rules into an existing phase skill** (e.g., a criteria mode inside `ai-aha-design-doc`) — rejected; this is the exact error `PROCESS.md` §1's own ⚠ note already diagnosed as "actively harmful" for the opposite direction (reusing a phase skill's *what-not-how* or capability-citation rules for criteria work), and reusing the mechanism that already fails this way would repeat the defect rather than avoid it.
+
+**Consequences:** Authorizes a `P##` ticket to create `.claude/skills/ai-aha-criteria-doc`, consolidating CR01–CR05's own inline rules — the admission test, the four boundaries, the filename convention, and the three-artifact-class structure CR05 established — into one durable skill, and to add the corresponding row to `PROCESS.md` §1's table and the invocation step to §3's `CR##` steps. Does not touch `docs/criteria/`. Does not reopen CR01–CR05's own deliverables, each already produced correctly under the inline-rules approach this decision retires going forward, not retroactively.
+
+---
