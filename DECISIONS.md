@@ -1143,3 +1143,28 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **Discharges `BACKLOG.md` §1ad's D-n, and the original §3 "Sync posture as a platform capability" entry it points back to.**
 
 ---
+
+## D-51 — `BACKLOG.md` §1ad's D-o: the criteria library is not content-complete at five documents
+
+**Decision.** No — the library is not content-complete. Two of `DECISIONS.md` D-15's own three originally-named tool classes for the third-party-tool-opinion artifact class — **email delivery** and **dashboards** — have never been scheduled into `criteria-document-map.md`'s own forward-looking table, let alone written; only the third (workflow engines) was picked up, as CR03. This closes D-o with a **finding**, per D-16's own framing that discovering unasked questions is itself the deliverable — not a headcount verdict that five happens to be enough.
+
+**Attribution: team decision, under the D-16 delegation.**
+
+**The evidence, checked directly rather than inferred.**
+1. `DECISIONS.md` D-15 (2026-08-03), read at its two recorded instances (lines 252, 447): *"Opinions on third-party tools… Named examples: email delivery, workflow engines (Camunda), dashboards (Metabase)."* Three named classes.
+2. `criteria-document-map.md`'s own forward-looking table lists four "Done" rows (the map itself, tech-stack criteria, workflow-engine opinion, UI-component opinion) and its own development-principles row — but carries **no row at all**, Indexed or Done, for email delivery or dashboards. Its own closing sentence anticipates this: *"Further entries — for the library's other named tool classes (email delivery, dashboards)… are added to this table as they are scheduled."* They never were.
+3. **Email delivery specifically is not merely a named-but-hypothetical class — it is a currently active, undesigned gap.** `03-human-in-the-loop-design.md` §2 lists nine things it does not own, each handed to a specific citation naming its owner, except one: *"The notification channel, approval interface, or routing tool through which a human is actually reached. **No governing document fixes one**…"* — the sole orphaned exclusion in that list, repeated at the document's own front matter and §14 boundary section. Every approval, escalation, and halt this document designs depends on a human eventually being reached by *something*, and nothing in either library currently says what.
+4. **Dashboards carries no equivalent evidence of present load-bearing need** — a targeted search of `02-prd.md` for reporting/analytics/dashboard capability language returns nothing. It remains D-15's own named candidate, un-scheduled, but not (on today's evidence) an active gap the way email delivery is.
+
+**Criteria applied, and how each resolved.**
+1. **Is "five documents exist" itself evidence of completeness?** No — decisively. The count grew from three to five by two documents this project's own record shows were not on D-15's original list (CR04, CR05's principles class) rather than by working through D-15's own three tool-class examples; growth by *unplanned* discovery is not evidence the *planned* items were finished.
+2. **Does the criteria-document-map's own silence on email delivery and dashboards mean they were deliberately declined?** No — the map's own closing sentence anticipates adding them "as they are scheduled," stating an expectation of future work, not a decision against it. Nothing in the map, `DECISIONS.md`, or `BACKLOG.md` records a decision to drop either.
+3. **Is the email-delivery gap severe enough to route as a finding rather than sit inside this decision's own text?** Yes — it is a genuine, currently-unowned design dependency (not merely a criteria-library scheduling gap), so it is recorded as its own `BACKLOG.md` entry rather than folded silently into this decision, on the same discipline `BACKLOG.md` §1t applies to every other finding this project makes.
+
+**Alternatives considered.**
+- **Close D-o as "yes, complete enough"** — rejected under criterion 1; the count's own growth history argues against it, and two of D-15's three named examples are demonstrably unaddressed.
+- **Treat this as requiring the lead's judgment rather than a team finding** — rejected; nothing here is a preference or a trade-off a person needs to weigh. It is a direct trace through D-15's own text against the map's own table and the design library's own stated exclusions, the kind of finding D-16 authorizes the team to make and record without escalation.
+
+**Consequences:** Discharges `BACKLOG.md` §1ad's D-o. Opens a new `BACKLOG.md` entry for the notification-channel gap (§1ar), since it is a design-dependency finding independent of the criteria-library scheduling question, not merely a symptom of it. Schedules — but does not itself write — two candidate `docs/criteria/` documents (`email-delivery-tool-opinion.md`, `dashboard-tool-opinion.md`); writing either, and adding either as an "Indexed" row to `criteria-document-map.md`, is `docs/criteria/` content and requires its own `CR##` ticket, not an Orchestrator tracker edit.
+
+---
