@@ -1240,3 +1240,17 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Closes `BACKLOG.md` §1ad's D-k in full. No `docs/` amendment is owed — `01-technology-stack-design.md` §2.6 already carries the material correctly, cited to `DECISIONS.md` D-08 and (imprecisely, by one day) a "2026-07-30 Standup" TICKET.md section rather than 2026-07-29; that citation-date imprecision is optional cleanup, not a defect requiring a ticket, since the criteria's own content is confirmed correct and already in force. `TICKET.md`'s own cross-cutting table (line 188, *"Further criteria raised at the 2026-07-29 standup are not yet recorded here — pending lead confirmation"*) is now stale and is corrected as a tracker edit alongside this entry, not ticketed.
 
 ---
+
+## D-56 — `BACKLOG.md` §2: this specification library stays purely technical; business/legal/customer-facing content stays out
+
+**Decision.** `docs/spec/` does not hold business, legal, or customer-facing content — an SLA, an acceptable-use policy, or builder training/certification material. It stays confined to what the platform is and how it is built. This closes three of `COVERAGE-AUDIT-2026-08-14.md`'s seventeen candidate areas as **out of scope, no ticket**: **Platform SLA** (Area 2), **Platform usage / acceptable-use policy** (Area 6), and **builder onboarding's training half** (the un-ticketed remainder of Area 4, whose narrow "add a builder to a tenant" half was already closed by T79).
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The question asked, and why it was asked once rather than area-by-area.** `COVERAGE-AUDIT-2026-08-14.md`'s own summary found twelve of its seventeen areas gate, in whole or in part, on some version of "does this technical specification library hold this kind of content, or is it business/legal/customer-success material this library correctly excludes" — and recommended resolving it once rather than re-asking it per area. This decision is that resolution, for the three areas where the audit found the gating question to be **literally** that one (not merely thematically adjacent to it) — SLA, AUP, and training material are each, by their own nature, commercial/legal/customer-success artifacts with no technical-specification content once separated from what they might reference.
+
+**Why the other nine "gated" areas are not closed by this same answer, stated so this decision is not over-read.** The audit's summary language ("gates or partially gates") covers areas whose own scope question is a *different* flavor of judgment call — tenant provisioning's is richness (a thin mechanism is still purely technical); AI model governance and AI output-quality standards are about domain-neutrality tension, not business content; bias/fairness is a legitimacy question with no adjacent mechanism; accessibility conformance and UI/UX design-system coverage are legal/brand commitments, not business/legal *documentation*; data migration, offline resilience, and load testing are capability-scope and strategy questions. Each remains open and needs its own answer.
+
+**Consequences:** Closes `BACKLOG.md` §2's Platform SLA, Platform usage/AUP, and builder-onboarding-training entries as out of scope — no `T##` ticket for any of the three. Does not close, or imply an answer for, any of the audit's other nine still-open areas.
+
+---
