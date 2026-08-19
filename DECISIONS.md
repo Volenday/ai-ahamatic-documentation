@@ -1290,3 +1290,17 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Closes `BACKLOG.md` §2's bias/fairness entry with no ticket and no specification content. Does not preclude a future client engagement from addressing its own bias/fairness posture — that determination is explicitly theirs, on the same terms `development-principles.md` already states for the principles it declines to fix numerically.
 
 ---
+
+## D-60 — `BACKLOG.md` §2 Tenant provisioning: thin, mechanical admission only
+
+**Decision.** Tenant provisioning stays a thin, purely mechanical admission — a steward admits a tenant, the already-designed schema-creation mechanics run, done. No self-service signup, billing, or KYC process is modeled in this library. Authorizes a **`T##`** extending `02-governance-and-security/03-access-control-and-tenancy-model.md`, followed by a small design-counterpart extension once the spec obligation exists.
+
+**Attribution: lead decision, given directly in session, 2026-08-19, after discussion.**
+
+**Consistent with today's other decisions, not merely convenient.** D-56 already settled that this library stays purely technical, with no business/legal/customer-facing content; a self-service signup flow with billing and KYC is exactly that kind of content, on the identical reasoning that closed Platform SLA and the acceptable-use policy. Nothing elsewhere in the spec suggests a public self-service product motion — the access-control model's steward-gated, professional-builders-only posture is consistent throughout, and the thin reading is the only one that doesn't introduce a new product shape unsupported anywhere else in the library.
+
+**What is not owed.** The schema-creation, isolation, and audit mechanics `04-scalability-availability-and-performance-design.md` already fixes need no rework — this decision touches only the *trigger and process* around an already-designed mechanism, never the mechanism itself.
+
+**Consequences:** Authorizes a `T##` spec-phase ticket to extend `03-access-control-and-tenancy-model.md` with the admission trigger, what a steward's admission action requires, and how the tenant owner's first credential/identity comes to exist — small in scope, no new document, no new capability. Authorizes a follow-on design-counterpart extension once the spec obligation lands. Closes `BACKLOG.md` §2's tenant-provisioning entry as decided; ticket pending.
+
+---
