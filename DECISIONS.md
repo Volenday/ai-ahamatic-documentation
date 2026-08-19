@@ -1121,3 +1121,25 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **Consequences:** Authorizes a `P##` ticket to create `.claude/skills/ai-aha-criteria-doc`, consolidating CR01–CR05's own inline rules — the admission test, the four boundaries, the filename convention, and the three-artifact-class structure CR05 established — into one durable skill, and to add the corresponding row to `PROCESS.md` §1's table and the invocation step to §3's `CR##` steps. Does not touch `docs/criteria/`. Does not reopen CR01–CR05's own deliverables, each already produced correctly under the inline-rules approach this decision retires going forward, not retroactively.
 
 ---
+
+## D-50 — `BACKLOG.md` §1ad's D-n: sync posture's scope question was already answered — no ticket owed
+
+**Decision.** No further work is authorized. The question D-n asked — *"must the platform provide a generic sync primitive, or is sync builder-defined per application?"* — was already answered, before D-n's own entry was ever written, by `DECISIONS.md` **D-25** (2026-07-30-era) and realized by **ADR-017** (`05-mobile-application-delivery-design.md` §11.1, written by H31, 2026-08-10). This entry closes D-n as **stale**, not as newly resolved by fresh reasoning.
+
+**Attribution: team decision, under the D-16 delegation.**
+
+**The finding, traced rather than asserted.** D-n's own text frames the scope question as "separate and untouched" from D-11's posture answer. It was not, by the time D-n's own parked-docket entry was written (2026-08-14, per `BACKLOG.md` §1ad's own header) — D-25 had already answered it two weeks earlier, in D-25's own words: *"D-11's server-authoritative posture means a sync engine would solve a problem this platform has deliberately chosen not to have… What remains is far narrower: reads that survive a restart, writes that survive being offline, and credentials held safely."* That narrower remainder is exactly what ADR-017 designs — a local relational store, a split key-value store, and an **explicitly designed durable write queue** — never a synchronization engine, never bidirectional, and scoped by the specification itself to mobile artifacts only (`01-business-and-ux/02-prd.md` C-20, the sole spec-level mention of "offline" or "sync" anywhere in the library, verified by grep across the PRD, the capability model, and the NFR).
+
+**Checked directly, not inferred:**
+1. **Is there a spec-level obligation for sync/offline behavior anywhere outside C-20?** No — `grep -ni "offline\|\bsync\b"` across `02-prd.md`, `03-platform-capability-model.md`, and `06-non-functional-requirements.md` returns exactly C-20's own row and nothing else. The specification never contemplated a platform-wide sync obligation; only a mobile-scoped offline-behavior one.
+2. **Is C-20's obligation realized as a platform-core mechanism, or left to each builder?** Platform-core. `05-mobile-application-delivery-design.md` §6's write queue is fixed at the mobile runtime's own build time, drains through the identical Authentication Gate → Context Resolution Point → Construct Invocation Point path every other request uses, and is never varying per tenant or application — a built application's own mobile artifact gets this mechanism for free, never something a builder configures or supplies.
+3. **Does "platform-core" here mean the generic bidirectional sync primitive D-n's framing raised as one candidate answer?** No, and D-25 forecloses this explicitly: adopting a sync engine (PowerSync, ElectricSQL, Turso) was rejected on the grounds that it "re-imports the complexity D-11 removed." The platform-core mechanism that exists is narrower and structurally different from a sync primitive — an outbox/write-queue pattern with no conflict resolution, no version columns, and no tombstones, because D-11 already removed the requirement that would need any of those.
+
+**Alternatives considered.**
+- **Route to a `T##` spec gap, per D-n's own "if platform-core" branch** — rejected; there is no gap. C-20 already authorizes exactly the mechanism ADR-017 built; a `T##` would be asking the specification to state something it already states.
+- **Close as "builder-defined, no work," per D-n's own other branch** — rejected as a mischaracterization; the mechanism is not builder-defined. It is a platform-core primitive every mobile artifact receives, which is a materially different closing finding than "the platform declined to own this."
+- **Treat as still open pending the lead's confirmation** — rejected; nothing here is a judgment call. Every step is a direct trace through decisions and design content already on record, the kind of finding `DECISIONS.md` D-16 authorizes the team to close without escalation.
+
+**Discharges `BACKLOG.md` §1ad's D-n, and the original §3 "Sync posture as a platform capability" entry it points back to.**
+
+---
