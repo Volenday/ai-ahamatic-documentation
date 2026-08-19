@@ -1078,3 +1078,24 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 **All nineteen ADRs `DECISIONS.md` D-38 retained for individual lead review are now Approved.** The table above records all nineteen: ADR-028 (Brutal), ADR-023/024/027/031 (Very High), and ADR-021/025/029/032/033/034/038/040/043/044/045/052/054/059 (High). `ADR-REGISTER.md`'s status summary reflects the corresponding count.
 
 ---
+
+## D-48 — `BACKLOG.md` §1af(b): the AI-tooling provenance check's missing §7 counterpart is Merge-Gate-scoped, matching its own §5 item
+
+**Decision.** `04-devops-and-cloud-infra/02-ci-cd-pipeline-spec.md` §7 ("Conditions That Automatically Block Promotion") gains a new bullet for the provenance check T74 added to §5 — *"An artifact touched by the change without a recorded builder-approved provenance state, at the Merge Gate"* — qualified to the Merge Gate only, on the identical pattern §7's existing pre-commit-checklist bullet already uses for a Merge-Gate-scoped §5 item. Authorizes a small **T-ticket**.
+
+**Attribution: lead decision, given directly in session, 2026-08-18.**
+
+**The gap this closes.** T74 (2026-08-14) added the provenance-state check as §5's new fourth mandatory-merge item, correctly scoped to §5 alone under D-33's own authorization, and correctly declined to extend §7 — an unauthorized scope expansion at the time. `BACKLOG.md` §1af(b) recorded the resulting asymmetry: every other §5 item, including the one other Merge-Gate-scoped item (the pre-commit checklist, §7 line 108), has a §7 counterpart; the provenance check is the only one without.
+
+**Criteria applied, and how each resolved.**
+1. **Is "some §5 items are gate-general and some are Merge-Gate-only" the reason the provenance check lacks a counterpart?** No — §7 already carries a counterpart for a single-gate item (the pre-commit checklist, explicitly qualified "at the Merge Gate"), so gate-scope alone does not explain the provenance check's absence from §7.
+2. **Is the check itself gate-general (checkable at any Deploy Gate) or inherently Merge-Gate-scoped?** Merge-Gate-scoped by construction — the check reads a recorded provenance property of a touched artifact at the point of merge, the same shape and timing as the pre-commit checklist it sits nearest to in §5, not a re-evaluatable property like an unresolved vulnerability that can recur or persist across later gates.
+3. **Does mirroring the existing precedent (Merge-Gate-only) cost anything the "any gate" alternative would not?** No — the check's own content (a provenance flag recorded once, at merge time) gives a Deploy Gate nothing new to re-check; an "any gate" qualifier would restate the identical Merge-time fact at each later gate rather than test anything additional.
+
+**Alternatives considered.**
+- **"At any gate," mirroring the vulnerability and invariant rows** — rejected under criterion 2 and 3; those rows guard properties that can newly become true or newly discovered between gates (a vulnerability disclosed after merge, an invariant violated by a later change); the provenance check guards a fact fixed at merge time, with nothing left to re-test later.
+- **Leave §7 asymmetric, on the reasoning that §5's own bullet already blocks merge and a §7 entry is redundant** — rejected; §7's own list already includes items redundant with a §5 gate in exactly this sense (the pre-commit checklist, the invariant check), so redundancy with §5 is not this document's own standing reason to omit a §7 entry, and leaving the asymmetry unexplained is worse than a slightly redundant entry (`BACKLOG.md` §1ac's own "a citation that resolves to the wrong place is worse than one that dangles" principle, applied here to an omission rather than a citation).
+
+**Discharges `BACKLOG.md` §1af(b)** on issuance of the authorized ticket.
+
+---

@@ -470,7 +470,7 @@ Both carry `active` / `suspended` / `offboarding`. **No document owns the transi
 
 ---
 
-## 1af. ⚠️ PART (a) WITHDRAWN — NOT A DEFECT, 2026-08-14. Part (b) remains open. **The withdrawn half is the Orchestrator's own verification failure, and it reached a shipped specification edit before an Executor caught it.**
+## 1af. ⚠️ PART (a) WITHDRAWN — NOT A DEFECT, 2026-08-14. Part (b) decided 2026-08-18 (`DECISIONS.md` D-48), T83 pending. **The withdrawn half is the Orchestrator's own verification failure, and it reached a shipped specification edit before an Executor caught it.**
 
 ### (a) — withdrawn. T74's citation to security-policy §5 was correct all along.
 
@@ -513,15 +513,13 @@ The new §5 bullet reads: *"Per `02-governance-and-security/02-security-policy.m
 
 **Fix:** cite **§11** — or cite both, §5 for the input half and §11 for the binding rule, which is the more complete statement. A spec-phase ticket; the Orchestrator does not edit `docs/spec/` (`PROCESS.md` §3).
 
-### (b) Every other §5 item has a §7 counterpart. This one does not.
+### (b) 🔶 DECIDED 2026-08-18 (`DECISIONS.md` D-48) — Merge Gate only, ticket pending. Every other §5 item has a §7 counterpart. This one does not.
 
 **Flagged by T74's own Executor, correctly, and correctly not acted on** — D-33 and the ticket authorized §5 alone, and extending §7 would have been unauthorized scope.
 
 §7 ("Conditions That Automatically Block Promotion") carries a counterpart for **all five** of §5's original items, including the Merge-Gate-scoped one — the pre-commit checklist appears there with an explicit *"at the Merge Gate"* qualifier. **So §7 covering only some gates is not the explanation**; the list includes even single-gate items. The new provenance check is the only §5 item with no §7 entry.
 
-**The open question is scope, not whether to add it:** does an artifact not recorded as builder-approved block only at the Merge Gate (mirroring the pre-commit checklist's qualifier), or at any gate (mirroring the vulnerability and invariant rows)? That is a decision, not a transcription — which is why T74 was right to stop.
-
-**Both are one ticket's worth of work** and belong together: same document family, same authorizing decision, and (b) cannot be written without settling the scope question (a) does not raise.
+**The scope question is settled.** `DECISIONS.md` **D-48** (lead, 2026-08-18): the check blocks at the Merge Gate only, mirroring the pre-commit checklist's own qualifier rather than the vulnerability/invariant rows' "at any gate" — the check reads a provenance property fixed once, at merge time, with nothing a later Deploy Gate would newly find. **Authorizes T83**, a small spec-phase ticket adding the §7 bullet.
 
 ---
 
