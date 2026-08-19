@@ -565,7 +565,7 @@ The new §5 bullet reads: *"Per `02-governance-and-security/02-security-policy.m
 
 ---
 
-## 1ad. 🔶 PARKED 2026-08-14 — the unticketed decision queue: six decisions plus two lead questions, each producing work on only one branch
+## 1ad. ✅ CLOSED 2026-08-19 — all six decisions resolved (D-49 through D-53, D-55); both of D-31's own questions answered
 
 **Moved here from `TICKET.md`'s decision docket at the user's direction, before execution of the consolidated tickets begins.** None is blocked, forgotten, or declined — each is parked because **work is owed only if it resolves one way**, so ticketing it now would invent scope. That is the distinction `TICKET.md`'s decision docket records: a decision owed work *either way* gets a ticket immediately, blocked on the answer; a decision owed work on *one* branch waits.
 
@@ -1241,11 +1241,11 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
 
 - **Tenant provisioning**
 - **Platform SLA** (the platform's own service-level commitment to tenants)
-- **Disaster recovery / business continuity (DR/BCP)** — `04-devops-and-cloud-infra/06-incident-response-and-recovery.md` covers incident handling, not full DR/BCP
-- **Builder onboarding**
+- **✅ Disaster recovery / business continuity (DR/BCP) — RESOLVED, both halves.** IT-recovery half: `06-incident-response-and-recovery.md` §6 extended by **T78** (2026-08-18) with RPO/RTO terminology and an honest region-outage limit (`DECISIONS.md` D-45). Non-IT half (staffing, facility, outage-time communication): new document `07-business-continuity.md`, **T81** (2026-08-18, `DECISIONS.md` D-43) — its own design-counterpart question closed **no, not needed** by **H66**.
+- **Builder onboarding — partially resolved.** The narrow slice (adding a builder to an already-provisioned tenant) closed by **T79** (`03-access-control-and-tenancy-model.md` §5). The broader slice (training, certification, a documentation portal) remains unreviewed, and T75 assessed it as plausibly Customer Success/DevRel material outside this library's charter — not yet confirmed either way.
 - **Application lifecycle** (end-to-end lifecycle of a built application)
 - **Platform usage / acceptable-use policy**
-- **Third-party risk management**
+- **✅ Third-party risk management — RESOLVED.** New document `09-third-party-risk-management.md`, **T77** (2026-08-18, `DECISIONS.md` D-42), with its design counterpart `10-third-party-risk-management-design.md` (**H65**).
 - **AI model governance**
 - **AI output-quality standards**
 - **Bias / fairness**
