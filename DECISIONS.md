@@ -1254,3 +1254,39 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Closes `BACKLOG.md` §2's Platform SLA, Platform usage/AUP, and builder-onboarding-training entries as out of scope — no `T##` ticket for any of the three. Does not close, or imply an answer for, any of the audit's other nine still-open areas.
 
 ---
+
+## D-57 — `BACKLOG.md` §2 Application lifecycle: C-15/C-17 cover a built application's own retirement
+
+**Decision.** C-15 (Safe evolution) and C-17 (Backward-compatible evolution and deprecation) reach a built application's own retirement/deprecation, not only the platform's own evolution. `01-business-and-ux/05-user-journeys.md`'s "Safe evolution" journey was correct; the PRD's own C-15/C-17 definitions were the narrower, and now-superseded, reading. Authorizes a **`T##`** to amend the PRD's own capability definitions, followed by a Layer 4 `H##` design ticket once the spec amendment lands.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The gap this closes.** `COVERAGE-AUDIT-2026-08-14.md` found the runtime-and-lifecycle design document itself sound and correctly self-limiting — it designs four transitions (build, configure, publish, operate) and explicitly hands off a fifth. What blocked any ticket was a genuine internal inconsistency the design layer cannot resolve on the spec's own behalf: the PRD's own C-15/C-17 text scopes both to *"the platform's own evolution"* and *"the platform's own commitments,"* while the journeys document already describes a built application's own deprecation under the same two capabilities. This decision is the resolution `ai-aha-consistency-check`-shaped findings route to the lead for.
+
+**Consequences:** Authorizes a `T##` spec-phase ticket to amend C-15/C-17's own PRD definitions to state explicitly that they reach a built application's own retirement, not only the platform's. Authorizes a follow-on Layer 4 design ticket, once the spec amendment exists, to design the retirement-transition mechanism itself (who may initiate it, what preconditions apply, how it composes with the existing `published`/`withdrawn` toggle `04-publishing-and-delivery-design.md` already owns separately). Per the audit's own overlap note, the same undesigned-transition shape also affects `platform.tenants`' identical status enum — worth checking whether one mechanism pattern closes both once the design ticket is scoped, not assumed.
+
+---
+
+## D-58 — `BACKLOG.md` §2: AI model governance and AI output-quality standards both belong in the library
+
+**Decision.** Both areas move from deliberate silence to specified. The library gains model-selection/vendor-lock-in-mitigation/deprecation-handling guidance (AI model governance) and a correctness/quality standard for what AI-assisted tooling produces (AI output-quality standards), despite the tension with the project's domain-neutral, no-named-vendor stance. Authorizes a **`T##`** to scope both as one investigation, on the coverage audit's own finding that they are "two ends of one currently-undesigned pipe" even though they are not the same question.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The gap this closes.** `09-ai-assisted-builder-tooling-design.md` and `05-ai-tooling-security-design.md` each name both as residual, deliberately unaddressed risk, in near-identical language — the provenance gate that decides whether an AI-produced artifact crosses a boundary is binary (builder-confirmed or not) and sits structurally between the two: model governance is about what feeds that gate, output-quality is about what it lets through. `development-principles.md`'s own *Safe*/*Secure* candidates are adjacent but explicitly not an authority (§4's own closing note), and cannot discharge a specification-level standard.
+
+**Consequences:** Authorizes a `T##` spec-phase ticket, scoped as one investigation covering both areas (per the audit's overlap analysis, they will likely converge on one document or a closely-linked pair, but the ticket determines that rather than assuming it). The ticket determines the document shape, whether the domain-neutral no-named-vendor stance survives (categories and criteria rather than named products, on the identical discipline `docs/criteria/`'s own tool-opinion class already uses), and states a quality standard the design layer can later realize — this decision does not itself state the standard's content.
+
+---
+
+## D-59 — `BACKLOG.md` §2 Bias/fairness: left to each client engagement, no specification content
+
+**Decision.** AI ahaMatic's specification does not address bias or fairness risk. The build-time tooling generates code, logic, and layout — not decisions about people — and the risk profile most bias/fairness governance frameworks target does not clearly apply to that shape of output. This is left to each client engagement, on the identical precedent `development-principles.md` already sets for a full security or compliance posture. Closes with **no ticket**.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**Why this is the one area the audit couldn't lean toward an answer on its own.** Unlike AI output-quality (D-58, which the library concedes as an open gap in its own words three times) or accessibility (which ADR-060 explicitly declines to close on the spec's behalf), bias/fairness had no adjacent mechanism to extend and no in-library statement, declared or implied, of why it was absent — a genuinely blank slate the audit correctly declined to resolve unilaterally, given the project's own domain-neutrality rule and its standing avoidance of appearing to adopt any named regulatory regime.
+
+**Consequences:** Closes `BACKLOG.md` §2's bias/fairness entry with no ticket and no specification content. Does not preclude a future client engagement from addressing its own bias/fairness posture — that determination is explicitly theirs, on the same terms `development-principles.md` already states for the principles it declines to fix numerically.
+
+---
