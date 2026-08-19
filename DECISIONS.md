@@ -1304,3 +1304,43 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Authorizes a `T##` spec-phase ticket to extend `03-access-control-and-tenancy-model.md` with the admission trigger, what a steward's admission action requires, and how the tenant owner's first credential/identity comes to exist — small in scope, no new document, no new capability. Authorizes a follow-on design-counterpart extension once the spec obligation lands. Closes `BACKLOG.md` §2's tenant-provisioning entry as decided; ticket pending.
 
 ---
+
+## D-61 — `BACKLOG.md` §2 Accessibility conformance: stays an engineering choice, no compliance target
+
+**Decision.** The platform does not commit to an accessibility conformance target (e.g., a WCAG level). ADR-060's current stance continues — accessible behavior is favored as an engineering property, never elevated to a compliance target. Closes with **no ticket**.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**Consequences:** `01-technology-stack-design.md` §24.2's own statement — *"the absence of a legal driver is recorded, not papered over; accessible behavior is chosen anyway, as an engineering property rather than a compliance target"* — stands as the library's final word on this, not merely a provisional one. No NFR row, no new document. Revisit only if a client engagement's own market requires a specific conformance level; that determination stays theirs, not the platform's.
+
+---
+
+## D-62 — `BACKLOG.md` §2 UI/UX design-system coverage: visual identity stays a deferred parameter
+
+**Decision.** The platform does not commit to its own visual identity (brand, color palette, typography). ADR-060's current stance continues — the component foundation treats visual identity as a parameter, not a fact, deliberately keeping it open rather than fixing it. Closes with **no ticket**.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**Consequences:** No new `01-business-and-ux/` document. The mobile client's and the future UI generator's own, separately undecided foundations remain exactly as open as ADR-060 already left them — this decision does not reach either. Revisit only if a specific client engagement or product milestone forces a visual-identity commitment.
+
+---
+
+## D-63 — `BACKLOG.md` §2 Data migration / import: no bulk-import capability for V1.0
+
+**Decision.** The platform does not gain a bulk-import capability (CSV/spreadsheet upload, bulk-insert API, or application-creation-time data seeding). Builders create records one at a time or via the API, exactly as every other write already works. Closes with **no ticket**.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**Consequences:** Neither `02-data-model-and-entity-design.md` (C-27, Data Administration) nor `07-cross-system-data-layer-design.md` (C-24) needs amendment — both remain correctly single-record/per-call, as already, structurally, designed. Revisit only if a genuine bulk-onboarding need surfaces; per the coverage audit, that would need its own PRD capability row before any spec or design work, since neither existing capability can be stretched to cover it.
+
+---
+
+## D-64 — `BACKLOG.md` §2 Offline resilience (web/console): not needed
+
+**Decision.** Web-surface offline-write durability — beyond the mobile client, which already has one (ADR-017) — is not wanted. ADR-011's server-authoritative-with-optimistic-UI default stands as sufficient; the "escape hatch" it names as a possible future need is not exercised now. Closes with **no ticket**.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**Consequences:** No amendment to ADR-011 (`01-technology-stack-design.md` §21) and no sibling document to the mobile offline design. Revisit only if a specific built application's own genuinely offline-first requirement surfaces — ADR-011 already names that as the trigger condition for reopening this, not a general platform-wide obligation.
+
+---
