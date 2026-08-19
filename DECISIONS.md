@@ -434,7 +434,7 @@ The hierarchy reads: **the platform has tenants; a tenant has applications.**
 **Consequences.**
 - **The scope of `04-workflow-and-process-automation-design.md` changes** before it is written: it designs the integration boundary, the domain-neutral process-modelling surface over an adopted engine, and how in-flight state relates to tenant isolation — not an execution engine.
 - **A new open question, created by this decision:** an adopted engine must satisfy **INV-01** and ADR-010's portable-subset rule, and must not become a second store of authoritative data alongside the server (ADR-011). Engine selection is now gated on those three constraints.
-- **The principle may generalize further.** It has now been applied twice (sync, workflow) on the same criterion. Whether it is a general rule for infrastructure-grade components — and where its boundary lies — is **not decided here** and is worth asking explicitly rather than extending by drift.
+- **The principle may generalize further.** It has now been applied twice (sync, workflow) on the same criterion. Whether it is a general rule for infrastructure-grade components — and where its boundary lies — is **not decided here** and is worth asking explicitly rather than extending by drift. **✅ Answered 2026-08-19 by `DECISIONS.md` D-52** (lead): yes, generalizes, at the precise test the criterion above already states (behavior hard to verify by reading — timing, concurrency, state surviving a restart) — not at the broader "infrastructure-grade" label this bullet uses.
 
 ---
 
@@ -1166,5 +1166,37 @@ The lead's words: *"API first, app creator, then actually after the app creator 
 - **Treat this as requiring the lead's judgment rather than a team finding** — rejected; nothing here is a preference or a trade-off a person needs to weigh. It is a direct trace through D-15's own text against the map's own table and the design library's own stated exclusions, the kind of finding D-16 authorizes the team to make and record without escalation.
 
 **Consequences:** Discharges `BACKLOG.md` §1ad's D-o. Opens a new `BACKLOG.md` entry for the notification-channel gap (§1ar), since it is a design-dependency finding independent of the criteria-library scheduling question, not merely a symptom of it. Schedules — but does not itself write — two candidate `docs/criteria/` documents (`email-delivery-tool-opinion.md`, `dashboard-tool-opinion.md`); writing either, and adding either as an "Indexed" row to `criteria-document-map.md`, is `docs/criteria/` content and requires its own `CR##` ticket, not an Orchestrator tracker edit.
+
+---
+
+## D-52 — `BACKLOG.md` §1ad's D-j: "buy, do not build" generalizes, at the precise test three independent instances converge on
+
+**Decision.** "Buy, do not build" is now a **standing general rule**, amending `DECISIONS.md` **D-20**'s scope: for any component class whose correctness depends on behavior that is hard to verify by reading — state that must survive across time, restarts, or concurrent access, rather than a rule checkable against a single input and a single expected output — the platform defaults to adopting an existing, independently-proven implementation rather than having an AI author one from scratch. A future tool-class decision that fits this test applies the rule directly, without re-litigating the underlying reasoning each time; one that does not fit it is unaffected and is evaluated on its own terms.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The convergence this rests on, verified directly rather than asserted.** The same test has now been reached three separate times, independently, by three different pieces of work with three different purposes:
+1. **D-11** (sync) — rejected a hand-built sync engine because distributed-state bugs are non-deterministic race conditions, the failure mode AI-authored code handles worst and review catches least.
+2. **D-20** (workflow engines) — extended the identical reasoning on an explicitly stated shared profile: long-running state machines, in-flight instance state surviving restarts, timer and compensation semantics.
+3. **`development-principles.md`'s *Safe* candidate** — derived independently, for a different document with a different purpose (a standing AI-authorship principle, not a specific tool-class ADR) — states nearly the identical test in its own words: *"Where a class of component's correctness depends on behavior that is hard to verify by reading — state that must survive across time, restarts, or concurrent access… — prefer an existing, independently-proven implementation… over having an AI author one from scratch."*
+
+Three arrivals at one precise criterion, from three different starting points, is the evidentiary bar this decision treats as sufficient to generalize — not a single analogy stretched twice.
+
+**What generalizes, and what does not, stated precisely so this is not read more broadly than decided.**
+- **Generalizes:** the test itself — hard-to-verify-by-reading correctness depending on timing, concurrency, or state surviving a restart or redeployment.
+- **Does not generalize:** the conclusion that adopting is *generally* preferable to building for any other reason (cost, speed, team preference). `ui-component-foundation-tool-opinion.md` §3's own component-behavior finding is a *different* asymmetry (behavioral correctness hard to verify by looking, not concurrency/persistence-shaped) and is not brought under this rule by this decision — that document's own deliberate non-resolution stands, unless a future document finds it actually fits the test above on its own evidence.
+- **Does not itself decide any pending tool-class question.** This is a standing test, not a retroactive re-evaluation of any component already built or any tool-opinion already written.
+
+**Criteria applied, and how each resolved.**
+1. **Is three independent arrivals at the same test sufficient evidence, or does it need a fourth?** Sufficient — decisively, once the *Safe* principle's convergence is accounted for. `Safe` was derived from "what is generally true of AI-authored code," with no visibility into D-11 or D-20's own specific reasoning at the time of its own drafting (`development-principles.md` §3.2 states plainly it is "this document's own derivation," not a restatement). Two independent lines of reasoning reaching one test is stronger evidence than one line applied twice.
+2. **Does generalizing at the precise test risk over-application, the way generalizing at the vaguer "infrastructure-grade" label would?** No, and this is exactly why the rule is stated at the *Safe* principle's own conformance-check granularity rather than at D-20's own "infrastructure-grade components" phrasing. `development-principles.md` §3.2 already states the guard explicitly: *"Most code an AI authors is not this class of problem… treating every component this cautiously would be a costly overcorrection this principle does not ask for."* Stating the rule at that same precision inherits the same guard against over-application.
+3. **Does this decision need to also resolve where the test's own boundary sits for an ambiguous candidate?** No — `development-principles.md` §3.2 already states that boundary question is "itself unresolved" and left open deliberately; this decision generalizes the *test*, not a settled answer to every case the test might apply to. A future tool-class decision still applies judgment at its own edges, the same way §3.2 already requires.
+
+**Alternatives considered.**
+- **Generalize at D-20's own broader "infrastructure-grade components" framing** — rejected under criterion 2; that framing is vaguer than what the evidence actually converges on and risks exactly the overcorrection `development-principles.md` §3.2 warns against.
+- **Keep the rule scoped to sync and workflow engines only, deciding future cases fresh each time** — rejected; three independent convergences on one precise, falsifiable test is the kind of evidence this project's own discipline (`DECISIONS.md` D-16's active-discovery obligation) treats as worth recording as a standing rule rather than re-deriving on each future occasion.
+- **Fold `ui-component-foundation-tool-opinion.md`'s own behavioral-verification asymmetry into this same rule** — rejected; it is a genuinely different asymmetry (visible-on-inspection-but-wrong versus impossible-to-verify-by-reading-at-all), and merging the two would overstate what the evidence supports.
+
+**Consequences:** Amends `DECISIONS.md` D-20's own closing note — its "not decided here" question is now answered; D-20's text is not rewritten, this entry supersedes that one open item. Binds any future `CR##` tool-opinion or design-phase ADR evaluating a build-vs-buy question to check the candidate against this test first; a fit defaults to buy without re-deriving the reasoning, a non-fit is evaluated on its own criteria as before. Discharges `BACKLOG.md` §1ad's D-j.
 
 ---
