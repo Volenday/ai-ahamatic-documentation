@@ -1344,3 +1344,15 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** No amendment to ADR-011 (`01-technology-stack-design.md` §21) and no sibling document to the mobile offline design. Revisit only if a specific built application's own genuinely offline-first requirement surfaces — ADR-011 already names that as the trigger condition for reopening this, not a general platform-wide obligation.
 
 ---
+
+## D-65 — `BACKLOG.md` §2 Load testing: detect-in-production stays the strategy, stated explicitly
+
+**Decision.** The platform's existing, implicit strategy — detect scale pressure in production rather than simulate it pre-release — is confirmed as the deliberate choice and is stated explicitly rather than left implicit. No genuine pre-release load-testing regime (ramp profiles, synthetic load generation, a load/stress distinction, a soak/endurance dimension) is added. Authorizes a small **`T##`**/**`H##`** pair to state the trade-off.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The finding this confirms.** `04-devops-and-cloud-infra/03-testing-and-quality-gates.md` §4 names Non-functional as a test layer, and its design counterpart already assigns the one concrete scale threshold the library derives (a schema-count crossover) to production monitoring — *"the detection mechanism, instrumentation, and alert routing"* is `04-observability-and-monitoring.md`'s entirely, not a pre-release test. This decision confirms that assignment was correct and makes it a stated strategy rather than an implicit one a future reader could mistake for an oversight.
+
+**Consequences:** Authorizes a small extension to `04-devops-and-cloud-infra/03-testing-and-quality-gates.md` §4 and its design counterpart, stating the detect-in-production strategy explicitly as a deliberate trade-off rather than an unstated gap. No new test layer, tooling class, or regime is designed.
+
+---
