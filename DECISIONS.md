@@ -1200,3 +1200,17 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Amends `DECISIONS.md` D-20's own closing note — its "not decided here" question is now answered; D-20's text is not rewritten, this entry supersedes that one open item. Binds any future `CR##` tool-opinion or design-phase ADR evaluating a build-vs-buy question to check the candidate against this test first; a fit defaults to buy without re-deriving the reasoning, a non-fit is evaluated on its own criteria as before. Discharges `BACKLOG.md` §1ad's D-j.
 
 ---
+
+## D-53 — `BACKLOG.md` §1ad's D-i: the daily prototyping loop discharges vertical-slice validation, once it runs
+
+**Decision.** The daily rapid-prototyping loop `DECISIONS.md` **D-31** instructs (screens shown each day, feedback given same-day, fed back to the AI, next version produced against it) **discharges D-i's vertical-slice validation** — one exercise, not two. D-i's own four measurement criteria (iterations to green tests, bugs escaping to manual QA, legibility to an uncommissioning reviewer, and how well a fresh AI session modifies the result later) are read against the daily loop's own output as it runs, rather than requiring a separate, dedicated hard-slice exercise built solely to produce them.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The evidence this rests on.** D-31 itself declined to settle this, framing it as open: *"Whether the daily loop discharges D-i, or D-i still names a separate measured exercise, is not settled by this entry."* But `DECISIONS.md` **D-27** (2026-08-13, a week after D-31, gating all development-phase work) already names the gate it waits on as *"D-i's vertical-slice validation,"* not "the daily loop" — the project's own most recent framing had already converged on treating the two as one thing, before this question was ever asked explicitly. D-31's own stated purpose for the daily loop — *"we're going to start experiencing how the documentation is helping"* — is, in the lead's own words, D-i's own purpose.
+
+**Practical status, stated so this is not misread as opening anything.** `DECISIONS.md` D-27's hold remains in place (reaffirmed 2026-08-18, no lift condition specified). This decision settles what "the vertical-slice validation" *means* once development work opens; it does not itself lift the hold or authorize any ticket. No `T##`, `H##`, or development-phase work is triggered by this entry.
+
+**Consequences:** Closes `BACKLOG.md` §1ad's D-i without further action needed. Once D-27 lifts and the daily loop actually runs, its own output is the vertical-slice evidence D-i asked for — no separate hard-slice exercise is additionally owed. Confirms D-31's own two-consequences note (which raised this exact question) is now answered rather than reopened.
+
+---
