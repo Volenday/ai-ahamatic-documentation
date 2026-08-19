@@ -1228,3 +1228,15 @@ Three arrivals at one precise criterion, from three different starting points, i
 **Consequences:** Authorizes a `T##` spec-phase ticket. Discharges `BACKLOG.md` §1ar's own scope question; the entry itself stays open until the ticket resolves it. Does not itself amend the capability model, write a criteria-library document, or design a mechanism — each is the authorized ticket's own work.
 
 ---
+
+## D-55 — `BACKLOG.md` §1ad's D-k: `01-technology-stack-design.md` §2.6's criteria 11–13 are the 2026-07-29 standup material
+
+**Decision.** Confirmed directly with the lead: **yes** — human-verifiability, commercial acceptability, and AI-training-corpus quality (not volume), already recorded as criteria 11–13 in `01-technology-stack-design.md` §2.6, are the evaluation criteria raised at the 2026-07-29 standup. D-k closes as **already discharged**, not as newly answered — the tracker line simply never got updated once someone recorded the material downstream.
+
+**Attribution: lead decision, given directly in session, 2026-08-19.**
+
+**The search that preceded asking, so this isn't recorded as a guess accepted on the first try.** Before returning to the lead, the repository was searched exhaustively for a primary source that could settle this without relying on memory: `references/research/` in full, all four root-level meeting-record files, and a repo-wide search for any file dated or named around 2026-07-29. **No transcript or summary file for that standup exists anywhere in the repository** — confirming `PROCESS.md` §7's meeting-records rule (the transcript governs, not the summary) had nothing left to govern from. The lead was asked a second time, with this negative finding stated plainly, before answering.
+
+**Consequences:** Closes `BACKLOG.md` §1ad's D-k in full. No `docs/` amendment is owed — `01-technology-stack-design.md` §2.6 already carries the material correctly, cited to `DECISIONS.md` D-08 and (imprecisely, by one day) a "2026-07-30 Standup" TICKET.md section rather than 2026-07-29; that citation-date imprecision is optional cleanup, not a defect requiring a ticket, since the criteria's own content is confirmed correct and already in force. `TICKET.md`'s own cross-cutting table (line 188, *"Further criteria raised at the 2026-07-29 standup are not yet recorded here — pending lead confirmation"*) is now stale and is corrected as a tracker edit alongside this entry, not ticketed.
+
+---
