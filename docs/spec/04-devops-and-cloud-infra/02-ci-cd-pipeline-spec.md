@@ -106,6 +106,7 @@ The Production Deploy Gate carries every requirement above at full strength, plu
 The following conditions, wherever met, block a change from advancing at whichever stage they are discovered — the Merge Gate, either Deploy Gate, or between them. Each is independently sufficient; a change need meet only one to be blocked.
 
 - An unmet item of the pre-commit review checklist (`03-software-and-architecture/07-coding-standards-and-patterns.md` §7), at the Merge Gate.
+- An artifact touched by the change without a recorded builder-approved provenance state (`02-governance-and-security/02-security-policy.md` §11), at the Merge Gate.
 - A mandatory security review (`02-governance-and-security/02-security-policy.md` §7) triggered but not complete.
 - An unresolved Critical or High severity vulnerability (`02-governance-and-security/02-security-policy.md` §6), at any gate.
 - A change that would violate, or has violated, any invariant of `02-governance-and-security/01-system-invariants.md` §4, at any gate or at any point between gates.
