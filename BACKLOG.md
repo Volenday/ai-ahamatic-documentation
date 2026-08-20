@@ -355,7 +355,7 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1ar. ✅ CLOSED 2026-08-19 by T84 — the obligation is specified; the mechanism is now the open half
+## 1ar. ✅ FULLY CLOSED 2026-08-20 — obligation by T84 (spec), mechanism by H72 (design, ADR-068)
 
 **Found while resolving `BACKLOG.md` §1ad's D-o (`DECISIONS.md` D-51) — a design-dependency finding, not a symptom of the criteria-library question that surfaced it.** `03-human-in-the-loop-design.md` §2 lists nine things it deliberately does not own, and hands every one of the other eight to a specific citation naming its owner. The ninth does not get one: *"The notification channel, approval interface, or routing tool through which a human is actually reached. **No governing document fixes one**, and this ticket's own Writing Rules exclude designing it; this document fixes only the obligation to route, record, and resolve, never the medium."* Repeated at the document's own front matter and again at §14's boundary section — three independent statements of the same exclusion, none pointing anywhere.
 
@@ -369,7 +369,11 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 **⚠ UPDATED 2026-08-20 by H71 — this entry now has a second consumer, and one design constraint it did not have before.** (1) The undesigned delivery mechanism is no longer needed only by the HITL approval path: `03-authentication-and-identity-design.md` §3.4's enrollment grant (Path A) also requires an outbound channel, and **for the first owner of every admitted tenant that is the only constructible path**, so the credential mechanism is inert without it (§1at). (2) **H71 contributed a required property to whatever channel is eventually chosen, and it is a real constraint rather than a preference: the channel must be one the issuing authority does not itself read.** That follows from H71's foreclosed-handoff finding — an authority that can read the grant can authenticate as the tenant owner, which `03-access-control-and-tenancy-model.md` §4's Tenant-admission boundary forbids. No medium, tool, or timeliness figure is named. (3) **A precision worth not losing:** T84's §6 delivery obligation is scoped to an *approval request routed to a human holding decision authority*, so it does **not** reach an enrollment artifact sent to a person who holds no authority and cannot yet authenticate. What Path A depends on is the *channel a future ticket picks*, not that obligation — and H71 correctly claims no coverage from it. Do not treat T84 as having discharged this.
 
-**What remains open, correctly not closed here.** The obligation exists; the mechanism does not. `03-human-in-the-loop-design.md`'s own three "no governing document fixes one" disclaimers are now stale — a future `H##` design ticket discharges them by designing the actual mechanism. The criteria-library half (`BACKLOG.md` §1ad's D-o: "email delivery," "dashboards," both named by `DECISIONS.md` D-15 and never scheduled) still awaits its own `CR##` once a design ticket picks a mechanism shape to select among.
+**✅ MECHANISM HALF CLOSED 2026-08-20 by H72 (ADR-068), verified against the files.** New Layer 5 document `05-infrastructure-deployment-operations/07-outbound-delivery-design.md` — shape determined as a new document, not an extension, because **both** candidate anchors disclaim this content in their own words and the observability candidate additionally fails a mechanical boundary its own §9 enforces. One mechanism, **two notice classes**, class fixed by the caller at invocation and never inferred from content. H71's required property is consumed with one precision added: **the constraint is on reading, never on addressing.** **This entry is now closed at both layers. Its three stale disclaimers in `03-human-in-the-loop-design.md` are a separate open item — see §1bb.**
+
+**⚠ Two limits this closure does NOT deliver, recorded here so no later reader mistakes the entry's closure for a complete approval path.** (1) **The approval consumer is now served for awareness, not for action.** The notice carries an identifier and not a link, because a link would name a surface and naming a surface is designing the approval interface — which `03-human-in-the-loop-design.md` §2 excludes and H72 was not authorized to do. **The surface a human acts on still does not exist**; see §1ba. (2) **Delivery confirmation is not achievable**, and that is a finding rather than a gap: handoff refused and handoff accepted are knowable, receipt by the named person is not, and the platform deliberately never upgrades one to the next. Do not open a ticket to "fix" receipt confirmation.
+
+**What the original entry recorded as remaining open, now historical.** The obligation existed; the mechanism did not. `03-human-in-the-loop-design.md`'s own three "no governing document fixes one" disclaimers are now stale — a future `H##` design ticket discharges them by designing the actual mechanism. The criteria-library half (`BACKLOG.md` §1ad's D-o: "email delivery," "dashboards," both named by `DECISIONS.md` D-15 and never scheduled) still awaits its own `CR##` once a design ticket picks a mechanism shape to select among.
 
 ---
 
@@ -418,7 +422,8 @@ Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-ac
 
 - the **tracked model-dependency record** (ADR-066, H70) — the record the deprecation blocking check reads;
 - the **tracked vendor/dependency tier record** (ADR-064, H65);
-- the **tracked-dependency record** (ADR-026).
+- the **tracked-dependency record** (ADR-026);
+- **✅ FOURTH MEMBER ARRIVED 2026-08-20 (H72, ADR-068)** — the **single current delivery address per identity**, category resolved as personal at creation, carrying nothing else. H72 named this as joining this entry explicitly, which is this entry's own instruction working as intended: it told the next scoping pass to check whether a fourth had arrived, and one had. **A fifth may yet arrive — re-check before scoping.**
 
 **The restraint itself is correct and deliberately established, not a defect.** H70 recorded its structure structurally with placement left open as *the third instance of that restraint*, making it an established pattern rather than a new liberty — a design document that does not own `02-platform-data-model-design.md` should not reach into it. **The defect is only that nothing obliges the accumulation to be discharged**, which is the identical shape as `ADR-REGISTER.md` live issue 8 and §4.5's own liveness finding: a fact correctly recorded in its owning place, with no tracker obligated to reach the index that must eventually carry it.
 
@@ -460,6 +465,49 @@ Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-ac
 **This is the *dangling* form, not the wrong-resolution form, and the distinction is the one §1ac established.** A citation that resolves to the wrong section is worse than one that dangles, because nothing signals the error to a reader; this one dangles and is therefore self-announcing. **H71 handled it correctly** — it did not build on the unresolvable citation, and instead cited §4.2's own base-record rule ("no field stores a secret"), verified verbatim, which is what it actually needed. It could not fix it, that document being read-only to it.
 
 **Bundle with §1au(a)** — both are one-line citation maintenance in the same file (`08-audit-and-traceability-design.md`), so one small `H##` closes both and neither justifies a ticket alone.
+
+---
+
+## 1az. 🔶 OPEN 2026-08-20 — no residency check evaluates the outbound handoff
+
+**Found by H72 and routed rather than absorbed, because inventing a residency criterion is not a design document's to do.** `06-compliance-and-data-residency-design.md` §3.4 places the Region Boundary Check inline in connection acquisition — "the sole gateway through which a request reaches a scoped database connection" (verified verbatim at this close). That already covers delivery's **reads** (the pending-approval record, the role bindings, the address), **but a handoff to an external channel never passes through that gateway at all.** That document's §3.5 separately disclaims any claim about "where bytes are physically stored, replicated, or routed at the infrastructure layer," so the gap is not closed there either.
+
+**What H72 contributed without inventing a criterion, and it is worth keeping:** because the delivery port's configuration and credentials are scoped to the (tier, region) intersection, the channel a notice leaves through is the one provisioned for the operating region. **Whether that satisfies a resolved residency obligation is not H72's to say** — it belongs to `06-compliance-and-data-residency-design.md` and `08-multi-region-distribution-design.md`.
+
+**Routes to an `H##` naming those two documents.** **⚠ Check first whether this needs a spec answer**: if no specification states an obligation about outbound transfer to a non-database destination, this is a `T##` gap first and a design ticket second — the `PROCESS.md` §12.2 test. Do not let a design ticket assert the obligation.
+
+---
+
+## 1ba. 🔶 OPEN 2026-08-20 — no operational surface exists for either a pending approval or a recorded delivery refusal
+
+**Two related absences, both surfaced by H72, deliberately recorded as one entry because they would be closed by the same surface and separately because neither is the delivery mechanism's own gap.**
+
+- **(a) The approval interface.** H72 delivers *awareness* — a notice carrying an identifier — and explicitly not a link, since naming a surface would be designing the interface that `03-human-in-the-loop-design.md` §2 excludes. So a human can now learn a decision awaits them and still has nowhere to go to make it. **This is the last thing standing between the delivery mechanism and an actionable approval path.**
+- **(b) A delivery refusal has no reader.** A refused handoff is knowable and recorded, but no surface exists on which a person could read it — and since H72 designs no retry and no automatic re-notification, an unread refusal is where the approval quietly stalls.
+
+**`DECISIONS.md` D-54's own pre-decision finding already established the ground:** there is no way, push or pull, for a human to learn a pending-approval record exists; the push half is now closed by H72, and **the pull half was never in scope for it** — `ADR-060`'s console work is scoped to Data Administration screens only, and C-27 is explicitly builder-data-scoped, never platform-steward-facing.
+
+**⚠ This is a scoping call with a real prior question, not a ready ticket.** A steward-facing operational surface is plausibly a **capability** question (nothing in the capability model grants one) rather than a design gap — which would make it a `T##`, or even a lead decision under `DECISIONS.md` D-56's "is this technical-library content" test, before any `H##`. **Resolve which it is before generating a ticket.** Ranked as the highest-value open item on the delivery path, but not the most obviously ticketable.
+
+---
+
+## 1bb. 🔶 OPEN 2026-08-20 — three stale disclaimer *grounds* in `03-human-in-the-loop-design.md`, and the precise handling matters
+
+`03-human-in-the-loop-design.md` §2 excludes "the notification channel, approval interface, or routing tool through which a human is actually reached," on the stated ground that **"No governing document fixes one."** H72 now fixes one.
+
+**⚠ The exclusion's CONTENT still stands; only its stated GROUND has staled.** That document still does not own the channel and still should not design it — what changed is that the channel now has an owner to point at (`05-infrastructure-deployment-operations/07-outbound-delivery-design.md`) instead of a void. **Do not let a ticket read this entry as licence to delete the exclusion**; the correct edit replaces the justification with a citation and leaves the boundary in place. §14 carries the same framing and needs the same treatment.
+
+**Routes to a small `H##` naming `03-human-in-the-loop-design.md`.** H72 could not make it — that document was read-only to it.
+
+---
+
+## 1bc. 🔶 OPEN 2026-08-20 — `implementation-document-map.md`'s naming convention contradicts every file on disk, and `CLAUDE.md` carries the same contradiction
+
+**Found by H72, which followed observed practice rather than the stated rule, and reported it rather than acting silently.** The map's *Naming convention* section states a design document's filename is "**unprefixed by a number**" and, explicitly, that "**Unlike the spec library**, a design document is *not* additionally numbered within its group folder." **All 46 design documents on disk are numbered within their group folders**, and `CLAUDE.md`'s own parallel passage is self-contradictory in a single sentence — it says filenames "stay unprefixed" and then gives `02-identity-access-security/03-authentication-and-identity-design.md` as its example.
+
+**Practice is right and the rule is wrong**, on the evidence: 46 files, consistently numbered, plus the fact that both statements of the rule illustrate it with a numbered example.
+
+**⚠ Deliberately NOT fixed by the Orchestrator at H72's close, and the reason is a rule rather than caution.** This is a **governing** section of the map — its conventions — and `PROCESS.md` §3 draws exactly this line for the criteria library's map: index rows and status are Orchestrator-maintainable, while "any change to the map's governing sections — its admission test, boundaries, conventions, or precedence" goes through a ticket. The same distinction applies here, and the fix additionally touches `CLAUDE.md`. **Routes to a ticket that names both files.** Low urgency, zero ambiguity about the correct outcome.
 
 ---
 
