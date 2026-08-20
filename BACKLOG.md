@@ -1256,7 +1256,7 @@ No dedicated treatment yet, and not yet through lead review. Some are partially 
 - ✅ **Data migration / import — DECIDED 2026-08-19, `DECISIONS.md` D-63 (lead). Closed, no ticket.** No bulk-import capability for V1.0. Builders create records one at a time or via the API. Revisit only if a genuine need surfaces — would need its own PRD capability row first.
 - ✅ **Offline resilience — FULLY RESOLVED.** Mobile: covered (ADR-017). Web/console: **DECIDED 2026-08-19, `DECISIONS.md` D-64 (lead). Closed, no ticket.** Not wanted — ADR-011's server-authoritative default stands as sufficient.
 - ✅ **UI / UX and design-system coverage — DECIDED 2026-08-19, `DECISIONS.md` D-62 (lead). Closed, no ticket.** Visual identity stays a permanently deferred, implementation-time parameter, exactly as ADR-060 already treats it. No commitment to brand, color palette, or typography. The mobile client's and future UI generator's own foundations remain separately open, unaffected by this decision.
-- ✅ **Load testing — DECIDED 2026-08-19, `DECISIONS.md` D-65 (lead), ticket pending.** Detect-in-production stays the strategy, stated explicitly rather than left implicit — no pre-release load-testing regime added. **Authorizes a small `T##`/`H##` pair** extending `04-devops-and-cloud-infra/03-testing-and-quality-gates.md` §4 and its design counterpart.
+- ✅ **Load testing — CLOSED 2026-08-20 by T87 (`DECISIONS.md` D-65, lead).** Detect-in-production stated explicitly in §4, citing the schema-count crossover point as the concrete, already-shipped instance. No pre-release load-testing regime added. **One item remains, not yet scoped:** a small design-counterpart follow-on to `03-testing-and-quality-gates-design.md`, if a matching statement is judged needed there.
 
 ---
 
