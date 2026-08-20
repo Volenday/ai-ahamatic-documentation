@@ -416,7 +416,7 @@ Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-ac
 
 ---
 
-## 1av. 🔶 OPEN 2026-08-20 — tracked-record structures are accumulating unplaced again, the exact pattern §1aa closed
+## 1av. ✅ CLOSED 2026-08-20 by H73 (ADR-069) — all four placed, and the fifth-member re-check returned four
 
 **§1aa closed on 2026-08-14 when H51 placed five accumulated structures into `02-platform-data-model-design.md`. The accumulation has restarted, and this entry exists so it is caught at three rather than at five.** Each is a record a design document decided to *track* while deliberately leaving its physical schema placement open:
 
@@ -427,7 +427,13 @@ Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-ac
 
 **The restraint itself is correct and deliberately established, not a defect.** H70 recorded its structure structurally with placement left open as *the third instance of that restraint*, making it an established pattern rather than a new liberty — a design document that does not own `02-platform-data-model-design.md` should not reach into it. **The defect is only that nothing obliges the accumulation to be discharged**, which is the identical shape as `ADR-REGISTER.md` live issue 8 and §4.5's own liveness finding: a fact correctly recorded in its owning place, with no tracker obligated to reach the index that must eventually carry it.
 
-**Routes to a single consolidated `H##`** naming `02-platform-data-model-design.md` — on §1aa's own recommendation and the H26a/H26b/H30a precedent that consolidation surfaces interactions separate amendments miss. **Do not scope it before checking whether a fourth has arrived.**
+**✅ CLOSED by H73, verified against the file.** All four placed platform-global in `02-platform-data-model-design.md` §3.1 as `platform.tracked_dependencies`, `platform.tracked_vendor_tiers`, `platform.tracked_model_dependencies`, and `platform.user_delivery_addresses` — **the level determined per structure rather than assumed**, and all four genuinely resolving the same way. **§1–§14 and all 10 subsections unchanged**, so every inbound §12 citation across the library stays valid. Propagation confirmed at all four sites (§3.1's table, §3.4's platform-global cell, §12's boundary bullets, §14's binding rules). **The fifth-member re-check this entry demanded was run and reported: four and no fifth**, across four independent library-wide sweeps.
+
+**Two findings worth carrying forward.** (1) **The two tracked records are two tables, not one** — *subject* decides nothing (the sets overlap almost entirely) while **grain** decides it: a license category is a property of the artifact-and-version and changes with zero incorporation change, whereas a criticality tier is a function of *how the platform incorporates* it. Two facts that key differently and change on different occasions cannot share a row. (2) **No ADR was recorded for that finding, on ADR-037's own test** — an ADR is owed where neither source states a relationship and the document is the first positioned to determine one; here `10-third-party-risk-management-design.md` §3.2 already stated it, so H73 confirmed a reading rather than determining one. **ADR-069 covers only the delivery address's anchor-row-versus-beside question**, the single sub-question an owning document assigned to the data model by name.
+
+**⚠ A neighbouring class was found and deliberately left — see §1bd.** It is *not* a member of this entry and closing this entry does not touch it.
+
+*Original routing, now discharged:* a single consolidated `H##` naming `02-platform-data-model-design.md`, on §1aa's own recommendation and the H26a/H26b/H30a precedent that consolidation surfaces interactions separate amendments miss.
 
 ---
 
@@ -508,6 +514,45 @@ Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-ac
 **Practice is right and the rule is wrong**, on the evidence: 46 files, consistently numbered, plus the fact that both statements of the rule illustrate it with a numbered example.
 
 **⚠ Deliberately NOT fixed by the Orchestrator at H72's close, and the reason is a rule rather than caution.** This is a **governing** section of the map — its conventions — and `PROCESS.md` §3 draws exactly this line for the criteria library's map: index rows and status are Orchestrator-maintainable, while "any change to the map's governing sections — its admission test, boundaries, conventions, or precedence" goes through a ticket. The same distinction applies here, and the fix additionally touches `CLAUDE.md`. **Routes to a ticket that names both files.** Low urgency, zero ambiguity about the correct outcome.
+
+---
+
+## 1bd. 🔶 OPEN 2026-08-20 — deferred *attribute shapes* on a platform-primitive identity: a neighbouring class to §1av, and deliberately not folded into it
+
+**Found by H73 while running §1av's fifth-member check, named, and correctly left unplaced.** This is the class §1av's sweep kept surfacing and rejecting: not a structurally-described **record** awaiting a table, but an **attribute** whose storage shape a document deferred while leaving open whether the attribute is owed at all. All four members were verified at source at this close:
+
+- **The data-governance-category attribute**, **the consent-basis record**, and **the retention-obligation attribute** — `07-data-governance-and-privacy-design.md` §2 defers the "storage shape" of all three "on a platform-primitive identity or on a builder-defined entity."
+- **The region-of-record attribute on an *actor identity*** — `06-compliance-and-data-residency-design.md` §2 defers its storage shape "on an actor identity, a tenant, or an application." **The tenant and application halves are placed** (`platform.tenants.region_of_record` and `platform.applications.region_of_record`, ADR-023); **the actor-identity half is not** — `platform.platform_users` carries `platform_user_id`, identity attributes, status, and `created_at`, and no region-of-record column (verified by grep at this close).
+
+**Why H73 was right to leave these, and why this is not simply §1av with more members.** Each would add a column to an **existing** identity structure on grounds no ADR in that ticket's scope bound — and, decisively, **whether the attribute is owed at all is the deferring document's question, not the data model's.** §1av's members were records whose existence was already settled and whose only open question was placement; these are attributes whose *existence* is still open. Placing one would answer a question its owner has not asked.
+
+**Routes to the deferring documents first, not to `02-platform-data-model-design.md`.** The sequence is: each owner determines whether its attribute is owed → only then does placement become a data-model ticket. Reversing that order would have the data model inventing an obligation. **⚠ Note the interaction with §1be:** the region-of-record and retention-obligation attributes both touch the anchor row, whose own removability is unsettled — so ADR-069's deletion-shape reasoning may bear on where they land if they are ever owed.
+
+---
+
+## 1be. 🔶 OPEN 2026-08-20 — whether `platform.platform_users` is ever hard-deleted is unsettled, and two documents have now declined to settle it
+
+**Recorded in ADR-069's own Consequences and deliberately left open there.** `02-platform-data-model-design.md` §10 states the never-hard-deleted convention for `platform.tenants` and `platform.applications` **only**; `07-data-governance-and-privacy-design.md` §4.3 **explicitly declines to assume** it extends to `tenant_users` or `platform_users` "beyond what that document states." So neither document settles it, and each correctly says so.
+
+**Why this is a real question rather than a documentation nicety.** §4.3 fixes two deletion shapes and states that where a field sits in a row the mechanism cannot cause to be physically removed, **deletion degrades to overwriting content** rather than removing it. Any personal-data attribute placed *on* the anchor row therefore inherits an unresolved deletion outcome — which is precisely the reasoning ADR-069 used to put the delivery address in a discrete row **beside** the anchor instead.
+
+**⚠ ADR-069 did not settle this and must not be read as having done so.** Its own framing is that it makes the placement *independent* of the answer rather than choosing one to win the point. **Do not cite ADR-069 as authority on the anchor's removability.**
+
+**Routes to a `T##` or an `H##` depending on where the answer lives — check before scoping.** If the retention/erasure obligation for a platform identity is a specification question (`02-governance-and-security/06-data-governance-and-privacy.md`), it is a `T##` first; if the specification already obliges an outcome and only the mechanism is missing, it is an `H##` against `07-data-governance-and-privacy-design.md` or §10 here. **This gates §1bd's retention-obligation and region-of-record members**, so resolving it first would make that entry cheaper.
+
+---
+
+## 1bf. 🔶 OPEN 2026-08-20 — forward-looking placement references that their successor ticket has now overtaken
+
+**Three documents still point at a future ticket that has since run (H73).** The *ownership* claims in each are correct and must stay — placement genuinely is `02-platform-data-model-design.md`'s to fix, not theirs. What has staled is only the **forward-looking phrasing** around them:
+
+- `10-third-party-risk-management-design.md` §3.2 — "physical placement was left to whichever ticket next revisited `02-platform-data-model-design.md`."
+- `11-ai-model-governance-and-output-quality-design.md` §4.1 — "placement is `02-platform-data-model-design.md`'s to fix, **in whichever ticket next revisits it**," plus "the third record of that shape to be described structurally and **left unplaced**," which is no longer its state.
+- `07-outbound-delivery-design.md` §6 — the placement/column-type/nullability deferral, now answered by ADR-069, including the anchor-row-versus-beside question it explicitly assigned onward.
+
+**⚠ Same shape as §1bb, and the same warning applies: the content stands, only the stated ground has staled.** The correct edit replaces a forward-looking deferral with a citation to where the answer now lives; it does **not** delete the ownership statement. A ticket that reads this entry as licence to strip the deferrals would remove the very boundary that kept these documents from reaching into a data model they do not own.
+
+**Bundle with §1bb** — both are stale-ground cleanups of exactly this kind (§1bb being `03-human-in-the-loop-design.md` §2 and §14, whose "No governing document fixes one" ground H72 overtook). One small `H##` naming all four documents closes both entries; neither justifies a ticket alone, and the shared warning is easier to apply once than twice.
 
 ---
 
