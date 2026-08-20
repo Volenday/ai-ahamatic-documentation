@@ -69,6 +69,8 @@ A change to platform-layer code is validated by the following test types before 
 
 The invariant-conformance layer is not optional refinement of the others: a test suite that establishes functional correctness but does not establish that every invariant of `02-governance-and-security/01-system-invariants.md` §4 holds is incomplete, because an invariant binds every change regardless of the change's apparent purpose. Where a change's non-functional test measures against a target of `03-software-and-architecture/06-non-functional-requirements.md`, it references that document's number; it never sets, restates, or varies it.
 
+**Scale pressure specifically is a detect-in-production condition, not a pre-release simulation target.** The Non-functional layer's scalability testing validates the platform's measured behavior against the numeric targets of `03-software-and-architecture/06-non-functional-requirements.md`, but the platform's deliberate strategy for scale-pressure conditions is to detect them as they emerge in production rather than to simulate them ahead of release — no ramp profile, synthetic-load-generation approach, or load/stress/soak testing regime is required by this layer. This is not an omission: it is the same posture already carried out for the one concrete scale threshold the platform has derived, a schema-count crossover point (`docs/design/01-design-foundation/04-scalability-availability-and-performance-design.md` §4.4), whose detection, instrumentation, and alerting are assigned entirely to production monitoring rather than to a pre-release test.
+
 ---
 
 ## 5. Minimum Coverage and Pass-Rate Thresholds
