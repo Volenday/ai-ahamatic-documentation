@@ -367,6 +367,8 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 **Closed by T84, verified by diff.** The specification-level obligation is now stated in `04-human-in-the-loop-protocol.md` §6 itself — not a capability-model extension. C-09 Observability was independently re-checked and confirmed not a fit (passive state-observation, not routing an actionable decision to a person); no new capability warranted, since this is a Meta-Operations obligation on the agent's own conduct, not a builder-facing primitive. Delivery is stated as distinct from and dependent on routing ("routed to a human holding the required authority" is unchanged; a new bullet adds that the routed request must also reach that human), naming no channel, tool, or timeliness figure — on the identical shape `07-business-continuity.md` already uses for its own no-channel-named obligation, down to the verb ("delivered").
 
+**⚠ UPDATED 2026-08-20 by H71 — this entry now has a second consumer, and one design constraint it did not have before.** (1) The undesigned delivery mechanism is no longer needed only by the HITL approval path: `03-authentication-and-identity-design.md` §3.4's enrollment grant (Path A) also requires an outbound channel, and **for the first owner of every admitted tenant that is the only constructible path**, so the credential mechanism is inert without it (§1at). (2) **H71 contributed a required property to whatever channel is eventually chosen, and it is a real constraint rather than a preference: the channel must be one the issuing authority does not itself read.** That follows from H71's foreclosed-handoff finding — an authority that can read the grant can authenticate as the tenant owner, which `03-access-control-and-tenancy-model.md` §4's Tenant-admission boundary forbids. No medium, tool, or timeliness figure is named. (3) **A precision worth not losing:** T84's §6 delivery obligation is scoped to an *approval request routed to a human holding decision authority*, so it does **not** reach an enrollment artifact sent to a person who holds no authority and cannot yet authenticate. What Path A depends on is the *channel a future ticket picks*, not that obligation — and H71 correctly claims no coverage from it. Do not treat T84 as having discharged this.
+
 **What remains open, correctly not closed here.** The obligation exists; the mechanism does not. `03-human-in-the-loop-design.md`'s own three "no governing document fixes one" disclaimers are now stale — a future `H##` design ticket discharges them by designing the actual mechanism. The criteria-library half (`BACKLOG.md` §1ad's D-o: "email delivery," "dashboards," both named by `DECISIONS.md` D-15 and never scheduled) still awaits its own `CR##` once a design ticket picks a mechanism shape to select among.
 
 ---
@@ -385,24 +387,26 @@ H23's ticket asked it to claim the question or decline it with grounds and a bet
 
 ---
 
-## 1at. 🔶 OPEN 2026-08-20 — no mechanism establishes a brand-new identity's *first* credential
+## 1at. ✅ CLOSED 2026-08-20 by H71 (ADR-067) — and the gap was re-confirmed independently before it was closed
 
 **Found by H69, named in `02-tenant-isolation-and-access-control-design.md` §11 as owed-not-made-here, and the one substantive gap that session could not close.** `03-authentication-and-identity-design.md` designs the credential and enrollment **structures** (§4.1), the verification methods (§3), the step-up gate in front of a credential change (§6.1), and recovery for an **already-enrolled** identity (§7) — but **no mechanism by which an identity holding none of them obtains its first credential.**
 
 **Why this is now load-bearing rather than theoretical.** H69's §6.3 creates exactly such an identity — one per admitted tenant, the tenant owner's own anchor, created as the admission act's own first write with credential issuance explicitly excluded from its scope. So the platform now has a designed path that *produces* credential-less identities and no designed path that *credentials* them. `03-access-control-and-tenancy-model.md` §4's closing sentence assigns the obligation to `03-authentication-and-identity-design.md`, so the owning document is settled and only the mechanism is missing.
 
-**Routes to an `H##`** naming `03-authentication-and-identity-design.md` as its target. Not a citation fix.
+**✅ CLOSED by H71, verified against the file.** New **§3.4** and **ADR-067** in `03-authentication-and-identity-design.md`, both pure appends (§1–§11 unchanged in number, nothing renumbered). The gap was **re-confirmed rather than inherited** — §4.3's "Establishment" is a *session's*, §6.1's trigger 1 fires in front of a *change*, §7 requires previously-enrolled channels. **The trigger is the zero-factor state, not an act**, so the mechanism stays correct for any future producer of that state. **No `event_type` minted** (collision-and-fit test run; §4.5 unchanged at 68), **no new table, column, or `credential_type` value**, and **step-up found structurally inapplicable as a finding, not an exemption** — §6.1's five triggers unchanged.
+
+**⚠ One thing this closure does NOT deliver, and it is stated here so no later reader assumes otherwise: the mechanism is inert for the load-bearing case until an outbound channel exists.** Path B (provider-link-first) is **not constructible** for the first owner of a brand-new tenant — provider trust is the *tenant's* own configuration and no actor yet holds tenant-owner authority to make it, while a steward configuring one on the tenant's behalf is the same act `03-access-control-and-tenancy-model.md` §4's Tenant-admission boundary forbids. So the load-bearing case depends on Path A, and Path A depends on delivery — see §1ar, which now has this as a **second consumer**. The write path is complete and correct; it simply has nothing to carry the grant yet.
 
 ---
 
-## 1au. 🔶 OPEN 2026-08-20 — two citation amendments owed to Dependency-Input documents H69 could not edit
+## 1au. 🔶 PARTIALLY CLOSED 2026-08-20 — **(c) closed by H71**; **(a) and (b) remain open**
 
 Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-access-control-design.md` §11 rather than left to memory, and neither is a defect in H69's own deliverable. A reuse of an existing structure gives an Executor no authorization to touch that structure's owning document (`PROCESS.md` §4), which is exactly why these could not be made in place.
 
 - **(a)** `08-audit-and-traceability-design.md` §4.5's **`builder-admission` row owes a "Minted In" extension note** recording §6.3's steward-triggered trigger — the identical convention `authority-refusal`'s own row already uses for its four extensions. H69 reused `builder-admission` correctly (identical fact, only the actor differs, and `actor_kind` / `actor_reference` / `source_mechanism` already carry that difference per §4.2), so **no new `event_type` is owed** — only the index note.
 - **(b)** `04-scalability-availability-and-performance-design.md` §5.3 **owes a citation to §6.3** for the identity-and-binding half of the onboarding event its own paragraph enumerates without naming.
 
-- **(c)** `03-authentication-and-identity-design.md` **§4.4's "Tenant, application, or account removal" row names no owning document**, unlike its "Grant revocation" row's explicit citation to the tenant-isolation binding-table mechanism; the identical citation is now owed to that row, naming `02-tenant-isolation-and-access-control-design.md` **§6.2**. **⚠ This third item was stated in H69's shipped §11 but omitted from its handoff summary** — found here only by reading §11 directly rather than trusting the handoff's enumeration of its own debts. A handoff is a router, not an inventory; the document governs.
+- **(c) ✅ CLOSED 2026-08-20 by H71, verified against the file** — the row now cites `02-tenant-isolation-and-access-control-design.md` §6.2's Registry Status Mutator, and **went further than asked in a way worth keeping**: it states explicitly that the `platform.platform_users` half of the row has *no* owning mechanism to cite, rather than papering the half-gap over with a citation that would not resolve. That disclosure is what surfaced §1ax(b). *Original finding:* `03-authentication-and-identity-design.md` **§4.4's "Tenant, application, or account removal" row names no owning document**, unlike its "Grant revocation" row's explicit citation to the tenant-isolation binding-table mechanism; the identical citation is now owed to that row, naming `02-tenant-isolation-and-access-control-design.md` **§6.2**. **⚠ This third item was stated in H69's shipped §11 but omitted from its handoff summary** — found here only by reading §11 directly rather than trusting the handoff's enumeration of its own debts. A handoff is a router, not an inventory; the document governs.
 
 **⚠ Do not bundle these with §1at.** They are citation maintenance; §1at is a genuine design gap. Bundling would let the substantive half be closed by the cosmetic half's review. **Items (a) and (c) share a target** (`08-audit-and-traceability-design.md` for (a), `03-authentication-and-identity-design.md` for (c)) — (c) can fold into the §1at ticket at no cost, since that ticket already names its document as an editable target.
 
@@ -419,6 +423,43 @@ Both are **one-sentence additions**, both flagged in `02-tenant-isolation-and-ac
 **The restraint itself is correct and deliberately established, not a defect.** H70 recorded its structure structurally with placement left open as *the third instance of that restraint*, making it an established pattern rather than a new liberty — a design document that does not own `02-platform-data-model-design.md` should not reach into it. **The defect is only that nothing obliges the accumulation to be discharged**, which is the identical shape as `ADR-REGISTER.md` live issue 8 and §4.5's own liveness finding: a fact correctly recorded in its owning place, with no tracker obligated to reach the index that must eventually carry it.
 
 **Routes to a single consolidated `H##`** naming `02-platform-data-model-design.md` — on §1aa's own recommendation and the H26a/H26b/H30a precedent that consolidation surfaces interactions separate amendments miss. **Do not scope it before checking whether a fourth has arrived.**
+
+---
+
+## 1aw. 🔶 OPEN 2026-08-20 — two `platform.platform_users` lifecycle writes that no mechanism performs, both owed by the same document
+
+**Both surfaced by H71 while designing first-credential establishment, and both routed rather than absorbed** — this document owns credential mechanics only, and `02-tenant-isolation-and-access-control-design.md` owns anchor and registry writes (its own §6.3 supplies the owner-case counterpart for (a), which is what makes the asymmetry visible).
+
+- **(a) No mechanism writes the `platform.platform_users` anchor for a person admitted under `02-tenant-isolation-and-access-control-design.md` §6.1.** That document's §6.3 designs the anchor write for the *tenant owner* case; §6.1's builder-admission case has an FK precondition that **presupposes** an established identity and nothing designs the write that establishes it. Found by H71's caller analysis: it had to determine whether §6.1 was a caller of the first-credential mechanism, concluded it is **not** (its precondition already assumes an anchor), and in doing so found nothing produces that anchor.
+- **(b) Nothing fixes what moves a `platform.platform_users` account's own status.** `03-authentication-and-identity-design.md` §4.4's "Tenant, application, or account removal" row reacts to an account being "removed, suspended, or disabled" and revokes every affected session in the same commit — but §6.2's Registry Status Mutator governs `platform.tenants` and `platform.applications` **only**. H71 stated this explicitly in the row rather than citing a mechanism that does not exist, which is the correct handling and the reason this is discoverable at all.
+
+**Routes to a single `H##` naming `02-tenant-isolation-and-access-control-design.md`** — one ticket, because both are writes that document owns, and the H26a/H26b/H30a precedent (also invoked at §1aa and §1av) is that consolidation surfaces interactions separate amendments miss. **(b) may turn out to need a spec answer first** — whether an account-status vocabulary exists at all is `02-governance-and-security/03-access-control-and-tenancy-model.md`'s, not a design document's to invent; check before scoping, and if so this splits.
+
+**⚠ Neither blocks H71's mechanism.** §3.4 reads the zero-factor state off whatever anchor exists and does not depend on how that anchor came to be. Do not escalate these as breaking the credential path.
+
+---
+
+## 1ax. 🔶 OPEN 2026-08-20 — which authority may revoke another identity's enrolled factor set is unstated, and it is the repair path after a compromised redemption
+
+**Surfaced by H71 and deliberately not asserted** — the question belongs to the role-and-permission matrix (`02-governance-and-security/03-access-control-and-tenancy-model.md` §4–§5), and a design document answering it would be **inventing a matrix entry**, which `PROCESS.md` §12.2 forbids.
+
+**Why it matters concretely.** H71's §3.4 states its own residual risk plainly: an outstanding stateless enrollment grant cannot be revoked before expiry, and a grant redeemed by the wrong person is a first-factor takeover — for a tenant's first owner, that is tenant-owner authority. The repair for that state is revoking the wrongly-enrolled factor set, and no role is stated as holding that authority.
+
+**Not left without a response, which is why this is a scoping call rather than an urgent gap.** Interim containment already exists and is already designed: `03-authentication-and-identity-design.md` §4.4's account-disable trigger revokes every affected session in the same commit. So the state is containable today; what is missing is the narrower, more surgical authority.
+
+**Orchestrator scoping assessment (recorded so the next session need not re-derive it):** this is a genuine `T##` against the matrix, **but check first whether the matrix intends to enumerate credential-level actions at all.** `DECISIONS.md` D-56 and D-60's thinness bullets deliberately keep that model to platform-boundary events, and §4's own "Admission requires no criteria beyond the steward's own existing authority" framing suggests the matrix may intentionally stop short of per-factor operations. If it does, the honest answer is a stated boundary, not a new row — and that determination is the ticket's first task, not a foregone conclusion. **Lower priority than §1aw.**
+
+---
+
+## 1ay. 🔶 OPEN 2026-08-20 — `08-audit-and-traceability-design.md` §4.2 cites a `§6.4` that does not exist, twice
+
+**Found by H71, verified independently at this close rather than taken on report.** §4.2 cites **§6.4** twice for the withholding-before-capture mechanism, but that document's §6 runs only **§6.1–§6.3**. The mechanism is real and is at **§6.2** — its own text at that section describes redaction-before-capture "extended to a fourth choke point," which is what the citation is reaching for.
+
+**Two token fix: `§6.4` → `§6.2`, twice.** No content change.
+
+**This is the *dangling* form, not the wrong-resolution form, and the distinction is the one §1ac established.** A citation that resolves to the wrong section is worse than one that dangles, because nothing signals the error to a reader; this one dangles and is therefore self-announcing. **H71 handled it correctly** — it did not build on the unresolvable citation, and instead cited §4.2's own base-record rule ("no field stores a secret"), verified verbatim, which is what it actually needed. It could not fix it, that document being read-only to it.
+
+**Bundle with §1au(a)** — both are one-line citation maintenance in the same file (`08-audit-and-traceability-design.md`), so one small `H##` closes both and neither justifies a ticket alone.
 
 ---
 
